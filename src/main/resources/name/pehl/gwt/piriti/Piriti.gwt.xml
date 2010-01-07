@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0-rc2//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.0.0-rc2/distro-source/core/src/gwt-module.dtd">
+<module>
+
+    <inherits name="com.google.gwt.inject.Inject" />
+    <inherits name="com.google.gwt.user.User" />
+    <inherits name="com.google.gwt.xml.XML" />
+    <inherits name="com.mouchel.gwt.xpath.xpath" />
+
+    <source path="client">
+        <exclude name="**/Demo*.java" />
+        <exclude name="**/*Test.java" />
+        <exclude name="**/GwtTest*.java" />
+    </source>
+
+    <generate-with class="name.pehl.gwt.piriti.rebind.XmlReaderGenerator">
+        <when-type-assignable class="name.pehl.gwt.piriti.client.xml.XmlReader" />
+    </generate-with>
+
+</module>

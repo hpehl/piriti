@@ -1,0 +1,192 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>name.pehl.gwt</groupId>
+    <artifactId>piriti</artifactId>
+    <name>Piriti</name>
+    <description>Annotation based XML mapper for GWT</description>
+    <version>0.1</version>
+    <organization>
+        <name>Harald Pehl</name>
+        <url>http://harald.pehl.name</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>harald.pehl</id>
+            <name>Harald Pehl</name>
+            <email>harald.pehl@googlemail.com</email>
+        </developer>
+    </developers>
+
+
+    <properties>
+        <gwt.version>2.0.0</gwt.version>
+        <junit.version>4.7</junit.version>
+        <easymock.version>2.4</easymock.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+            <version>${gwt.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+            <version>${gwt.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mouchel.gwt.xpath</groupId>
+            <artifactId>gwtxpath</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
+            <version>${easymock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymockclassextension</artifactId>
+            <version>${easymock.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*GwtTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <configuration>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                    <classpathContainers>
+                        <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+                        <classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
+                    </classpathContainers>
+                    <additionalBuildcommands>
+                        <buildcommand>com.google.gwt.eclipse.core.gwtProjectValidator</buildcommand>
+                    </additionalBuildcommands>
+                    <additionalProjectnatures>
+                        <projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalConfig>
+                        <file>
+                            <name>.settings/org.eclipse.core.resources.prefs</name>
+                            <content>
+                                <![CDATA[
+eclipse.preferences.version=1
+encoding/<project>=${project.build.sourceEncoding}]]>
+                            </content>
+                        </file>
+                        <file>
+                            <name>.settings/com.google.appengine.eclipse.core.prefs</name>
+                            <content>
+                                <![CDATA[
+eclipse.preferences.version=1
+filesCopiedToWebInfLib=]]>
+                            </content>
+                        </file>
+                        <file>
+                            <name>.settings/com.google.gdt.eclipse.core.prefs</name>
+                            <content>
+                                <![CDATA[
+eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=]]>
+                            </content>
+                        </file>
+                        <file>
+                            <name>.settings/com.google.gwt.eclipse.core.prefs</name>
+                            <content>
+                                <![CDATA[
+eclipse.preferences.version=1
+entryPointModules=]]>
+                            </content>
+                        </file>
+                    </additionalConfig>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <version>1.2-SNAPSHOT</version>
+                <configuration>
+                    <gwtVersion>2.0.0</gwtVersion>
+                    <module>name.pehl.gwt.piriti.PiritiTest</module>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
