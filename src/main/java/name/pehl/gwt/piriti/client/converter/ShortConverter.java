@@ -1,25 +1,40 @@
 package name.pehl.gwt.piriti.client.converter;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * Converter for short objects. Uses {@code Short.valueOf(value)} for the
+ * conversion.
+ * 
+ * @author $Author$
+ * @version $Revision$
  */
-public class ShortConverter implements Converter<Short>
+public class ShortConverter extends AbstractConverter<Short>
 {
+    /**
+     * Converts the specified value to short.
+     * 
+     * @param value
+     *            The string to be converted
+     * @param format
+     *            Ignored
+     * @return {@code null} if the value is {@code null} or empty, otherwise the
+     *         converted short
+     * @see name.pehl.gwt.piriti.client.converter.Converter#convert(java.lang.String,
+     *      java.lang.String)
+     */
     @Override
     public Short convert(String value, String format)
     {
-        if (value == null || value.trim().length() == 0)
+        if (isValid(value))
         {
-            return null;
+            try
+            {
+                return Short.valueOf(value);
+            }
+            catch (NumberFormatException e)
+            {
+                return null;
+            }
         }
-        try
-        {
-            return Short.valueOf(value);
-        }
-        catch (NumberFormatException e)
-        {
-            return null;
-        }
+        return null;
     }
 }

@@ -3,38 +3,54 @@ package name.pehl.gwt.piriti.client.converter;
 import com.google.gwt.i18n.client.NumberFormat;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * Converter for long objects. Uses {@code Long.valueOf(value)} if no format is
+ * specified and {@link NumberFormat#parse(String)} otherwise.
+ * 
+ * @author $Author$
+ * @version $Revision$
  */
-public class LongConverter implements Converter<Long>
+public class LongConverter extends AbstractConverter<Long>
 {
+    /**
+     * Converts the specified value to long.
+     * 
+     * @param value
+     *            The string to be converted
+     * @param format
+     *            Must be a valid number format or {@code null}
+     * @return {@code null} if the value is {@code null}, empty or in the wrong
+     *         format, otherwise the converted long
+     * @see name.pehl.gwt.piriti.client.converter.Converter#convert(java.lang.String,
+     *      java.lang.String)
+     */
     @Override
     public Long convert(String value, String format)
     {
-        if (value == null || value.trim().length() == 0)
+        if (isValid(value))
         {
-            return null;
-        }
-        try
-        {
-            if (format == null)
+            try
             {
-                return Long.valueOf(value);
+                if (format == null)
+                {
+                    return Long.valueOf(value);
+                }
+                else
+                {
+                    return parseLong(value, format);
+                }
             }
-            else
+            catch (NumberFormatException e)
             {
-                return parseLong(value, format);
+                return null;
             }
         }
-        catch (NumberFormatException e)
-        {
-            return null;
-        }
+        return null;
     }
 
 
     /**
-     * Extra method for better unit testing
+     * Parsing happens in an extra method so it can be overwritten in unit
+     * tests.
      * 
      * @param value
      * @param format

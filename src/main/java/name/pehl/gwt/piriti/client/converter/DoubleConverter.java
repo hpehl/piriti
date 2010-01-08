@@ -3,38 +3,54 @@ package name.pehl.gwt.piriti.client.converter;
 import com.google.gwt.i18n.client.NumberFormat;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * Converter for double objects. Uses {@code Double.valueOf(value)} if no format
+ * is specified and {@link NumberFormat#parse(String)} otherwise.
+ * 
+ * @author $Author$
+ * @version $Revision$
  */
-public class DoubleConverter implements Converter<Double>
+public class DoubleConverter extends AbstractConverter<Double>
 {
+    /**
+     * Converts the specified value to double.
+     * 
+     * @param value
+     *            The string to be converted
+     * @param format
+     *            Must be a valid number format or {@code null}
+     * @return {@code null} if the value is {@code null}, empty or in the wrong
+     *         format, otherwise the converted double
+     * @see name.pehl.gwt.piriti.client.converter.Converter#convert(java.lang.String,
+     *      java.lang.String)
+     */
     @Override
     public Double convert(String value, String format)
     {
-        if (value == null || value.trim().length() == 0)
+        if (isValid(value))
         {
-            return null;
-        }
-        try
-        {
-            if (format == null)
+            try
             {
-                return Double.valueOf(value);
+                if (format == null)
+                {
+                    return Double.valueOf(value);
+                }
+                else
+                {
+                    return parseDouble(value, format);
+                }
             }
-            else
+            catch (NumberFormatException e)
             {
-                return parseDouble(value, format);
+                return null;
             }
         }
-        catch (NumberFormatException e)
-        {
-            return null;
-        }
+        return null;
     }
 
 
     /**
-     * Extra method for better unit testing
+     * Parsing happens in an extra method so it can be overwritten in unit
+     * tests.
      * 
      * @param value
      * @param format
