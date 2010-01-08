@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Default implementation for the {@link XmlReader}
+ * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
@@ -18,6 +20,9 @@ public class XmlRegistryImpl implements XmlRegistry
     }
 
 
+    /**
+     * Both the clazz and the reader must not be null.
+     */
     @Override
     public <T> void register(Class<T> clazz, XmlReader<T> reader)
     {
@@ -28,6 +33,9 @@ public class XmlRegistryImpl implements XmlRegistry
     }
 
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public <T> XmlReader<T> get(Class<T> clazz)
