@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author $LastChangedBy:$ 
- * @version $LastChangedRevision:$ 
+ * @author $LastChangedBy$ 
+ * @version $LastChangedRevision$ 
  */
 public class DoubleConverterTest extends DoubleConverter
 {
