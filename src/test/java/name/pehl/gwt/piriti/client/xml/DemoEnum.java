@@ -1,8 +1,8 @@
 package name.pehl.gwt.piriti.client.xml;
 
 /**
- * @author $LastChangedBy:$ 
- * @version $LastChangedRevision:$ 
+ * @author $LastChangedBy$ 
+ * @version $LastChangedRevision$ 
  */
 public enum DemoEnum
 {
