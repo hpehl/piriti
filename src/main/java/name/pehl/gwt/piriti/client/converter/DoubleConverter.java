@@ -6,8 +6,8 @@ import com.google.gwt.i18n.client.NumberFormat;
  * Converter for double objects. Uses {@code Double.valueOf(value)} if no format
  * is specified and {@link NumberFormat#parse(String)} otherwise.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class DoubleConverter extends AbstractConverter<Double>
 {

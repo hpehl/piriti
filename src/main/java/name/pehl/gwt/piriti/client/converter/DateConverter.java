@@ -8,8 +8,8 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  * Converter for dates. Uses {@code DateTimeFormat#parse(String)} for the
  * conversion.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class DateConverter extends AbstractConverter<Date>
 {

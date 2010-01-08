@@ -1,8 +1,8 @@
 package name.pehl.gwt.piriti.client.xml;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public interface XmlRegistry
 {

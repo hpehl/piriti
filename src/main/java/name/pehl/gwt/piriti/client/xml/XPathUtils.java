@@ -10,8 +10,10 @@ import com.google.gwt.xml.client.Text;
 import com.mouchel.gwt.xpath.client.XPath;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * Some utility methods for xpath handling.
+ * 
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public final class XPathUtils
 {

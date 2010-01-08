@@ -4,8 +4,8 @@ package name.pehl.gwt.piriti.client.converter;
  * Converter for character objects. Uses the first character of the value for
  * the conversion.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class CharacterConverter extends AbstractConverter<Character>
 {

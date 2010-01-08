@@ -6,8 +6,8 @@ import com.google.gwt.i18n.client.NumberFormat;
  * Converter for float objects. Uses {@code Float.valueOf(value)} if no format
  * is specified and {@link NumberFormat#parse(String)} otherwise.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class FloatConverter extends AbstractConverter<Float>
 {

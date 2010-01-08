@@ -5,8 +5,8 @@ package name.pehl.gwt.piriti.client.converter;
  * 
  * @param <T>
  *            The target type for this converter.
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public interface Converter<T>
 {

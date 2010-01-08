@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class XmlRegistryImpl implements XmlRegistry
 {

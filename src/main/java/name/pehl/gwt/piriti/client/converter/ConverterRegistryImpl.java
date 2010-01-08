@@ -18,8 +18,8 @@ import java.util.Map;
  * <li>Short.class --> {@link ShortConverter}
  * </ul>
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class ConverterRegistryImpl implements ConverterRegistry
 {

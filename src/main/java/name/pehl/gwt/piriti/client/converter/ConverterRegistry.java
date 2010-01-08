@@ -3,8 +3,8 @@ package name.pehl.gwt.piriti.client.converter;
 /**
  * Registry for converter.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public interface ConverterRegistry
 {

@@ -4,8 +4,8 @@ package name.pehl.gwt.piriti.client.converter;
  * Converter for boolean objects. Uses {@code Boolean.valueOf(value)} for the
  * conversion.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class BooleanConverter extends AbstractConverter<Boolean>
 {

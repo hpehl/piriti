@@ -4,8 +4,8 @@ package name.pehl.gwt.piriti.client.converter;
  * Converter for short objects. Uses {@code Short.valueOf(value)} for the
  * conversion.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class ShortConverter extends AbstractConverter<Short>
 {

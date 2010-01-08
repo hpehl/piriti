@@ -4,8 +4,8 @@ package name.pehl.gwt.piriti.client.converter;
  * Converter for byte objects. Uses {@code Byte.valueOf(value)} for the
  * conversion.
  * 
- * @author $Author$
- * @version $Revision$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class ByteConverter extends AbstractConverter<Byte>
 {
