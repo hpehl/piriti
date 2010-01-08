@@ -11,8 +11,8 @@ import name.pehl.gwt.piriti.client.xml.XmlReader;
 import com.google.gwt.core.client.GWT;
 
 /**
- * @author $LastChangedBy:$ 
- * @version $LastChangedRevision:$ 
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class DemoModel
 {
@@ -82,6 +82,9 @@ public class DemoModel
 
     @XmlField
     String string;
+
+    @XmlField("string/@attribute")
+    String stringAttribute;
 
     // --------------------------------------------------------- custom objects
 

@@ -11,8 +11,8 @@ import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
- * @author $LastChangedBy:$ 
- * @version $LastChangedRevision:$ 
+ * @author $LastChangedBy$ 
+ * @version $LastChangedRevision$ 
  */
 public final class DemoXmlFactory
 {
@@ -56,7 +56,8 @@ public final class DemoXmlFactory
         createElementAndAppend(document, demoModel, "longObject", "15");
         createElementAndAppend(document, demoModel, "shortPrimitive", "16");
         createElementAndAppend(document, demoModel, "shortObject", "17");
-        createElementAndAppend(document, demoModel, "string", "achtzehn");
+        Element stringElement = createElementAndAppend(document, demoModel, "string", "achtzehn");
+        stringElement.setAttribute("attribute", "neunzehn");
 
         Element demoNestedModel = createDemoNestedModelElement("demoNestedModel");
         demoModel.appendChild(demoNestedModel);
@@ -97,17 +98,19 @@ public final class DemoXmlFactory
         createElementAndAppend(document, demoNestedModel, "longObject", "15");
         createElementAndAppend(document, demoNestedModel, "shortPrimitive", "16");
         createElementAndAppend(document, demoNestedModel, "shortObject", "17");
-        createElementAndAppend(document, demoNestedModel, "string", "achtzehn");
+        Element stringElement = createElementAndAppend(document, demoNestedModel, "string", "achtzehn");
+        stringElement.setAttribute("attribute", "neunzehn");
 
         return demoNestedModel;
     }
 
 
-    private static void createElementAndAppend(Document document, Element parent, String elementName, String value)
+    private static Element createElementAndAppend(Document document, Element parent, String elementName, String value)
     {
         Element element = document.createElement(elementName);
         Text text = document.createTextNode(value);
         element.appendChild(text);
         parent.appendChild(element);
+        return element;
     }
 }

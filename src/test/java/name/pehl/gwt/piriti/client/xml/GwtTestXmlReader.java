@@ -7,8 +7,8 @@ import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * @author $Author$
+ * @version $Revision$
  */
 public class GwtTestXmlReader extends GWTTestCase
 {
@@ -56,6 +56,7 @@ public class GwtTestXmlReader extends GWTTestCase
         assertEquals(16, demo.shortPrimitive);
         assertEquals(17, demo.shortObject.shortValue());
         assertEquals("achtzehn", demo.string);
+        assertEquals("neunzehn", demo.stringAttribute);
 
         assertNotNull(demo.demoNestedModel);
         assertTrue(demo.demoNestedModel.booleanPrimitive);
@@ -77,5 +78,6 @@ public class GwtTestXmlReader extends GWTTestCase
         assertEquals(16, demo.demoNestedModel.shortPrimitive);
         assertEquals(17, demo.demoNestedModel.shortObject.shortValue());
         assertEquals("achtzehn", demo.demoNestedModel.string);
+        assertEquals("neunzehn", demo.demoNestedModel.stringAttribute);
     }
 }
