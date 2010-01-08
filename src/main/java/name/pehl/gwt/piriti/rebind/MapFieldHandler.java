@@ -1,5 +1,11 @@
 package name.pehl.gwt.piriti.rebind;
 
+/**
+ * {@link FieldHandler} for maps. TODO Implement me!
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
+ */
 public class MapFieldHandler extends AbstractFieldHandler
 {
     @Override

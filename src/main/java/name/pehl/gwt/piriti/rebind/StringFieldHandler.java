@@ -1,5 +1,11 @@
 package name.pehl.gwt.piriti.rebind;
 
+/**
+ * Simple {@link FieldHandler} implementation for strings. 
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
+ */
 public class StringFieldHandler extends AbstractFieldHandler
 {
     @Override

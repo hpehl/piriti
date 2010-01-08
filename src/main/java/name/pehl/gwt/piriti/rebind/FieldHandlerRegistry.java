@@ -15,18 +15,27 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * Registry which maps classnames to {@linkplain FieldHandler}s. This registry
+ * is used by the {@link XmlReaderCreator} when generating code.
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  */
-public class FieldHandlerLookup
+public class FieldHandlerRegistry
 {
     private Map<String, FieldHandler> lookup;
 
 
-    public FieldHandlerLookup()
+    public FieldHandlerRegistry()
+    {
+        lookup = new HashMap<String, FieldHandler>();
+        registerDefaultFieldHandlers();
+    }
+
+
+    protected void registerDefaultFieldHandlers()
     {
         FieldHandler handler = null;
-        lookup = new HashMap<String, FieldHandler>();
 
         // Basics
         handler = new DefaultFieldHandler();

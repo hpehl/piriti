@@ -10,6 +10,10 @@ import name.pehl.gwt.piriti.client.xml.XmlReader;
 
 import com.google.gwt.core.client.GWT;
 
+/**
+ * @author $LastChangedBy:$ 
+ * @version $LastChangedRevision:$ 
+ */
 public class DemoModel
 {
     // ------------------------------------------------------- xml reader stuff

@@ -6,8 +6,10 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * {@link FieldHandler} implementation for types with an own XmlReader. 
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  */
 public class XmlRegistryFieldHandler extends AbstractFieldHandler
 {

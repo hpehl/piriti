@@ -1,5 +1,11 @@
 package name.pehl.gwt.piriti.rebind;
 
+/**
+ * {@link FieldHandler} for arrays. TODO Implement me!
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
+ */
 public class ArrayFieldHandler extends AbstractFieldHandler
 {
     @Override

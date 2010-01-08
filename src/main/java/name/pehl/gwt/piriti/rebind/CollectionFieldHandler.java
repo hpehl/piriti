@@ -1,5 +1,11 @@
 package name.pehl.gwt.piriti.rebind;
 
+/**
+ * {@link FieldHandler} for collections. TODO Implement me!
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
+ */
 public class CollectionFieldHandler extends AbstractFieldHandler
 {
     @Override

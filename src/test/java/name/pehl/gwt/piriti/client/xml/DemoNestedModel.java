@@ -7,6 +7,10 @@ import name.pehl.gwt.piriti.client.xml.XmlReader;
 
 import com.google.gwt.core.client.GWT;
 
+/**
+ * @author $LastChangedBy:$ 
+ * @version $LastChangedRevision:$ 
+ */
 public class DemoNestedModel
 {
     // ------------------------------------------------------- xml reader stuff

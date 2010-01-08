@@ -11,8 +11,8 @@ import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * @author $LastChangedBy:$ 
+ * @version $LastChangedRevision:$ 
  */
 public final class DemoXmlFactory
 {

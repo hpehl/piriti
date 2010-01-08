@@ -16,8 +16,13 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * Class which contains information needed to generate code for the XPath
+ * evaluation, conversion and assignment of a field. An instance of this class
+ * is generated in {@link XmlReaderCreator} and passed to the
+ * {@link FieldHandler}.
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  */
 public class FieldContext
 {

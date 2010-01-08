@@ -12,8 +12,10 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * Class which generates all code necessary to map all annotated fields.
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  */
 public class XmlReaderCreator
 {
@@ -90,7 +92,7 @@ public class XmlReaderCreator
         writer.write("import com.google.gwt.xml.client.Document;");
         writer.write("import com.google.gwt.xml.client.Element;");
         writer.write("import name.pehl.gwt.piriti.client.converter.Converter;");
-        writer.write("import name.pehl.gwt.piriti.client.converter.ConverterFactory;");
+        writer.write("import name.pehl.gwt.piriti.client.converter.ConverterRegistry;");
         writer.newline();
 
         // Class
@@ -99,12 +101,12 @@ public class XmlReaderCreator
         writer.indent();
 
         // Private members and constructor
-        writer.write("private ConverterFactory converterFactory;");
+        writer.write("private ConverterRegistry converterRegistry;");
         writer.write("private XmlRegistry xmlRegistry;");
         writer.newline();
         writer.write("public %s() {", implName);
         writer.indent();
-        writer.write("this.converterFactory = XmlReaderGinjector.INJECTOR.getConverterFactory();");
+        writer.write("this.converterRegistry = XmlReaderGinjector.INJECTOR.getConverterRegistry();");
         writer.write("this.xmlRegistry = XmlReaderGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
         writer.outdent();
@@ -209,7 +211,7 @@ public class XmlReaderCreator
         if (fields != null && fields.length != 0)
         {
             int counter = 0;
-            FieldHandlerLookup handlerLookup = new FieldHandlerLookup();
+            FieldHandlerRegistry handlerRegistry = new FieldHandlerRegistry();
             for (JField field : fields)
             {
                 XmlField xmlField = field.getAnnotation(XmlField.class);
@@ -219,16 +221,13 @@ public class XmlReaderCreator
                     if (modelType.equals(field.getType()))
                     {
                         // prevent recursion
-                        writer
-                                .write(
-                                        "// Skipping field %s to prevent endless recursion (it has the same type as the model).",
-                                        field.getName());
+                        writer.write("// Skipping field %s: Recursive model references aren't supported yet.", field
+                                .getName());
                         continue;
                     }
-
                     FieldContext fieldContext = new FieldContext(context, sourceType, sourceVariable, xmlField, field,
                             counter);
-                    processField(writer, handlerLookup, fieldContext);
+                    processField(writer, handlerRegistry, fieldContext);
                     counter++;
                 }
             }
@@ -236,7 +235,7 @@ public class XmlReaderCreator
     }
 
 
-    private void processField(IndentedWriter writer, FieldHandlerLookup handlerLookup, FieldContext fieldContext)
+    private void processField(IndentedWriter writer, FieldHandlerRegistry handlerRegistry, FieldContext fieldContext)
     {
         FieldHandler handler = null;
         if (fieldContext.isPrimitive())
@@ -255,7 +254,7 @@ public class XmlReaderCreator
         {
             // Ask the FieldHandlerLookup for all other stuff (basic types,
             // collections, maps, ...)
-            handler = handlerLookup.get(fieldContext.getType().getQualifiedSourceName());
+            handler = handlerRegistry.get(fieldContext.getType().getQualifiedSourceName());
             if (handler == null)
             {
                 // Delegate to the XmlRegistry to resolve other mapped models

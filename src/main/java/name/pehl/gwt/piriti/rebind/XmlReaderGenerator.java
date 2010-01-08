@@ -9,20 +9,15 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * GWT Generator for XmlReaders. The generator delegates to
+ * {@link XmlReaderCreator} which is responsible for generating the
+ * implementation.
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  */
 public class XmlReaderGenerator extends Generator
 {
-    /**
-     * @param logger
-     * @param context
-     * @param typeName
-     * @return
-     * @throws UnableToCompleteException
-     * @see com.google.gwt.core.ext.Generator#generate(com.google.gwt.core.ext.TreeLogger,
-     *      com.google.gwt.core.ext.GeneratorContext, java.lang.String)
-     */
     @Override
     public String generate(TreeLogger logger, GeneratorContext context, String typeName)
             throws UnableToCompleteException

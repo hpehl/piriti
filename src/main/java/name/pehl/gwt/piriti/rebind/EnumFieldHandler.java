@@ -2,6 +2,14 @@ package name.pehl.gwt.piriti.rebind;
 
 import com.google.gwt.core.ext.typeinfo.JEnumType;
 
+/**
+ * {@link FieldHandler} for enum types. This implementation reads the XML data
+ * as string and tries to convert it using <code>enumType.valueOf(String)</code>
+ * .
+ * 
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
+ */
 public class EnumFieldHandler extends AbstractFieldHandler
 {
     @Override
