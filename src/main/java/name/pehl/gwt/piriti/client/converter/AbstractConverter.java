@@ -3,7 +3,7 @@ package name.pehl.gwt.piriti.client.converter;
 /**
  * Base class for all converters with some common functionality.
  * 
- * @author $Author$
+ * @author $Author:$
  * @version $Revision$
  */
 public abstract class AbstractConverter<T> implements Converter<T>
