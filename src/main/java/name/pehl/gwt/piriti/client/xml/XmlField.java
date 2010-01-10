@@ -93,17 +93,17 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <tr>
  * <td>Arrays of the above types</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If a format is specified it is applied for all array elements</td>
+ * <td>If a format is specified it is applied for all array elements.</td>
  * </tr>
  * <tr>
  * <td>Typed collections of the above types</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If a format is specified it is applied for all array elements</td>
+ * <td>If a format is specified it is applied for all collection elements.</td>
  * </tr>
  * <tr>
  * <td>Typed maps the above types</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If a format is specified it is applied for all array elements</td>
+ * <td>No format supported.</td>
  * </tr>
  * </table>
  * <p>
