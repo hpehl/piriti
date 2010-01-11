@@ -4,7 +4,6 @@ import java.util.Date;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.XMLParser;
 
 /**
  * @author $Author$
@@ -26,8 +25,8 @@ public class GwtTestXmlReader extends GWTTestCase
     protected void gwtSetUp() throws Exception
     {
         // To register the XmlReaders
-        DemoModel.XML.readSingle(XMLParser.createDocument().createElement("foo"));
-        DemoNestedModel.SOME_FANCY_NAME.readSingle(XMLParser.createDocument().createElement("foo"));
+        new DemoNestedModel();
+        new DemoModel();
     }
 
 
@@ -35,7 +34,7 @@ public class GwtTestXmlReader extends GWTTestCase
     {
         Document document = DemoXmlFactory.createDemoModelDocument("demoModel");
         DemoModel demo = DemoModel.XML.readSingle(document);
-        
+
         assertNotNull(demo);
         assertTrue(demo.booleanPrimitive);
         assertTrue(demo.booleanObject);
@@ -57,6 +56,10 @@ public class GwtTestXmlReader extends GWTTestCase
         assertEquals(17, demo.shortObject.shortValue());
         assertEquals("achtzehn", demo.string);
         assertEquals("neunzehn", demo.stringAttribute);
+        assertNull(demo.listOfDemoModels);
+        assertNull(demo.untypedList);
+        assertNull(demo.mapOfDemoModels);
+        assertNull(demo.untypedMap);
 
         assertNotNull(demo.demoNestedModel);
         assertTrue(demo.demoNestedModel.booleanPrimitive);
