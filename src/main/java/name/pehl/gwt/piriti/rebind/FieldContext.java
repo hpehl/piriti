@@ -38,11 +38,11 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  */
 public class FieldContext
 {
-    private static final String VALUE_VARIABLE = "value";
     private static final String AS_STRING_SUFFIX = "AsString";
     private static final String READER_SUFFIX = "Reader";
 
     private final TypeOracle typeOracle;
+    private final JType modelType; 
     private final String sourceType;
     private final String sourceVariable;
     private final XmlField xmlField;
@@ -55,15 +55,17 @@ public class FieldContext
     private final String valueReaderVariable;
 
 
-    public FieldContext(GeneratorContext context, String sourceType, String sourceVariable, XmlField xmlField,
-            JField field, int counter) throws UnableToCompleteException
+    public FieldContext(GeneratorContext context, JClassType modelType, String sourceType, String sourceVariable, XmlField xmlField,
+            JField field, String valueVariable) throws UnableToCompleteException
     {
         // constructor parameters
         this.typeOracle = context.getTypeOracle();
+        this.modelType = modelType;
         this.sourceType = sourceType;
         this.sourceVariable = sourceVariable;
         this.xmlField = xmlField;
         this.field = field;
+        this.valueVariable = valueVariable;
 
         // calculated values
         JPrimitiveType primitiveType = field.getType().isPrimitive();
@@ -85,7 +87,6 @@ public class FieldContext
         }
         this.xpath = xpathFromType();
         this.format = xmlField.format().equals("") ? null : xmlField.format();
-        this.valueVariable = VALUE_VARIABLE + counter;
         this.valueAsStringVariable = valueVariable + AS_STRING_SUFFIX;
         this.valueReaderVariable = valueVariable + READER_SUFFIX;
     }
@@ -219,6 +220,12 @@ public class FieldContext
     public TypeOracle getTypeOracle()
     {
         return typeOracle;
+    }
+    
+    
+    public JType getModelType()
+    {
+        return modelType;
     }
 
 
