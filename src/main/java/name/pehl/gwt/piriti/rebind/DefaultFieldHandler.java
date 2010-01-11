@@ -1,5 +1,7 @@
 package name.pehl.gwt.piriti.rebind;
 
+import com.google.gwt.core.ext.UnableToCompleteException;
+
 /**
  * Default implementation for a {@link FieldHandler}. This class calls the
  * following methods in this order:
@@ -31,7 +33,7 @@ public class DefaultFieldHandler extends AbstractFieldHandler
 
 
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext)
+    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writeComment(writer, fieldContext);
         writeDeclaration(writer, fieldContext);

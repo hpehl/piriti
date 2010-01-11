@@ -16,7 +16,6 @@ import java.util.TreeSet;
 
 import name.pehl.gwt.piriti.client.xml.XmlField;
 
-import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -42,7 +41,8 @@ public class FieldContext
     private static final String READER_SUFFIX = "Reader";
 
     private final TypeOracle typeOracle;
-    private final JType modelType; 
+    private final JClassType modelType;
+    private final FieldHandlerRegistry handlerRegistry;
     private final String sourceType;
     private final String sourceVariable;
     private final XmlField xmlField;
@@ -55,12 +55,14 @@ public class FieldContext
     private final String valueReaderVariable;
 
 
-    public FieldContext(GeneratorContext context, JClassType modelType, String sourceType, String sourceVariable, XmlField xmlField,
-            JField field, String valueVariable) throws UnableToCompleteException
+    public FieldContext(TypeOracle typeOracle, JClassType modelType, FieldHandlerRegistry handlerRegistry,
+            String sourceType, String sourceVariable, XmlField xmlField, JField field, String valueVariable)
+            throws UnableToCompleteException
     {
         // constructor parameters
-        this.typeOracle = context.getTypeOracle();
+        this.typeOracle = typeOracle;
         this.modelType = modelType;
+        this.handlerRegistry = handlerRegistry;
         this.sourceType = sourceType;
         this.sourceVariable = sourceVariable;
         this.xmlField = xmlField;
@@ -110,8 +112,8 @@ public class FieldContext
     @Override
     public String toString()
     {
-        StringBuilder builder = new StringBuilder().append(type.getParameterizedQualifiedSourceName()).append(" ").append(
-                field.getName()).append(", xpath=\"").append(xpath).append("\"");
+        StringBuilder builder = new StringBuilder().append(type.getParameterizedQualifiedSourceName()).append(" ")
+                .append(field.getName()).append(", xpath=\"").append(xpath).append("\"");
         if (format != null)
         {
             builder.append(", format=\"").append(format).append("\"");
@@ -221,11 +223,17 @@ public class FieldContext
     {
         return typeOracle;
     }
-    
-    
-    public JType getModelType()
+
+
+    public JClassType getModelType()
     {
         return modelType;
+    }
+
+
+    public FieldHandlerRegistry getHandlerRegistry()
+    {
+        return handlerRegistry;
     }
 
 

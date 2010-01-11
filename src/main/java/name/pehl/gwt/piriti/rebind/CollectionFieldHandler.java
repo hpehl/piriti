@@ -1,5 +1,6 @@
 package name.pehl.gwt.piriti.rebind;
 
+import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 
@@ -54,7 +55,7 @@ public class CollectionFieldHandler extends AbstractFieldHandler
 
 
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext)
+    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writeComment(writer, fieldContext);
         writer.write("// Not yet implemented!");

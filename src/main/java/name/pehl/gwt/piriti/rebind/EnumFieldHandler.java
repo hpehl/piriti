@@ -1,5 +1,7 @@
 package name.pehl.gwt.piriti.rebind;
 
+import com.google.gwt.core.ext.UnableToCompleteException;
+
 /**
  * {@link FieldHandler} for enum types. This implementation reads the XML data
  * as string and tries to convert it using <code>enumType.valueOf(String)</code>
@@ -31,7 +33,7 @@ public class EnumFieldHandler extends AbstractFieldHandler
 
 
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext)
+    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writeComment(writer, fieldContext);
         writeDeclaration(writer, fieldContext);

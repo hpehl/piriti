@@ -1,5 +1,7 @@
 package name.pehl.gwt.piriti.rebind;
 
+import com.google.gwt.core.ext.UnableToCompleteException;
+
 /**
  * Interface for generating code for one field assignment.
  * 
@@ -26,6 +28,6 @@ public interface FieldHandler
      * @param writer
      * @param fieldContext
      */
-    void write(IndentedWriter writer, FieldContext fieldContext);
+    void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
 }

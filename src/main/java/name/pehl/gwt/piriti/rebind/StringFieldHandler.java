@@ -1,5 +1,7 @@
 package name.pehl.gwt.piriti.rebind;
 
+import com.google.gwt.core.ext.UnableToCompleteException;
+
 /**
  * Simple {@link FieldHandler} implementation for strings.
  * 
@@ -24,7 +26,7 @@ public class StringFieldHandler extends AbstractFieldHandler
 
 
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext)
+    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writeComment(writer, fieldContext);
         writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext

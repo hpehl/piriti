@@ -26,6 +26,7 @@ public class XmlReaderCreator
     private final String implName;
     private final TreeLogger logger;
     private final JClassType modelType;
+    private FieldHandlerRegistry handlerRegistry;
 
 
     // ----------------------------------------------------------- constructors
@@ -37,6 +38,7 @@ public class XmlReaderCreator
         this.interfaceType = interfaceType;
         this.implName = implName;
         this.logger = logger;
+        this.handlerRegistry = new FieldHandlerRegistry();
 
         // Check for possible misuse 'GWT.create(XmlReader.class)'
         JClassType xmlReaderItself = context.getTypeOracle().findType(XmlReader.class.getCanonicalName());
@@ -214,16 +216,15 @@ public class XmlReaderCreator
         if (fields != null && fields.length != 0)
         {
             int counter = 0;
-            FieldHandlerRegistry handlerRegistry = new FieldHandlerRegistry();
             for (JField field : fields)
             {
                 XmlField xmlField = field.getAnnotation(XmlField.class);
                 if (xmlField != null)
                 {
                     writer.newline();
-                    FieldContext fieldContext = new FieldContext(context, modelType, sourceType, sourceVariable,
-                            xmlField, field, "value" + counter);
-                    FieldHandler handler = findFieldHandler(fieldContext, handlerRegistry);
+                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), modelType, handlerRegistry,
+                            sourceType, sourceVariable, xmlField, field, "value" + counter);
+                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler.isValid(writer, fieldContext))
                     {
                         handler.write(writer, fieldContext);
@@ -232,36 +233,6 @@ public class XmlReaderCreator
                 }
             }
         }
-    }
-
-
-    private FieldHandler findFieldHandler(FieldContext fieldContext, FieldHandlerRegistry handlerRegistry)
-    {
-        FieldHandler handler = null;
-        if (fieldContext.isPrimitive())
-        {
-            handler = new DefaultFieldHandler();
-        }
-        else if (fieldContext.isEnum())
-        {
-            handler = new EnumFieldHandler();
-        }
-        else if (fieldContext.isArray())
-        {
-            handler = new ArrayFieldHandler();
-        }
-        else
-        {
-            // Ask the FieldHandlerLookup for all other stuff (basic types,
-            // collections, maps, ...)
-            handler = handlerRegistry.get(fieldContext.getType().getQualifiedSourceName());
-            if (handler == null)
-            {
-                // Delegate to the XmlRegistry to resolve other mapped models
-                handler = new XmlRegistryFieldHandler();
-            }
-        }
-        return handler;
     }
 
 

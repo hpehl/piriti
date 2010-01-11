@@ -2,6 +2,7 @@ package name.pehl.gwt.piriti.rebind;
 
 import name.pehl.gwt.piriti.client.xml.XmlReader;
 
+import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
@@ -44,7 +45,7 @@ public class XmlRegistryFieldHandler extends AbstractFieldHandler
 
 
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext)
+    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         JClassType classType = fieldContext.getClassOrInterfaceType();
         JField xmlRegistryField = findXmlRegistryMember(classType);
