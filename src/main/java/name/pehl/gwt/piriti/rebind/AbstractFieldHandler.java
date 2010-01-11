@@ -3,8 +3,8 @@ package name.pehl.gwt.piriti.rebind;
 /**
  * Base class for all {@linkplain FieldHandler}s which contains common code.
  * 
- * @author $LastChangedBy:$
- * @version $LastChangedRevision:$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public abstract class AbstractFieldHandler implements FieldHandler
 {
@@ -17,8 +17,7 @@ public abstract class AbstractFieldHandler implements FieldHandler
      */
     protected void writeComment(IndentedWriter writer, FieldContext fieldContext)
     {
-        writer.write("// Process field %s: type %s, xpath \"%s\"", fieldContext.getField().getName(), fieldContext
-                .getType().getParameterizedQualifiedSourceName(), fieldContext.getXpath());
+        writer.write("// Handle %s", fieldContext);
     }
 
 
