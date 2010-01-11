@@ -108,6 +108,10 @@ public class DemoModel
     // ------------------------------------------------------------ collections
 
     @XmlField
+    @SuppressWarnings("unchecked")
+    List untypedList;
+    
+    @XmlField
     List<String> listOfStrings;
 
     @XmlField
@@ -127,6 +131,10 @@ public class DemoModel
 
     // ------------------------------------------------------------------- maps
 
+    @XmlField
+    @SuppressWarnings("unchecked")
+    Map untypedMap;
+    
     @XmlField
     Map<String, String> mapOfStrings;
 
