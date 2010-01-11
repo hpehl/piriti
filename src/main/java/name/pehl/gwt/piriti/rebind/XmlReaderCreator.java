@@ -10,6 +10,7 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 
 /**
  * Class which generates all code necessary to map all annotated fields.
@@ -221,20 +222,64 @@ public class XmlReaderCreator
                 if (xmlField != null)
                 {
                     writer.newline();
-                    if (modelType.equals(field.getType()))
-                    {
-                        // prevent recursion
-                        writer.write("// Skipping field %s: Recursive model references aren't supported yet.", field
-                                .getName());
-                        continue;
-                    }
                     FieldContext fieldContext = new FieldContext(context, sourceType, sourceVariable, xmlField, field,
                             counter);
-                    processField(writer, handlerRegistry, fieldContext);
-                    counter++;
+                    if (validField(fieldContext))
+                    {
+                        processField(writer, handlerRegistry, fieldContext);
+                        counter++;
+                    }
+                    else
+                    {
+                        writer.write("// Skipping invalid field %s", fieldContext);
+                    }
                 }
             }
         }
+    }
+
+
+    private boolean validField(FieldContext fieldContext)
+    {
+        boolean valid = true;
+
+        // Same type as the model type is not allowed
+        if (modelType.equals(fieldContext.getType()))
+        {
+            valid = false;
+        }
+
+        // If the type is an array check the component type
+        else if (fieldContext.isArray() && modelType.equals(fieldContext.getArrayType().getComponentType()))
+        {
+            valid = false;
+        }
+
+        // In case of a collection / map check the type arguments
+        else if (fieldContext.isCollection() || fieldContext.isMap())
+        {
+            JParameterizedType parameterizedType = fieldContext.getType().isParameterized();
+            if (parameterizedType != null)
+            {
+                JClassType[] typeArgs = parameterizedType.getTypeArgs();
+                for (JClassType typeArg : typeArgs)
+                {
+                    if (modelType.equals(typeArg))
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // collections and maps without type arguments are not
+                // supported!
+                valid = false;
+            }
+        }
+
+        return valid;
     }
 
 
