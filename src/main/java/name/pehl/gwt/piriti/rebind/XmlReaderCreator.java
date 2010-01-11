@@ -223,15 +223,19 @@ public class XmlReaderCreator
                     writer.newline();
                     FieldContext fieldContext = new FieldContext(context, modelType, sourceType, sourceVariable,
                             xmlField, field, "value" + counter);
-                    processField(writer, handlerRegistry, fieldContext);
-                    counter++;
+                    FieldHandler handler = findFieldHandler(fieldContext, handlerRegistry);
+                    if (handler.isValid(writer, fieldContext))
+                    {
+                        handler.write(writer, fieldContext);
+                        counter++;
+                    }
                 }
             }
         }
     }
 
 
-    private void processField(IndentedWriter writer, FieldHandlerRegistry handlerRegistry, FieldContext fieldContext)
+    private FieldHandler findFieldHandler(FieldContext fieldContext, FieldHandlerRegistry handlerRegistry)
     {
         FieldHandler handler = null;
         if (fieldContext.isPrimitive())
@@ -257,14 +261,7 @@ public class XmlReaderCreator
                 handler = new XmlRegistryFieldHandler();
             }
         }
-        if (handler.isValid(fieldContext))
-        {
-            handler.write(writer, fieldContext);
-        }
-        else
-        {
-            writer.write("// Skipping invalid field %s", fieldContext);
-        }
+        return handler;
     }
 
 

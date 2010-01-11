@@ -1,8 +1,5 @@
 package name.pehl.gwt.piriti.rebind;
 
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
-
 /**
  * Base class for all {@linkplain FieldHandler}s which contains common code.
  * 
@@ -11,53 +8,6 @@ import com.google.gwt.core.ext.typeinfo.JParameterizedType;
  */
 public abstract class AbstractFieldHandler implements FieldHandler
 {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isValid(FieldContext fieldContext)
-    {
-        boolean valid = true;
-
-        // Same type as the model type is not allowed
-        if (fieldContext.getModelType().equals(fieldContext.getType()))
-        {
-            valid = false;
-        }
-
-        // If the type is an array check the component type
-        else if (fieldContext.isArray() && fieldContext.getModelType().equals(fieldContext.getArrayType().getComponentType()))
-        {
-            valid = false;
-        }
-
-        // In case of a collection / map check the type arguments
-        else if (fieldContext.isCollection() || fieldContext.isMap())
-        {
-            JParameterizedType parameterizedType = fieldContext.getType().isParameterized();
-            if (parameterizedType != null)
-            {
-                JClassType[] typeArgs = parameterizedType.getTypeArgs();
-                for (JClassType typeArg : typeArgs)
-                {
-                    if (fieldContext.getModelType().equals(typeArg))
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                // collections and maps without type arguments are not
-                // supported!
-                valid = false;
-            }
-        }
-
-        return valid;
-    }
-    
     /**
      * Generated a comment for the field assignement containing the fields name,
      * type and the relevant xpath
@@ -132,5 +82,12 @@ public abstract class AbstractFieldHandler implements FieldHandler
         writer.write("model.%s = %s;", fieldContext.getField().getName(), fieldContext.getValueVariable());
         writer.outdent();
         writer.write("}");
+    }
+
+
+    protected void skipField(IndentedWriter writer, FieldContext fieldContext, String reason)
+    {
+        writer.write("// Skipping field %s", fieldContext);
+        writer.write("// " + reason);
     }
 }
