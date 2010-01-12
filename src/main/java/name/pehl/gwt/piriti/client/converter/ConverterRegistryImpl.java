@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Implementation with the following converters:
+ * Implementation with default converter. Currently these converters are
+ * registered:
  * <ul>
  * <li>Boolean.class --> {@link BooleanConverter}
  * <li>Byte.class --> {@link ByteConverter}
