@@ -14,13 +14,10 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import name.pehl.gwt.piriti.client.xml.XmlField;
-
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JEnumType;
-import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
@@ -41,42 +38,33 @@ public class FieldContext
     private static final String READER_SUFFIX = "Reader";
 
     private final TypeOracle typeOracle;
-    private final JClassType modelType;
     private final FieldHandlerRegistry handlerRegistry;
-    private final String sourceType;
-    private final String sourceVariable;
-    private final XmlField xmlField;
-    private final JField field;
-    private final JType type;
+    private final JClassType modelType;
+    private final JType fieldType;
+    private final String fieldName;
     private final String xpath;
     private final String format;
+    private final String xmlVariable;
     private final String valueVariable;
     private final String valueAsStringVariable;
     private final String valueReaderVariable;
 
 
-    public FieldContext(TypeOracle typeOracle, JClassType modelType, FieldHandlerRegistry handlerRegistry,
-            String sourceType, String sourceVariable, XmlField xmlField, JField field, String valueVariable)
+    public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
+            JType fieldType, String fieldName, String xpath, String format, String xmlVariable, String valueVariable)
             throws UnableToCompleteException
     {
-        // constructor parameters
         this.typeOracle = typeOracle;
-        this.modelType = modelType;
         this.handlerRegistry = handlerRegistry;
-        this.sourceType = sourceType;
-        this.sourceVariable = sourceVariable;
-        this.xmlField = xmlField;
-        this.field = field;
-        this.valueVariable = valueVariable;
+        this.modelType = modelType;
 
-        // calculated values
-        JPrimitiveType primitiveType = field.getType().isPrimitive();
+        JPrimitiveType primitiveType = fieldType.isPrimitive();
         if (primitiveType != null) // isPrimitive() is not available here!
         {
             try
             {
                 // Use the boxed type for primitives
-                this.type = typeOracle.getType(primitiveType.getQualifiedBoxedSourceName());
+                this.fieldType = typeOracle.getType(primitiveType.getQualifiedBoxedSourceName());
             }
             catch (NotFoundException e)
             {
@@ -85,35 +73,46 @@ public class FieldContext
         }
         else
         {
-            this.type = field.getType();
+            this.fieldType = fieldType;
         }
-        this.xpath = xpathFromType();
-        this.format = xmlField.format().equals("") ? null : xmlField.format();
+
+        this.fieldName = fieldName;
+        this.xpath = adjustXpath(xpath);
+        if (format == null || format.length() == 0)
+        {
+            this.format = null;
+        }
+        else
+        {
+            this.format = format;
+        }
+        this.xmlVariable = xmlVariable;
+        this.valueVariable = valueVariable;
         this.valueAsStringVariable = valueVariable + AS_STRING_SUFFIX;
         this.valueReaderVariable = valueVariable + READER_SUFFIX;
     }
 
 
-    private String xpathFromType()
+    private String adjustXpath(String xpath)
     {
-        String xpath = xmlField.value();
-        if ("".equals(xpath))
+        String effectiveXpath = xpath;
+        if (effectiveXpath == null || effectiveXpath.length() == 0)
         {
-            xpath = field.getName();
-            if (isPrimitive() || isBasicType() || isEnum())
-            {
-                xpath += "/text()";
-            }
+            effectiveXpath = fieldName;
         }
-        return xpath;
+        if (isPrimitive() || isBasicType() || isEnum())
+        {
+            effectiveXpath += "/text()";
+        }
+        return effectiveXpath;
     }
 
 
     @Override
     public String toString()
     {
-        StringBuilder builder = new StringBuilder().append(type.getParameterizedQualifiedSourceName()).append(" ")
-                .append(field.getName()).append(", xpath=\"").append(xpath).append("\"");
+        StringBuilder builder = new StringBuilder().append(fieldType.getParameterizedQualifiedSourceName()).append(" ")
+                .append(fieldName).append(", xpath=\"").append(xpath).append("\"");
         if (format != null)
         {
             builder.append(", format=\"").append(format).append("\"");
@@ -130,22 +129,22 @@ public class FieldContext
 
     public JPrimitiveType getPrimitiveType()
     {
-        return type.isPrimitive();
+        return fieldType.isPrimitive();
     }
 
 
     public boolean isBasicType()
     {
-        if (Boolean.class.getName().equals(type.getQualifiedSourceName())
-                || Byte.class.getName().equals(type.getQualifiedSourceName())
-                || Character.class.getName().equals(type.getQualifiedSourceName())
-                || Date.class.getName().equals(type.getQualifiedSourceName())
-                || Double.class.getName().equals(type.getQualifiedSourceName())
-                || Float.class.getName().equals(type.getQualifiedSourceName())
-                || Integer.class.getName().equals(type.getQualifiedSourceName())
-                || Long.class.getName().equals(type.getQualifiedSourceName())
-                || Short.class.getName().equals(type.getQualifiedSourceName())
-                || String.class.getName().equals(type.getQualifiedSourceName()))
+        if (Boolean.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Byte.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Character.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Date.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Double.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Float.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Integer.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Long.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Short.class.getName().equals(fieldType.getQualifiedSourceName())
+                || String.class.getName().equals(fieldType.getQualifiedSourceName()))
         {
             return true;
         }
@@ -161,7 +160,7 @@ public class FieldContext
 
     public JEnumType getEnumType()
     {
-        return type.isEnum();
+        return fieldType.isEnum();
     }
 
 
@@ -173,7 +172,7 @@ public class FieldContext
 
     public JClassType getClassOrInterfaceType()
     {
-        return type.isClass();
+        return fieldType.isClass();
     }
 
 
@@ -185,20 +184,20 @@ public class FieldContext
 
     public JArrayType getArrayType()
     {
-        return type.isArray();
+        return fieldType.isArray();
     }
 
 
     public boolean isCollection()
     {
-        if (Collection.class.getName().equals(type.getQualifiedSourceName())
-                || List.class.getName().equals(type.getQualifiedSourceName())
-                || ArrayList.class.getName().equals(type.getQualifiedSourceName())
-                || LinkedList.class.getName().equals(type.getQualifiedSourceName())
-                || Set.class.getName().equals(type.getQualifiedSourceName())
-                || HashSet.class.getName().equals(type.getQualifiedSourceName())
-                || SortedSet.class.getName().equals(type.getQualifiedSourceName())
-                || TreeSet.class.getName().equals(type.getQualifiedSourceName()))
+        if (Collection.class.getName().equals(fieldType.getQualifiedSourceName())
+                || List.class.getName().equals(fieldType.getQualifiedSourceName())
+                || ArrayList.class.getName().equals(fieldType.getQualifiedSourceName())
+                || LinkedList.class.getName().equals(fieldType.getQualifiedSourceName())
+                || Set.class.getName().equals(fieldType.getQualifiedSourceName())
+                || HashSet.class.getName().equals(fieldType.getQualifiedSourceName())
+                || SortedSet.class.getName().equals(fieldType.getQualifiedSourceName())
+                || TreeSet.class.getName().equals(fieldType.getQualifiedSourceName()))
         {
             return true;
         }
@@ -208,10 +207,10 @@ public class FieldContext
 
     public boolean isMap()
     {
-        if (Map.class.getName().equals(type.getQualifiedSourceName())
-                || HashMap.class.getName().equals(type.getQualifiedSourceName())
-                || SortedMap.class.getName().equals(type.getQualifiedSourceName())
-                || TreeMap.class.getName().equals(type.getQualifiedSourceName()))
+        if (Map.class.getName().equals(fieldType.getQualifiedSourceName())
+                || HashMap.class.getName().equals(fieldType.getQualifiedSourceName())
+                || SortedMap.class.getName().equals(fieldType.getQualifiedSourceName())
+                || TreeMap.class.getName().equals(fieldType.getQualifiedSourceName()))
         {
             return true;
         }
@@ -225,45 +224,27 @@ public class FieldContext
     }
 
 
-    public JClassType getModelType()
-    {
-        return modelType;
-    }
-
-
     public FieldHandlerRegistry getHandlerRegistry()
     {
         return handlerRegistry;
     }
 
 
-    public String getSourceType()
+    public JClassType getModelType()
     {
-        return sourceType;
+        return modelType;
     }
 
 
-    public String getSourceVariable()
+    public JType getFieldType()
     {
-        return sourceVariable;
+        return fieldType;
     }
 
 
-    public XmlField getXmlField()
+    public String getFieldName()
     {
-        return xmlField;
-    }
-
-
-    public JField getField()
-    {
-        return field;
-    }
-
-
-    public JType getType()
-    {
-        return type;
+        return fieldName;
     }
 
 
@@ -276,6 +257,12 @@ public class FieldContext
     public String getFormat()
     {
         return format;
+    }
+
+
+    public String getXmlVariable()
+    {
+        return xmlVariable;
     }
 
 

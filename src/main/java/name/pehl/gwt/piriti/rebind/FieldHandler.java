@@ -28,6 +28,7 @@ public interface FieldHandler
      * @param writer
      * @param fieldContext
      */
+    // TODO Split up in different methods (see AbstractFieldHandler)
     void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
 }

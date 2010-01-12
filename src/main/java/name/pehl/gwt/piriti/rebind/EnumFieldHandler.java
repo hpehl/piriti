@@ -38,7 +38,7 @@ public class EnumFieldHandler extends AbstractFieldHandler
         writeComment(writer, fieldContext);
         writeDeclaration(writer, fieldContext);
         writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
-                fieldContext.getSourceVariable(), fieldContext.getXpath());
+                fieldContext.getXmlVariable(), fieldContext.getXpath());
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         writer.write("try {");

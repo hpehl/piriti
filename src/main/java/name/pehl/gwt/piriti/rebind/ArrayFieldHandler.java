@@ -44,23 +44,24 @@ public class ArrayFieldHandler extends AbstractFieldHandler
     {
         JArrayType arrayType = fieldContext.getArrayType();
         JType componentType = arrayType.getComponentType();
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext.getModelType(),
-                fieldContext.getHandlerRegistry(), fieldContext.getSourceType(), fieldContext.getSourceVariable(),
-                fieldContext.getXmlField(), null, null);
-
         String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
         String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
+        String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
+        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
+                .getHandlerRegistry(), fieldContext.getModelType(), componentType, nestedValueVariable, ".",
+                fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
+        FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
 
         writeComment(writer, fieldContext);
-        writer.write("List<Element> %s = XPathUtils.getElement(%s, \"%s\");", nestedElementsVariable, fieldContext
-                .getSourceVariable(), fieldContext.getXpath());
+        writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
+                .getXmlVariable(), fieldContext.getXpath());
         writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
-        writer.write("int index = 0");
+        writer.write("int index = 0;");
         writer.write("int size = %s.size();", nestedElementsVariable);
         writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
         writer.indent();
-        writer.write("");
+        nestedHandler.write(writer, nestedFieldContext);
         writer.outdent();
         writer.write("}");
         writer.outdent();

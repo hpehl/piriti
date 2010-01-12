@@ -30,7 +30,7 @@ public class MapFieldHandler extends AbstractFieldHandler
             skipField(writer, fieldContext, "Type is no map");
             return false;
         }
-        JParameterizedType parameterizedType = fieldContext.getType().isParameterized();
+        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
         if (parameterizedType != null)
         {
             JClassType[] typeArgs = parameterizedType.getTypeArgs();

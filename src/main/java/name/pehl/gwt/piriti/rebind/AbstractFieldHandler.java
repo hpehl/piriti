@@ -15,7 +15,7 @@ public abstract class AbstractFieldHandler implements FieldHandler
      * @param writer
      * @param fieldContext
      */
-    protected void writeComment(IndentedWriter writer, FieldContext fieldContext)
+    void writeComment(IndentedWriter writer, FieldContext fieldContext)
     {
         writer.write("// Handle %s", fieldContext);
     }
@@ -27,9 +27,9 @@ public abstract class AbstractFieldHandler implements FieldHandler
      * @param writer
      * @param fieldContext
      */
-    protected void writeDeclaration(IndentedWriter writer, FieldContext fieldContext)
+    void writeDeclaration(IndentedWriter writer, FieldContext fieldContext)
     {
-        writer.write("%s %s = null;", fieldContext.getType().getParameterizedQualifiedSourceName(), fieldContext
+        writer.write("%s %s = null;", fieldContext.getFieldType().getParameterizedQualifiedSourceName(), fieldContext
                 .getValueVariable());
     }
 
@@ -41,13 +41,13 @@ public abstract class AbstractFieldHandler implements FieldHandler
      * @param writer
      * @param fieldContext
      */
-    protected void writeConverterCode(IndentedWriter writer, FieldContext fieldContext)
+    void writeConverterCode(IndentedWriter writer, FieldContext fieldContext)
     {
         writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
-                fieldContext.getSourceVariable(), fieldContext.getXpath());
+                fieldContext.getXmlVariable(), fieldContext.getXpath());
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
-        writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getType()
+        writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
                 .getQualifiedSourceName());
         writer.write("if (converter != null) {");
         writer.indent();
@@ -75,17 +75,17 @@ public abstract class AbstractFieldHandler implements FieldHandler
      * @param writer
      * @param fieldContext
      */
-    protected void writeAssignment(IndentedWriter writer, FieldContext fieldContext)
+    void writeAssignment(IndentedWriter writer, FieldContext fieldContext)
     {
         writer.write("if (%s != null) {", fieldContext.getValueVariable());
         writer.indent();
-        writer.write("model.%s = %s;", fieldContext.getField().getName(), fieldContext.getValueVariable());
+        writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void skipField(IndentedWriter writer, FieldContext fieldContext, String reason)
+    void skipField(IndentedWriter writer, FieldContext fieldContext, String reason)
     {
         writer.write("// Skipping field %s", fieldContext);
         writer.write("// " + reason);

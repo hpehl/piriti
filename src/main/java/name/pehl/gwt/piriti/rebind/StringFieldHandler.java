@@ -30,7 +30,7 @@ public class StringFieldHandler extends AbstractFieldHandler
     {
         writeComment(writer, fieldContext);
         writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
-                .getSourceVariable(), fieldContext.getXpath());
+                .getXmlVariable(), fieldContext.getXpath());
         writeAssignment(writer, fieldContext);
     }
 }

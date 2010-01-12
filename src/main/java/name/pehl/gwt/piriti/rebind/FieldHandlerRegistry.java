@@ -92,7 +92,7 @@ public class FieldHandlerRegistry
         {
             // Ask the registry for all other stuff (basic types,
             // collections, maps, ...)
-            handler = registry.get(fieldContext.getType().getQualifiedSourceName());
+            handler = registry.get(fieldContext.getFieldType().getQualifiedSourceName());
             if (handler == null)
             {
                 // Delegate to the XmlRegistry to resolve other mapped models

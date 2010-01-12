@@ -144,16 +144,15 @@ public class XmlReaderCreator
     }
 
 
-    private void readSingle(IndentedWriter writer, String sourceType, String sourceVariable)
-            throws UnableToCompleteException
+    private void readSingle(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
     {
-        writer.write("public %s readSingle(%s %s) {", modelType.getQualifiedSourceName(), sourceType, sourceVariable);
+        writer.write("public %s readSingle(%s %s) {", modelType.getQualifiedSourceName(), xmlType, xmlVariable);
         writer.indent();
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (%s != null) {", sourceVariable);
+        writer.write("if (%s != null) {", xmlVariable);
         writer.indent();
         writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
-        processFields(writer, modelType.getFields(), sourceType, sourceVariable);
+        processFields(writer, modelType.getFields(), xmlVariable);
         writer.outdent();
         writer.write("}");
         writer.write("return model;");
@@ -175,16 +174,16 @@ public class XmlReaderCreator
     }
 
 
-    private void readList(IndentedWriter writer, String sourceType, String sourceVariable)
+    private void readList(IndentedWriter writer, String xmlType, String xmlVariable)
             throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(%s %s, String xpath) {", modelType.getQualifiedSourceName(), sourceType,
-                sourceVariable);
+        writer.write("public List<%s> readList(%s %s, String xpath) {", modelType.getQualifiedSourceName(), xmlType,
+                xmlVariable);
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (%s != null && xpath != null && xpath.length() != 0) {", sourceVariable);
+        writer.write("if (%s != null && xpath != null && xpath.length() != 0) {", xmlVariable);
         writer.indent();
-        writer.write("List<Element> elements = XPathUtils.getElements(%s, xpath);", sourceVariable);
+        writer.write("List<Element> elements = XPathUtils.getElements(%s, xpath);", xmlVariable);
         writer.write("if (elements != null && !elements.isEmpty()) {");
         writer.indent();
         writer.write("for (Element currentElement : elements) {");
@@ -210,7 +209,7 @@ public class XmlReaderCreator
 
     // ---------------------------------------------------------- field methods
 
-    private void processFields(IndentedWriter writer, JField[] fields, String sourceType, String sourceVariable)
+    private void processFields(IndentedWriter writer, JField[] fields, String xmlVariable)
             throws UnableToCompleteException
     {
         if (fields != null && fields.length != 0)
@@ -222,8 +221,9 @@ public class XmlReaderCreator
                 if (xmlField != null)
                 {
                     writer.newline();
-                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), modelType, handlerRegistry,
-                            sourceType, sourceVariable, xmlField, field, "value" + counter);
+                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xmlField.value(), xmlField.format(), xmlVariable, "value"
+                                    + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler.isValid(writer, fieldContext))
                     {

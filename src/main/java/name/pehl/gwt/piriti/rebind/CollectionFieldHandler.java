@@ -30,7 +30,7 @@ public class CollectionFieldHandler extends AbstractFieldHandler
             skipField(writer, fieldContext, "Type is no collection");
             return false;
         }
-        JParameterizedType parameterizedType = fieldContext.getType().isParameterized();
+        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
         if (parameterizedType != null)
         {
             JClassType[] typeArgs = parameterizedType.getTypeArgs();

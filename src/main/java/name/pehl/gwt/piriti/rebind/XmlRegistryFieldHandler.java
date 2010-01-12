@@ -36,7 +36,7 @@ public class XmlRegistryFieldHandler extends AbstractFieldHandler
         if (xmlRegistryField == null)
         {
             skipField(writer, fieldContext, String.format(
-                    "No public static field of type XmlReader<%1$s> found in %1$s", fieldContext.getType()
+                    "No public static field of type XmlReader<%1$s> found in %1$s", fieldContext.getFieldType()
                             .getQualifiedSourceName()));
             return false;
         }
@@ -55,7 +55,7 @@ public class XmlRegistryFieldHandler extends AbstractFieldHandler
                 fieldContext.getValueVariable());
         writer.write("if (%sReader != null) {", fieldContext.getValueVariable());
         writer.indent();
-        writer.write("Element nestedElement = XPathUtils.getElement(%s, \"%s\");", fieldContext.getSourceVariable(),
+        writer.write("Element nestedElement = XPathUtils.getElement(%s, \"%s\");", fieldContext.getXmlVariable(),
                 fieldContext.getXpath());
         writer.write("if (nestedElement != null) {");
         writer.indent();
