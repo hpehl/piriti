@@ -58,21 +58,21 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>float, Float</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>If no format is specified the XML data is converted using
- * {@link Float#parseDouble(String)}. Otherwise must be a valid number format as
+ * {@link Float#parseFloat(String)}. Otherwise must be a valid number format as
  * described by {@link NumberFormat}</td>
  * </tr>
  * <tr>
  * <td>int, Integer</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>If no format is specified the XML data is converted using
- * {@link Integer#parseDouble(String)}. Otherwise must be a valid number format
+ * {@link Integer#parseInt(String)}. Otherwise must be a valid number format
  * as described by {@link NumberFormat}</td>
  * </tr>
  * <tr>
  * <td>long, Long</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>If no format is specified the XML data is converted using
- * {@link Long#parseDouble(String)}. Otherwise must be a valid number format as
+ * {@link Long#parseLong(String)}. Otherwise must be a valid number format as
  * described by {@link NumberFormat}</td>
  * </tr>
  * <tr>

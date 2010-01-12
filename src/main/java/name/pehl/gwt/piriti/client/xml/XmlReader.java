@@ -7,11 +7,11 @@ import com.google.gwt.xml.client.Element;
 
 /**
  * Interface for converting an XML document / element to an instance of T or a
- * list of Ts. The implementation for this interface is generated for you using
+ * list of Ts. The implementation for this interface is generated using
  * deferred binding. All fields of T which are annotated with {@link XmlField}
  * are handled by the generated XmlReader implementation. If the xpath
  * expression behind {@link XmlField} returns some data != null the relevant
- * field is assigned with this data, otherwise the field remains unchanged.
+ * field is assigned with the converted value, otherwise the field remains unchanged.
  * <p>
  * Please note that the annotated fields in T must not be private!
  * <p>
