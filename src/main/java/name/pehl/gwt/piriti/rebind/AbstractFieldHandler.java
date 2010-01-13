@@ -1,5 +1,7 @@
 package name.pehl.gwt.piriti.rebind;
 
+import com.google.gwt.core.client.GWT;
+
 /**
  * Base class for all {@linkplain FieldHandler}s which contains common code.
  * 
@@ -20,5 +22,7 @@ public abstract class AbstractFieldHandler implements FieldHandler
     {
         writer.write("// Skipping field %s", fieldContext);
         writer.write("// " + reason);
+        GWT.log("Skipping field " + fieldContext, null);
+        GWT.log(reason, null);
     }
 }
