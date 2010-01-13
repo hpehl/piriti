@@ -7,7 +7,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 
 /**
- * {@link FieldHandler} for arrays. TODO Implement me!
+ * {@link FieldHandler} for arrays. 
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -35,6 +35,11 @@ public class ArrayFieldHandler extends DefaultFieldHandler
         if (fieldContext.getArrayType().getComponentType().equals(fieldContext.getModelType()))
         {
             skipField(writer, fieldContext, "Component type of the array equals the model type");
+            return false;
+        }
+        if (fieldContext.getArrayType().getComponentType().isArray() != null)
+        {
+            skipField(writer, fieldContext, "Multi-dimensional arrays are not supported");
             return false;
         }
         return true;
@@ -72,9 +77,14 @@ public class ArrayFieldHandler extends DefaultFieldHandler
         String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
         String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
         String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
+        // TODO The field name is misused as xpath and the xpath is null. This
+        // way the method FieldContext.adjustXpath() generates the correct
+        // xpath. This works, because the fieldName "." is never used here. Only
+        // nestedHandler.writeAssignment() would use it, which is not called
+        // here.
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), componentType, nestedValueVariable, ".",
-                fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
+                .getHandlerRegistry(), fieldContext.getModelType(), componentType, ".", null, fieldContext.getFormat(),
+                nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
 
         writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
@@ -118,20 +128,5 @@ public class ArrayFieldHandler extends DefaultFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
-    }
-
-
-    /**
-     * Empty
-     * 
-     * @param writer
-     * @param fieldContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeAssignment(name.pehl.gwt.piriti.rebind.IndentedWriter,
-     *      name.pehl.gwt.piriti.rebind.FieldContext)
-     */
-    @Override
-    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
     }
 }
