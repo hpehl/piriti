@@ -10,7 +10,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class EnumFieldHandler extends AbstractFieldHandler
+public class EnumFieldHandler extends DefaultFieldHandler
 {
     /**
      * Returns <code>true</code> if the field type is an enum,
@@ -22,7 +22,7 @@ public class EnumFieldHandler extends AbstractFieldHandler
      * @see name.pehl.gwt.piriti.rebind.AbstractFieldHandler#isValid(name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext)
+    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         if (!fieldContext.isEnum())
         {
@@ -32,11 +32,18 @@ public class EnumFieldHandler extends AbstractFieldHandler
     }
 
 
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     *      name.pehl.gwt.piriti.rebind.FieldContext)
+     */
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writeComment(writer, fieldContext);
-        writeDeclaration(writer, fieldContext);
         writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
                 fieldContext.getXmlVariable(), fieldContext.getXpath());
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
@@ -50,6 +57,5 @@ public class EnumFieldHandler extends AbstractFieldHandler
         writer.write("catch (IllegalArgumentException e) {}");
         writer.outdent();
         writer.write("}");
-        writeAssignment(writer, fieldContext);
     }
 }

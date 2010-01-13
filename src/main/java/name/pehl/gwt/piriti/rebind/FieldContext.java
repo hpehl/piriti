@@ -77,7 +77,7 @@ public class FieldContext
         }
 
         this.fieldName = fieldName;
-        this.xpath = adjustXpath(xpath);
+        this.xpath = adjustXpath(fieldName, xpath);
         if (format == null || format.length() == 0)
         {
             this.format = null;
@@ -93,16 +93,16 @@ public class FieldContext
     }
 
 
-    private String adjustXpath(String xpath)
+    private String adjustXpath(String defaultValue, String xpath)
     {
         String effectiveXpath = xpath;
         if (effectiveXpath == null || effectiveXpath.length() == 0)
         {
-            effectiveXpath = fieldName;
-        }
-        if (isPrimitive() || isBasicType() || isEnum())
-        {
-            effectiveXpath += "/text()";
+            effectiveXpath = defaultValue;
+            if (isPrimitive() || isBasicType() || isEnum())
+            {
+                effectiveXpath += "/text()";
+            }
         }
         return effectiveXpath;
     }

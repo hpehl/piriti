@@ -26,14 +26,58 @@ public class FieldHandlerRegistry
     private Map<String, FieldHandler> registry;
 
 
+    /**
+     * Construct a new instance of this class and registeres the initial field
+     * handlers.
+     */
     public FieldHandlerRegistry()
     {
         registry = new HashMap<String, FieldHandler>();
-        registerDefaultFieldHandlers();
+        registerInitialFieldHandlers();
     }
 
 
-    protected void registerDefaultFieldHandlers()
+    /**
+     * Registers the initial field handler used in piriti. The following
+     * handlers are registered:
+     * <ul>
+     * <li>{@linkplain DefaultFieldHandler}
+     * <ul>
+     * <li>Boolean.class.getName()
+     * <li>Byte.class.getName()
+     * <li>Character.class.getName()
+     * <li>Date.class.getName()
+     * <li>Double.class.getName()
+     * <li>Float.class.getName()
+     * <li>Integer.class.getName()
+     * <li>Long.class.getName()
+     * <li>Short.class.getName()
+     * </ul>
+     * <li>{@linkplain StringFieldHandler}
+     * <ul>
+     * <li>String.class.getName()
+     * </ul>
+     * <li>{@linkplain CollectionFieldHandler}
+     * <ul>
+     * <li>Collection.class.getName()
+     * <li>List.class.getName()
+     * <li>ArrayList.class.getName()
+     * <li>LinkedList.class.getName()
+     * <li>Set.class.getName()
+     * <li>HashSet.class.getName()
+     * <li>SortedSet.class.getName()
+     * <li>TreeSet.class.getName()
+     * </ul>
+     * <li>{@linkplain MapFieldHandler}
+     * <ul>
+     * <li>Map.class.getName()
+     * <li>HashMap.class.getName()
+     * <li>SortedMap.class.getName()
+     * <li>TreeMap.class.getName()
+     * </ul>
+     * <ul>
+     */
+    protected void registerInitialFieldHandlers()
     {
         FieldHandler handler = null;
 
@@ -73,6 +117,23 @@ public class FieldHandlerRegistry
     }
 
 
+    /**
+     * Looks up a field handler based on the information provided in the field
+     * context. The lookup logic is implemented like this:
+     * <ol>
+     * <li>If the fields type is a primitive return the
+     * {@link DefaultFieldHandler}
+     * <li>if the fields type is an enum return {@link EnumFieldHandler}
+     * <li>If the fields type is an array return {@link ArrayFieldHandler}
+     * <li>Try to lookup the field handler by the fields type classname (this
+     * will resolve all types registered in
+     * {@link #registerInitialFieldHandlers()}
+     * <li>If no field handler return {@link XmlRegistryFieldHandler}.
+     * </ol>
+     * 
+     * @param fieldContext
+     * @return
+     */
     public FieldHandler findFieldHandler(FieldContext fieldContext)
     {
         FieldHandler handler = null;

@@ -174,8 +174,7 @@ public class XmlReaderCreator
     }
 
 
-    private void readList(IndentedWriter writer, String xmlType, String xmlVariable)
-            throws UnableToCompleteException
+    private void readList(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
     {
         writer.write("public List<%s> readList(%s %s, String xpath) {", modelType.getQualifiedSourceName(), xmlType,
                 xmlVariable);
@@ -227,7 +226,10 @@ public class XmlReaderCreator
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler.isValid(writer, fieldContext))
                     {
-                        handler.write(writer, fieldContext);
+                        handler.writeComment(writer, fieldContext);
+                        handler.writeDeclaration(writer, fieldContext);
+                        handler.writeConverterCode(writer, fieldContext);
+                        handler.writeAssignment(writer, fieldContext);
                         counter++;
                     }
                 }

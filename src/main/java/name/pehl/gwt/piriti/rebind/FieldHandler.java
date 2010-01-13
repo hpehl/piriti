@@ -19,16 +19,44 @@ public interface FieldHandler
      * @param fieldContext
      * @return
      */
-    boolean isValid(IndentedWriter writer, FieldContext fieldContext);
+    boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
 
     /**
-     * Generates code for one field assignment.
+     * Generated a comment for the field assignement containing the fields name,
+     * type and the relevant xpath
      * 
      * @param writer
      * @param fieldContext
      */
-    // TODO Split up in different methods (see AbstractFieldHandler)
-    void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void writeComment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
+
+    /**
+     * Generates the variable decleration for field assignment.
+     * 
+     * @param writer
+     * @param fieldContext
+     */
+    void writeDeclaration(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates the code for converting the string read from XML to the fields
+     * type.
+     * 
+     * @param writer
+     * @param fieldContext
+     */
+    void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates the assignment for the field. The assignment is only done when
+     * the xpath expression returns valid data (!= null).
+     * 
+     * @param writer
+     * @param fieldContext
+     */
+    void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 }

@@ -10,7 +10,7 @@ import com.google.gwt.core.ext.typeinfo.JParameterizedType;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class MapFieldHandler extends AbstractFieldHandler
+public class MapFieldHandler extends DefaultFieldHandler
 {
     /**
      * Returns <code>false</code> if the field type is no map, if the map has no
@@ -23,7 +23,7 @@ public class MapFieldHandler extends AbstractFieldHandler
      * @see name.pehl.gwt.piriti.rebind.AbstractFieldHandler#isValid(name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext)
+    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         if (!fieldContext.isMap())
         {
@@ -54,11 +54,34 @@ public class MapFieldHandler extends AbstractFieldHandler
     }
 
 
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     *      name.pehl.gwt.piriti.rebind.FieldContext)
+     */
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writeComment(writer, fieldContext);
-        writer.write("// Not yet implemented!");
-        writeDeclaration(writer, fieldContext);
+        writer.write("// Conversion not yet implemented!");
+    }
+
+
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeAssignment(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     *      name.pehl.gwt.piriti.rebind.FieldContext)
+     */
+    @Override
+    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// Assignment not yet implemented!");
     }
 }

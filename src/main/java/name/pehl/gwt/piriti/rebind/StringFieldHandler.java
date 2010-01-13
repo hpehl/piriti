@@ -8,29 +8,21 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class StringFieldHandler extends AbstractFieldHandler
+public class StringFieldHandler extends DefaultFieldHandler
 {
     /**
-     * Returns always <code>true</code>.
+     * TODO Javadoc
      * 
      * @param writer
      * @param fieldContext
-     * @return always <code>true</code>
-     * @see name.pehl.gwt.piriti.rebind.AbstractFieldHandler#isValid(name.pehl.gwt.piriti.rebind.FieldContext)
+     * @throws UnableToCompleteException
+     * @see name.pehl.gwt.piriti.rebind.FieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     *      name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext)
+    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        return true;
-    }
-
-
-    @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
-        writeComment(writer, fieldContext);
-        writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
+        writer.write("%s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
                 .getXmlVariable(), fieldContext.getXpath());
-        writeAssignment(writer, fieldContext);
     }
 }

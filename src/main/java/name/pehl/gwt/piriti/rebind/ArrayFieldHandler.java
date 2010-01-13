@@ -10,7 +10,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class ArrayFieldHandler extends AbstractFieldHandler
+public class ArrayFieldHandler extends DefaultFieldHandler
 {
     /**
      * Returns <code>false</code> if the field type is no array or if the
@@ -23,7 +23,7 @@ public class ArrayFieldHandler extends AbstractFieldHandler
      * @see name.pehl.gwt.piriti.rebind.AbstractFieldHandler#isValid(name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext)
+    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         if (!fieldContext.isArray())
         {
@@ -39,11 +39,21 @@ public class ArrayFieldHandler extends AbstractFieldHandler
     }
 
 
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     *      name.pehl.gwt.piriti.rebind.FieldContext)
+     */
     @Override
-    public void write(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         JArrayType arrayType = fieldContext.getArrayType();
         JType componentType = arrayType.getComponentType();
+        String valueVariableAsList = fieldContext.getValueVariable() + "AsList";
         String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
         String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
         String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
@@ -52,22 +62,31 @@ public class ArrayFieldHandler extends AbstractFieldHandler
                 fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
 
-        writeComment(writer, fieldContext);
         writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
                 .getXmlVariable(), fieldContext.getXpath());
         writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
-        writer.write("int index = 0;");
-        writer.write("int size = %s.size();", nestedElementsVariable);
+        writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", componentType.getParameterizedQualifiedSourceName(),
+                valueVariableAsList);
         writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
         writer.indent();
-        nestedHandler.write(writer, nestedFieldContext);
+        nestedHandler.writeComment(writer, nestedFieldContext);
+        nestedHandler.writeDeclaration(writer, nestedFieldContext);
+        nestedHandler.writeConverterCode(writer, nestedFieldContext);
+        writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
+        writer.indent();
+        writer.write("%s.add(%s);", valueVariableAsList, nestedFieldContext.getValueVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-
-        writer.write("// Not yet implemented!");
-        writeDeclaration(writer, fieldContext);
+        writer.write("if (!%s.isEmpty()) {", valueVariableAsList);
+        writer.indent();
+        writer.write("%s = %s.toArray(new %s{});", fieldContext.getValueVariable(), valueVariableAsList, fieldContext
+                .getFieldType().getParameterizedQualifiedSourceName());
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
     }
 }
