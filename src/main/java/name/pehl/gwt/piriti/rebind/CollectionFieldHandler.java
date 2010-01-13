@@ -16,6 +16,7 @@ public class CollectionFieldHandler extends DefaultFieldHandler
      * Returns <code>false</code> if the field type is no collection, if the
      * collection has no type arguments or if the type argument of the
      * collection equals the model type, <code>true</code> otherwise.
+     * TODO Prevent nested collections
      * 
      * @param writer
      * @param fieldContext

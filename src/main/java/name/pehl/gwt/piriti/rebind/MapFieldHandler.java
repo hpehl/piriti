@@ -16,6 +16,7 @@ public class MapFieldHandler extends DefaultFieldHandler
      * Returns <code>false</code> if the field type is no map, if the map has no
      * type arguments or if one of the type arguments of the collection equals
      * the model type, <code>true</code> otherwise.
+     * TODO Prevent nested maps
      * 
      * @param writer
      * @param fieldContext
