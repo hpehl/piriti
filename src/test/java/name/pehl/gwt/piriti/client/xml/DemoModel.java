@@ -97,6 +97,12 @@ public class DemoModel
     // ----------------------------------------------------------------- arrays
 
     @XmlField
+    int[] arrayOfIntegerPrimitives;
+
+    @XmlField
+    Integer[] arrayOfIntegerObjects;
+
+    @XmlField
     String[] arrayOfStrings;
 
     @XmlField
@@ -112,6 +118,9 @@ public class DemoModel
     List untypedList;
     
     @XmlField
+    List<Integer> listOfIntegerObjects;
+
+    @XmlField
     List<String> listOfStrings;
 
     @XmlField
@@ -119,6 +128,9 @@ public class DemoModel
 
     @XmlField
     List<DemoNestedModel> listOfDemoNestedModels;
+
+    @XmlField
+    Set<Integer> setOfIntegerObjects;
 
     @XmlField
     Set<String> setOfStrings;
@@ -135,6 +147,9 @@ public class DemoModel
     @SuppressWarnings("unchecked")
     Map untypedMap;
     
+    @XmlField
+    Map<String, Integer> mapOfIntegerObjects;
+
     @XmlField
     Map<String, String> mapOfStrings;
 

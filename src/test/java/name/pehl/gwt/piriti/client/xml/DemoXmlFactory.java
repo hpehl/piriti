@@ -11,8 +11,8 @@ import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
- * @author $LastChangedBy$ 
- * @version $LastChangedRevision$ 
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public final class DemoXmlFactory
 {
@@ -37,6 +37,7 @@ public final class DemoXmlFactory
         Document document = XMLParser.createDocument();
         Element demoModel = document.createElement(elementName);
 
+        // Primitives and simple objects
         createElementAndAppend(document, demoModel, "booleanPrimitive", "true");
         createElementAndAppend(document, demoModel, "booleanObject", "true");
         createElementAndAppend(document, demoModel, "bytePrimitive", "1");
@@ -59,8 +60,22 @@ public final class DemoXmlFactory
         Element stringElement = createElementAndAppend(document, demoModel, "string", "achtzehn");
         stringElement.setAttribute("attribute", "neunzehn");
 
+        // Nested objects
         Element demoNestedModel = createDemoNestedModelElement("demoNestedModel");
         demoModel.appendChild(demoNestedModel);
+
+        // Arrays
+        for (int i = 0; i < 3; i++)
+        {
+            Element arrayElement = document.createElement("arrayOfIntegerPrimitives");
+            Text arrayValue = document.createTextNode(String.valueOf(i));
+            arrayElement.appendChild(arrayValue);
+            demoModel.appendChild(arrayElement);
+        }
+
+        // Collections
+
+        // Maps
 
         return demoModel;
     }

@@ -2,7 +2,9 @@ package name.pehl.gwt.piriti.rebind;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 
 /**
  * {@link FieldHandler} for arrays. TODO Implement me!
@@ -53,6 +55,19 @@ public class ArrayFieldHandler extends DefaultFieldHandler
     {
         JArrayType arrayType = fieldContext.getArrayType();
         JType componentType = arrayType.getComponentType();
+        JPrimitiveType primitiveComponentType = componentType.isPrimitive();
+        if (primitiveComponentType != null)
+        {
+            try
+            {
+                componentType = fieldContext.getTypeOracle().getType(
+                        primitiveComponentType.getQualifiedBoxedSourceName());
+            }
+            catch (NotFoundException e)
+            {
+                throw new UnableToCompleteException();
+            }
+        }
         String valueVariableAsList = fieldContext.getValueVariable() + "AsList";
         String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
         String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
@@ -82,11 +97,41 @@ public class ArrayFieldHandler extends DefaultFieldHandler
         writer.write("}");
         writer.write("if (!%s.isEmpty()) {", valueVariableAsList);
         writer.indent();
-        writer.write("%s = %s.toArray(new %s{});", fieldContext.getValueVariable(), valueVariableAsList, fieldContext
-                .getFieldType().getParameterizedQualifiedSourceName());
+        writer.write("int index = 0;");
+        if (primitiveComponentType != null)
+        {
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), primitiveComponentType
+                    .getQualifiedSourceName(), valueVariableAsList);
+        }
+        else
+        {
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), componentType
+                    .getQualifiedSourceName(), valueVariableAsList);
+        }
+        writer.write("for(%s currentValue : %s) {", componentType.getQualifiedSourceName(), valueVariableAsList);
+        writer.indent();
+        writer.write("%s[index] = currentValue;", fieldContext.getValueVariable());
+        writer.write("index++;");
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    /**
+     * Empty
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeAssignment(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     *      name.pehl.gwt.piriti.rebind.FieldContext)
+     */
+    @Override
+    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
     }
 }
