@@ -108,15 +108,21 @@ public class DemoModel
     @XmlField
     DemoModel[] arrayOfDemoModels;
 
-    @XmlField
+    @XmlField("arrayOfDemoNestedModels/demoNestedModel")
     DemoNestedModel[] arrayOfDemoNestedModels;
+
+    @XmlField
+    int[][] multiDimensionalIntegerPrimitiveArray;
+
+    @XmlField
+    Integer[][] multiDimensionalIntegerObjectArray;
 
     // ------------------------------------------------------------ collections
 
     @XmlField
     @SuppressWarnings("unchecked")
     List untypedList;
-    
+
     @XmlField
     List<Integer> listOfIntegerObjects;
 
@@ -146,7 +152,7 @@ public class DemoModel
     @XmlField
     @SuppressWarnings("unchecked")
     Map untypedMap;
-    
+
     @XmlField
     Map<String, Integer> mapOfIntegerObjects;
 

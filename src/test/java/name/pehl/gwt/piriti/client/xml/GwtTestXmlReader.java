@@ -35,6 +35,7 @@ public class GwtTestXmlReader extends GWTTestCase
         Document document = DemoXmlFactory.createDemoModelDocument("demoModel");
         DemoModel demo = DemoModel.XML.readSingle(document);
 
+        // Primitives and simple objects
         assertNotNull(demo);
         assertTrue(demo.booleanPrimitive);
         assertTrue(demo.booleanObject);
@@ -61,26 +62,59 @@ public class GwtTestXmlReader extends GWTTestCase
         assertNull(demo.mapOfDemoModels);
         assertNull(demo.untypedMap);
 
-        assertNotNull(demo.demoNestedModel);
-        assertTrue(demo.demoNestedModel.booleanPrimitive);
-        assertTrue(demo.demoNestedModel.booleanObject);
-        assertEquals(1, demo.demoNestedModel.bytePrimitive);
-        assertEquals(2, demo.demoNestedModel.byteObject.byteValue());
-        assertEquals('a', demo.demoNestedModel.characterPrimitive);
-        assertEquals('b', demo.demoNestedModel.characterObject.charValue());
-        assertEquals(MY_BIRTHDAY, demo.demoNestedModel.date);
-        assertEquals(DemoEnum.DREI, demo.demoNestedModel.demoEnum);
-        assertEquals(4.5, demo.demoNestedModel.doublePrimitive);
-        assertEquals(6.7, demo.demoNestedModel.doubleObject.doubleValue());
-        assertEquals(8.9f, demo.demoNestedModel.floatPrimitive);
-        assertEquals(10.11f, demo.demoNestedModel.floatObject.floatValue());
-        assertEquals(12, demo.demoNestedModel.integerPrimitive);
-        assertEquals(13, demo.demoNestedModel.integerObject.intValue());
-        assertEquals(14l, demo.demoNestedModel.longPrimitive);
-        assertEquals(15l, demo.demoNestedModel.longObject.longValue());
-        assertEquals(16, demo.demoNestedModel.shortPrimitive);
-        assertEquals(17, demo.demoNestedModel.shortObject.shortValue());
-        assertEquals("achtzehn", demo.demoNestedModel.string);
-        assertEquals("neunzehn", demo.demoNestedModel.stringAttribute);
+        // Nested objects
+        assertDemoNestedModel(demo.demoNestedModel);
+
+        // Arrays
+        assertNotNull(demo.arrayOfIntegerPrimitives);
+        assertEquals(3, demo.arrayOfIntegerPrimitives.length);
+        for (int i = 0; i < 3; i++)
+        {
+            assertEquals(i, demo.arrayOfIntegerPrimitives[i]);
+        }
+        assertNotNull(demo.arrayOfIntegerObjects);
+        assertEquals(3, demo.arrayOfIntegerObjects.length);
+        for (int i = 0; i < 3; i++)
+        {
+            assertEquals(i, demo.arrayOfIntegerObjects[i].intValue());
+        }
+        assertNotNull(demo.arrayOfStrings);
+        assertEquals(3, demo.arrayOfStrings.length);
+        for (int i = 0; i < 3; i++)
+        {
+            assertEquals(String.valueOf(i), demo.arrayOfStrings[i]);
+        }
+        assertNotNull(demo.arrayOfDemoNestedModels);
+        assertEquals(3, demo.arrayOfDemoNestedModels.length);
+        for (int i = 0; i < 3; i++)
+        {
+            assertDemoNestedModel(demo.arrayOfDemoNestedModels[i]);
+        }
+    }
+
+
+    private void assertDemoNestedModel(DemoNestedModel demoNestedModel)
+    {
+        assertNotNull(demoNestedModel);
+        assertTrue(demoNestedModel.booleanPrimitive);
+        assertTrue(demoNestedModel.booleanObject);
+        assertEquals(1, demoNestedModel.bytePrimitive);
+        assertEquals(2, demoNestedModel.byteObject.byteValue());
+        assertEquals('a', demoNestedModel.characterPrimitive);
+        assertEquals('b', demoNestedModel.characterObject.charValue());
+        assertEquals(MY_BIRTHDAY, demoNestedModel.date);
+        assertEquals(DemoEnum.DREI, demoNestedModel.demoEnum);
+        assertEquals(4.5, demoNestedModel.doublePrimitive);
+        assertEquals(6.7, demoNestedModel.doubleObject.doubleValue());
+        assertEquals(8.9f, demoNestedModel.floatPrimitive);
+        assertEquals(10.11f, demoNestedModel.floatObject.floatValue());
+        assertEquals(12, demoNestedModel.integerPrimitive);
+        assertEquals(13, demoNestedModel.integerObject.intValue());
+        assertEquals(14l, demoNestedModel.longPrimitive);
+        assertEquals(15l, demoNestedModel.longObject.longValue());
+        assertEquals(16, demoNestedModel.shortPrimitive);
+        assertEquals(17, demoNestedModel.shortObject.shortValue());
+        assertEquals("achtzehn", demoNestedModel.string);
+        assertEquals("neunzehn", demoNestedModel.stringAttribute);
     }
 }

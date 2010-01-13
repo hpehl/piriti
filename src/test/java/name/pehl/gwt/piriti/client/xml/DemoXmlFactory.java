@@ -27,14 +27,13 @@ public final class DemoXmlFactory
     public static Document createDemoModelDocument(String elementName)
     {
         Document document = XMLParser.createDocument();
-        document.appendChild(createDemoModelElement(elementName));
+        document.appendChild(createDemoModelElement(document, elementName));
         return document;
     }
 
 
-    public static Element createDemoModelElement(String elementName)
+    public static Element createDemoModelElement(Document document, String elementName)
     {
-        Document document = XMLParser.createDocument();
         Element demoModel = document.createElement(elementName);
 
         // Primitives and simple objects
@@ -61,17 +60,17 @@ public final class DemoXmlFactory
         stringElement.setAttribute("attribute", "neunzehn");
 
         // Nested objects
-        Element demoNestedModel = createDemoNestedModelElement("demoNestedModel");
-        demoModel.appendChild(demoNestedModel);
+        demoModel.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
 
         // Arrays
-        for (int i = 0; i < 3; i++)
-        {
-            Element arrayElement = document.createElement("arrayOfIntegerPrimitives");
-            Text arrayValue = document.createTextNode(String.valueOf(i));
-            arrayElement.appendChild(arrayValue);
-            demoModel.appendChild(arrayElement);
-        }
+        createElementsAndAppend(document, demoModel, "arrayOfIntegerPrimitives", "0", "1", "2");
+        createElementsAndAppend(document, demoModel, "arrayOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, demoModel, "arrayOfStrings", "0", "1", "2");
+        Element arrayOfDemoNestedModels = document.createElement("arrayOfDemoNestedModels");
+        arrayOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        arrayOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        arrayOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        demoModel.appendChild(arrayOfDemoNestedModels);
 
         // Collections
 
@@ -84,16 +83,15 @@ public final class DemoXmlFactory
     public static Document createDemoNestedModelDocument(String elementName)
     {
         Document document = XMLParser.createDocument();
-        document.appendChild(createDemoNestedModelElement(elementName));
+        document.appendChild(createDemoNestedModelElement(document, elementName));
         return document;
     }
 
 
-    public static Element createDemoNestedModelElement(String elementName)
+    public static Element createDemoNestedModelElement(Document document, String elementName)
     {
-        Document document = XMLParser.createDocument();
         Element demoNestedModel = document.createElement(elementName);
-
+        
         createElementAndAppend(document, demoNestedModel, "booleanPrimitive", "true");
         createElementAndAppend(document, demoNestedModel, "booleanObject", "true");
         createElementAndAppend(document, demoNestedModel, "bytePrimitive", "1");
@@ -117,6 +115,18 @@ public final class DemoXmlFactory
         stringElement.setAttribute("attribute", "neunzehn");
 
         return demoNestedModel;
+    }
+
+
+    private static void createElementsAndAppend(Document document, Element parent, String elementName, String... values)
+    {
+        if (values != null && values.length != 0)
+        {
+            for (String value : values)
+            {
+                createElementAndAppend(document, parent, elementName, value);
+            }
+        }
     }
 
 
