@@ -1,19 +1,5 @@
 package name.pehl.gwt.piriti.rebind;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -135,20 +121,7 @@ public class FieldContext
 
     public boolean isBasicType()
     {
-        if (Boolean.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Byte.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Character.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Date.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Double.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Float.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Integer.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Long.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Short.class.getName().equals(fieldType.getQualifiedSourceName())
-                || String.class.getName().equals(fieldType.getQualifiedSourceName()))
-        {
-            return true;
-        }
-        return false;
+        return TypeUtils.isBasicType(fieldType);
     }
 
 
@@ -190,31 +163,13 @@ public class FieldContext
 
     public boolean isCollection()
     {
-        if (Collection.class.getName().equals(fieldType.getQualifiedSourceName())
-                || List.class.getName().equals(fieldType.getQualifiedSourceName())
-                || ArrayList.class.getName().equals(fieldType.getQualifiedSourceName())
-                || LinkedList.class.getName().equals(fieldType.getQualifiedSourceName())
-                || Set.class.getName().equals(fieldType.getQualifiedSourceName())
-                || HashSet.class.getName().equals(fieldType.getQualifiedSourceName())
-                || SortedSet.class.getName().equals(fieldType.getQualifiedSourceName())
-                || TreeSet.class.getName().equals(fieldType.getQualifiedSourceName()))
-        {
-            return true;
-        }
-        return false;
+        return TypeUtils.isCollection(fieldType);
     }
 
 
     public boolean isMap()
     {
-        if (Map.class.getName().equals(fieldType.getQualifiedSourceName())
-                || HashMap.class.getName().equals(fieldType.getQualifiedSourceName())
-                || SortedMap.class.getName().equals(fieldType.getQualifiedSourceName())
-                || TreeMap.class.getName().equals(fieldType.getQualifiedSourceName()))
-        {
-            return true;
-        }
-        return false;
+        return TypeUtils.isMap(fieldType);
     }
 
 
