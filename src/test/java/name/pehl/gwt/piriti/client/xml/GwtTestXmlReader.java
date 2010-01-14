@@ -1,6 +1,8 @@
 package name.pehl.gwt.piriti.client.xml;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.xml.client.Document;
@@ -12,6 +14,9 @@ import com.google.gwt.xml.client.Document;
 public class GwtTestXmlReader extends GWTTestCase
 {
     private static final Date MY_BIRTHDAY = new Date(115813353000l);
+
+    private Set<Integer> setOfIntegerObjectsFixture;
+    private Set<String> setOfStringsFixture;
 
 
     @Override
@@ -27,6 +32,16 @@ public class GwtTestXmlReader extends GWTTestCase
         // To register the XmlReaders
         new DemoNestedModel();
         new DemoModel();
+
+        // Setup collection fixtures
+        setOfIntegerObjectsFixture = new HashSet<Integer>();
+        setOfIntegerObjectsFixture.add(0);
+        setOfIntegerObjectsFixture.add(1);
+        setOfIntegerObjectsFixture.add(2);
+        setOfStringsFixture = new HashSet<String>();
+        setOfStringsFixture.add("0");
+        setOfStringsFixture.add("1");
+        setOfStringsFixture.add("2");
     }
 
 
@@ -66,30 +81,100 @@ public class GwtTestXmlReader extends GWTTestCase
         assertDemoNestedModel(demo.demoNestedModel);
 
         // Arrays
-        assertNotNull(demo.arrayOfIntegerPrimitives);
         assertEquals(3, demo.arrayOfIntegerPrimitives.length);
         for (int i = 0; i < 3; i++)
         {
             assertEquals(i, demo.arrayOfIntegerPrimitives[i]);
         }
-        assertNotNull(demo.arrayOfIntegerObjects);
         assertEquals(3, demo.arrayOfIntegerObjects.length);
         for (int i = 0; i < 3; i++)
         {
             assertEquals(i, demo.arrayOfIntegerObjects[i].intValue());
         }
-        assertNotNull(demo.arrayOfStrings);
         assertEquals(3, demo.arrayOfStrings.length);
         for (int i = 0; i < 3; i++)
         {
             assertEquals(String.valueOf(i), demo.arrayOfStrings[i]);
         }
-        assertNotNull(demo.arrayOfDemoNestedModels);
         assertEquals(3, demo.arrayOfDemoNestedModels.length);
         for (int i = 0; i < 3; i++)
         {
             assertDemoNestedModel(demo.arrayOfDemoNestedModels[i]);
         }
+
+        // Invalid arrays
+        assertNull(demo.arrayOfDemoModels);
+        assertNull(demo.multiDimensionalIntegerPrimitiveArray);
+        assertNull(demo.multiDimensionalIntegerObjectArray);
+
+        // Collections
+        assertEquals(3, demo.collectionOfIntegerObjects.size());
+        demo.collectionOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
+        assertTrue(demo.collectionOfIntegerObjects.isEmpty());
+        assertEquals(3, demo.collectionOfStrings.size());
+        demo.collectionOfStrings.removeAll(setOfStringsFixture);
+        assertTrue(demo.collectionOfStrings.isEmpty());
+        assertEquals(3, demo.collectionOfDemoNestedModels.size());
+        for (DemoNestedModel dnm : demo.collectionOfDemoNestedModels)
+        {
+            assertDemoNestedModel(dnm);
+        }
+
+        // Invalid collections
+        assertNull(demo.untypedCollection);
+        assertNull(demo.collectionOfDemoModels);
+        assertNull(demo.collectionOfCollections);
+        assertNull(demo.collectionOfMaps);
+
+        // Lists
+        assertEquals(3, demo.listOfIntegerObjects.size());
+        for (int i = 0; i < 3; i++)
+        {
+            assertEquals(i, demo.listOfIntegerObjects.get(i).intValue());
+        }
+        assertEquals(3, demo.listOfStrings.size());
+        for (int i = 0; i < 3; i++)
+        {
+            assertEquals(String.valueOf(i), demo.listOfStrings.get(i));
+        }
+        assertEquals(3, demo.listOfDemoNestedModels.size());
+        for (int i = 0; i < 3; i++)
+        {
+            assertDemoNestedModel(demo.listOfDemoNestedModels.get(i));
+        }
+
+        // Invalid lists
+        assertNull(demo.untypedList);
+        assertNull(demo.listOfDemoModels);
+        assertNull(demo.listOfLists);
+        assertNull(demo.listOfMaps);
+
+        // Sets
+        assertEquals(3, demo.setOfIntegerObjects.size());
+        demo.setOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
+        assertTrue(demo.setOfIntegerObjects.isEmpty());
+        assertEquals(3, demo.setOfStrings.size());
+        demo.setOfStrings.removeAll(setOfStringsFixture);
+        assertTrue(demo.setOfStrings.isEmpty());
+        assertEquals(3, demo.setOfDemoNestedModels.size());
+        for (DemoNestedModel dnm : demo.setOfDemoNestedModels)
+        {
+            assertDemoNestedModel(dnm);
+        }
+
+        // Invalid sets
+        assertNull(demo.untypedSet);
+        assertNull(demo.setOfDemoModels);
+        assertNull(demo.setOfSets);
+        assertNull(demo.setOfMaps);
+
+        // Maps
+
+        // Invalid maps
+        assertNull(demo.untypedMap);
+        assertNull(demo.mapOfDemoModels);
+        assertNull(demo.mapOfLists);
+        assertNull(demo.mapOfMaps);
     }
 
 

@@ -73,6 +73,31 @@ public final class DemoXmlFactory
         demoModel.appendChild(arrayOfDemoNestedModels);
 
         // Collections
+        createElementsAndAppend(document, demoModel, "collectionOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, demoModel, "collectionOfStrings", "0", "1", "2");
+        Element collectionOfDemoNestedModels = document.createElement("collectionOfDemoNestedModels");
+        collectionOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        collectionOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        collectionOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        demoModel.appendChild(collectionOfDemoNestedModels);
+
+        // Lists
+        createElementsAndAppend(document, demoModel, "listOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, demoModel, "listOfStrings", "0", "1", "2");
+        Element listOfDemoNestedModels = document.createElement("listOfDemoNestedModels");
+        listOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        listOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        listOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        demoModel.appendChild(listOfDemoNestedModels);
+
+        // Sets
+        createElementsAndAppend(document, demoModel, "setOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, demoModel, "setOfStrings", "0", "1", "2");
+        Element setOfDemoNestedModels = document.createElement("setOfDemoNestedModels");
+        setOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        setOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        setOfDemoNestedModels.appendChild(createDemoNestedModelElement(document, "demoNestedModel"));
+        demoModel.appendChild(setOfDemoNestedModels);
 
         // Maps
 
