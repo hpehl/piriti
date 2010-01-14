@@ -1,5 +1,15 @@
 package name.pehl.gwt.piriti.rebind;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
@@ -12,11 +22,20 @@ import com.google.gwt.core.ext.typeinfo.JParameterizedType;
  */
 public class CollectionFieldHandler extends DefaultFieldHandler
 {
+    private static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
+    static
+    {
+        interfaceToImplementation.put(Collection.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
+        interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
+    }
+
+
     /**
      * Returns <code>false</code> if the field type is no collection, if the
      * collection has no type arguments or if the type argument of the
      * collection equals the model type, <code>true</code> otherwise.
-     * TODO Prevent nested collections
      * 
      * @param writer
      * @param fieldContext
@@ -40,6 +59,11 @@ public class CollectionFieldHandler extends DefaultFieldHandler
                 if (fieldContext.getModelType().equals(typeArg))
                 {
                     skipField(writer, fieldContext, "Type argument of the collection equals the model type");
+                    return false;
+                }
+                if (TypeUtils.isCollection(typeArg) || TypeUtils.isMap(typeArg))
+                {
+                    skipField(writer, fieldContext, "Nested collections / maps are not supported");
                     return false;
                 }
             }
@@ -67,22 +91,47 @@ public class CollectionFieldHandler extends DefaultFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("// Conversion not yet implemented!");
-    }
+        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
+        JClassType typeArgument = parameterizedType.getTypeArgs()[0];
+        String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
+        String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
+        String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
+        // TODO The field name is misused as xpath and the xpath is null. This
+        // way the method FieldContext.adjustXpath() generates the correct
+        // xpath. This works, because the fieldName "." is never used here. Only
+        // nestedHandler.writeAssignment() would use it, which is not called
+        // here.
+        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
+                .getHandlerRegistry(), fieldContext.getModelType(), typeArgument, ".", null, fieldContext.getFormat(),
+                nestedElementVariable, nestedValueVariable);
+        FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
 
-
-    /**
-     * TODO Javadoc
-     * 
-     * @param writer
-     * @param fieldContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeAssignment(name.pehl.gwt.piriti.rebind.IndentedWriter,
-     *      name.pehl.gwt.piriti.rebind.FieldContext)
-     */
-    @Override
-    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
-        writer.write("// Assignment not yet implemented!");
+        writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
+                .getXmlVariable(), fieldContext.getXpath());
+        writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
+        writer.indent();
+        String collectionImplementation = interfaceToImplementation.get(fieldContext.getFieldType().getErasedType()
+                .getQualifiedSourceName());
+        if (collectionImplementation == null)
+        {
+            // the field type is already an implementation
+            collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
+        }
+        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, typeArgument
+                .getQualifiedSourceName());
+        writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
+        writer.indent();
+        nestedHandler.writeComment(writer, nestedFieldContext);
+        nestedHandler.writeDeclaration(writer, nestedFieldContext);
+        nestedHandler.writeConverterCode(writer, nestedFieldContext);
+        writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
+        writer.indent();
+        writer.write("%s.add(%s);", fieldContext.getValueVariable(), nestedFieldContext.getValueVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
     }
 }
