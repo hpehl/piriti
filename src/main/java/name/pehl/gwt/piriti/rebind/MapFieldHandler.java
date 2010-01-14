@@ -42,6 +42,11 @@ public class MapFieldHandler extends DefaultFieldHandler
                     skipField(writer, fieldContext, "One of the type arguments of the map equals the model type");
                     return false;
                 }
+                if (TypeUtils.isCollection(typeArg) || TypeUtils.isMap(typeArg))
+                {
+                    skipField(writer, fieldContext, "Nested collections / maps are not supported");
+                    return false;
+                }
             }
         }
         else
@@ -68,21 +73,5 @@ public class MapFieldHandler extends DefaultFieldHandler
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// Conversion not yet implemented!");
-    }
-
-
-    /**
-     * TODO Javadoc
-     * 
-     * @param writer
-     * @param fieldContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeAssignment(name.pehl.gwt.piriti.rebind.IndentedWriter,
-     *      name.pehl.gwt.piriti.rebind.FieldContext)
-     */
-    @Override
-    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
-        writer.write("// Assignment not yet implemented!");
     }
 }
