@@ -65,8 +65,8 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>int, Integer</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>If no format is specified the XML data is converted using
- * {@link Integer#parseInt(String)}. Otherwise must be a valid number format
- * as described by {@link NumberFormat}</td>
+ * {@link Integer#parseInt(String)}. Otherwise must be a valid number format as
+ * described by {@link NumberFormat}</td>
  * </tr>
  * <tr>
  * <td>long, Long</td>
@@ -100,11 +100,6 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>&lt;fieldname&gt;</td>
  * <td>If a format is specified it is applied for all collection elements.</td>
  * </tr>
- * <tr>
- * <td>Typed maps the above types</td>
- * <td>&lt;fieldname&gt;</td>
- * <td>No format supported.</td>
- * </tr>
  * </table>
  * <p>
  * Supported collections:
@@ -119,16 +114,8 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <li>TreeSet
  * </ul>
  * <p>
- * Supported maps:
- * <ul>
- * <li>Map
- * <li>HashMap
- * <li>SortedMap
- * <li>TreeMap
- * </ul>
- * <p>
- * Please note that all collections and maps must have type parameters,
- * otherwise they cannot be mapped.
+ * Please note that all collections must have type parameters, otherwise they
+ * cannot be mapped.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -140,7 +127,7 @@ public @interface XmlField
 {
     /**
      * An xpath expression to select the XML data. Defaults to "" which means
-     * that the fields name is taken as base for the xpath expression.
+     * that the fields name is taken as a base for the xpath expression.
      * 
      * @return
      */
@@ -148,7 +135,7 @@ public @interface XmlField
 
 
     /**
-     * The format to use when converting the XML data to the field types.
+     * The format to use when converting the XML data to the fields type.
      * Defaults to "".
      * 
      * @return
