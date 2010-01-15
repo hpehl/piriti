@@ -15,7 +15,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 
 /**
- * {@link FieldHandler} for collections. TODO Implement me!
+ * {@link FieldHandler} for collections.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -61,9 +61,9 @@ public class CollectionFieldHandler extends DefaultFieldHandler
                     skipField(writer, fieldContext, "Type argument of the collection equals the model type");
                     return false;
                 }
-                if (TypeUtils.isCollection(typeArg) || TypeUtils.isMap(typeArg))
+                if (typeArg.isArray() != null || TypeUtils.isCollection(typeArg) || TypeUtils.isMap(typeArg))
                 {
-                    skipField(writer, fieldContext, "Nested collections / maps are not supported");
+                    skipField(writer, fieldContext, "Nested arrays / collections / maps are not supported");
                     return false;
                 }
             }
