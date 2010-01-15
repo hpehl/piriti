@@ -9,9 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 /**
@@ -68,13 +66,6 @@ public class FieldHandlerRegistry
      * <li>SortedSet.class.getName()
      * <li>TreeSet.class.getName()
      * </ul>
-     * <li>{@linkplain MapFieldHandler}
-     * <ul>
-     * <li>Map.class.getName()
-     * <li>HashMap.class.getName()
-     * <li>SortedMap.class.getName()
-     * <li>TreeMap.class.getName()
-     * </ul>
      * <ul>
      */
     protected void registerInitialFieldHandlers()
@@ -107,13 +98,6 @@ public class FieldHandlerRegistry
         registry.put(HashSet.class.getName(), handler);
         registry.put(SortedSet.class.getName(), handler);
         registry.put(TreeSet.class.getName(), handler);
-
-        // Maps
-        handler = new MapFieldHandler();
-        registry.put(Map.class.getName(), handler);
-        registry.put(HashMap.class.getName(), handler);
-        registry.put(SortedMap.class.getName(), handler);
-        registry.put(TreeMap.class.getName(), handler);
     }
 
 

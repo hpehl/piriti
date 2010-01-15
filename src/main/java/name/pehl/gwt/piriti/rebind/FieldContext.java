@@ -167,12 +167,6 @@ public class FieldContext
     }
 
 
-    public boolean isMap()
-    {
-        return TypeUtils.isMap(fieldType);
-    }
-
-
     public TypeOracle getTypeOracle()
     {
         return typeOracle;
