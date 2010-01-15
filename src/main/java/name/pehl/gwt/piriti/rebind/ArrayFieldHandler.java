@@ -32,14 +32,20 @@ public class ArrayFieldHandler extends DefaultFieldHandler
             skipField(writer, fieldContext, "Type is no array");
             return false;
         }
-        if (fieldContext.getArrayType().getComponentType().equals(fieldContext.getModelType()))
+        JType componentType = fieldContext.getArrayType().getComponentType();
+        if (componentType.equals(fieldContext.getModelType()))
         {
             skipField(writer, fieldContext, "Component type of the array equals the model type");
             return false;
         }
-        if (fieldContext.getArrayType().getComponentType().isArray() != null)
+        if (componentType.isArray() != null)
         {
             skipField(writer, fieldContext, "Multi-dimensional arrays are not supported");
+            return false;
+        }
+        if (TypeUtils.isCollection(componentType) || TypeUtils.isMap(componentType))
+        {
+            skipField(writer, fieldContext, "Arrays of collections / maps are not supported");
             return false;
         }
         return true;
