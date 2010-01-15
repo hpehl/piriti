@@ -86,7 +86,12 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
- * <td>POJOs for which a {@link XmlReader} is registered</td>
+ * <td>Enums</td>
+ * <td>&lt;fieldname&gt;/text()</td>
+ * <td>No format supported. If specified it is ignored.</td>
+ * </tr>
+ * <tr>
+ * <td>All types for which a {@link XmlReader} is registered</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
