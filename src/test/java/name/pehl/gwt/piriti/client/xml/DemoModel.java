@@ -112,6 +112,12 @@ public class DemoModel
     DemoModel[] arrayOfDemoModels;
 
     @XmlField
+    List<String>[] arrayOfLists;
+
+    @XmlField
+    Map<String, String>[] arrayOfMaps;
+
+    @XmlField
     int[][] multiDimensionalIntegerPrimitiveArray;
 
     @XmlField
@@ -136,6 +142,9 @@ public class DemoModel
 
     @XmlField
     Collection<DemoModel> collectionOfDemoModels;
+
+    @XmlField
+    Collection<String[]> collectionOfArrays;
 
     @XmlField
     Collection<Collection<String>> collectionOfCollections;
@@ -164,6 +173,9 @@ public class DemoModel
     List<DemoModel> listOfDemoModels;
 
     @XmlField
+    List<String[]> listOfArrays;
+
+    @XmlField
     List<List<String>> listOfLists;
 
     @XmlField
@@ -190,35 +202,11 @@ public class DemoModel
     Set<DemoModel> setOfDemoModels;
 
     @XmlField
+    Set<String[]> setOfArrays;
+
+    @XmlField
     Set<Set<String>> setOfSets;
 
     @XmlField
     Set<Map<String, String>> setOfMaps;
-
-    // ------------------------------------------------------------------- maps
-
-    @XmlField
-    Map<String, Integer> mapOfIntegerObjects;
-
-    @XmlField
-    Map<String, String> mapOfStrings;
-
-    @XmlField
-    Map<String, DemoNestedModel> mapOfDemoNestedModels;
-
-    // ----------------------------------------------------------- invalid maps
-
-    @XmlField
-    @SuppressWarnings("unchecked")
-    Map untypedMap;
-
-    @XmlField
-    Map<String, DemoModel> mapOfDemoModels;
-
-    @XmlField
-    Map<String, Map<String, String>> mapOfMaps;
-
-    @XmlField
-    Map<String, List<String>> mapOfLists;
-
 }

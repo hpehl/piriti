@@ -29,7 +29,7 @@ public class GwtTestXmlReader extends GWTTestCase
     @Override
     protected void gwtSetUp() throws Exception
     {
-        // To register the XmlReaders
+        // Register the XmlReaders
         new DemoNestedModel();
         new DemoModel();
 
@@ -72,12 +72,9 @@ public class GwtTestXmlReader extends GWTTestCase
         assertEquals(17, demo.shortObject.shortValue());
         assertEquals("achtzehn", demo.string);
         assertEquals("neunzehn", demo.stringAttribute);
-        assertNull(demo.listOfDemoModels);
-        assertNull(demo.untypedList);
-        assertNull(demo.mapOfDemoModels);
-        assertNull(demo.untypedMap);
 
         // Nested objects
+        assertNull(demo.demoModel);
         assertDemoNestedModel(demo.demoNestedModel);
 
         // Arrays
@@ -104,6 +101,8 @@ public class GwtTestXmlReader extends GWTTestCase
 
         // Invalid arrays
         assertNull(demo.arrayOfDemoModels);
+        assertNull(demo.arrayOfLists);
+        assertNull(demo.arrayOfMaps);
         assertNull(demo.multiDimensionalIntegerPrimitiveArray);
         assertNull(demo.multiDimensionalIntegerObjectArray);
 
@@ -123,6 +122,7 @@ public class GwtTestXmlReader extends GWTTestCase
         // Invalid collections
         assertNull(demo.untypedCollection);
         assertNull(demo.collectionOfDemoModels);
+        assertNull(demo.collectionOfArrays);
         assertNull(demo.collectionOfCollections);
         assertNull(demo.collectionOfMaps);
 
@@ -146,6 +146,7 @@ public class GwtTestXmlReader extends GWTTestCase
         // Invalid lists
         assertNull(demo.untypedList);
         assertNull(demo.listOfDemoModels);
+        assertNull(demo.listOfArrays);
         assertNull(demo.listOfLists);
         assertNull(demo.listOfMaps);
 
@@ -165,16 +166,9 @@ public class GwtTestXmlReader extends GWTTestCase
         // Invalid sets
         assertNull(demo.untypedSet);
         assertNull(demo.setOfDemoModels);
+        assertNull(demo.setOfArrays);
         assertNull(demo.setOfSets);
         assertNull(demo.setOfMaps);
-
-        // Maps
-
-        // Invalid maps
-        assertNull(demo.untypedMap);
-        assertNull(demo.mapOfDemoModels);
-        assertNull(demo.mapOfLists);
-        assertNull(demo.mapOfMaps);
     }
 
 
