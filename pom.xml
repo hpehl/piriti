@@ -9,14 +9,16 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.pehl.gwt</groupId>
     <artifactId>piriti</artifactId>
+    <version>0.2</version>
     <name>Piriti</name>
     <description>Annotation based XML mapper for GWT</description>
-    <version>0.2</version>
     <url>http://code.google.com/p/piriti/</url>
     <organization>
         <name>Harald Pehl</name>
         <url>http://harald.pehl.name</url>
     </organization>
+    
+    
     <licenses>
         <license>
             <name>Apache 2</name>
@@ -25,6 +27,8 @@
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
+    
+    
     <developers>
         <developer>
             <id>harald.pehl</id>
@@ -37,6 +41,8 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
+    
+    
     <scm>
         <connection>scm:svn:http://piriti.googlecode.com/svn/trunk</connection>
         <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk</developerConnection>
@@ -57,6 +63,8 @@
             <url>svn:https://piriti.googlecode.com/svn/site</url>
         </site>
     </distributionManagement>
+    
+    
     <repositories>
         <repository>
             <id>piriti-repo</id>
