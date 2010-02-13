@@ -17,8 +17,8 @@
         <name>Harald Pehl</name>
         <url>http://harald.pehl.name</url>
     </organization>
-    
-    
+
+
     <licenses>
         <license>
             <name>Apache 2</name>
@@ -27,8 +27,8 @@
             <comments>A business-friendly OSS license</comments>
         </license>
     </licenses>
-    
-    
+
+
     <developers>
         <developer>
             <id>harald.pehl</id>
@@ -41,8 +41,8 @@
             <timezone>+1</timezone>
         </developer>
     </developers>
-    
-    
+
+
     <scm>
         <connection>scm:svn:http://piriti.googlecode.com/svn/trunk</connection>
         <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk</developerConnection>
@@ -63,8 +63,8 @@
             <url>svn:https://piriti.googlecode.com/svn/site</url>
         </site>
     </distributionManagement>
-    
-    
+
+
     <repositories>
         <repository>
             <id>piriti-repo</id>
@@ -77,10 +77,17 @@
             <url>http://download.java.net/maven/2/</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>maven2-repository.dev.java.net</id>
+            <name>Java.net Repository for Maven</name>
+            <url>http://download.java.net/maven/2/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 
     <properties>
-        <gwt.version>2.0.0</gwt.version>
+        <gwt.version>2.0.1</gwt.version>
         <junit.version>4.7</junit.version>
         <easymock.version>2.4</easymock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -104,21 +111,25 @@
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>2.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.gwt.inject</groupId>
             <artifactId>gin</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.mouchel.gwt.xpath</groupId>
             <artifactId>gwtxpath</artifactId>
             <version>1.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -129,12 +140,6 @@
         <dependency>
             <groupId>org.easymock</groupId>
             <artifactId>easymock</artifactId>
-            <version>${easymock.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.easymock</groupId>
-            <artifactId>easymockclassextension</artifactId>
             <version>${easymock.version}</version>
             <scope>test</scope>
         </dependency>
