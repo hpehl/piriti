@@ -12,7 +12,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
- * Class which generates all code necessary to map all annotated fields.
+ * Class which generates the code necessary to map the annotated fields.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -93,11 +93,8 @@ public class XmlReaderCreator
         writer.write("import java.util.List;");
         writer.write("import com.google.gwt.xml.client.Document;");
         writer.write("import com.google.gwt.xml.client.Element;");
-        writer.write("import name.pehl.gwt.piriti.client.converter.Converter;");
-        writer.write("import name.pehl.gwt.piriti.client.converter.ConverterRegistry;");
-        writer.write("import name.pehl.gwt.piriti.client.xml.XmlRegistry;");
-        writer.write("import name.pehl.gwt.piriti.client.xml.XmlReaderGinjector;");
-        writer.write("import name.pehl.gwt.piriti.client.xml.XPathUtils;");
+        writer.write("import name.pehl.gwt.piriti.client.converter.*;");
+        writer.write("import name.pehl.gwt.piriti.client.xml.*;");
         writer.newline();
 
         // Class

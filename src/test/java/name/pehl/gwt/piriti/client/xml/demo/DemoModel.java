@@ -1,10 +1,13 @@
-package name.pehl.gwt.piriti.client.xml;
+package name.pehl.gwt.piriti.client.xml.demo;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import name.pehl.gwt.piriti.client.xml.XmlField;
+import name.pehl.gwt.piriti.client.xml.XmlReader;
 
 import com.google.gwt.core.client.GWT;
 

@@ -1,4 +1,4 @@
-package name.pehl.gwt.piriti.client.xml;
+package name.pehl.gwt.piriti.client.xml.demo;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -11,7 +11,7 @@ import com.google.gwt.xml.client.Document;
  * @author $Author$
  * @version $Revision$
  */
-public class GwtTestXmlReader extends GWTTestCase
+public class GwtTestDemoReader extends GWTTestCase
 {
     private static final Date MY_BIRTHDAY = new Date(115813353000l);
 

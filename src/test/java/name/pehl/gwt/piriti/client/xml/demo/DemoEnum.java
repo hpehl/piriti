@@ -1,4 +1,4 @@
-package name.pehl.gwt.piriti.client.xml;
+package name.pehl.gwt.piriti.client.xml.demo;
 
 /**
  * @author $LastChangedBy$ 
