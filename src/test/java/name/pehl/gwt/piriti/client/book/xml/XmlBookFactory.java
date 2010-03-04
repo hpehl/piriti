@@ -1,4 +1,6 @@
-package name.pehl.gwt.piriti.client.xml.book;
+package name.pehl.gwt.piriti.client.book.xml;
+
+import name.pehl.gwt.piriti.client.book.BookFactory;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -9,27 +11,17 @@ import com.google.gwt.xml.client.XMLParser;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public final class BookXmlFactory
+public final class XmlBookFactory implements BookFactory
 {
-    static final String ISBN = "978-0345417954";
-    static final int PAGES = 432;
-    static final String TITLE = "The Hotel New Hampshire";
-    static final String AUTHOR_SURNAME = "Irving";
-    static final String AUTHOR_FIRSTNAME = "John";
-    static final String[] REVIEWS = new String[] {"A hectic gaudy saga with the verve of a Marx Brothers movie.",
-            "Rejoice! John Irving has written another book according to your world. You must read this book.",
-            "Spellbinding, intensely human, a high-wire act of dazzling virtuosity.",};
-
-
-    private BookXmlFactory()
+    private XmlBookFactory()
     {
     }
 
 
-    public static Document createBookDocument(String elementName)
+    public static Document createBook()
     {
         Document document = XMLParser.createDocument();
-        Element bookElement = document.createElement(elementName);
+        Element bookElement = document.createElement("book");
 
         createElementAndAppend(document, bookElement, "isbn", ISBN);
         createElementAndAppend(document, bookElement, "pages", String.valueOf(PAGES));
