@@ -175,14 +175,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*GwtTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
                 <configuration>
@@ -237,12 +229,10 @@ entryPointModules=]]>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>1.2-SNAPSHOT</version>
+                <version>1.2</version>
                 <configuration>
                     <gwtVersion>${gwt.version}</gwtVersion>
-                    <modules>
-                        name.pehl.gwt.piriti.client.model.ModelTest
-                    </modules>
+                    <module>name.pehl.gwt.piriti.PiritiTest</module>
                 </configuration>
                 <executions>
                     <execution>

@@ -38,7 +38,7 @@ public final class XmlModelFactory
         createElementAndAppend(document, model, "characterObject", "b");
         createElementAndAppend(document, model, "date", DateTimeFormat.getFormat(DateConverter.DEFAULT_FORMAT).format(
                 MY_BIRTHDAY));
-        createElementAndAppend(document, model, "demoEnum", "DREI");
+        createElementAndAppend(document, model, "demoEnum", "THREE");
         createElementAndAppend(document, model, "doublePrimitive", "4.5");
         createElementAndAppend(document, model, "doubleObject", "6.7");
         createElementAndAppend(document, model, "floatPrimitive", "8.9");
@@ -53,50 +53,51 @@ public final class XmlModelFactory
         stringElement.setAttribute("attribute", "neunzehn");
 
         // Nested objects
-        model.appendChild(createNestedModelElement(document, "nestedModel"));
+        model.appendChild(createNestedModel(document, "nestedModel"));
 
         // Arrays
         createElementsAndAppend(document, model, "arrayOfIntegerPrimitives", "0", "1", "2");
         createElementsAndAppend(document, model, "arrayOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "arrayOfStrings", "0", "1", "2");
         Element arrayOfDemoNestedModels = document.createElement("arrayOfNestedModels");
-        arrayOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        arrayOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        arrayOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
+        arrayOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        arrayOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        arrayOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
         model.appendChild(arrayOfDemoNestedModels);
 
         // Collections
         createElementsAndAppend(document, model, "collectionOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "collectionOfStrings", "0", "1", "2");
         Element collectionOfDemoNestedModels = document.createElement("collectionOfNestedModels");
-        collectionOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        collectionOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        collectionOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
+        collectionOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        collectionOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        collectionOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
         model.appendChild(collectionOfDemoNestedModels);
 
         // Lists
         createElementsAndAppend(document, model, "listOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "listOfStrings", "0", "1", "2");
         Element listOfDemoNestedModels = document.createElement("listOfNestedModels");
-        listOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        listOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        listOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
+        listOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        listOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        listOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
         model.appendChild(listOfDemoNestedModels);
 
         // Sets
         createElementsAndAppend(document, model, "setOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "setOfStrings", "0", "1", "2");
         Element setOfDemoNestedModels = document.createElement("setOfNestedModels");
-        setOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        setOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
-        setOfDemoNestedModels.appendChild(createNestedModelElement(document, "nestedModel"));
+        setOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        setOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+        setOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
         model.appendChild(setOfDemoNestedModels);
 
+        document.appendChild(model);
         return document;
     }
 
 
-    private static Element createNestedModelElement(Document document, String elementName)
+    private static Element createNestedModel(Document document, String elementName)
     {
         Element nestedModel = document.createElement(elementName);
 
@@ -108,7 +109,7 @@ public final class XmlModelFactory
         createElementAndAppend(document, nestedModel, "characterObject", "b");
         createElementAndAppend(document, nestedModel, "date", DateTimeFormat.getFormat(DateConverter.DEFAULT_FORMAT)
                 .format(MY_BIRTHDAY));
-        createElementAndAppend(document, nestedModel, "demoEnum", "DREI");
+        createElementAndAppend(document, nestedModel, "demoEnum", "THREE");
         createElementAndAppend(document, nestedModel, "doublePrimitive", "4.5");
         createElementAndAppend(document, nestedModel, "doubleObject", "6.7");
         createElementAndAppend(document, nestedModel, "floatPrimitive", "8.9");

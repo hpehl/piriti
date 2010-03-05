@@ -21,34 +21,34 @@ public final class XmlBookFactory implements BookFactory
     public static Document createBook()
     {
         Document document = XMLParser.createDocument();
-        Element bookElement = document.createElement("book");
+        Element book = document.createElement("book");
 
-        createElementAndAppend(document, bookElement, "isbn", ISBN);
-        createElementAndAppend(document, bookElement, "pages", String.valueOf(PAGES));
-        createElementAndAppend(document, bookElement, "title", TITLE);
+        createElementAndAppend(document, book, "isbn", ISBN);
+        createElementAndAppend(document, book, "pages", String.valueOf(PAGES));
+        createElementAndAppend(document, book, "title", TITLE);
 
-        createAuthorElement(document, bookElement, "author");
-        createReviewsList(document, bookElement, "reviews");
+        createAuthor(document, book, "author");
+        createReviews(document, book, "reviews");
 
-        document.appendChild(bookElement);
+        document.appendChild(book);
         return document;
     }
 
 
-    private static void createAuthorElement(Document document, Element bookElement, String elementName)
+    private static void createAuthor(Document document, Element bookElement, String elementName)
     {
-        Element authorElement = document.createElement(elementName);
-        createElementAndAppend(document, authorElement, "firstname", AUTHOR_FIRSTNAME);
-        createElementAndAppend(document, authorElement, "surname", AUTHOR_SURNAME);
-        bookElement.appendChild(authorElement);
+        Element author = document.createElement(elementName);
+        createElementAndAppend(document, author, "firstname", AUTHOR_FIRSTNAME);
+        createElementAndAppend(document, author, "surname", AUTHOR_SURNAME);
+        bookElement.appendChild(author);
     }
 
 
-    private static void createReviewsList(Document document, Element bookElement, String elementName)
+    private static void createReviews(Document document, Element bookElement, String elementName)
     {
-        Element reviewsElement = document.createElement(elementName);
-        createElementsAndAppend(document, reviewsElement, "review", REVIEWS);
-        bookElement.appendChild(reviewsElement);
+        Element reviews = document.createElement(elementName);
+        createElementsAndAppend(document, reviews, "review", REVIEWS);
+        bookElement.appendChild(reviews);
     }
 
 
