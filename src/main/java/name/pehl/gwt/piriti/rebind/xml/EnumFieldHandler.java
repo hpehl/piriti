@@ -1,4 +1,8 @@
-package name.pehl.gwt.piriti.rebind;
+package name.pehl.gwt.piriti.rebind.xml;
+
+import name.pehl.gwt.piriti.rebind.FieldContext;
+import name.pehl.gwt.piriti.rebind.FieldHandler;
+import name.pehl.gwt.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -38,14 +42,14 @@ public class EnumFieldHandler extends DefaultFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     * @see name.pehl.gwt.piriti.rebind.xml.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
      *      name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
-                fieldContext.getXmlVariable(), fieldContext.getXpath());
+                fieldContext.getInputVariable(), fieldContext.getPath());
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         writer.write("try {");

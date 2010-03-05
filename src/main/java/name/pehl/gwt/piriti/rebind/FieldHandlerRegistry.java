@@ -12,6 +12,14 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import name.pehl.gwt.piriti.rebind.xml.ArrayFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.CollectionFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.DefaultFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.EnumFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.StringFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.XmlReaderCreator;
+import name.pehl.gwt.piriti.rebind.xml.XmlRegistryFieldHandler;
+
 /**
  * Registry which maps classnames to {@linkplain FieldHandler}s. This registry
  * is used by the {@link XmlReaderCreator} when generating code.

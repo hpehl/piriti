@@ -1,15 +1,21 @@
-package name.pehl.gwt.piriti.rebind;
+package name.pehl.gwt.piriti.rebind.xml;
 
 import java.io.PrintWriter;
 
 import name.pehl.gwt.piriti.client.xml.XmlField;
 import name.pehl.gwt.piriti.client.xml.XmlReader;
+import name.pehl.gwt.piriti.rebind.FieldContext;
+import name.pehl.gwt.piriti.rebind.FieldHandler;
+import name.pehl.gwt.piriti.rebind.FieldHandlerRegistry;
+import name.pehl.gwt.piriti.rebind.IndentedWriter;
+import name.pehl.gwt.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Class which generates the code necessary to map the annotated fields.
@@ -217,9 +223,9 @@ public class XmlReaderCreator
                 if (xmlField != null)
                 {
                     writer.newline();
+                    String xpath = calculateXpath(field, xmlField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xmlField.value(), xmlField.format(), xmlVariable, "value"
-                                    + counter);
+                            field.getType(), field.getName(), xpath, xmlField.format(), xmlVariable, "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler.isValid(writer, fieldContext))
                     {
@@ -232,6 +238,23 @@ public class XmlReaderCreator
                 }
             }
         }
+    }
+
+
+    private String calculateXpath(JField field, XmlField xmlField)
+    {
+        String fieldName = field.getName();
+        JType fieldType = field.getType();
+        String xpath = xmlField.value();
+        if (xpath == null || xpath.length() == 0)
+        {
+            xpath = fieldName;
+            if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
+            {
+                xpath += "/text()";
+            }
+        }
+        return xpath;
     }
 
 

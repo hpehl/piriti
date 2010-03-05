@@ -1,5 +1,6 @@
 package name.pehl.gwt.piriti.rebind;
 
+
 import com.google.gwt.core.client.GWT;
 
 /**

@@ -1,4 +1,8 @@
-package name.pehl.gwt.piriti.rebind;
+package name.pehl.gwt.piriti.rebind.xml;
+
+import name.pehl.gwt.piriti.rebind.FieldContext;
+import name.pehl.gwt.piriti.rebind.FieldHandler;
+import name.pehl.gwt.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -23,6 +27,6 @@ public class StringFieldHandler extends DefaultFieldHandler
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writer.write("%s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
-                .getXmlVariable(), fieldContext.getXpath());
+                .getInputVariable(), fieldContext.getPath());
     }
 }

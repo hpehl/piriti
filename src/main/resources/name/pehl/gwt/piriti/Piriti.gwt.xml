@@ -17,7 +17,7 @@
         <exclude name="**/GwtTest*.java" />
     </source>
 
-    <generate-with class="name.pehl.gwt.piriti.rebind.XmlReaderGenerator">
+    <generate-with class="name.pehl.gwt.piriti.rebind.xml.XmlReaderGenerator">
         <when-type-assignable class="name.pehl.gwt.piriti.client.xml.XmlReader" />
     </generate-with>
 

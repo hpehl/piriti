@@ -10,10 +10,9 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
- * Class which contains information needed to generate code for the XPath
- * evaluation, conversion and assignment of a field. An instance of this class
- * is generated in {@link XmlReaderCreator} and passed to the
- * {@link FieldHandler}.
+ * Class which contains information needed to generate code for the evaluation,
+ * conversion and assignment of a field. An instance of this class is passed to
+ * the {@link FieldHandler}.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -28,22 +27,37 @@ public class FieldContext
     private final JClassType modelType;
     private final JType fieldType;
     private final String fieldName;
-    private final String xpath;
+    private final String path;
     private final String format;
-    private final String xmlVariable;
+    private final String inputVariable;
     private final String valueVariable;
     private final String valueAsStringVariable;
     private final String valueReaderVariable;
 
 
+    /**
+     * Construct a new instance of this class
+     * 
+     * @param typeOracle
+     * @param handlerRegistry
+     * @param modelType
+     * @param fieldType
+     * @param fieldName
+     * @param path
+     *            The path in the annotation
+     * @param format
+     * @param inputVariable
+     * @param valueVariable
+     * @throws UnableToCompleteException
+     */
     public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
-            JType fieldType, String fieldName, String xpath, String format, String xmlVariable, String valueVariable)
+            JType fieldType, String fieldName, String path, String format, String inputVariable, String valueVariable)
             throws UnableToCompleteException
     {
+        // Types
         this.typeOracle = typeOracle;
         this.handlerRegistry = handlerRegistry;
         this.modelType = modelType;
-
         JPrimitiveType primitiveType = fieldType.isPrimitive();
         if (primitiveType != null) // isPrimitive() is not available here!
         {
@@ -62,8 +76,9 @@ public class FieldContext
             this.fieldType = fieldType;
         }
 
+        // Field properties
         this.fieldName = fieldName;
-        this.xpath = adjustXpath(fieldName, xpath);
+        this.path = path;
         if (format == null || format.length() == 0)
         {
             this.format = null;
@@ -72,25 +87,12 @@ public class FieldContext
         {
             this.format = format;
         }
-        this.xmlVariable = xmlVariable;
+
+        // Variable names
+        this.inputVariable = inputVariable;
         this.valueVariable = valueVariable;
         this.valueAsStringVariable = valueVariable + AS_STRING_SUFFIX;
         this.valueReaderVariable = valueVariable + READER_SUFFIX;
-    }
-
-
-    private String adjustXpath(String defaultValue, String xpath)
-    {
-        String effectiveXpath = xpath;
-        if (effectiveXpath == null || effectiveXpath.length() == 0)
-        {
-            effectiveXpath = defaultValue;
-            if (isPrimitive() || isBasicType() || isEnum())
-            {
-                effectiveXpath += "/text()";
-            }
-        }
-        return effectiveXpath;
     }
 
 
@@ -98,7 +100,7 @@ public class FieldContext
     public String toString()
     {
         StringBuilder builder = new StringBuilder().append(fieldType.getParameterizedQualifiedSourceName()).append(" ")
-                .append(fieldName).append(", xpath=\"").append(xpath).append("\"");
+                .append(fieldName).append(", path=\"").append(path).append("\"");
         if (format != null)
         {
             builder.append(", format=\"").append(format).append("\"");
@@ -197,9 +199,9 @@ public class FieldContext
     }
 
 
-    public String getXpath()
+    public String getPath()
     {
-        return xpath;
+        return path;
     }
 
 
@@ -209,9 +211,9 @@ public class FieldContext
     }
 
 
-    public String getXmlVariable()
+    public String getInputVariable()
     {
-        return xmlVariable;
+        return inputVariable;
     }
 
 

@@ -1,4 +1,4 @@
-package name.pehl.gwt.piriti.rebind;
+package name.pehl.gwt.piriti.rebind.xml;
 
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -13,8 +13,8 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  * {@link XmlReaderCreator} which is responsible for generating the
  * implementation.
  * 
- * @author $LastChangedBy:$
- * @version $LastChangedRevision:$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public class XmlReaderGenerator extends Generator
 {

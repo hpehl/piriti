@@ -1,6 +1,9 @@
-package name.pehl.gwt.piriti.rebind;
+package name.pehl.gwt.piriti.rebind.xml;
 
 import name.pehl.gwt.piriti.client.xml.XmlReader;
+import name.pehl.gwt.piriti.rebind.FieldContext;
+import name.pehl.gwt.piriti.rebind.FieldHandler;
+import name.pehl.gwt.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -55,7 +58,7 @@ public class XmlRegistryFieldHandler extends DefaultFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     * @see name.pehl.gwt.piriti.rebind.xml.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
      *      name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
@@ -67,8 +70,8 @@ public class XmlRegistryFieldHandler extends DefaultFieldHandler
                 fieldContext.getValueVariable());
         writer.write("if (%sReader != null) {", fieldContext.getValueVariable());
         writer.indent();
-        writer.write("Element nestedElement = XPathUtils.getElement(%s, \"%s\");", fieldContext.getXmlVariable(),
-                fieldContext.getXpath());
+        writer.write("Element nestedElement = XPathUtils.getElement(%s, \"%s\");", fieldContext.getInputVariable(),
+                fieldContext.getPath());
         writer.write("if (nestedElement != null) {");
         writer.indent();
         writer.write("%s = %s.%s.readSingle(nestedElement);", fieldContext.getValueVariable(), classType

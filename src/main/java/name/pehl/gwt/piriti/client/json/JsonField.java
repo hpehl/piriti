@@ -10,7 +10,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 
 /**
- * TODO Javadoc
  * Annotation for mapping XML data to POJO fields. The XML is selected by an
  * xpath expression and converted if necessary to the type of the annotated
  * field. For some types you can specify a format which is used when converting

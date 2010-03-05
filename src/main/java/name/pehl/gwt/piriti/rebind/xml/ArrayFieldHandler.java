@@ -1,4 +1,9 @@
-package name.pehl.gwt.piriti.rebind;
+package name.pehl.gwt.piriti.rebind.xml;
+
+import name.pehl.gwt.piriti.rebind.FieldContext;
+import name.pehl.gwt.piriti.rebind.FieldHandler;
+import name.pehl.gwt.piriti.rebind.IndentedWriter;
+import name.pehl.gwt.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -7,7 +12,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 
 /**
- * {@link FieldHandler} for arrays. 
+ * {@link FieldHandler} for arrays.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -58,7 +63,7 @@ public class ArrayFieldHandler extends DefaultFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.gwt.piriti.rebind.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     * @see name.pehl.gwt.piriti.rebind.xml.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
      *      name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
@@ -83,18 +88,20 @@ public class ArrayFieldHandler extends DefaultFieldHandler
         String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
         String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
         String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
-        // TODO The field name is misused as xpath and the xpath is null. This
-        // way the method FieldContext.adjustXpath() generates the correct
-        // xpath. This works, because the fieldName "." is never used here. Only
-        // nestedHandler.writeAssignment() would use it, which is not called
-        // here.
+        String nestedXpath = ".";
+        if (componentType.isPrimitive() != null || TypeUtils.isBasicType(componentType)
+                || componentType.isEnum() != null)
+        {
+            nestedXpath += "/text()";
+        }
+
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), componentType, ".", null, fieldContext.getFormat(),
-                nestedElementVariable, nestedValueVariable);
+                .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(),
+                nestedXpath, fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
 
         writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
-                .getXmlVariable(), fieldContext.getXpath());
+                .getInputVariable(), fieldContext.getPath());
         writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
         writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", componentType.getParameterizedQualifiedSourceName(),

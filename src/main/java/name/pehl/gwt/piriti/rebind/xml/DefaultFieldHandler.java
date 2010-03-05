@@ -1,4 +1,9 @@
-package name.pehl.gwt.piriti.rebind;
+package name.pehl.gwt.piriti.rebind.xml;
+
+import name.pehl.gwt.piriti.rebind.AbstractFieldHandler;
+import name.pehl.gwt.piriti.rebind.FieldContext;
+import name.pehl.gwt.piriti.rebind.FieldHandler;
+import name.pehl.gwt.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -53,7 +58,7 @@ public class DefaultFieldHandler extends AbstractFieldHandler
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
-                fieldContext.getXmlVariable(), fieldContext.getXpath());
+                fieldContext.getInputVariable(), fieldContext.getPath());
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
