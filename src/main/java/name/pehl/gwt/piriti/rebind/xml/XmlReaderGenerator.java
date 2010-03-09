@@ -1,12 +1,13 @@
 package name.pehl.gwt.piriti.rebind.xml;
 
-import com.google.gwt.core.ext.Generator;
+import name.pehl.gwt.piriti.client.xml.XmlReader;
+import name.pehl.gwt.piriti.rebind.AbstractReaderCreator;
+import name.pehl.gwt.piriti.rebind.AbstractReaderGenerator;
+
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
  * GWT Generator for XmlReaders. The generator delegates to
@@ -16,27 +17,12 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class XmlReaderGenerator extends Generator
+public class XmlReaderGenerator extends AbstractReaderGenerator
 {
     @Override
-    public String generate(TreeLogger logger, GeneratorContext context, String typeName)
-            throws UnableToCompleteException
+    protected AbstractReaderCreator createCreator(GeneratorContext context, JClassType interfaceType, String implName,
+            TreeLogger logger) throws UnableToCompleteException
     {
-        JClassType interfaceType;
-        TypeOracle oracle = context.getTypeOracle();
-        try
-        {
-            interfaceType = oracle.getType(typeName);
-        }
-        catch (NotFoundException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        String implName = interfaceType.getName().replace('.', '_') + "Impl";
-        String packageName = interfaceType.getPackage().getName();
-        XmlReaderCreator xmlReaderwriter = new XmlReaderCreator(context, interfaceType, implName, logger);
-        xmlReaderwriter.create();
-        return packageName + "." + implName;
+        return new XmlReaderCreator(context, interfaceType, implName, XmlReader.class.getCanonicalName(), logger);
     }
 }

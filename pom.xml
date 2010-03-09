@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.pehl.gwt</groupId>
     <artifactId>piriti</artifactId>
-    <version>0.2.1</version>
+    <version>0.3</version>
     <name>Piriti</name>
     <description>Annotation based XML mapper for GWT</description>
     <url>http://code.google.com/p/piriti/</url>

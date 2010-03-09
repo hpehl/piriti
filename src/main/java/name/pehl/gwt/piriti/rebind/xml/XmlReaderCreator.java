@@ -1,12 +1,9 @@
 package name.pehl.gwt.piriti.rebind.xml;
 
-import java.io.PrintWriter;
-
 import name.pehl.gwt.piriti.client.xml.XmlField;
-import name.pehl.gwt.piriti.client.xml.XmlReader;
+import name.pehl.gwt.piriti.rebind.AbstractReaderCreator;
 import name.pehl.gwt.piriti.rebind.FieldContext;
 import name.pehl.gwt.piriti.rebind.FieldHandler;
-import name.pehl.gwt.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.gwt.piriti.rebind.IndentedWriter;
 import name.pehl.gwt.piriti.rebind.TypeUtils;
 
@@ -23,117 +20,58 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class XmlReaderCreator
+public class XmlReaderCreator extends AbstractReaderCreator
 {
-    // -------------------------------------------------------- private members
-
-    private final GeneratorContext context;
-    private final JClassType interfaceType;
-    private final String implName;
-    private final TreeLogger logger;
-    private final JClassType modelType;
-    private FieldHandlerRegistry handlerRegistry;
-
-
-    // ----------------------------------------------------------- constructors
-
-    public XmlReaderCreator(GeneratorContext context, JClassType interfaceType, String implName, TreeLogger logger)
-            throws UnableToCompleteException
+    public XmlReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
+            String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
-        this.context = context;
-        this.interfaceType = interfaceType;
-        this.implName = implName;
-        this.logger = logger;
-        this.handlerRegistry = new FieldHandlerRegistry();
-
-        // Check for possible misuse 'GWT.create(XmlReader.class)'
-        JClassType xmlReaderItself = context.getTypeOracle().findType(XmlReader.class.getCanonicalName());
-        if (xmlReaderItself.equals(interfaceType))
-        {
-            die("You must use a subtype of XmlReader in GWT.create(). E.g.,\n"
-                    + "  interface ModelXmlReader extends XmlReader<Model> {}\n  GWT.create(ModelXmlReader.class);");
-        }
-
-        JClassType[] xmlReaderTypes = interfaceType.getImplementedInterfaces();
-        if (xmlReaderTypes.length == 0)
-        {
-            die("No implemented interfaces for %s", interfaceType.getName());
-        }
-        JClassType xmlReaderType = xmlReaderTypes[0];
-
-        // Check type parameter
-        JClassType[] typeArgs = xmlReaderType.isParameterized().getTypeArgs();
-        if (typeArgs.length != 1)
-        {
-            die("One model type parameters is required for %s", xmlReaderType.getName());
-        }
-        this.modelType = typeArgs[0];
+        super(context, interfaceType, implName, readerClassname, logger);
     }
 
 
-    // --------------------------------------------------------- create methods
-
-    public void create() throws UnableToCompleteException
+    @Override
+    protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
-        PrintWriter printWriter = context.tryCreate(logger, interfaceType.getPackage().getName(), implName);
-        if (printWriter != null)
-        {
-            IndentedWriter writer = new IndentedWriter(printWriter);
-            createClass(writer);
-            context.commit(logger, printWriter);
-        }
-    }
-
-
-    private void createClass(IndentedWriter writer) throws UnableToCompleteException
-    {
-        String packageName = interfaceType.getPackage().getName();
-        if (packageName.length() > 0)
-        {
-            writer.write("package %s;", packageName);
-            writer.newline();
-        }
-
-        // Imports
-        writer.write("import java.util.ArrayList;");
-        writer.write("import java.util.List;");
+        super.createImports(writer);
         writer.write("import com.google.gwt.xml.client.Document;");
         writer.write("import com.google.gwt.xml.client.Element;");
-        writer.write("import name.pehl.gwt.piriti.client.converter.*;");
         writer.write("import name.pehl.gwt.piriti.client.xml.*;");
-        writer.newline();
-
-        // Class
-        writer.write("public class %s implements %s {", implName, interfaceType.getQualifiedSourceName());
-        writer.newline();
-        writer.indent();
-
-        // Private members and constructor
-        writer.write("private ConverterRegistry converterRegistry;");
-        writer.write("private XmlRegistry xmlRegistry;");
-        writer.newline();
-        writer.write("public %s() {", implName);
-        writer.indent();
-        writer.write("this.converterRegistry = XmlReaderGinjector.INJECTOR.getConverterRegistry();");
-        writer.write("this.xmlRegistry = XmlReaderGinjector.INJECTOR.getXmlRegistry();");
-        writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
-        writer.outdent();
-        writer.write("}");
-        writer.newline();
-
-        // Interface methods
-        readSingleFromDocument(writer);
-        readSingleFromElement(writer);
-        readListFromDocument(writer);
-        readListFromElement(writer);
-
-        // That's all
-        writer.outdent();
-        writer.write("}");
     }
 
 
-    // ---------------------------------------------- interface method creation
+    @Override
+    protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createMemberVariables(writer);
+        writer.write("private XmlRegistry xmlRegistry;");
+    }
+
+
+    @Override
+    protected void createConstructorBody(IndentedWriter writer)
+    {
+        super.createConstructorBody(writer);
+        writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
+        writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
+    }
+
+
+    @Override
+    protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
+    {
+        readSingleFromDocument(writer);
+        writer.newline();
+
+        readSingleFromElement(writer);
+        writer.newline();
+
+        readListFromDocument(writer);
+        writer.newline();
+
+        readListFromElement(writer);
+        writer.newline();
+    }
+
 
     private void readSingleFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
@@ -161,7 +99,6 @@ public class XmlReaderCreator
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
-        writer.newline();
     }
 
 
@@ -205,7 +142,6 @@ public class XmlReaderCreator
         writer.write("return models;");
         writer.outdent();
         writer.write("}");
-        writer.newline();
     }
 
 
@@ -255,29 +191,5 @@ public class XmlReaderCreator
             }
         }
         return xpath;
-    }
-
-
-    // --------------------------------------------------------- helper methods
-
-    /**
-     * Post an error message and halt processing. This method always throws an
-     * {@link UnableToCompleteException}
-     */
-    public void die(String message) throws UnableToCompleteException
-    {
-        logger.log(TreeLogger.ERROR, message);
-        throw new UnableToCompleteException();
-    }
-
-
-    /**
-     * Post an error message and halt processing. This method always throws an
-     * {@link UnableToCompleteException}
-     */
-    public void die(String message, Object... params) throws UnableToCompleteException
-    {
-        logger.log(TreeLogger.ERROR, String.format(message, params));
-        throw new UnableToCompleteException();
     }
 }
