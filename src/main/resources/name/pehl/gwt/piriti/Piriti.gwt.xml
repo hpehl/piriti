@@ -7,6 +7,7 @@
     -->
 
     <inherits name="com.google.gwt.inject.Inject" />
+    <inherits name="com.google.gwt.json.JSON" />
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.xml.XML" />
     <inherits name="com.mouchel.gwt.xpath.xpath" />
@@ -21,4 +22,7 @@
         <when-type-assignable class="name.pehl.gwt.piriti.client.xml.XmlReader" />
     </generate-with>
 
+    <generate-with class="name.pehl.gwt.piriti.rebind.json.JsonReaderGenerator">
+        <when-type-assignable class="name.pehl.gwt.piriti.client.json.JsonReader" />
+    </generate-with>
 </module>

@@ -1,6 +1,7 @@
 package name.pehl.gwt.piriti.client.book;
 
 import name.pehl.gwt.piriti.client.json.JsonField;
+import name.pehl.gwt.piriti.client.json.JsonReader;
 import name.pehl.gwt.piriti.client.xml.XmlField;
 import name.pehl.gwt.piriti.client.xml.XmlReader;
 
@@ -19,12 +20,11 @@ public class Author
 
     public static final AuthorXmlReader XML = GWT.create(AuthorXmlReader.class);
 
-    // public interface AuthorJsonReader extends JsonReader<Author>
-    // {
-    // }
-    //
-    // public static final AuthorJsonReader JSON =
-    // GWT.create(AuthorJsonReader.class);
+    public interface AuthorJsonReader extends JsonReader<Author>
+    {
+    }
+
+    public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
 
     @XmlField
     @JsonField

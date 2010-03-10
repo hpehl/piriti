@@ -1,5 +1,6 @@
 package name.pehl.gwt.piriti.rebind;
 
+
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;

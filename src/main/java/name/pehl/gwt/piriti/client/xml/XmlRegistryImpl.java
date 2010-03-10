@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Default implementation for the {@link XmlReader}
+ * Default implementation for the {@link XmlRegistry}
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$

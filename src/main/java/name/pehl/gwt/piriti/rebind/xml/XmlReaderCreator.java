@@ -26,6 +26,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
+        this.handlerRegistry = new XmlFieldHandlerRegistry();
     }
 
 
@@ -87,7 +88,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     private void readSingle(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
     {
-        writer.write("public %s readSingle(%s %s) {", modelType.getQualifiedSourceName(), xmlType, xmlVariable);
+        writer.write("public %s readSingle(%s %s) {", modelType.getParameterizedQualifiedSourceName(), xmlType,
+                xmlVariable);
         writer.indent();
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (%s != null) {", xmlVariable);
@@ -116,8 +118,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     private void readList(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(%s %s, String xpath) {", modelType.getQualifiedSourceName(), xmlType,
-                xmlVariable);
+        writer.write("public List<%s> readList(%s %s, String xpath) {",
+                modelType.getParameterizedQualifiedSourceName(), xmlType, xmlVariable);
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (%s != null && xpath != null && xpath.length() != 0) {", xmlVariable);
@@ -163,14 +165,18 @@ public class XmlReaderCreator extends AbstractReaderCreator
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             field.getType(), field.getName(), xpath, xmlField.format(), xmlVariable, "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-                    if (handler.isValid(writer, fieldContext))
+                    if (handler != null)
                     {
-                        handler.writeComment(writer, fieldContext);
-                        handler.writeDeclaration(writer, fieldContext);
-                        handler.writeConverterCode(writer, fieldContext);
-                        handler.writeAssignment(writer, fieldContext);
-                        counter++;
+                        if (handler.isValid(writer, fieldContext))
+                        {
+                            handler.writeComment(writer, fieldContext);
+                            handler.writeDeclaration(writer, fieldContext);
+                            handler.writeConverterCode(writer, fieldContext);
+                            handler.writeAssignment(writer, fieldContext);
+                            counter++;
+                        }
                     }
+                    // TODO What to do if no handler was found?
                 }
             }
         }
@@ -179,12 +185,11 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     private String calculateXpath(JField field, XmlField xmlField)
     {
-        String fieldName = field.getName();
-        JType fieldType = field.getType();
         String xpath = xmlField.value();
         if (xpath == null || xpath.length() == 0)
         {
-            xpath = fieldName;
+            xpath = field.getName();
+            JType fieldType = field.getType();
             if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
             {
                 xpath += "/text()";

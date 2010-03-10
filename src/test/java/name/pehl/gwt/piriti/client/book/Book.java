@@ -3,6 +3,7 @@ package name.pehl.gwt.piriti.client.book;
 import java.util.List;
 
 import name.pehl.gwt.piriti.client.json.JsonField;
+import name.pehl.gwt.piriti.client.json.JsonReader;
 import name.pehl.gwt.piriti.client.xml.XmlField;
 import name.pehl.gwt.piriti.client.xml.XmlReader;
 
@@ -21,12 +22,11 @@ public class Book
 
     public static final BookXmlReader XML = GWT.create(BookXmlReader.class);
 
-    // public interface BookJsonReader extends JsonReader<Book>
-    // {
-    // }
-    //
-    // public static final BookJsonReader JSON =
-    // GWT.create(BookJsonReader.class);
+    public interface BookJsonReader extends JsonReader<Book>
+    {
+    }
+
+    public static final BookJsonReader JSON = GWT.create(BookJsonReader.class);
 
     @XmlField
     @JsonField

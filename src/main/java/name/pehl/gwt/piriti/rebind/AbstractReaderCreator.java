@@ -35,7 +35,6 @@ public abstract class AbstractReaderCreator
         this.interfaceType = interfaceType;
         this.implName = implName;
         this.logger = logger;
-        this.handlerRegistry = new FieldHandlerRegistry();
 
         // Check for possible misuse 'GWT.create(XmlReader.class)'
         JClassType xmlReaderItself = context.getTypeOracle().findType(readerClassname);

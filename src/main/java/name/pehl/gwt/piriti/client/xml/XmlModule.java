@@ -1,7 +1,5 @@
 package name.pehl.gwt.piriti.client.xml;
 
-import name.pehl.gwt.piriti.client.converter.ConverterRegistryImpl;
-
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
@@ -14,8 +12,8 @@ import com.google.inject.Singleton;
 public class XmlModule extends AbstractGinModule
 {
     /**
-     * Binds {@link XmlRegistry} to {@link ConverterRegistryImpl} in
-     * {@link Singleton} scope.
+     * Binds {@link XmlRegistry} to {@link XmlRegistryImpl} in {@link Singleton}
+     * scope.
      * 
      * @see com.google.gwt.inject.client.AbstractGinModule#configure()
      */
