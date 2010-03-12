@@ -3,9 +3,9 @@ package name.pehl.gwt.piriti.rebind.xml;
 import name.pehl.gwt.piriti.client.xml.XmlField;
 import name.pehl.gwt.piriti.rebind.AbstractReaderCreator;
 import name.pehl.gwt.piriti.rebind.FieldContext;
-import name.pehl.gwt.piriti.rebind.FieldHandler;
 import name.pehl.gwt.piriti.rebind.IndentedWriter;
 import name.pehl.gwt.piriti.rebind.TypeUtils;
+import name.pehl.gwt.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;

@@ -13,8 +13,14 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import name.pehl.gwt.piriti.rebind.FieldContext;
-import name.pehl.gwt.piriti.rebind.FieldHandler;
 import name.pehl.gwt.piriti.rebind.FieldHandlerRegistry;
+import name.pehl.gwt.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.fieldhandler.DefaultFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.fieldhandler.EnumFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.fieldhandler.StringFieldHandler;
+import name.pehl.gwt.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
 
 /**
  * {@link FieldHandlerRegistry} used by the {@link XmlReaderCreator}.

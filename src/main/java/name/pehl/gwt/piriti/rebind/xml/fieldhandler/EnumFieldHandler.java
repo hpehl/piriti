@@ -1,8 +1,9 @@
-package name.pehl.gwt.piriti.rebind.xml;
+package name.pehl.gwt.piriti.rebind.xml.fieldhandler;
 
 import name.pehl.gwt.piriti.rebind.FieldContext;
-import name.pehl.gwt.piriti.rebind.FieldHandler;
 import name.pehl.gwt.piriti.rebind.IndentedWriter;
+import name.pehl.gwt.piriti.rebind.fieldhandler.AbstractEnumFieldHandler;
+import name.pehl.gwt.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -14,35 +15,15 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class EnumFieldHandler extends DefaultFieldHandler
+public class EnumFieldHandler extends AbstractEnumFieldHandler
 {
-    /**
-     * Returns <code>true</code> if the field type is an enum,
-     * <code>false</code> otherwise.
-     * 
-     * @param writer
-     * @param fieldContext
-     * @return
-     * @see name.pehl.gwt.piriti.rebind.AbstractFieldHandler#isValid(name.pehl.gwt.piriti.rebind.FieldContext)
-     */
-    @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
-        if (!fieldContext.isEnum())
-        {
-            skipField(writer, fieldContext, "Type is no enum");
-        }
-        return true;
-    }
-
-
     /**
      * TODO Javadoc
      * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.gwt.piriti.rebind.xml.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
+     * @see name.pehl.gwt.piriti.rebind.xml.fieldhandler.DefaultFieldHandler#writeConverterCode(name.pehl.gwt.piriti.rebind.IndentedWriter,
      *      name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override

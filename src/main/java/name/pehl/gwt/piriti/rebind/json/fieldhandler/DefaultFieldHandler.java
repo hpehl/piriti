@@ -1,9 +1,9 @@
-package name.pehl.gwt.piriti.rebind.xml;
+package name.pehl.gwt.piriti.rebind.json.fieldhandler;
 
-import name.pehl.gwt.piriti.rebind.AbstractFieldHandler;
 import name.pehl.gwt.piriti.rebind.FieldContext;
-import name.pehl.gwt.piriti.rebind.FieldHandler;
 import name.pehl.gwt.piriti.rebind.IndentedWriter;
+import name.pehl.gwt.piriti.rebind.fieldhandler.AbstractFieldHandler;
+import name.pehl.gwt.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -21,33 +21,12 @@ public class DefaultFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return always <code>true</code>
-     * @see name.pehl.gwt.piriti.rebind.AbstractFieldHandler#isValid(name.pehl.gwt.piriti.rebind.FieldContext)
+     * @see name.pehl.gwt.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.gwt.piriti.rebind.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         return true;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeComment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
-        writer.write("// Handle %s", fieldContext);
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeDeclaration(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
-        writer.write("%s %s = null;", fieldContext.getFieldType().getParameterizedQualifiedSourceName(), fieldContext
-                .getValueVariable());
     }
 
 
@@ -77,20 +56,6 @@ public class DefaultFieldHandler extends AbstractFieldHandler
         }
         writer.outdent();
         writer.write("}");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
-    {
-        writer.write("if (%s != null) {", fieldContext.getValueVariable());
-        writer.indent();
-        writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
         writer.outdent();
         writer.write("}");
     }

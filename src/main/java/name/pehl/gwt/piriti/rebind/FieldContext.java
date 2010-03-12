@@ -1,6 +1,8 @@
 package name.pehl.gwt.piriti.rebind;
 
 
+import name.pehl.gwt.piriti.rebind.fieldhandler.FieldHandler;
+
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;

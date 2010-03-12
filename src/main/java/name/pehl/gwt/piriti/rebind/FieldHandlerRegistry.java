@@ -1,10 +1,12 @@
 package name.pehl.gwt.piriti.rebind;
 
+import name.pehl.gwt.piriti.rebind.fieldhandler.FieldHandler;
+
 /**
  * Registry to find {@link FieldHandler}s based on a {@link FieldContext}.
  * 
- * @author $LastChangedBy:$
- * @version $LastChangedRevision:$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 public interface FieldHandlerRegistry
 {
