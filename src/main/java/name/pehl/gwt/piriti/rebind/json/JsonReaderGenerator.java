@@ -12,7 +12,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 /**
  * GWT Generator for JsonReaders. The generator delegates to
  * {@link JsonReaderCreator} which is responsible for generating the
- * implementation.
+ * code.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $

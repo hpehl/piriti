@@ -1,6 +1,5 @@
 package name.pehl.gwt.piriti.rebind;
 
-
 import name.pehl.gwt.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -42,15 +41,23 @@ public class FieldContext
      * Construct a new instance of this class
      * 
      * @param typeOracle
+     *            The type oracle from the GWT generator API
      * @param handlerRegistry
+     *            The handler registry for {@link FieldHandler} lookup
      * @param modelType
+     *            The model type
      * @param fieldType
+     *            The field type
      * @param fieldName
+     *            The name of the field
      * @param path
-     *            The path in the annotation
+     *            The path information which was specified in the annotation
      * @param format
+     *            The format which was specified in the annotation
      * @param inputVariable
+     *            The name of the input variable
      * @param valueVariable
+     *            The name of the value variable
      * @throws UnableToCompleteException
      */
     public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
@@ -62,7 +69,7 @@ public class FieldContext
         this.handlerRegistry = handlerRegistry;
         this.modelType = modelType;
         JPrimitiveType primitiveType = fieldType.isPrimitive();
-        if (primitiveType != null) // isPrimitive() is not available here!
+        if (primitiveType != null) // isPrimitive() is not yet available!
         {
             try
             {

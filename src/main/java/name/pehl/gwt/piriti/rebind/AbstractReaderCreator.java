@@ -70,14 +70,6 @@ public abstract class AbstractReaderCreator
      * <li>{@link #createPackage(IndentedWriter)}
      * <li>{@link #createImports(IndentedWriter)}
      * <li>{@link #createClass(IndentedWriter)}
-     * <ol>
-     * <li>{@link #createMemberVariables(IndentedWriter)}
-     * <li>{@link #createConstructor(IndentedWriter)}
-     * <ol>
-     * <li>{@link #createConstructorBody(IndentedWriter)}
-     * </ol>
-     * <li>{@link #createMethods(IndentedWriter)}
-     * </ol>
      * </ol>
      * 
      * @throws UnableToCompleteException
@@ -145,9 +137,6 @@ public abstract class AbstractReaderCreator
      * <ol>
      * <li>{@link #createMemberVariables(IndentedWriter)}
      * <li>{@link #createConstructor(IndentedWriter)}
-     * <ol>
-     * <li>{@link #createConstructorBody(IndentedWriter)}
-     * </ol>
      * <li>{@link #createMethods(IndentedWriter)}
      * </ol>
      * 
@@ -224,7 +213,7 @@ public abstract class AbstractReaderCreator
 
 
     /**
-     * Empty implementation.
+     * Empty implementation. Subclasses should override this method.
      * 
      * @param writer
      */

@@ -8,7 +8,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * {@link FieldHandler} for arrays.
+ * Abstract {@link FieldHandler} for arrays.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$

@@ -27,7 +27,7 @@ public interface FieldHandler
 
     /**
      * Generated a comment for the field assignement containing the fields name,
-     * type and the relevant xpath
+     * type and the relevant path
      * 
      * @param writer
      * @param fieldContext
@@ -45,8 +45,7 @@ public interface FieldHandler
 
 
     /**
-     * Generates the code for converting the string read from XML to the fields
-     * type.
+     * Generates the code for converting the input to the fields type.
      * 
      * @param writer
      * @param fieldContext
@@ -55,8 +54,8 @@ public interface FieldHandler
 
 
     /**
-     * Generates the assignment for the field. The assignment is only done when
-     * the xpath expression returns valid data (!= null).
+     * Generates the assignment for the field. The assignment should only done
+     * when the conversion returns valid data (!= null).
      * 
      * @param writer
      * @param fieldContext

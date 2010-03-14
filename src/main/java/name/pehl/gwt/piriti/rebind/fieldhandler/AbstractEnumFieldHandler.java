@@ -6,9 +6,7 @@ import name.pehl.gwt.piriti.rebind.IndentedWriter;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link FieldHandler} for enum types. This implementation reads the XML data
- * as string and tries to convert it using <code>enumType.valueOf(String)</code>
- * .
+ * Abstract {@link FieldHandler} for enum types.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$

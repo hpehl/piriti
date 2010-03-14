@@ -10,10 +10,10 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 
 /**
- * Annotation for mapping XML data to POJO fields. The XML is selected by an
- * xpath expression and converted if necessary to the type of the annotated
+ * Annotation for mapping JSON data to POJO fields. The JSON data is selected by
+ * an "path" expression and converted if necessary to the type of the annotated
  * field. For some types you can specify a format which is used when converting
- * the XML data to the fields type.
+ * the JSON data to the fields type.
  * <p>
  * Please note that the annotated fields must not be private!
  * <p>

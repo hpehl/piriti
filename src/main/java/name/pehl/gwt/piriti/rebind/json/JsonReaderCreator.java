@@ -147,7 +147,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-        processFields(writer, modelType.getFields());
+        processFields(writer, modelType.getFields(), "jsonObject");
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
@@ -156,7 +156,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     // ---------------------------------------------------------- field methods
 
-    private void processFields(IndentedWriter writer, JField[] fields) throws UnableToCompleteException
+    private void processFields(IndentedWriter writer, JField[] fields, String jsonVariable)
+            throws UnableToCompleteException
     {
         if (fields != null && fields.length != 0)
         {
@@ -169,7 +170,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
                     writer.newline();
                     String jsonPath = calculateJsonPath(field, jsonField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), jsonPath, jsonField.format(), "jsonObject", "value"
+                            field.getType(), field.getName(), jsonPath, jsonField.format(), jsonVariable, "value"
                                     + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)

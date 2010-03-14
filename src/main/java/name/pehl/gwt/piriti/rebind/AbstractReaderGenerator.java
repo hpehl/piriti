@@ -11,7 +11,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 /**
  * Abstract Generator for reader implementations. The generator delegates to an
  * {@link AbstractReaderCreator} instance which is responsible for generating
- * the implementation.
+ * the code.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 136 $

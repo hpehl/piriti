@@ -19,7 +19,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 
 /**
- * {@link FieldHandler} for collections.
+ * Abstract {@link FieldHandler} for collections.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$

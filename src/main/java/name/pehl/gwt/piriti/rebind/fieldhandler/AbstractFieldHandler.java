@@ -7,7 +7,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * Base class for all {@linkplain FieldHandler}s which contains common code.
+ * Abstract base class for {@linkplain FieldHandler}s which contains common
+ * code. Contains default implementations for all methods but
+ * {@link #writeConverterCode(IndentedWriter, FieldContext)}.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -37,6 +39,9 @@ public abstract class AbstractFieldHandler implements FieldHandler
 
     /**
      * {@inheritDoc}
+     * <p>
+     * The assignement is only done if {@link FieldContext#getValueVariable()}
+     * is not null.
      */
     @Override
     public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

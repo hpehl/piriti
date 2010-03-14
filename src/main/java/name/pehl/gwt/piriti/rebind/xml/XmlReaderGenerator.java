@@ -12,7 +12,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 /**
  * GWT Generator for XmlReaders. The generator delegates to
  * {@link XmlReaderCreator} which is responsible for generating the
- * implementation.
+ * code.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$

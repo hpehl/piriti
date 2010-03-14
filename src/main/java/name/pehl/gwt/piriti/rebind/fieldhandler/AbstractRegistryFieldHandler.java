@@ -1,6 +1,5 @@
 package name.pehl.gwt.piriti.rebind.fieldhandler;
 
-import name.pehl.gwt.piriti.client.json.JsonReader;
 import name.pehl.gwt.piriti.rebind.FieldContext;
 import name.pehl.gwt.piriti.rebind.IndentedWriter;
 
@@ -9,7 +8,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
- * {@link FieldHandler} implementation for types with an own {@link JsonReader}.
+ * Abstract {@link FieldHandler} implementation for types with an own reader.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -18,8 +17,8 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
 {
     /**
      * Returns <code>true</code> if the field type is a class or interface and
-     * if there's a public static field of type {@link JsonReader} in the field
-     * type, <code>false</code> otherwise.
+     * if there's a public static field of type {@link #getReaderClassname()} in
+     * the field type, <code>false</code> otherwise.
      * 
      * @param writer
      * @param fieldContext
