@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!--
+        $LastChangedBy: harald.pehl 
+        $LastChangedRevision: 137 $
+    -->
+    <parent>
+		<groupId>name.pehl.piriti</groupId>
+		<artifactId>piriti-parent</artifactId>
+		<version>0.3</version>
+    </parent>
+
+
+    <artifactId>piriti-restlet</artifactId>
+    <name>Piriti Restlet</name>
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>name.pehl.piriti</groupId>
+            <artifactId>piriti-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.gwt</groupId>
+            <artifactId>org.restlet</artifactId>
+        </dependency>
+    </dependencies>
+</project>
