@@ -41,9 +41,8 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
         JField registryField = findRegistryMember(fieldContext.getClassOrInterfaceType());
         if (registryField == null)
         {
-            skipField(writer, fieldContext, String.format(
-                    "No public static field of type JsonReader<%1$s> found in %1$s", fieldContext.getFieldType()
-                            .getQualifiedSourceName()));
+            skipField(writer, fieldContext, String.format("No public static field of type %s<%2$s> found in %2$s",
+                    getReaderClassname(), fieldContext.getFieldType().getQualifiedSourceName()));
             return false;
         }
         return true;

@@ -57,7 +57,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
-        readSingle(writer);
+        read(writer);
         writer.newline();
 
         readList(writer);
@@ -68,9 +68,9 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readSingle(IndentedWriter writer) throws UnableToCompleteException
+    private void read(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public %s readSingle(String json) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public %s read(String json) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (json != null && json.trim().length() != 0) {");
@@ -178,9 +178,9 @@ public class JsonReaderCreator extends AbstractReaderCreator
                         if (handler.isValid(writer, fieldContext))
                         {
                             handler.writeComment(writer, fieldContext);
-                            // handler.writeDeclaration(writer, fieldContext);
-                            // handler.writeConverterCode(writer, fieldContext);
-                            // handler.writeAssignment(writer, fieldContext);
+                            handler.writeDeclaration(writer, fieldContext);
+                            handler.writeConverterCode(writer, fieldContext);
+                            handler.writeAssignment(writer, fieldContext);
                             counter++;
                         }
                     }

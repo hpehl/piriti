@@ -42,7 +42,30 @@ public class StringFieldHandler extends AbstractFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("%s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
-                .getInputVariable(), fieldContext.getPath());
+        // If there's a path then get the JSON value using this path,
+        // otherwise it is expected that the JSON value is the inputVariable
+        // itself (e.g. an array of strings has no path information for the
+        // array elements)
+        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        if (fieldContext.getPath() != null)
+        {
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
+                    .getPath());
+        }
+        else
+        {
+            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+        }
+        writer.write("if (%s.isNull() == null) {", jsonValue);
+        writer.indent();
+        String jsonString = fieldContext.getValueVariable() + "AsJsonString";
+        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
+        writer.write("if (%s != null) {", jsonString);
+        writer.indent();
+        writer.write("%s = %s.stringValue();", fieldContext.getValueVariable(), jsonString);
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
     }
 }

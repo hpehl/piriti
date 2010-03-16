@@ -24,7 +24,7 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.DefaultFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.FieldContext)
      */
     @Override
@@ -40,7 +40,7 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
                 fieldContext.getPath());
         writer.write("if (nestedElement != null) {");
         writer.indent();
-        writer.write("%s = %s.%s.readSingle(nestedElement);", fieldContext.getValueVariable(), classType
+        writer.write("%s = %s.%s.read(nestedElement);", fieldContext.getValueVariable(), classType
                 .getQualifiedSourceName(), xmlRegistryField.getName());
         writer.outdent();
         writer.write("}");

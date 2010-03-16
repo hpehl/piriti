@@ -1,5 +1,7 @@
-package name.pehl.piriti.rebind.xml.fieldhandler;
+package name.pehl.piriti.rebind.fieldhandler;
 
+import name.pehl.piriti.client.converter.Converter;
+import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
@@ -8,12 +10,13 @@ import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * Default implementation for a {@link FieldHandler}.
+ * {@link FieldHandler} implementation which uses a {@link Converter} from the
+ * {@link ConverterRegistry}.
  * 
- * @author $LastChangedBy: harald.pehl $
- * @version $LastChangedRevision: 139 $
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
-public class DefaultFieldHandler extends AbstractFieldHandler
+public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
 {
     /**
      * Returns always <code>true</code>.
@@ -36,8 +39,7 @@ public class DefaultFieldHandler extends AbstractFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
-                fieldContext.getInputVariable(), fieldContext.getPath());
+        writeReadValueAsString(writer, fieldContext);
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
@@ -59,4 +61,14 @@ public class DefaultFieldHandler extends AbstractFieldHandler
         writer.outdent();
         writer.write("}");
     }
+
+
+    /**
+     * Responsible to read the value as string and assigning it to
+     * {@link FieldContext#getValueAsStringVariable()}.
+     * 
+     * @param writer
+     * @param fieldContext
+     */
+    protected abstract void writeReadValueAsString(IndentedWriter writer, FieldContext fieldContext);
 }

@@ -52,7 +52,7 @@ public interface XmlReader<T>
      * @return An instance of T with the mapped XML data or {@code null} if the
      *         document was {@code null}.
      */
-    T readSingle(Document document);
+    T read(Document document);
 
 
     /**
@@ -64,7 +64,7 @@ public interface XmlReader<T>
      * @return An instance of T with the mapped XML data or {@code null} if the
      *         element was {@code null}.
      */
-    T readSingle(Element element);
+    T read(Element element);
 
 
     /**

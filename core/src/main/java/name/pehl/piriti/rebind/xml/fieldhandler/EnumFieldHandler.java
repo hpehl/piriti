@@ -23,7 +23,7 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.DefaultFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.FieldContext)
      */
     @Override

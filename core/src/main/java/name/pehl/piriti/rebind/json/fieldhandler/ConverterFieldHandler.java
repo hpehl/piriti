@@ -1,33 +1,52 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
+import name.pehl.piriti.client.converter.Converter;
+import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.fieldhandler.AbstractEnumFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.json.client.JSONString;
 
 /**
- * {@link FieldHandler} for enum types. This implementation reads the XML data
- * as string and tries to convert it using <code>enumType.valueOf(String)</code>
- * .
+ * {@link FieldHandler} implementation which uses a {@link Converter} from the
+ * {@link ConverterRegistry}.
  * 
- * @author $LastChangedBy: harald.pehl $
- * @version $LastChangedRevision: 139 $
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
-public class EnumFieldHandler extends AbstractEnumFieldHandler
+public class ConverterFieldHandler extends AbstractConverterFieldHandler
 {
     /**
-     * TODO Javadoc
-     * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.FieldContext)
      */
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        super.writeConverterCode(writer, fieldContext);
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    /**
+     * Reads the string value using {@link JSONString#stringValue()}
+     * 
+     * @param writer
+     * @param fieldContext
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#writeReadValueAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.FieldContext)
+     */
+    @Override
+    protected void writeReadValueAsString(IndentedWriter writer, FieldContext fieldContext)
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
@@ -46,19 +65,9 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         String jsonString = fieldContext.getValueVariable() + "AsJsonString";
-        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
+        writer.write("JSONString %s = %s.isString();", jsonString, fieldContext.getInputVariable());
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
-        writer.write("try {");
-        writer.indent();
-        writer.write("%s = %s.valueOf(%s.stringValue());", fieldContext.getValueVariable(), fieldContext.getEnumType()
-                .getQualifiedSourceName(), jsonString);
-        writer.outdent();
-        writer.write("}");
-        writer.write("catch (IllegalArgumentException e) {}");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
+        writer.write("String %s = %s.stringValue();", fieldContext.getValueAsStringVariable(), jsonString);
     }
 }

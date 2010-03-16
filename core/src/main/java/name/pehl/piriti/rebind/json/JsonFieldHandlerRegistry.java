@@ -16,11 +16,15 @@ import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.ArrayFieldHandler;
+import name.pehl.piriti.rebind.json.fieldhandler.BooleanFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.CollectionFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.DefaultFieldHandler;
+import name.pehl.piriti.rebind.json.fieldhandler.ConverterFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.EnumFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.JsonRegistryFieldHandler;
+import name.pehl.piriti.rebind.json.fieldhandler.NumberFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.StringFieldHandler;
+
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
  * {@link FieldHandlerRegistry} used by the {@link JsonReaderCreator}.
@@ -48,7 +52,7 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * Registers the initial field handler for the json reader. The following
      * handlers are registered:
      * <ul>
-     * <li>{@linkplain DefaultFieldHandler}
+     * <li>{@linkplain ConverterFieldHandler}
      * <ul>
      * <li>Boolean.class.getName()
      * <li>Byte.class.getName()
@@ -81,17 +85,31 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
     {
         FieldHandler handler = null;
 
-        // Basics
-        handler = new DefaultFieldHandler();
-        registry.put(Boolean.class.getName(), handler);
-        registry.put(Byte.class.getName(), handler);
-        registry.put(Character.class.getName(), handler);
+        // Boolean
+        handler = new BooleanFieldHandler();
+        registry.put(JPrimitiveType.BOOLEAN.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.BOOLEAN.getQualifiedBoxedSourceName(), handler);
+
+        // Numbers
+        handler = new NumberFieldHandler();
+        registry.put(JPrimitiveType.BYTE.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.BYTE.getQualifiedBoxedSourceName(), handler);
+        registry.put(JPrimitiveType.SHORT.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.SHORT.getQualifiedBoxedSourceName(), handler);
+        registry.put(JPrimitiveType.INT.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.INT.getQualifiedBoxedSourceName(), handler);
+        registry.put(JPrimitiveType.LONG.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.LONG.getQualifiedBoxedSourceName(), handler);
+        registry.put(JPrimitiveType.FLOAT.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.FLOAT.getQualifiedBoxedSourceName(), handler);
+        registry.put(JPrimitiveType.DOUBLE.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.DOUBLE.getQualifiedBoxedSourceName(), handler);
+
+        // Characters Dates are handle by the ConverterFieldHandler
+        handler = new ConverterFieldHandler();
+        registry.put(JPrimitiveType.CHAR.getQualifiedSourceName(), handler);
+        registry.put(JPrimitiveType.CHAR.getQualifiedBoxedSourceName(), handler);
         registry.put(Date.class.getName(), handler);
-        registry.put(Double.class.getName(), handler);
-        registry.put(Float.class.getName(), handler);
-        registry.put(Integer.class.getName(), handler);
-        registry.put(Long.class.getName(), handler);
-        registry.put(Short.class.getName(), handler);
 
         // String
         handler = new StringFieldHandler();
@@ -115,7 +133,7 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * context. The lookup logic is implemented like this:
      * <ol>
      * <li>If the fields type is a primitive return the
-     * {@link DefaultFieldHandler}
+     * {@link ConverterFieldHandler}
      * <li>if the fields type is an enum return {@link EnumFieldHandler}
      * <li>If the fields type is an array return {@link ArrayFieldHandler}
      * <li>Try to lookup the field handler by the fields type classname (this
@@ -133,7 +151,7 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
         FieldHandler handler = null;
         if (fieldContext.isPrimitive())
         {
-            handler = new DefaultFieldHandler();
+            handler = new ConverterFieldHandler();
         }
         else if (fieldContext.isEnum())
         {

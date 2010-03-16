@@ -60,10 +60,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
-        readSingleFromDocument(writer);
+        readFromDocument(writer);
         writer.newline();
 
-        readSingleFromElement(writer);
+        readFromElement(writer);
         writer.newline();
 
         readListFromDocument(writer);
@@ -74,21 +74,21 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readSingleFromDocument(IndentedWriter writer) throws UnableToCompleteException
+    private void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
-        readSingle(writer, "Document", "document");
+        read(writer, "Document", "document");
     }
 
 
-    private void readSingleFromElement(IndentedWriter writer) throws UnableToCompleteException
+    private void readFromElement(IndentedWriter writer) throws UnableToCompleteException
     {
-        readSingle(writer, "Element", "element");
+        read(writer, "Element", "element");
     }
 
 
-    private void readSingle(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
+    private void read(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
     {
-        writer.write("public %s readSingle(%s %s) {", modelType.getParameterizedQualifiedSourceName(), xmlType,
+        writer.write("public %s read(%s %s) {", modelType.getParameterizedQualifiedSourceName(), xmlType,
                 xmlVariable);
         writer.indent();
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
@@ -129,7 +129,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.indent();
         writer.write("for (Element currentElement : elements) {");
         writer.indent();
-        writer.write("%s model = readSingle(currentElement);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("%s model = read(currentElement);", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (model != null) {");
         writer.indent();
         writer.write("models.add(model);");

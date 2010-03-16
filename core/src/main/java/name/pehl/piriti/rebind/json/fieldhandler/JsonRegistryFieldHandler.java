@@ -24,24 +24,36 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.DefaultFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.FieldContext)
      */
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
+        // If there's a path then get the JSON value using this path,
+        // otherwise it is expected that the JSON value is the inputVariable
+        // itself (e.g. an array of strings has no path information for the
+        // array elements)
+        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        if (fieldContext.getPath() != null)
+        {
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
+                    .getPath());
+        }
+        else
+        {
+            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+        }
+        writer.write("if (%s.isNull() == null) {", jsonValue);
+        writer.indent();
         JClassType classType = fieldContext.getClassOrInterfaceType();
         JField jsonRegistryField = findRegistryMember(fieldContext.getClassOrInterfaceType());
         writer.write("JsonReader<%1$s> %2$sReader = jsonRegistry.get(%1$s.class);", classType.getQualifiedSourceName(),
                 fieldContext.getValueVariable());
         writer.write("if (%sReader != null) {", fieldContext.getValueVariable());
         writer.indent();
-        writer.write("Element nestedElement = XPathUtils.getElement(%s, \"%s\");", fieldContext.getInputVariable(),
-                fieldContext.getPath());
-        writer.write("if (nestedElement != null) {");
-        writer.indent();
-        writer.write("%s = %s.%s.readSingle(nestedElement);", fieldContext.getValueVariable(), classType
-                .getQualifiedSourceName(), jsonRegistryField.getName());
+        writer.write("%s = %s.%s.read(%s.toString());", fieldContext.getValueVariable(), classType
+                .getQualifiedSourceName(), jsonRegistryField.getName(), jsonValue);
         writer.outdent();
         writer.write("}");
         writer.outdent();

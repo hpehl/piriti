@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface JsonReader<T>
 {
-    T readSingle(String json);
+    T read(String json);
 
 
     List<T> readList(String json);

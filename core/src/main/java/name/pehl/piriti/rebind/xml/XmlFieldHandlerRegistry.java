@@ -17,7 +17,7 @@ import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.DefaultFieldHandler;
+import name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.EnumFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.StringFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
@@ -48,7 +48,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      * Registers the initial field handler for the xml reader. The following
      * handlers are registered:
      * <ul>
-     * <li>{@linkplain DefaultFieldHandler}
+     * <li>{@linkplain ConverterFieldHandler}
      * <ul>
      * <li>Boolean.class.getName()
      * <li>Byte.class.getName()
@@ -82,7 +82,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
         FieldHandler handler = null;
 
         // Basics
-        handler = new DefaultFieldHandler();
+        handler = new ConverterFieldHandler();
         registry.put(Boolean.class.getName(), handler);
         registry.put(Byte.class.getName(), handler);
         registry.put(Character.class.getName(), handler);
@@ -115,7 +115,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      * context. The lookup logic is implemented like this:
      * <ol>
      * <li>If the fields type is a primitive return the
-     * {@link DefaultFieldHandler}
+     * {@link ConverterFieldHandler}
      * <li>if the fields type is an enum return {@link EnumFieldHandler}
      * <li>If the fields type is an array return {@link ArrayFieldHandler}
      * <li>Try to lookup the field handler by the fields type classname (this
@@ -133,7 +133,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
         FieldHandler handler = null;
         if (fieldContext.isPrimitive())
         {
-            handler = new DefaultFieldHandler();
+            handler = new ConverterFieldHandler();
         }
         else if (fieldContext.isEnum())
         {

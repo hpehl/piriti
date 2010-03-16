@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
 
@@ -28,12 +29,11 @@ public class Model
 
     // ------------------------------------------------------------ json reader
 
-    // public interface ModelJsonReader extends JsonReader<Model>
-    // {
-    // }
-    //
-    // public static final ModelJsonReader JSON =
-    // GWT.create(ModelJsonReader.class);
+    public interface ModelJsonReader extends JsonReader<Model>
+    {
+    }
+
+    public static final ModelJsonReader JSON = GWT.create(ModelJsonReader.class);
 
     // ------------------------------------------ primitives and simple objects
 
@@ -67,7 +67,7 @@ public class Model
 
     @XmlField
     @JsonField
-    public Amount demoEnum;
+    public Amount amount;
 
     @XmlField
     @JsonField

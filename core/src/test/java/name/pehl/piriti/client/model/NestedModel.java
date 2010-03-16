@@ -63,7 +63,7 @@ public class NestedModel
 
     @XmlField
     @JsonField
-    public Amount demoEnum;
+    public Amount amount;
 
     @XmlField
     @JsonField

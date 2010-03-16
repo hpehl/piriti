@@ -14,12 +14,15 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Utility methods for {@linkplain JType}s.
+ * 
  * @author $Author: harald.pehl $
- * @version $Date: 2010-01-14 17:11:02 +0100 (Do, 14. Jan 2010) $ $Revision: 54 $
+ * @version $Date: 2010-01-14 17:11:02 +0100 (Do, 14. Jan 2010) $ $Revision: 54
+ *          $
  */
 public final class TypeUtils
 {
@@ -28,22 +31,126 @@ public final class TypeUtils
     }
 
 
-    public static boolean isBasicType(JType type)
+    public static boolean isBoolean(JType type)
     {
-        if (Boolean.class.getName().equals(type.getQualifiedSourceName())
-                || Byte.class.getName().equals(type.getQualifiedSourceName())
-                || Character.class.getName().equals(type.getQualifiedSourceName())
-                || Date.class.getName().equals(type.getQualifiedSourceName())
-                || Double.class.getName().equals(type.getQualifiedSourceName())
-                || Float.class.getName().equals(type.getQualifiedSourceName())
-                || Integer.class.getName().equals(type.getQualifiedSourceName())
-                || Long.class.getName().equals(type.getQualifiedSourceName())
-                || Short.class.getName().equals(type.getQualifiedSourceName())
-                || String.class.getName().equals(type.getQualifiedSourceName()))
+        if (type != null)
         {
-            return true;
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.BOOLEAN))
+                    || type.getQualifiedSourceName().equals(Boolean.class.getName());
         }
         return false;
+    }
+
+
+    public static boolean isByte(JType type)
+    {
+        if (type != null)
+        {
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.BYTE))
+                    || type.getQualifiedSourceName().equals(Byte.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isCharacter(JType type)
+    {
+        if (type != null)
+        {
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.CHAR))
+                    || type.getQualifiedSourceName().equals(Character.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isDate(JType type)
+    {
+        if (type != null)
+        {
+            return type.getQualifiedSourceName().equals(Date.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isDouble(JType type)
+    {
+        if (type != null)
+        {
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.DOUBLE))
+                    || type.getQualifiedSourceName().equals(Double.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isFloat(JType type)
+    {
+        if (type != null)
+        {
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.FLOAT))
+                    || type.getQualifiedSourceName().equals(Float.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isInteger(JType type)
+    {
+        if (type != null)
+        {
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.INT))
+                    || type.getQualifiedSourceName().equals(Integer.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isLong(JType type)
+    {
+        if (type != null)
+        {
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.LONG))
+                    || type.getQualifiedSourceName().equals(Long.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isShort(JType type)
+    {
+        if (type != null)
+        {
+            JPrimitiveType primitive = type.isPrimitive();
+            return (primitive != null && primitive.equals(JPrimitiveType.SHORT))
+                    || type.getQualifiedSourceName().equals(Short.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isString(JType type)
+    {
+        if (type != null)
+        {
+            return type.getQualifiedSourceName().equals(String.class.getName());
+        }
+        return false;
+    }
+
+
+    public static boolean isBasicType(JType type)
+    {
+        return isBoolean(type) || isByte(type) || isCharacter(type) || isDate(type) || isDouble(type) || isFloat(type)
+                || isInteger(type) || isLong(type) || isShort(type) || isString(type);
     }
 
 

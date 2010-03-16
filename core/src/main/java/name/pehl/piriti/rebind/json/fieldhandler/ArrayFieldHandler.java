@@ -2,7 +2,6 @@ package name.pehl.piriti.rebind.json.fieldhandler;
 
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AbstractArrayFieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
@@ -26,7 +25,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.DefaultFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.FieldContext)
      */
     @Override
@@ -48,35 +47,51 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
             }
         }
         String valueVariableAsList = fieldContext.getValueVariable() + "AsList";
-        String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
-        String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
+        String nestedJsonValueVariable = fieldContext.getValueVariable() + "NestedJsonValue";
         String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
-        String nestedXpath = ".";
-        if (componentType.isPrimitive() != null || TypeUtils.isBasicType(componentType)
-                || componentType.isEnum() != null)
-        {
-            nestedXpath += "/text()";
-        }
-
+        // The field context is created *without* a path. The nested field
+        // handler must take care of this!
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(),
-                nestedXpath, fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
+                .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(), null,
+                fieldContext.getFormat(), nestedJsonValueVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
 
-        writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
-                .getInputVariable(), fieldContext.getPath());
-        writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
+        // If there's a path then get the JSON value using this path,
+        // otherwise it is expected that the JSON value is the inputVariable
+        // itself (e.g. an array of strings has no path information for the
+        // array elements)
+        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        if (fieldContext.getPath() != null)
+        {
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
+                    .getPath());
+        }
+        else
+        {
+            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+        }
+        writer.write("if (%s != null) {", jsonValue);
         writer.indent();
+        writer.write("JSONArray jsonArray = %s.isArray();", jsonValue);
+        writer.write("if (jsonArray != null) {");
+        writer.indent();
+        writer.write("int size = jsonArray.size();");
         writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", componentType.getParameterizedQualifiedSourceName(),
                 valueVariableAsList);
-        writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
+        writer.write("for (int i = 0; i < size; i++) {");
+        writer.indent();
+        writer.write("JSONValue %s = jsonArray.get(i);", nestedJsonValueVariable);
+        writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedJsonValueVariable);
         writer.indent();
         nestedHandler.writeComment(writer, nestedFieldContext);
         nestedHandler.writeDeclaration(writer, nestedFieldContext);
-        nestedHandler.writeConverterCode(writer, nestedFieldContext);
+        writer.write("// TODO nestedHandler.writeConverterCode(writer, nestedFieldContext)");
+        // nestedHandler.writeConverterCode(writer, nestedFieldContext);
         writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
         writer.indent();
         writer.write("%s.add(%s);", valueVariableAsList, nestedFieldContext.getValueVariable());
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -98,6 +113,8 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         writer.indent();
         writer.write("%s[index] = currentValue;", fieldContext.getValueVariable());
         writer.write("index++;");
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();

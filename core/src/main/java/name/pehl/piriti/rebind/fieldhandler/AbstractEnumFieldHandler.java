@@ -28,6 +28,7 @@ public abstract class AbstractEnumFieldHandler extends AbstractFieldHandler
         if (!fieldContext.isEnum())
         {
             skipField(writer, fieldContext, "Type is no enum");
+            return false;
         }
         return true;
     }
