@@ -85,8 +85,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         writer.indent();
         nestedHandler.writeComment(writer, nestedFieldContext);
         nestedHandler.writeDeclaration(writer, nestedFieldContext);
-        writer.write("// TODO nestedHandler.writeConverterCode(writer, nestedFieldContext)");
-        // nestedHandler.writeConverterCode(writer, nestedFieldContext);
+        nestedHandler.writeConverterCode(writer, nestedFieldContext);
         writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
         writer.indent();
         writer.write("%s.add(%s);", valueVariableAsList, nestedFieldContext.getValueVariable());

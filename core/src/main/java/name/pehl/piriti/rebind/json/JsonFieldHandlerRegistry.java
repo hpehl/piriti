@@ -149,11 +149,7 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
     public FieldHandler findFieldHandler(FieldContext fieldContext)
     {
         FieldHandler handler = null;
-        if (fieldContext.isPrimitive())
-        {
-            handler = new ConverterFieldHandler();
-        }
-        else if (fieldContext.isEnum())
+        if (fieldContext.isEnum())
         {
             handler = new EnumFieldHandler();
         }
