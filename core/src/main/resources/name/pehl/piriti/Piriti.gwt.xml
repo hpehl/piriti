@@ -5,7 +5,6 @@
         $LastChangedBy: harald.pehl 
         $LastChangedRevision: 138 $
     -->
-
     <inherits name="com.google.gwt.inject.Inject" />
     <inherits name="com.google.gwt.json.JSON" />
     <inherits name="com.google.gwt.user.User" />
