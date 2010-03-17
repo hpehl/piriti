@@ -47,7 +47,7 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         JClassType classType = fieldContext.getClassOrInterfaceType();
-        JField jsonRegistryField = findRegistryMember(fieldContext.getClassOrInterfaceType());
+        JField jsonRegistryField = findRegistryMember(classType);
         writer.write("JsonReader<%1$s> %2$sReader = jsonRegistry.get(%1$s.class);", classType.getQualifiedSourceName(),
                 fieldContext.getValueVariable());
         writer.write("if (%sReader != null) {", fieldContext.getValueVariable());

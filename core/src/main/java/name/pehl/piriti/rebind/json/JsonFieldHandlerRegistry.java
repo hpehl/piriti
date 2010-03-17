@@ -52,32 +52,40 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * Registers the initial field handler for the json reader. The following
      * handlers are registered:
      * <ul>
-     * <li>{@linkplain ConverterFieldHandler}
+     * <li>{@linkplain BooleanFieldHandler}
      * <ul>
-     * <li>Boolean.class.getName()
-     * <li>Byte.class.getName()
-     * <li>Character.class.getName()
-     * <li>Date.class.getName()
-     * <li>Double.class.getName()
-     * <li>Float.class.getName()
-     * <li>Integer.class.getName()
-     * <li>Long.class.getName()
-     * <li>Short.class.getName()
+     * <li>boolean, Boolean
+     * </ul>
+     * 
+     * <li>{@link NumberFieldHandler}
+     * <ul>
+     * <li>byte, Byte
+     * <li>short, Short
+     * <li>int, Integer
+     * <li>long, Long
+     * <li>float, Float
+     * <li>double, Double
+     * </ul>
+     * 
+     * <li>{@link ConverterFieldHandler}
+     * <ul>
+     * <li>char, Character
+     * <li>Date
      * </ul>
      * <li>{@linkplain StringFieldHandler}
      * <ul>
-     * <li>String.class.getName()
+     * <li>String
      * </ul>
      * <li>{@linkplain CollectionFieldHandler}
      * <ul>
-     * <li>Collection.class.getName()
-     * <li>List.class.getName()
-     * <li>ArrayList.class.getName()
-     * <li>LinkedList.class.getName()
-     * <li>Set.class.getName()
-     * <li>HashSet.class.getName()
-     * <li>SortedSet.class.getName()
-     * <li>TreeSet.class.getName()
+     * <li>Collection
+     * <li>List
+     * <li>ArrayList
+     * <li>LinkedList
+     * <li>Set
+     * <li>HashSet
+     * <li>SortedSet
+     * <li>TreeSet
      * </ul>
      * <ul>
      */

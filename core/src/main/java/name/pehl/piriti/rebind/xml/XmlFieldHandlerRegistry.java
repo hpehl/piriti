@@ -50,30 +50,30 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      * <ul>
      * <li>{@linkplain ConverterFieldHandler}
      * <ul>
-     * <li>Boolean.class.getName()
-     * <li>Byte.class.getName()
-     * <li>Character.class.getName()
-     * <li>Date.class.getName()
-     * <li>Double.class.getName()
-     * <li>Float.class.getName()
-     * <li>Integer.class.getName()
-     * <li>Long.class.getName()
-     * <li>Short.class.getName()
+     * <li>Boolean
+     * <li>Byte
+     * <li>Character
+     * <li>Date
+     * <li>Double
+     * <li>Float
+     * <li>Integer
+     * <li>Long
+     * <li>Short
      * </ul>
      * <li>{@linkplain StringFieldHandler}
      * <ul>
-     * <li>String.class.getName()
+     * <li>String
      * </ul>
      * <li>{@linkplain CollectionFieldHandler}
      * <ul>
-     * <li>Collection.class.getName()
-     * <li>List.class.getName()
-     * <li>ArrayList.class.getName()
-     * <li>LinkedList.class.getName()
-     * <li>Set.class.getName()
-     * <li>HashSet.class.getName()
-     * <li>SortedSet.class.getName()
-     * <li>TreeSet.class.getName()
+     * <li>Collection
+     * <li>List
+     * <li>ArrayList
+     * <li>LinkedList
+     * <li>Set
+     * <li>HashSet
+     * <li>SortedSet
+     * <li>TreeSet
      * </ul>
      * <ul>
      */

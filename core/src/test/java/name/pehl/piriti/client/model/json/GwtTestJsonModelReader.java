@@ -13,7 +13,6 @@ public class GwtTestJsonModelReader extends ModelTestCase
     {
         String json = JsonModelFactory.createModel();
         Model model = Model.JSON.read(json);
-        // Not yet implemented
-        // assertModel(model);
+        assertModel(model);
     }
 }

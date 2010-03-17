@@ -3,6 +3,7 @@ package name.pehl.piriti.client.model;
 import java.util.Date;
 
 import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
 
@@ -24,12 +25,11 @@ public class NestedModel
 
     // ------------------------------------------------------------ json reader
 
-    // interface NestedModelJsonReader extends XmlReader<NestedModel>
-    // {
-    // }
-    //
-    // public static final NestedModelJsonReader SOME_FANCY_JSON_NAME =
-    // GWT.create(NestedModelJsonReader.class);
+    interface NestedModelJsonReader extends JsonReader<NestedModel>
+    {
+    }
+
+    public static final NestedModelJsonReader SOME_FANCY_JSON_NAME = GWT.create(NestedModelJsonReader.class);
 
     // -------------------------------------------------------- private members
 

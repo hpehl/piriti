@@ -62,7 +62,10 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
                 .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(),
                 nestedXpath, fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
-
+        if (!nestedHandler.isValid(writer, nestedFieldContext))
+        {
+            return;
+        }
         writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
                 .getInputVariable(), fieldContext.getPath());
         writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);

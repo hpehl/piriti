@@ -55,6 +55,10 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
                 .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(), null,
                 fieldContext.getFormat(), nestedJsonValueVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        if (!nestedHandler.isValid(writer, nestedFieldContext))
+        {
+            return;
+        }
 
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable

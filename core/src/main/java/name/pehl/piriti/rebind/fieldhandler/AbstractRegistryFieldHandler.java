@@ -41,7 +41,7 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
         JField registryField = findRegistryMember(fieldContext.getClassOrInterfaceType());
         if (registryField == null)
         {
-            skipField(writer, fieldContext, String.format("No public static field of type %s<%2$s> found in %2$s",
+            skipField(writer, fieldContext, String.format("No public static field of type %1$s<%2$s> found in %2$s",
                     getReaderClassname(), fieldContext.getFieldType().getQualifiedSourceName()));
             return false;
         }
@@ -61,10 +61,10 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
                     JClassType fieldType = field.getType().isClassOrInterface();
                     if (fieldType != null)
                     {
-                        JClassType[] interfaces = fieldType.getImplementedInterfaces();
-                        if (interfaces != null)
+                        JClassType[] interfazes = fieldType.getImplementedInterfaces();
+                        if (interfazes != null)
                         {
-                            for (JClassType interfaze : interfaces)
+                            for (JClassType interfaze : interfazes)
                             {
                                 if (getReaderClassname().equals(interfaze.getQualifiedSourceName()))
                                 {

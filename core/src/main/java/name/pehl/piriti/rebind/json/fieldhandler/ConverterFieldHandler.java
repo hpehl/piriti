@@ -65,7 +65,7 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         String jsonString = fieldContext.getValueVariable() + "AsJsonString";
-        writer.write("JSONString %s = %s.isString();", jsonString, fieldContext.getInputVariable());
+        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
         writer.write("String %s = %s.stringValue();", fieldContext.getValueAsStringVariable(), jsonString);
