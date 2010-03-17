@@ -189,6 +189,18 @@
                 <version>${restlet.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <dependency>
+                <groupId>org.restlet.gwt</groupId>
+                <artifactId>org.restlet.ext.json</artifactId>
+                <version>${restlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.restlet.gwt</groupId>
+                <artifactId>org.restlet.ext.xml</artifactId>
+                <version>${restlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
 
             <!-- Test -->
             <dependency>
@@ -209,6 +221,14 @@
 
     <!-- Global dependencies used in all modules -->
     <dependencies>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
