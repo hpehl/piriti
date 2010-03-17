@@ -63,17 +63,13 @@ public class ConverterRegistryImpl implements ConverterRegistry
 
 
     /**
-     * Registers the specified converter. If the clazz is {@code null} no
-     * converter is registered. If a converter for the specified class is
-     * already registered it is overwritten with the ne converter.
+     * {@inheritDoc} If a converter for the specified class is already
+     * registered it is overwritten with the converter.
      */
     @Override
     public <T> void register(Class<T> clazz, Converter<T> converter)
     {
-        if (clazz != null)
-        {
-            registry.put(clazz, converter);
-        }
+        registry.put(clazz, converter);
     }
 
 
@@ -84,10 +80,6 @@ public class ConverterRegistryImpl implements ConverterRegistry
     @SuppressWarnings("unchecked")
     public <T> Converter<T> get(Class<T> clazz)
     {
-        if (clazz != null)
-        {
-            return (Converter<T>) registry.get(clazz);
-        }
-        return null;
+        return (Converter<T>) registry.get(clazz);
     }
 }

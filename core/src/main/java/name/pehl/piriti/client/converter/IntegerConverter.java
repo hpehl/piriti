@@ -1,6 +1,7 @@
 package name.pehl.piriti.client.converter;
 
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.inject.internal.Nullable;
 
 /**
  * Converter for integer objects. Uses {@code Integer.valueOf(value)} if no
@@ -15,7 +16,7 @@ public class IntegerConverter extends AbstractConverter<Integer>
      * Converts the specified value to integer.
      * 
      * @param value
-     *            The string to be converted
+     *            The string to be converted. May be <code>null</code>.
      * @param format
      *            Must be a valid number format or {@code null}
      * @return {@code null} if the value is {@code null}, empty or in the wrong
@@ -24,7 +25,7 @@ public class IntegerConverter extends AbstractConverter<Integer>
      *      java.lang.String)
      */
     @Override
-    public Integer convert(String value, String format)
+    public Integer convert(@Nullable String value, @Nullable String format)
     {
         if (isValid(value))
         {

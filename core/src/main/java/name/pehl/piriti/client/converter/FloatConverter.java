@@ -1,6 +1,7 @@
 package name.pehl.piriti.client.converter;
 
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.inject.internal.Nullable;
 
 /**
  * Converter for float objects. Uses {@code Float.valueOf(value)} if no format
@@ -15,7 +16,7 @@ public class FloatConverter extends AbstractConverter<Float>
      * Converts the specified value to float.
      * 
      * @param value
-     *            The string to be converted
+     *            The string to be converted. May be <code>null</code>.
      * @param format
      *            Must be a valid number format or {@code null}
      * @return {@code null} if the value is {@code null}, empty or in the wrong
@@ -24,7 +25,7 @@ public class FloatConverter extends AbstractConverter<Float>
      *      java.lang.String)
      */
     @Override
-    public Float convert(String value, String format)
+    public Float convert(@Nullable String value, @Nullable String format)
     {
         if (isValid(value))
         {

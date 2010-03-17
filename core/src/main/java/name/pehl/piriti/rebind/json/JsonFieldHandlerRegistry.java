@@ -14,6 +14,7 @@ import java.util.TreeSet;
 
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.BooleanFieldHandler;
@@ -25,6 +26,7 @@ import name.pehl.piriti.rebind.json.fieldhandler.NumberFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.StringFieldHandler;
 
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * {@link FieldHandlerRegistry} used by the {@link JsonReaderCreator}.
@@ -56,7 +58,6 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * <ul>
      * <li>boolean, Boolean
      * </ul>
-     * 
      * <li>{@link NumberFieldHandler}
      * <ul>
      * <li>byte, Byte
@@ -66,7 +67,6 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * <li>float, Float
      * <li>double, Double
      * </ul>
-     * 
      * <li>{@link ConverterFieldHandler}
      * <ul>
      * <li>char, Character
@@ -167,13 +167,27 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
         }
         else
         {
-            // Ask the registry for all other stuff (basic types,
-            // collections, maps, ...)
-            handler = registry.get(fieldContext.getFieldType().getQualifiedSourceName());
-            if (handler == null)
+            // If there's a format specified in the annotation and
+            // the type is int, long, float or double use the converter
+            // to convert the value, which is expected to be a string!
+            JType fieldType = fieldContext.getFieldType();
+            if (fieldContext.getFormat() != null
+                    && (TypeUtils.isInteger(fieldType) || TypeUtils.isLong(fieldType) || TypeUtils.isFloat(fieldType) || TypeUtils
+                            .isDouble(fieldType)))
             {
-                // Delegate to the XmlRegistry to resolve other mapped models
-                handler = new JsonRegistryFieldHandler();
+                handler = new ConverterFieldHandler();
+            }
+            else
+            {
+                // Ask the registry for all other stuff (basic types,
+                // collections, maps, ...)
+                handler = registry.get(fieldContext.getFieldType().getQualifiedSourceName());
+                if (handler == null)
+                {
+                    // Delegate to the XmlRegistry to resolve other mapped
+                    // models
+                    handler = new JsonRegistryFieldHandler();
+                }
             }
         }
         return handler;

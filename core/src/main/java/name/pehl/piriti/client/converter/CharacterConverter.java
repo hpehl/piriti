@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.converter;
 
+import com.google.inject.internal.Nullable;
+
 /**
  * Converter for character objects. Uses the first character of the value for
  * the conversion.
@@ -13,7 +15,7 @@ public class CharacterConverter extends AbstractConverter<Character>
      * Converts the specified value to boolean.
      * 
      * @param value
-     *            The string to be converted
+     *            The string to be converted. May be <code>null</code>.
      * @param format
      *            Ignored
      * @return {@code null} if the value is {@code null}, otherwise the first
@@ -22,7 +24,7 @@ public class CharacterConverter extends AbstractConverter<Character>
      *      java.lang.String)
      */
     @Override
-    public Character convert(String value, String format)
+    public Character convert(@Nullable String value, @Nullable String format)
     {
         if (value != null && value.length() > 0)
         {

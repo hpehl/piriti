@@ -8,12 +8,14 @@ import java.lang.annotation.Target;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONString;
 
 /**
  * Annotation for mapping JSON data to POJO fields. The JSON data is selected by
- * an "path" expression and converted if necessary to the type of the annotated
- * field. For some types you can specify a format which is used when converting
- * the JSON data to the fields type.
+ * a "path" expression (the key of the JSON data) and converted if necessary to
+ * the type of the annotated field. For some types you can specify a format
+ * which is used when converting the JSON data to the fields type.
  * <p>
  * Please note that the annotated fields must not be private!
  * <p>
@@ -21,27 +23,27 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <table>
  * <tr>
  * <th>Type</th>
- * <th>Default xpath expression</th>
+ * <th>Default path expression</th>
  * <th>Format options</th>
  * </tr>
  * <tr>
  * <td>boolean, Boolean</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>byte, Byte</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>char, Character</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>java.util.Date</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;fieldname&gt;</td>
  * <td>If no format is specified a
  * {@linkplain name.pehl.piriti.client.converter.DateConverter#DEFAULT_FORMAT
  * default format} is used. Otherwise must be a valid date format as described
@@ -49,49 +51,53 @@ import com.google.gwt.i18n.client.NumberFormat;
  * </tr>
  * <tr>
  * <td>double, Double</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Double#parseDouble(String)}. Otherwise must be a valid number format
- * as described by {@link NumberFormat}</td>
+ * <td>&lt;fieldname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * </tr>
  * <tr>
  * <td>float, Float</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Float#parseFloat(String)}. Otherwise must be a valid number format as
- * described by {@link NumberFormat}</td>
+ * <td>&lt;fieldname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * </tr>
  * <tr>
  * <td>int, Integer</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Integer#parseInt(String)}. Otherwise must be a valid number format as
- * described by {@link NumberFormat}</td>
+ * <td>&lt;fieldname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * </tr>
  * <tr>
  * <td>long, Long</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Long#parseLong(String)}. Otherwise must be a valid number format as
- * described by {@link NumberFormat}</td>
+ * <td>&lt;fieldname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * </tr>
  * <tr>
  * <td>short, Short</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>String</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>Enums</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
- * <td>All types for which a {@link XmlReader} is registered</td>
+ * <td>All types for which a {@link JsonReader} is registered</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * </tr>
@@ -131,8 +137,8 @@ import com.google.gwt.i18n.client.NumberFormat;
 public @interface JsonField
 {
     /**
-     * An xpath expression to select the XML data. Defaults to "" which means
-     * that the fields name is taken as a base for the xpath expression.
+     * A path expression to select the JSON data. Defaults to "" which means
+     * that the fields name is taken as a default.
      * 
      * @return
      */
@@ -140,7 +146,7 @@ public @interface JsonField
 
 
     /**
-     * The format to use when converting the XML data to the fields type.
+     * The format to use when converting the JSON data to the fields type.
      * Defaults to "".
      * 
      * @return

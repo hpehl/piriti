@@ -21,15 +21,12 @@ public class JsonRegistryImpl implements JsonRegistry
 
 
     /**
-     * Both the clazz and the reader must not be null.
+     * {@inheritDoc}
      */
     @Override
     public <T> void register(Class<T> clazz, JsonReader<T> reader)
     {
-        if (clazz != null && reader != null)
-        {
-            registry.put(clazz, reader);
-        }
+        registry.put(clazz, reader);
     }
 
 
@@ -40,10 +37,6 @@ public class JsonRegistryImpl implements JsonRegistry
     @SuppressWarnings("unchecked")
     public <T> JsonReader<T> get(Class<T> clazz)
     {
-        if (clazz != null)
-        {
-            return (JsonReader<T>) registry.get(clazz);
-        }
-        return null;
+        return (JsonReader<T>) registry.get(clazz);
     }
 }

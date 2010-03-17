@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.converter;
 
+import com.google.inject.internal.Nullable;
+
 /**
  * Converter for short objects. Uses {@code Short.valueOf(value)} for the
  * conversion.
@@ -13,7 +15,7 @@ public class ShortConverter extends AbstractConverter<Short>
      * Converts the specified value to short.
      * 
      * @param value
-     *            The string to be converted
+     *            The string to be converted. May be <code>null</code>.
      * @param format
      *            Ignored
      * @return {@code null} if the value is {@code null} or empty, otherwise the
@@ -22,7 +24,7 @@ public class ShortConverter extends AbstractConverter<Short>
      *      java.lang.String)
      */
     @Override
-    public Short convert(String value, String format)
+    public Short convert(@Nullable String value, @Nullable String format)
     {
         if (isValid(value))
         {

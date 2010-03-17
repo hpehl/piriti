@@ -31,6 +31,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is boolean or Boolean, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is boolean or Boolean, false otherwise.
+     */
     public static boolean isBoolean(JType type)
     {
         if (type != null)
@@ -43,6 +49,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is byte or Byte, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is byte or Byte, false otherwise.
+     */
     public static boolean isByte(JType type)
     {
         if (type != null)
@@ -55,6 +67,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is char or Caharacter, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is char or Character, false otherwise.
+     */
     public static boolean isCharacter(JType type)
     {
         if (type != null)
@@ -67,6 +85,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is Date, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is Date, false otherwise.
+     */
     public static boolean isDate(JType type)
     {
         if (type != null)
@@ -77,6 +101,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is double or Double, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is double or Double, false otherwise.
+     */
     public static boolean isDouble(JType type)
     {
         if (type != null)
@@ -89,6 +119,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is float or Float, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is float or Float, false otherwise.
+     */
     public static boolean isFloat(JType type)
     {
         if (type != null)
@@ -101,6 +137,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is int or Integer, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is int or Integer, false otherwise.
+     */
     public static boolean isInteger(JType type)
     {
         if (type != null)
@@ -113,6 +155,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is long or Long, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is long or Long, false otherwise.
+     */
     public static boolean isLong(JType type)
     {
         if (type != null)
@@ -125,6 +173,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is short or Short, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is short or Short, false otherwise.
+     */
     public static boolean isShort(JType type)
     {
         if (type != null)
@@ -137,6 +191,12 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is String, false otherwise.
+     * 
+     * @param type
+     * @return true if the type is String, false otherwise.
+     */
     public static boolean isString(JType type)
     {
         if (type != null)
@@ -147,6 +207,25 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Returns true if the type is
+     * <ul>
+     * <li>boolean or Boolean
+     * <li>byte or Byte
+     * <li>char or Character
+     * <li>Date
+     * <li>double or Double
+     * <li>float or Float
+     * <li>int or Integer
+     * <li>long or Long
+     * <li>short or Short
+     * <li>String
+     * </ul>
+     * false otherwise.
+     * 
+     * @param type
+     * @return
+     */
     public static boolean isBasicType(JType type)
     {
         return isBoolean(type) || isByte(type) || isCharacter(type) || isDate(type) || isDouble(type) || isFloat(type)
@@ -154,6 +233,23 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Return true if the collection is
+     * <ul>
+     * <li>Collection
+     * <li>List
+     * <li>ArrayList
+     * <li>LinkedList
+     * <li>Set
+     * <li>HashSet
+     * <li>SortedSet
+     * <li>TreeSet
+     * </ul>
+     * false otherwise,
+     * 
+     * @param type
+     * @return
+     */
     public static boolean isCollection(JType type)
     {
         if (Collection.class.getName().equals(type.getQualifiedSourceName())
@@ -171,6 +267,19 @@ public final class TypeUtils
     }
 
 
+    /**
+     * Return true if the map is
+     * <ul>
+     * <li>Map
+     * <li>HashMap
+     * <li>SortedMap
+     * <li>TreeMap
+     * </ul>
+     * false otherwise.
+     * 
+     * @param type
+     * @return
+     */
     public static boolean isMap(JType type)
     {
         if (Map.class.getName().equals(type.getQualifiedSourceName())

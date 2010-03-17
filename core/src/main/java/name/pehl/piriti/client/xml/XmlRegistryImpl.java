@@ -21,15 +21,12 @@ public class XmlRegistryImpl implements XmlRegistry
 
 
     /**
-     * Both the clazz and the reader must not be null.
+     * {@inheritDoc}
      */
     @Override
     public <T> void register(Class<T> clazz, XmlReader<T> reader)
     {
-        if (clazz != null && reader != null)
-        {
-            registry.put(clazz, reader);
-        }
+        registry.put(clazz, reader);
     }
 
 

@@ -1,6 +1,7 @@
 package name.pehl.piriti.client.converter;
 
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.inject.internal.Nullable;
 
 /**
  * Converter for double objects. Uses {@code Double.valueOf(value)} if no format
@@ -15,7 +16,7 @@ public class DoubleConverter extends AbstractConverter<Double>
      * Converts the specified value to double.
      * 
      * @param value
-     *            The string to be converted
+     *            The string to be converted. May be <code>null</code>.
      * @param format
      *            Must be a valid number format or {@code null}
      * @return {@code null} if the value is {@code null}, empty or in the wrong
@@ -24,7 +25,7 @@ public class DoubleConverter extends AbstractConverter<Double>
      *      java.lang.String)
      */
     @Override
-    public Double convert(String value, String format)
+    public Double convert(@Nullable String value, @Nullable String format)
     {
         if (isValid(value))
         {
