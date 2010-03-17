@@ -25,5 +25,13 @@
             <groupId>org.restlet.gwt</groupId>
             <artifactId>org.restlet</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.restlet.gwt</groupId>
+            <artifactId>org.restlet.ext.json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.gwt</groupId>
+            <artifactId>org.restlet.ext.xml</artifactId>
+        </dependency>
     </dependencies>
 </project>
