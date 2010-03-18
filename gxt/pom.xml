@@ -25,5 +25,21 @@
             <groupId>com.extjs</groupId>
             <artifactId>gxt</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mouchel.gwt.xpath</groupId>
+            <artifactId>gwtxpath</artifactId>
+        </dependency>
     </dependencies>
 </project>

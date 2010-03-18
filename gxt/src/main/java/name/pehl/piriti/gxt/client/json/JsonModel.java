@@ -6,9 +6,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import name.pehl.piriti.client.json.JsonField;
+import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
+ * Class annotations for {@link ModelData GXT models} which contains several
+ * {@link JsonField} annotations. In case of a successful mapping each
+ * annotation results in a {@link ModelData#set(String, Object)} call.
+ * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
