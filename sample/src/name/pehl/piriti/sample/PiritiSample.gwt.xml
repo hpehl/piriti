@@ -4,8 +4,8 @@
     <inherits name="org.restlet.Restlet" />
     <inherits name="com.google.gwt.inject.Inject" />
     <inherits name="name.pehl.piriti.Piriti" />
-    <inherits name="name.pehl.piriti.PiritiGxt" />
-    <inherits name="name.pehl.piriti.PiritiRestlet" />
+    <inherits name="name.pehl.piriti.gxt.PiritiGxt" />
+    <inherits name="name.pehl.piriti.restlet.PiritiRestlet" />
     
     <entry-point class="name.pehl.piriti.sample.client.PiritiSample" />
 

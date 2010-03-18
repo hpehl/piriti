@@ -1,9 +1,9 @@
-package name.pehl.piriti.client.restlet.json;
+package name.pehl.piriti.restlet.client.json;
 
 import java.io.IOException;
 
 import name.pehl.piriti.client.json.JsonReader;
-import name.pehl.piriti.client.restlet.PiritiResource;
+import name.pehl.piriti.restlet.client.PiritiResource;
 
 import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.json.JsonRepresentation;
@@ -18,8 +18,8 @@ import com.google.gwt.json.client.JSONValue;
  * 
  * @param <T>
  *            The model type
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class PiritiJsonRepresentation<T> extends JsonRepresentation implements PiritiResource<T>
 {

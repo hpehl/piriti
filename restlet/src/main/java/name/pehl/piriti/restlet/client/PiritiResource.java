@@ -1,4 +1,4 @@
-package name.pehl.piriti.client.restlet;
+package name.pehl.piriti.restlet.client;
 
 import java.io.IOException;
 
@@ -7,8 +7,8 @@ import java.io.IOException;
  * 
  * @param <T>
  *            The model type
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public interface PiritiResource<T>
 {

@@ -1,9 +1,9 @@
-package name.pehl.piriti.client.restlet.xml;
+package name.pehl.piriti.restlet.client.xml;
 
 import java.io.IOException;
 
-import name.pehl.piriti.client.restlet.PiritiResource;
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.restlet.client.PiritiResource;
 
 import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.xml.DomRepresentation;
@@ -17,8 +17,8 @@ import com.google.gwt.xml.client.Document;
  * 
  * @param <T>
  *            The model type
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class PiritiXmlRepresentation<T> extends DomRepresentation implements PiritiResource<T>
 {
