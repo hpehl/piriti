@@ -12,7 +12,7 @@
     <version>0.3</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
-    <description>Annotation based XML mapper for GWT</description>
+    <description>Annotation based JSON and XML mapper for GWT</description>
     <url>http://code.google.com/p/piriti/</url>
     <organization>
         <name>Harald Pehl</name>
@@ -290,6 +290,7 @@
                         <classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
                     </classpathContainers>
                     <additionalBuildcommands>
+                        <buildcommand>com.google.gdt.eclipse.core.webAppProjectValidator</buildcommand>
                         <buildcommand>com.google.gwt.eclipse.core.gwtProjectValidator</buildcommand>
                     </additionalBuildcommands>
                     <additionalProjectnatures>
@@ -302,30 +303,6 @@
                                 <![CDATA[
 eclipse.preferences.version=1
 encoding/<project>=${project.build.sourceEncoding}]]>
-                            </content>
-                        </file>
-                        <file>
-                            <name>.settings/com.google.appengine.eclipse.core.prefs</name>
-                            <content>
-                                <![CDATA[
-eclipse.preferences.version=1
-filesCopiedToWebInfLib=]]>
-                            </content>
-                        </file>
-                        <file>
-                            <name>.settings/com.google.gdt.eclipse.core.prefs</name>
-                            <content>
-                                <![CDATA[
-eclipse.preferences.version=1
-jarsExcludedFromWebInfLib=]]>
-                            </content>
-                        </file>
-                        <file>
-                            <name>.settings/com.google.gwt.eclipse.core.prefs</name>
-                            <content>
-                                <![CDATA[
-eclipse.preferences.version=1
-entryPointModules=]]>
                             </content>
                         </file>
                     </additionalConfig>
