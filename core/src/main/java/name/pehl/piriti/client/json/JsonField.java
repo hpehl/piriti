@@ -53,7 +53,7 @@ import com.google.gwt.json.client.JSONString;
  * <td>double, Double</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
  * </tr>
@@ -61,7 +61,7 @@ import com.google.gwt.json.client.JSONString;
  * <td>float, Float</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
  * </tr>
@@ -69,7 +69,7 @@ import com.google.gwt.json.client.JSONString;
  * <td>int, Integer</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
  * </tr>
@@ -77,7 +77,7 @@ import com.google.gwt.json.client.JSONString;
  * <td>long, Long</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber} otherwise the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
  * </tr>
@@ -137,8 +137,8 @@ import com.google.gwt.json.client.JSONString;
 public @interface JsonField
 {
     /**
-     * A path expression to select the JSON data. Defaults to "" which means
-     * that the fields name is taken as a default.
+     * A "path" expression (the key of the JSON data) to select the JSON data.
+     * Defaults to "" which means that the fields name is taken as a default.
      * 
      * @return
      */

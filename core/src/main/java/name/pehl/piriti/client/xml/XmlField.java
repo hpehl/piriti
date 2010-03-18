@@ -11,7 +11,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 
 /**
  * Annotation for mapping XML data to POJO fields. The XML is selected by an
- * xpath expression and converted if necessary to the type of the annotated
+ * XPath expression and converted if necessary to the type of the annotated
  * field. For some types you can specify a format which is used when converting
  * the XML data to the fields type.
  * <p>
@@ -21,7 +21,7 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <table>
  * <tr>
  * <th>Type</th>
- * <th>Default xpath expression</th>
+ * <th>Default XPath expression</th>
  * <th>Format options</th>
  * </tr>
  * <tr>
@@ -131,8 +131,8 @@ import com.google.gwt.i18n.client.NumberFormat;
 public @interface XmlField
 {
     /**
-     * An xpath expression to select the XML data. Defaults to "" which means
-     * that the fields name is taken as a base for the xpath expression.
+     * An XPath expression to select the XML data. Defaults to "" which means
+     * that the fields name is taken as a base for the XPath expression.
      * 
      * @return
      */
