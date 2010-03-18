@@ -12,4 +12,12 @@
         <exclude name="**/*Test.java" />
         <exclude name="**/GwtTest*.java" />
     </source>
+    
+    <generate-with class="name.pehl.piriti.gxt.rebind.xml.XmlModelReaderGenerator">
+        <when-type-assignable class="name.pehl.piriti.gxt.client.xml.XmlModelReader" />
+    </generate-with>
+
+    <generate-with class="name.pehl.piriti.gxt.rebind.json.JsonModelReaderGenerator">
+        <when-type-assignable class="name.pehl.piriti.gxt.client.json.JsonModelReader" />
+    </generate-with>
 </module>
