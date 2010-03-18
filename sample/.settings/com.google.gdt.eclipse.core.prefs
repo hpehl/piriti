@@ -1,3 +1,5 @@
-#Wed Mar 17 16:00:00 CET 2010
+#Wed Mar 17 20:50:42 CET 2010
 eclipse.preferences.version=1
-jarsExcludedFromWebInfLib=/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gin-1.0.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gwtxpath-1.0.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gxt-2.1.1.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet-2.0-M7.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.json-2.0-M7.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.xml-2.0-M7.jar
+jarsExcludedFromWebInfLib=/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gin-1.0.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gwtxpath-1.0.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gxt-2.1.1.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet-2.0-M7.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.json-2.0-M7.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.xml-2.0-M7.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/gin-1.0.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/gwtxpath-1.0.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/gxt-2.1.1.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/org.restlet-2.0-M7.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.json-2.0-M7.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.xml-2.0-M7.jar
+warSrcDir=war
+warSrcDirIsOutput=true
