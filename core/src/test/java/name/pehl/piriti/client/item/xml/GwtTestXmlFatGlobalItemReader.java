@@ -9,7 +9,7 @@ import com.google.gwt.xml.client.Document;
  * @author $Author: harald.pehl $
  * @version $Revision: 133 $
  */
-public class GwtTestXmlFatglobalItemReader extends FatGlobalItemTestCase
+public class GwtTestXmlFatGlobalItemReader extends FatGlobalItemTestCase
 {
     public void testRead()
     {
