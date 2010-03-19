@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind.xml;
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.FieldContext;
+import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
@@ -26,7 +27,13 @@ public class XmlReaderCreator extends AbstractReaderCreator
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
-        this.handlerRegistry = new XmlFieldHandlerRegistry();
+    }
+
+
+    @Override
+    protected FieldHandlerRegistry setupFieldHandlerRegistry()
+    {
+        return new XmlFieldHandlerRegistry();
     }
 
 
@@ -74,28 +81,27 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
+    protected void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
         read(writer, "Document", "document");
     }
 
 
-    private void readFromElement(IndentedWriter writer) throws UnableToCompleteException
+    protected void readFromElement(IndentedWriter writer) throws UnableToCompleteException
     {
         read(writer, "Element", "element");
     }
 
 
-    private void read(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
+    protected void read(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
     {
-        writer.write("public %s read(%s %s) {", modelType.getParameterizedQualifiedSourceName(), xmlType,
-                xmlVariable);
+        writer.write("public %s read(%s %s) {", modelType.getParameterizedQualifiedSourceName(), xmlType, xmlVariable);
         writer.indent();
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (%s != null) {", xmlVariable);
         writer.indent();
         writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
-        processFields(writer, modelType.getFields(), xmlVariable);
+        processMappings(writer, xmlVariable);
         writer.outdent();
         writer.write("}");
         writer.write("return model;");
@@ -104,19 +110,19 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readListFromDocument(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
         readList(writer, "Document", "document");
     }
 
 
-    private void readListFromElement(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListFromElement(IndentedWriter writer) throws UnableToCompleteException
     {
         readList(writer, "Element", "element");
     }
 
 
-    private void readList(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
+    protected void readList(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
     {
         writer.write("public List<%s> readList(%s %s, String xpath) {",
                 modelType.getParameterizedQualifiedSourceName(), xmlType, xmlVariable);
@@ -147,11 +153,9 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    // ---------------------------------------------------------- field methods
-
-    private void processFields(IndentedWriter writer, JField[] fields, String xmlVariable)
-            throws UnableToCompleteException
+    protected void processMappings(IndentedWriter writer, String xmlVariable) throws UnableToCompleteException
     {
+        JField[] fields = modelType.getFields();
         if (fields != null && fields.length != 0)
         {
             int counter = 0;
@@ -183,7 +187,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    private String calculateXpath(JField field, XmlField xmlField)
+    protected String calculateXpath(JField field, XmlField xmlField)
     {
         String xpath = xmlField.value();
         if (xpath == null || xpath.length() == 0)

@@ -23,7 +23,7 @@ public abstract class AbstractReaderCreator
     protected final String implName;
     protected final TreeLogger logger;
     protected final JClassType modelType;
-    protected FieldHandlerRegistry handlerRegistry;
+    protected final FieldHandlerRegistry handlerRegistry;
 
 
     // ----------------------------------------------------------- constructors
@@ -58,7 +58,14 @@ public abstract class AbstractReaderCreator
             die("One model type parameters is required for %s", xmlReaderType.getName());
         }
         this.modelType = typeArgs[0];
+        this.handlerRegistry = setupFieldHandlerRegistry();
     }
+
+
+    /**
+     * Method to setup the field handler registry used in this creator.
+     */
+    protected abstract FieldHandlerRegistry setupFieldHandlerRegistry();
 
 
     // --------------------------------------------------------- create methods

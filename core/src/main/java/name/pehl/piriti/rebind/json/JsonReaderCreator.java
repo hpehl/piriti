@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind.json;
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.FieldContext;
+import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
@@ -24,7 +25,13 @@ public class JsonReaderCreator extends AbstractReaderCreator
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
-        this.handlerRegistry = new JsonFieldHandlerRegistry();
+    }
+
+
+    @Override
+    protected FieldHandlerRegistry setupFieldHandlerRegistry()
+    {
+        return new JsonFieldHandlerRegistry();
     }
 
 
@@ -74,7 +81,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readFromString(IndentedWriter writer) throws UnableToCompleteException
+    protected void readFromString(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public %s read(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
@@ -100,7 +107,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readFromJsonObject(IndentedWriter writer) throws UnableToCompleteException
+    protected void readFromJsonObject(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public %s read(JSONObject jsonObject) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
@@ -116,7 +123,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readListFromString(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListFromString(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public List<%s> readList(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
@@ -162,7 +169,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void readListFromJsonArray(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListFromJsonArray(IndentedWriter writer) throws UnableToCompleteException
     {
         writer
                 .write("public List<%s> readList(JSONArray jsonArray) {", modelType
@@ -200,24 +207,22 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    private void internalRead(IndentedWriter writer) throws UnableToCompleteException
+    protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private %s internalRead(JSONObject jsonObject) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-        processFields(writer, modelType.getFields(), "jsonObject");
+        processMappings(writer, "jsonObject");
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
     }
 
 
-    // ---------------------------------------------------------- field methods
-
-    private void processFields(IndentedWriter writer, JField[] fields, String jsonVariable)
-            throws UnableToCompleteException
+    protected void processMappings(IndentedWriter writer, String jsonVariable) throws UnableToCompleteException
     {
+        JField[] fields = modelType.getFields();
         if (fields != null && fields.length != 0)
         {
             int counter = 0;
@@ -250,7 +255,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    private String calculateJsonPath(JField field, JsonField jsonField)
+    protected String calculateJsonPath(JField field, JsonField jsonField)
     {
         String jsonPath = jsonField.value();
         if (jsonPath == null || jsonPath.length() == 0)
