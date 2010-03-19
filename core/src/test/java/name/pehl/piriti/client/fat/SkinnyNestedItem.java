@@ -17,19 +17,19 @@ public class SkinnyNestedItem
 {
     // ------------------------------------------------------------- xml reader
 
-    interface NestedModelXmlReader extends XmlReader<SkinnyNestedItem>
+    interface SkinnyNestedItemXmlReader extends XmlReader<SkinnyNestedItem>
     {
     }
 
-    public static final NestedModelXmlReader SOME_FANCY_XML_NAME = GWT.create(NestedModelXmlReader.class);
+    public static final SkinnyNestedItemXmlReader SOME_FANCY_XML_NAME = GWT.create(SkinnyNestedItemXmlReader.class);
 
     // ------------------------------------------------------------ json reader
 
-    interface NestedModelJsonReader extends JsonReader<SkinnyNestedItem>
+    interface SkinnyNestedItemJsonReader extends JsonReader<SkinnyNestedItem>
     {
     }
 
-    public static final NestedModelJsonReader SOME_FANCY_JSON_NAME = GWT.create(NestedModelJsonReader.class);
+    public static final SkinnyNestedItemJsonReader SOME_FANCY_JSON_NAME = GWT.create(SkinnyNestedItemJsonReader.class);
 
     // -------------------------------------------------------- private members
 

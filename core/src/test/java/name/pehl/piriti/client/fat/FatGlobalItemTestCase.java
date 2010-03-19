@@ -73,7 +73,7 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
 
         // Nested objects
         assertNull(fgi.fatGlobalItem);
-        assertNestedModel(fgi.skinnyNestedItem);
+        assertSkinnyNestedItem(fgi.skinnyNestedItem);
 
         // Arrays
         assertEquals(3, fgi.arrayOfIntegerPrimitives.length);
@@ -94,7 +94,7 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         assertEquals(3, fgi.arrayOfSkinnyNestedItems.length);
         for (int i = 0; i < 3; i++)
         {
-            assertNestedModel(fgi.arrayOfSkinnyNestedItems[i]);
+            assertSkinnyNestedItem(fgi.arrayOfSkinnyNestedItems[i]);
         }
 
         // Invalid arrays
@@ -112,9 +112,9 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         fgi.collectionOfStrings.removeAll(setOfStringsFixture);
         assertTrue(fgi.collectionOfStrings.isEmpty());
         assertEquals(3, fgi.collectionOfSkinnyNestedItems.size());
-        for (SkinnyNestedItem nm : fgi.collectionOfSkinnyNestedItems)
+        for (SkinnyNestedItem sni : fgi.collectionOfSkinnyNestedItems)
         {
-            assertNestedModel(nm);
+            assertSkinnyNestedItem(sni);
         }
 
         // Invalid collections
@@ -138,7 +138,7 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         assertEquals(3, fgi.listOfSkinnyNestedItems.size());
         for (int i = 0; i < 3; i++)
         {
-            assertNestedModel(fgi.listOfSkinnyNestedItems.get(i));
+            assertSkinnyNestedItem(fgi.listOfSkinnyNestedItems.get(i));
         }
 
         // Invalid lists
@@ -156,9 +156,9 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         fgi.setOfStrings.removeAll(setOfStringsFixture);
         assertTrue(fgi.setOfStrings.isEmpty());
         assertEquals(3, fgi.setOfSkinnyNestedItems.size());
-        for (SkinnyNestedItem nm : fgi.setOfSkinnyNestedItems)
+        for (SkinnyNestedItem sni : fgi.setOfSkinnyNestedItems)
         {
-            assertNestedModel(nm);
+            assertSkinnyNestedItem(sni);
         }
 
         // Invalid sets
@@ -170,7 +170,7 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
     }
 
 
-    protected void assertNestedModel(SkinnyNestedItem sni)
+    protected void assertSkinnyNestedItem(SkinnyNestedItem sni)
     {
         assertNotNull(sni);
         assertTrue(sni.booleanPrimitive);
