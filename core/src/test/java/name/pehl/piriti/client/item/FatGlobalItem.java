@@ -1,4 +1,4 @@
-package name.pehl.piriti.client.model;
+package name.pehl.piriti.client.item;
 
 import java.util.Collection;
 import java.util.Date;

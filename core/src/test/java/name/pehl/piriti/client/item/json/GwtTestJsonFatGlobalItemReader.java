@@ -1,7 +1,7 @@
-package name.pehl.piriti.client.model.json;
+package name.pehl.piriti.client.item.json;
 
-import name.pehl.piriti.client.model.FatGlobalItem;
-import name.pehl.piriti.client.model.FatGlobalItemTestCase;
+import name.pehl.piriti.client.item.FatGlobalItem;
+import name.pehl.piriti.client.item.FatGlobalItemTestCase;
 
 /**
  * @author $Author$

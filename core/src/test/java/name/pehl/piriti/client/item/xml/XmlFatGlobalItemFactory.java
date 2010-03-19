@@ -1,9 +1,9 @@
-package name.pehl.piriti.client.model.xml;
+package name.pehl.piriti.client.item.xml;
 
 import java.util.Date;
 
 import name.pehl.piriti.client.converter.DateConverter;
-import name.pehl.piriti.client.model.Amount;
+import name.pehl.piriti.client.item.Amount;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.xml.client.Document;

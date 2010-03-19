@@ -1,11 +1,11 @@
-package name.pehl.piriti.client.model.json;
+package name.pehl.piriti.client.item.json;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
 import name.pehl.piriti.client.converter.DateConverter;
-import name.pehl.piriti.client.model.Amount;
+import name.pehl.piriti.client.item.Amount;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 
