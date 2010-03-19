@@ -22,6 +22,11 @@
             <artifactId>piriti-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>name.pehl.piriti</groupId>
+            <artifactId>piriti-core</artifactId>
+            <classifier>tests</classifier>
+        </dependency>
+        <dependency>
             <groupId>com.extjs</groupId>
             <artifactId>gxt</artifactId>
         </dependency>
@@ -42,4 +47,25 @@
             <artifactId>gwtxpath</artifactId>
         </dependency>
     </dependencies>
+    
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <configuration>
+                    <gwtVersion>${gwt.version}</gwtVersion>
+                    <module>name.pehl.piriti.gxt.PiritiGxtTest</module>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
