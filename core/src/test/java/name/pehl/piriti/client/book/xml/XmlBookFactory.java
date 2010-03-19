@@ -18,7 +18,7 @@ public final class XmlBookFactory implements BookFactory
     }
 
 
-    public static Document createBook()
+    public static Document createDocument()
     {
         Document document = XMLParser.createDocument();
         Element book = document.createElement("book");

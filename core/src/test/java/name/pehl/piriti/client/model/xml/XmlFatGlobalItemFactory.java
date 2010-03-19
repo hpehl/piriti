@@ -15,17 +15,17 @@ import com.google.gwt.xml.client.XMLParser;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 135 $
  */
-public final class XmlModelFactory
+public final class XmlFatGlobalItemFactory
 {
     private static final Date MY_BIRTHDAY = new Date(115813353000l);
 
 
-    private XmlModelFactory()
+    private XmlFatGlobalItemFactory()
     {
     }
 
 
-    public static Document createModel()
+    public static Document createDocument()
     {
         int size = 3;
         Document document = XMLParser.createDocument();
@@ -54,47 +54,47 @@ public final class XmlModelFactory
         Element stringElement = createElementAndAppend(document, model, "string", "achtzehn");
         stringElement.setAttribute("attribute", "neunzehn");
 
-        // NestedModel
-        model.appendChild(createNestedModel(document, "nestedModel"));
+        // SkinnyNestedItem
+        model.appendChild(createNestedModel(document, "skinnyNestedItem"));
 
         // Arrays
         createElementsAndAppend(document, model, "arrayOfIntegerPrimitives", "0", "1", "2");
         createElementsAndAppend(document, model, "arrayOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "arrayOfStrings", "0", "1", "2");
-        Element arrayOfDemoNestedModels = document.createElement("arrayOfNestedModels");
+        Element arrayOfDemoNestedModels = document.createElement("arrayOfSkinnyNestedItems");
         for (int i = 0; i < size; i++)
         {
-            arrayOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+            arrayOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
         }
         model.appendChild(arrayOfDemoNestedModels);
 
         // Collections
         createElementsAndAppend(document, model, "collectionOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "collectionOfStrings", "0", "1", "2");
-        Element collectionOfDemoNestedModels = document.createElement("collectionOfNestedModels");
+        Element collectionOfDemoNestedModels = document.createElement("collectionOfSkinnyNestedItems");
         for (int i = 0; i < size; i++)
         {
-            collectionOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+            collectionOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
         }
         model.appendChild(collectionOfDemoNestedModels);
 
         // Lists
         createElementsAndAppend(document, model, "listOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "listOfStrings", "0", "1", "2");
-        Element listOfDemoNestedModels = document.createElement("listOfNestedModels");
+        Element listOfDemoNestedModels = document.createElement("listOfSkinnyNestedItems");
         for (int i = 0; i < size; i++)
         {
-            listOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+            listOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
         }
         model.appendChild(listOfDemoNestedModels);
 
         // Sets
         createElementsAndAppend(document, model, "setOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, model, "setOfStrings", "0", "1", "2");
-        Element setOfDemoNestedModels = document.createElement("setOfNestedModels");
+        Element setOfDemoNestedModels = document.createElement("setOfSkinnyNestedItems");
         for (int i = 0; i < size; i++)
         {
-            setOfDemoNestedModels.appendChild(createNestedModel(document, "nestedModel"));
+            setOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
         }
         model.appendChild(setOfDemoNestedModels);
 

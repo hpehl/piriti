@@ -11,7 +11,7 @@ public class GwtTestJsonBookReader extends BookTestCase
 {
     public void testRead()
     {
-        String json = JsonBookFactory.createBook();
+        String json = JsonBookFactory.createJson();
         Book book = Book.JSON.read(json);
         assertBook(book);
     }

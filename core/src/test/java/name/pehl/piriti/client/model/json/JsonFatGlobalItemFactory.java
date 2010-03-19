@@ -13,17 +13,17 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public final class JsonModelFactory
+public final class JsonFatGlobalItemFactory
 {
     private static final Date MY_BIRTHDAY = new Date(115813353000l);
 
 
-    private JsonModelFactory()
+    private JsonFatGlobalItemFactory()
     {
     }
 
 
-    public static String createModel()
+    public static String createJson()
     {
         int size = 3;
         StringBuilder json = new StringBuilder();
@@ -33,8 +33,8 @@ public final class JsonModelFactory
         appendSimpleObjects(json);
         json.append(", ");
 
-        // NestedModel
-        json.append("nestedModel: {");
+        // SkinnyNestedItem
+        json.append("skinnyNestedItem: {");
         appendSimpleObjects(json);
         json.append("}, ");
 
@@ -42,22 +42,22 @@ public final class JsonModelFactory
         appendKeyValueArray(json, "arrayOfIntegerPrimitives", false, true, "0", "1", "2");
         appendKeyValueArray(json, "arrayOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "arrayOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "arrayOfNestedModels", size, true);
+        appendKeyNestedModelsArray(json, "arrayOfSkinnyNestedItems", size, true);
 
         // Collections
         appendKeyValueArray(json, "collectionOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "collectionOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "collectionOfNestedModels", size, true);
+        appendKeyNestedModelsArray(json, "collectionOfSkinnyNestedItems", size, true);
 
         // Lists
         appendKeyValueArray(json, "listOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "listOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "listOfNestedModels", size, true);
+        appendKeyNestedModelsArray(json, "listOfSkinnyNestedItems", size, true);
 
         // Sets
         appendKeyValueArray(json, "setOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "setOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "setOfNestedModels", size, false);
+        appendKeyNestedModelsArray(json, "setOfSkinnyNestedItems", size, false);
 
         json.append("}");
         return json.toString();

@@ -13,11 +13,11 @@ import com.google.gwt.core.client.GWT;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 131 $
  */
-public class NestedModel
+public class SkinnyNestedItem
 {
     // ------------------------------------------------------------- xml reader
 
-    interface NestedModelXmlReader extends XmlReader<NestedModel>
+    interface NestedModelXmlReader extends XmlReader<SkinnyNestedItem>
     {
     }
 
@@ -25,7 +25,7 @@ public class NestedModel
 
     // ------------------------------------------------------------ json reader
 
-    interface NestedModelJsonReader extends JsonReader<NestedModel>
+    interface NestedModelJsonReader extends JsonReader<SkinnyNestedItem>
     {
     }
 

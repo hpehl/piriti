@@ -17,23 +17,23 @@ import com.google.gwt.core.client.GWT;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 131 $
  */
-public class Model
+public class FatGlobalItem
 {
     // ------------------------------------------------------------- xml reader
 
-    public interface ModelXmlReader extends XmlReader<Model>
+    public interface FatGlobalItemXmlReader extends XmlReader<FatGlobalItem>
     {
     }
 
-    public static final ModelXmlReader XML = GWT.create(ModelXmlReader.class);
+    public static final FatGlobalItemXmlReader XML = GWT.create(FatGlobalItemXmlReader.class);
 
     // ------------------------------------------------------------ json reader
 
-    public interface ModelJsonReader extends JsonReader<Model>
+    public interface FatGlobalItemJsonReader extends JsonReader<FatGlobalItem>
     {
     }
 
-    public static final ModelJsonReader JSON = GWT.create(ModelJsonReader.class);
+    public static final FatGlobalItemJsonReader JSON = GWT.create(FatGlobalItemJsonReader.class);
 
     // ------------------------------------------ primitives and simple objects
 
@@ -117,15 +117,15 @@ public class Model
     @JsonField
     public String stringAttribute;
 
-    // --------------------------------------------------------- custom objects
+    // --------------------------------------------------------- nested objects
 
     @XmlField
     @JsonField
-    public Model model;
+    public FatGlobalItem fatGlobalItem;
 
     @XmlField
     @JsonField
-    public NestedModel nestedModel;
+    public SkinnyNestedItem skinnyNestedItem;
 
     // ----------------------------------------------------------------- arrays
 
@@ -141,15 +141,15 @@ public class Model
     @JsonField
     public String[] arrayOfStrings;
 
-    @XmlField("arrayOfNestedModels/nestedModel")
+    @XmlField("arrayOfSkinnyNestedItems/skinnyNestedItem")
     @JsonField
-    public NestedModel[] arrayOfNestedModels;
+    public SkinnyNestedItem[] arrayOfSkinnyNestedItems;
 
     // --------------------------------------------------------- invalid arrays
 
     @XmlField
     @JsonField
-    public Model[] arrayOfModels;
+    public FatGlobalItem[] arrayOfFatGlobalItems;
 
     @XmlField
     @JsonField
@@ -177,9 +177,9 @@ public class Model
     @JsonField
     public Collection<String> collectionOfStrings;
 
-    @XmlField("collectionOfNestedModels/nestedModel")
+    @XmlField("collectionOfSkinnyNestedItems/skinnyNestedItem")
     @JsonField
-    public Collection<NestedModel> collectionOfNestedModels;
+    public Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems;
 
     // ---------------------------------------------------- invalid collections
 
@@ -190,7 +190,7 @@ public class Model
 
     @XmlField
     @JsonField
-    public Collection<Model> collectionOfModels;
+    public Collection<FatGlobalItem> collectionOfFatGlobalItems;
 
     @XmlField
     @JsonField
@@ -214,9 +214,9 @@ public class Model
     @JsonField
     public List<String> listOfStrings;
 
-    @XmlField("listOfNestedModels/nestedModel")
+    @XmlField("listOfSkinnyNestedItems/skinnyNestedItem")
     @JsonField
-    public List<NestedModel> listOfNestedModels;
+    public List<SkinnyNestedItem> listOfSkinnyNestedItems;
 
     // ---------------------------------------------------------- invalid lists
 
@@ -227,7 +227,7 @@ public class Model
 
     @XmlField
     @JsonField
-    public List<Model> listOfModels;
+    public List<FatGlobalItem> listOfFatGlobalItems;
 
     @XmlField
     @JsonField
@@ -251,9 +251,9 @@ public class Model
     @JsonField
     public Set<String> setOfStrings;
 
-    @XmlField("setOfNestedModels/nestedModel")
+    @XmlField("setOfSkinnyNestedItems/skinnyNestedItem")
     @JsonField
-    public Set<NestedModel> setOfNestedModels;
+    public Set<SkinnyNestedItem> setOfSkinnyNestedItems;
 
     // ----------------------------------------------------------- invalid sets
 
@@ -264,7 +264,7 @@ public class Model
 
     @XmlField
     @JsonField
-    public Set<Model> setOfModels;
+    public Set<FatGlobalItem> setOfFatGlobalItems;
 
     @XmlField
     @JsonField

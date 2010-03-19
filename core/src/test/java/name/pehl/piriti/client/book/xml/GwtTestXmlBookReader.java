@@ -13,7 +13,7 @@ public class GwtTestXmlBookReader extends BookTestCase
 {
     public void testRead()
     {
-        Document document = XmlBookFactory.createBook();
+        Document document = XmlBookFactory.createDocument();
         Book book = Book.XML.read(document);
         assertBook(book);
     }
