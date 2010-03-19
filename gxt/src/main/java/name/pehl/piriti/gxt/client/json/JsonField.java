@@ -27,12 +27,13 @@ public @interface JsonField
 {
     /**
      * A "path" expression (the key of the JSON data) to select the JSON data.
+     * If not specified the property is taken as path.
      * 
      * @return
      */
-    String path();
-
-
+    String path() default "";
+    
+    
     /**
      * The name of the property in the {@link ModelData GXT model}.
      * 

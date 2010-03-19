@@ -26,11 +26,12 @@ import com.extjs.gxt.ui.client.data.ModelData;
 public @interface XmlField
 {
     /**
-     * An XPath expression to select the XML data.
+     * An XPath expression to select the XML data. If not specified the property
+     * is taken as path.
      * 
      * @return
      */
-    String path();
+    String path() default "";
 
 
     /**
