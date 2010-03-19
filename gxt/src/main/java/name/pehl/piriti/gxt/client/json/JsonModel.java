@@ -6,12 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.extjs.gxt.ui.client.data.ModelData;
-
 /**
- * Class annotations for {@link ModelData GXT models} which contains several
- * {@link JsonField} annotations. In case of a successful mapping each
- * annotation results in a {@link ModelData#set(String, Object)} call.
+ * Class annotations for {@linkplain com.extjs.gxt.ui.client.data.ModelData GXT
+ * models}. For each property that should be mapped a {@link JsonField}
+ * annotation must be specified.
  * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
