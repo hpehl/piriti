@@ -11,7 +11,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * @version $Date$ $Revision: 161
  *          $
  */
-public abstract class BookModelTestCase extends GWTTestCase
+public abstract class BookTestCase extends GWTTestCase
 {
     @Override
     public String getModuleName()
@@ -26,18 +26,18 @@ public abstract class BookModelTestCase extends GWTTestCase
         System.out.println("Running " + getClass().getName());
 
         // Register readers
-        new BookModel();
-        new AuthorModel();
+        new Book();
+        new Author();
     }
 
 
-    protected void assertBookModel(BookModel book)
+    protected void assertBook(Book book)
     {
         assertNotNull(book);
         assertEquals(BookFactory.ISBN, book.get("isbn"));
         assertEquals(BookFactory.PAGES, book.get("pages"));
         assertEquals(BookFactory.TITLE, book.get("title"));
-        AuthorModel author = book.get("author");
+        Author author = book.get("author");
         assertEquals(BookFactory.AUTHOR_FIRSTNAME, author.get("firstname"));
         assertEquals(BookFactory.AUTHOR_SURNAME, author.get("surname"));
         List<String> reviews = book.get("reviews");

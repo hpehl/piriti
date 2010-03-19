@@ -18,22 +18,22 @@ import com.google.gwt.core.client.GWT;
  *          $
  */
 @JsonModel( {@JsonField(property = "isbn", type = String.class), @JsonField(property = "pages", type = Integer.class),
-        @JsonField(property = "title", type = String.class), @JsonField(property = "author", type = AuthorModel.class),
+        @JsonField(property = "title", type = String.class), @JsonField(property = "author", type = Author.class),
         @JsonField(property = "reviews", type = List.class, typeVariable = String.class)})
 @XmlModel( {@XmlField(property = "isbn", type = String.class), @XmlField(property = "pages", type = Integer.class),
-        @XmlField(property = "title", type = String.class), @XmlField(property = "author", type = AuthorModel.class),
+        @XmlField(property = "title", type = String.class), @XmlField(property = "author", type = Author.class),
         @XmlField(path = "reviews/review", property = "reviews", type = List.class, typeVariable = String.class)})
-public class BookModel extends BaseModel
+public class Book extends BaseModel
 {
-    public interface BookModelXmlReader extends XmlModelReader<BookModel>
+    public interface BookXmlReader extends XmlModelReader<Book>
     {
     }
 
-    public static final BookModelXmlReader XML = GWT.create(BookModelXmlReader.class);
+    public static final BookXmlReader XML = GWT.create(BookXmlReader.class);
 
-    public interface BookModelJsonReader extends JsonModelReader<BookModel>
+    public interface BookJsonReader extends JsonModelReader<Book>
     {
     }
 
-    public static final BookModelJsonReader JSON = GWT.create(BookModelJsonReader.class);
+    public static final BookJsonReader JSON = GWT.create(BookJsonReader.class);
 }

@@ -19,17 +19,17 @@ import com.google.gwt.core.client.GWT;
         @JsonField(property = "surname", type = String.class)})
 @XmlModel( {@XmlField(property = "firstname", type = String.class),
         @XmlField(property = "surname", type = String.class)})
-public class AuthorModel extends BaseModel
+public class Author extends BaseModel
 {
-    public interface AuthorModelXmlReader extends XmlModelReader<AuthorModel>
+    public interface AuthorXmlReader extends XmlModelReader<Author>
     {
     }
 
-    public static final AuthorModelXmlReader XML = GWT.create(AuthorModelXmlReader.class);
+    public static final AuthorXmlReader XML = GWT.create(AuthorXmlReader.class);
 
-    public interface AuthorModelJsonReader extends JsonModelReader<AuthorModel>
+    public interface AuthorJsonReader extends JsonModelReader<Author>
     {
     }
 
-    public static final AuthorModelJsonReader JSON = GWT.create(AuthorModelJsonReader.class);
+    public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
 }
