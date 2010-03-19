@@ -82,7 +82,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
         FieldHandler handler = null;
 
         // Basics
-        handler = new ConverterFieldHandler();
+        handler = newConverterFieldHandler();
         registry.put(Boolean.class.getName(), handler);
         registry.put(Byte.class.getName(), handler);
         registry.put(Character.class.getName(), handler);
@@ -94,11 +94,11 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
         registry.put(Short.class.getName(), handler);
 
         // String
-        handler = new StringFieldHandler();
+        handler = newStringFieldHandler();
         registry.put(String.class.getName(), handler);
 
         // Collections
-        handler = new CollectionFieldHandler();
+        handler = newCollectionFieldHandler();
         registry.put(Collection.class.getName(), handler);
         registry.put(List.class.getName(), handler);
         registry.put(ArrayList.class.getName(), handler);
@@ -133,15 +133,15 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
         FieldHandler handler = null;
         if (fieldContext.isPrimitive())
         {
-            handler = new ConverterFieldHandler();
+            handler = newConverterFieldHandler();
         }
         else if (fieldContext.isEnum())
         {
-            handler = new EnumFieldHandler();
+            handler = newEnumFieldHandler();
         }
         else if (fieldContext.isArray())
         {
-            handler = new ArrayFieldHandler();
+            handler = newArrayFieldHandler();
         }
         else
         {
@@ -151,9 +151,45 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
             if (handler == null)
             {
                 // Delegate to the XmlRegistry to resolve other mapped models
-                handler = new XmlRegistryFieldHandler();
+                handler = newRegistryFieldHandler();
             }
         }
         return handler;
+    }
+
+
+    protected FieldHandler newConverterFieldHandler()
+    {
+        return new ConverterFieldHandler();
+    }
+
+
+    protected FieldHandler newStringFieldHandler()
+    {
+        return new StringFieldHandler();
+    }
+
+
+    protected FieldHandler newEnumFieldHandler()
+    {
+        return new EnumFieldHandler();
+    }
+
+
+    protected FieldHandler newArrayFieldHandler()
+    {
+        return new ArrayFieldHandler();
+    }
+
+
+    protected FieldHandler newCollectionFieldHandler()
+    {
+        return new CollectionFieldHandler();
+    }
+
+
+    protected FieldHandler newRegistryFieldHandler()
+    {
+        return new XmlRegistryFieldHandler();
     }
 }

@@ -46,9 +46,9 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
                 throw new UnableToCompleteException();
             }
         }
-        String valueVariableAsList = fieldContext.getValueVariable() + "AsList";
-        String nestedJsonValueVariable = fieldContext.getValueVariable() + "NestedJsonValue";
-        String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
+        String valueVariableAsList = fieldContext.newVariableName("AsList");
+        String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
+        String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
@@ -64,7 +64,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
             writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext

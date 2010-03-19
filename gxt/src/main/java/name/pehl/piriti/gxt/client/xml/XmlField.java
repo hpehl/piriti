@@ -51,6 +51,14 @@ public @interface XmlField
 
 
     /**
+     * If the type is a collection, the type variable of the collection.
+     * 
+     * @return
+     */
+    Class<?> typeVariable() default Object.class;
+
+
+    /**
      * The format to use when converting the XML data to the type. Defaults to
      * "".
      * 

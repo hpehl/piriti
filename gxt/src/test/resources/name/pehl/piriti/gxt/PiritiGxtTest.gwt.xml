@@ -5,10 +5,9 @@
         $LastChangedBy: harald.pehl 
         $LastChangedRevision: 138 $
      -->
+    <inherits name="com.extjs.gxt.ui.GXT" />
     <inherits name="name.pehl.piriti.Piriti" />
 
-    <source path="client"/>
-    
     <generate-with class="name.pehl.piriti.gxt.rebind.xml.XmlModelReaderGenerator">
         <when-type-assignable class="name.pehl.piriti.gxt.client.xml.XmlModelReader" />
     </generate-with>

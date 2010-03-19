@@ -1,5 +1,8 @@
 package name.pehl.piriti.rebind;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -22,7 +25,6 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 public class FieldContext
 {
     private static final String AS_STRING_SUFFIX = "AsString";
-    private static final String READER_SUFFIX = "Reader";
 
     private final TypeOracle typeOracle;
     private final FieldHandlerRegistry handlerRegistry;
@@ -33,8 +35,7 @@ public class FieldContext
     private final String format;
     private final String inputVariable;
     private final String valueVariable;
-    private final String valueAsStringVariable;
-    private final String valueReaderVariable;
+    private final Map<String, Object> metadata;
 
 
     /**
@@ -101,8 +102,7 @@ public class FieldContext
         // Variable names
         this.inputVariable = inputVariable;
         this.valueVariable = valueVariable;
-        this.valueAsStringVariable = valueVariable + AS_STRING_SUFFIX;
-        this.valueReaderVariable = valueVariable + READER_SUFFIX;
+        this.metadata = new HashMap<String, Object>();
     }
 
 
@@ -235,12 +235,25 @@ public class FieldContext
 
     public String getValueAsStringVariable()
     {
-        return valueAsStringVariable;
+        return newVariableName(AS_STRING_SUFFIX);
     }
 
 
-    public String getValueReaderVariable()
+    public String newVariableName(String suffix)
     {
-        return valueReaderVariable;
+        return getValueVariable() + suffix;
+    }
+
+
+    public <T> void addMetadata(String key, T value)
+    {
+        metadata.put(key, value);
+    }
+
+
+    @SuppressWarnings("unchecked")
+    public <T> T getMetadata(String key)
+    {
+        return (T) metadata.get(key);
     }
 }

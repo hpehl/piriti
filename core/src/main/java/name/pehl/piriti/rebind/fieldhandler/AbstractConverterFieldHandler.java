@@ -40,7 +40,7 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writeReadValueAsString(writer, fieldContext);
-        writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
+        writer.write("if (%s != null) {", fieldContext.newVariableName("AsString"));
         writer.indent();
         writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
                 .getQualifiedSourceName());

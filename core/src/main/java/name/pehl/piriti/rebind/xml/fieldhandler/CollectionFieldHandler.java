@@ -8,7 +8,6 @@ import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 
 /**
  * {@link FieldHandler} for collections.
@@ -30,26 +29,26 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
-        JClassType typeArgument = parameterizedType.getTypeArgs()[0];
-        String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
-        String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
-        String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
+        JClassType parameterType = getTypeVariable(fieldContext);
+        String nestedElementVariable = fieldContext.newVariableName("NestedElement");
+        String nestedElementsVariable = fieldContext.newVariableName("NestedElements");
+        String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         String nestedXpath = ".";
-        if (typeArgument.isPrimitive() != null || TypeUtils.isBasicType(typeArgument) || typeArgument.isEnum() != null)
+        if (parameterType.isPrimitive() != null || TypeUtils.isBasicType(parameterType)
+                || parameterType.isEnum() != null)
         {
             nestedXpath += "/text()";
         }
 
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), typeArgument, fieldContext.getFieldName(),
+                .getHandlerRegistry(), fieldContext.getModelType(), parameterType, fieldContext.getFieldName(),
                 nestedXpath, fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
         }
-        
+
         writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
                 .getInputVariable(), fieldContext.getPath());
         writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
@@ -61,7 +60,7 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             // the field type is already an implementation
             collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
         }
-        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, typeArgument
+        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, parameterType
                 .getQualifiedSourceName());
         writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
         writer.indent();

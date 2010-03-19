@@ -7,7 +7,6 @@ import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 
 /**
  * {@link FieldHandler} for collections.
@@ -29,14 +28,13 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
-        JClassType typeArgument = parameterizedType.getTypeArgs()[0];
-        String nestedJsonValueVariable = fieldContext.getValueVariable() + "NestedJsonValue";
-        String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
+        JClassType parameterType = getTypeVariable(fieldContext);
+        String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
+        String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), typeArgument, fieldContext.getFieldName(), null,
+                .getHandlerRegistry(), fieldContext.getModelType(), parameterType, fieldContext.getFieldName(), null,
                 fieldContext.getFormat(), nestedJsonValueVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
@@ -48,7 +46,7 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
             writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
@@ -71,7 +69,7 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             // the field type is already an implementation
             collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
         }
-        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, typeArgument
+        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, parameterType
                 .getQualifiedSourceName());
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();

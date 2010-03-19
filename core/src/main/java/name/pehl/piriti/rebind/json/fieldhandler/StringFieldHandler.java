@@ -46,7 +46,7 @@ public class StringFieldHandler extends AbstractFieldHandler
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
             writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
@@ -58,7 +58,7 @@ public class StringFieldHandler extends AbstractFieldHandler
         }
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        String jsonString = fieldContext.getValueVariable() + "AsJsonString";
+        String jsonString = fieldContext.newVariableName("AsJsonString");
         writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();

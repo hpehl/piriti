@@ -10,8 +10,8 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class NumberFieldHandler extends AbstractFieldHandler
 {
@@ -65,7 +65,7 @@ public class NumberFieldHandler extends AbstractFieldHandler
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
             writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
@@ -77,7 +77,7 @@ public class NumberFieldHandler extends AbstractFieldHandler
         }
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        String jsonNumber = fieldContext.getValueVariable() + "AsJsonNumber";
+        String jsonNumber = fieldContext.newVariableName("AsJsonNumber");
         writer.write("JSONNumber %s = %s.isNumber();", jsonNumber, jsonValue);
         writer.write("if (%s != null) {", jsonNumber);
         writer.indent();

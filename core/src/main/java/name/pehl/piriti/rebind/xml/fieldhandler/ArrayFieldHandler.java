@@ -47,10 +47,10 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
                 throw new UnableToCompleteException();
             }
         }
-        String valueVariableAsList = fieldContext.getValueVariable() + "AsList";
-        String nestedElementVariable = fieldContext.getValueVariable() + "NestedElement";
-        String nestedElementsVariable = fieldContext.getValueVariable() + "NestedElements";
-        String nestedValueVariable = fieldContext.getValueVariable() + "NestedValue";
+        String valueVariableAsList = fieldContext.newVariableName("AsList");
+        String nestedElementVariable = fieldContext.newVariableName("NestedElement");
+        String nestedElementsVariable = fieldContext.newVariableName("NestedElements");
+        String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         String nestedXpath = ".";
         if (componentType.isPrimitive() != null || TypeUtils.isBasicType(componentType)
                 || componentType.isEnum() != null)

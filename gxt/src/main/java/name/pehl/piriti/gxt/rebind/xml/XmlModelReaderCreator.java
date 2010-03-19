@@ -2,6 +2,7 @@ package name.pehl.piriti.gxt.rebind.xml;
 
 import name.pehl.piriti.gxt.client.xml.XmlField;
 import name.pehl.piriti.gxt.client.xml.XmlModel;
+import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
@@ -20,7 +21,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlModelReaderCreator extends XmlReaderCreator
+public class XmlModelReaderCreator extends XmlReaderCreator implements ModelReaderConstants
 {
     public XmlModelReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
@@ -40,7 +41,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createImports(writer);
-        writer.write("com.extjs.gxt.ui.client.data.*;");
+        writer.write("import com.extjs.gxt.ui.client.data.*;");
     }
 
 
@@ -61,6 +62,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator
                     String xpath = calculateXpath(fieldType, xmlField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             fieldType, xmlField.property(), xpath, xmlField.format(), xmlVariable, "value" + counter);
+                    fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)
                     {

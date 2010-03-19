@@ -8,8 +8,8 @@ import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class BooleanFieldHandler extends AbstractFieldHandler
 {
@@ -49,7 +49,7 @@ public class BooleanFieldHandler extends AbstractFieldHandler
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
             writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
@@ -61,7 +61,7 @@ public class BooleanFieldHandler extends AbstractFieldHandler
         }
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        String jsonBoolean = fieldContext.getValueVariable() + "AsJsonBoolean";
+        String jsonBoolean = fieldContext.newVariableName("AsJsonBoolean");
         writer.write("JSONBoolean %s = %s.isBoolean();", jsonBoolean, jsonValue);
         writer.write("if (%s != null) {", jsonBoolean);
         writer.indent();

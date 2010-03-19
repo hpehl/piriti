@@ -34,7 +34,7 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.getValueVariable() + "AsJsonValue";
+        String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
             writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
@@ -48,8 +48,9 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.indent();
         JClassType classType = fieldContext.getClassOrInterfaceType();
         JField jsonRegistryField = findRegistryMember(classType);
-        writer.write("JsonReader<%1$s> %2$sReader = jsonRegistry.get(%1$s.class);", classType.getQualifiedSourceName(),
-                fieldContext.getValueVariable());
+        // Cast because subclasses might use a subtype of getReaderClassname()
+        writer.write("%1$s<%2$s> %3$sReader = (%1$s)jsonRegistry.get(%2$s.class);", getReaderClassname(), classType
+                .getQualifiedSourceName(), fieldContext.getValueVariable());
         writer.write("if (%sReader != null) {", fieldContext.getValueVariable());
         writer.indent();
         writer.write("%s = %s.%s.read(%s.toString());", fieldContext.getValueVariable(), classType

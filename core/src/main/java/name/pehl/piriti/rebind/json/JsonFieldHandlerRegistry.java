@@ -94,12 +94,12 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
         FieldHandler handler = null;
 
         // Boolean
-        handler = new BooleanFieldHandler();
+        handler = newBooleanFieldHandler();
         registry.put(JPrimitiveType.BOOLEAN.getQualifiedSourceName(), handler);
         registry.put(JPrimitiveType.BOOLEAN.getQualifiedBoxedSourceName(), handler);
 
         // Numbers
-        handler = new NumberFieldHandler();
+        handler = newNumberFieldHandler();
         registry.put(JPrimitiveType.BYTE.getQualifiedSourceName(), handler);
         registry.put(JPrimitiveType.BYTE.getQualifiedBoxedSourceName(), handler);
         registry.put(JPrimitiveType.SHORT.getQualifiedSourceName(), handler);
@@ -114,17 +114,17 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
         registry.put(JPrimitiveType.DOUBLE.getQualifiedBoxedSourceName(), handler);
 
         // Characters Dates are handle by the ConverterFieldHandler
-        handler = new ConverterFieldHandler();
+        handler = newConverterFieldHandler();
         registry.put(JPrimitiveType.CHAR.getQualifiedSourceName(), handler);
         registry.put(JPrimitiveType.CHAR.getQualifiedBoxedSourceName(), handler);
         registry.put(Date.class.getName(), handler);
 
         // String
-        handler = new StringFieldHandler();
+        handler = newStringFieldHandler();
         registry.put(String.class.getName(), handler);
 
         // Collections
-        handler = new CollectionFieldHandler();
+        handler = newCollectionFieldHandler();
         registry.put(Collection.class.getName(), handler);
         registry.put(List.class.getName(), handler);
         registry.put(ArrayList.class.getName(), handler);
@@ -159,11 +159,11 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
         FieldHandler handler = null;
         if (fieldContext.isEnum())
         {
-            handler = new EnumFieldHandler();
+            handler = newEnumFieldHandler();
         }
         else if (fieldContext.isArray())
         {
-            handler = new ArrayFieldHandler();
+            handler = newArrayFieldHandler();
         }
         else
         {
@@ -175,7 +175,7 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
                     && (TypeUtils.isInteger(fieldType) || TypeUtils.isLong(fieldType) || TypeUtils.isFloat(fieldType) || TypeUtils
                             .isDouble(fieldType)))
             {
-                handler = new ConverterFieldHandler();
+                handler = newConverterFieldHandler();
             }
             else
             {
@@ -186,10 +186,58 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
                 {
                     // Delegate to the XmlRegistry to resolve other mapped
                     // models
-                    handler = new JsonRegistryFieldHandler();
+                    handler = newRegistryFieldHandler();
                 }
             }
         }
         return handler;
+    }
+
+
+    protected FieldHandler newBooleanFieldHandler()
+    {
+        return new BooleanFieldHandler();
+    }
+
+
+    protected FieldHandler newNumberFieldHandler()
+    {
+        return new NumberFieldHandler();
+    }
+
+
+    protected FieldHandler newConverterFieldHandler()
+    {
+        return new ConverterFieldHandler();
+    }
+
+
+    protected FieldHandler newStringFieldHandler()
+    {
+        return new StringFieldHandler();
+    }
+
+
+    protected FieldHandler newEnumFieldHandler()
+    {
+        return new EnumFieldHandler();
+    }
+
+
+    protected FieldHandler newArrayFieldHandler()
+    {
+        return new ArrayFieldHandler();
+    }
+
+
+    protected FieldHandler newCollectionFieldHandler()
+    {
+        return new CollectionFieldHandler();
+    }
+
+
+    protected FieldHandler newRegistryFieldHandler()
+    {
+        return new JsonRegistryFieldHandler();
     }
 }

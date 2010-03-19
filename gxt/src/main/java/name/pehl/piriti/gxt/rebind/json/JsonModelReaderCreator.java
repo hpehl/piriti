@@ -2,6 +2,7 @@ package name.pehl.piriti.gxt.rebind.json;
 
 import name.pehl.piriti.gxt.client.json.JsonField;
 import name.pehl.piriti.gxt.client.json.JsonModel;
+import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
@@ -19,7 +20,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $
  */
-public class JsonModelReaderCreator extends JsonReaderCreator
+public class JsonModelReaderCreator extends JsonReaderCreator implements ModelReaderConstants
 {
     public JsonModelReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
@@ -39,7 +40,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createImports(writer);
-        writer.write("com.extjs.gxt.ui.client.data.*;");
+        writer.write("import com.extjs.gxt.ui.client.data.*;");
     }
 
 
@@ -61,6 +62,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             fieldType, jsonField.property(), jsonPath, jsonField.format(), jsonVariable, "value"
                                     + counter);
+                    fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)
                     {

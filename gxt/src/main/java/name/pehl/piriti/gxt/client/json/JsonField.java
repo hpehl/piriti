@@ -32,8 +32,8 @@ public @interface JsonField
      * @return
      */
     String path() default "";
-    
-    
+
+
     /**
      * The name of the property in the {@link ModelData GXT model}.
      * 
@@ -48,6 +48,14 @@ public @interface JsonField
      * @return
      */
     Class<?> type();
+
+
+    /**
+     * If the type is a collection, the type variable of the collection.
+     * 
+     * @return
+     */
+    Class<?> typeVariable() default Object.class;
 
 
     /**

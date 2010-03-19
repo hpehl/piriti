@@ -54,22 +54,19 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
             skipField(writer, fieldContext, "Type is no collection");
             return false;
         }
-        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
-        if (parameterizedType != null)
+        JClassType parameterType = getTypeVariable(fieldContext);
+        if (parameterType != null)
         {
-            JClassType[] typeArgs = parameterizedType.getTypeArgs();
-            for (JClassType typeArg : typeArgs)
+            if (fieldContext.getModelType().equals(parameterType))
             {
-                if (fieldContext.getModelType().equals(typeArg))
-                {
-                    skipField(writer, fieldContext, "Type argument of the collection equals the model type");
-                    return false;
-                }
-                if (typeArg.isArray() != null || TypeUtils.isCollection(typeArg) || TypeUtils.isMap(typeArg))
-                {
-                    skipField(writer, fieldContext, "Nested arrays / collections / maps are not supported");
-                    return false;
-                }
+                skipField(writer, fieldContext, "Type argument of the collection equals the model type");
+                return false;
+            }
+            if (parameterType.isArray() != null || TypeUtils.isCollection(parameterType)
+                    || TypeUtils.isMap(parameterType))
+            {
+                skipField(writer, fieldContext, "Nested arrays / collections / maps are not supported");
+                return false;
             }
         }
         else
@@ -80,5 +77,21 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
             return false;
         }
         return true;
+    }
+
+
+    protected JClassType getTypeVariable(FieldContext fieldContext)
+    {
+        JClassType parameterType = null;
+        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
+        if (parameterizedType != null)
+        {
+            JClassType[] typeArgs = parameterizedType.getTypeArgs();
+            if (typeArgs != null && typeArgs.length > 0)
+            {
+                parameterType = typeArgs[0];
+            }
+        }
+        return parameterType;
     }
 }

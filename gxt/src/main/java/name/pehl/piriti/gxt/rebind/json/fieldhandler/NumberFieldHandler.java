@@ -1,0 +1,21 @@
+package name.pehl.piriti.gxt.rebind.json.fieldhandler;
+
+import name.pehl.piriti.gxt.rebind.AssignmentHelper;
+import name.pehl.piriti.rebind.FieldContext;
+import name.pehl.piriti.rebind.IndentedWriter;
+
+import com.google.gwt.core.ext.UnableToCompleteException;
+
+/**
+ * @author $Author$
+ * @version $Date$ $Revision: 161
+ *          $
+ */
+public class NumberFieldHandler extends name.pehl.piriti.rebind.json.fieldhandler.NumberFieldHandler
+{
+    @Override
+    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        AssignmentHelper.writeAssignement(writer, fieldContext);
+    }
+}
