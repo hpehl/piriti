@@ -121,6 +121,13 @@
             </dependency>
             <dependency>
                 <groupId>name.pehl.piriti</groupId>
+                <artifactId>piriti-core</artifactId>
+                <version>${piriti.version}</version>
+                <classifier>tests</classifier>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>name.pehl.piriti</groupId>
                 <artifactId>piriti-gxt</artifactId>
                 <version>${piriti.version}</version>
                 <scope>provided</scope>
@@ -249,6 +256,14 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/java</directory>
+            </testResource>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
 
 
         <pluginManagement>
