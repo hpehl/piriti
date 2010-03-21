@@ -51,6 +51,14 @@ public @interface XmlField
 
 
     /**
+     * True if the type is an array.
+     * 
+     * @return
+     */
+    boolean array() default false;
+
+
+    /**
      * If the type is a collection, the type variable of the collection.
      * 
      * @return

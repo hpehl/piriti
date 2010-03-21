@@ -1,6 +1,17 @@
 package name.pehl.piriti.gxt.client.fat;
 
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import name.pehl.piriti.client.fat.Amount;
+import name.pehl.piriti.gxt.client.json.JsonField;
+import name.pehl.piriti.gxt.client.json.JsonModel;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
+import name.pehl.piriti.gxt.client.xml.XmlField;
+import name.pehl.piriti.gxt.client.xml.XmlModel;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
@@ -10,6 +21,90 @@ import com.google.gwt.core.client.GWT;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
+@XmlModel( {
+        @XmlField(property = "booleanObject", type = Boolean.class),
+        @XmlField(property = "byteObject", type = Byte.class),
+        @XmlField(property = "characterObject", type = Character.class),
+        @XmlField(property = "date", type = Date.class),
+        @XmlField(property = "amount", type = Amount.class),
+        @XmlField(property = "doubleObject", type = Double.class),
+        @XmlField(property = "floatObject", type = Float.class),
+        @XmlField(property = "integerObject", type = Integer.class),
+        @XmlField(property = "longObject", type = Long.class),
+        @XmlField(property = "shortObject", type = Short.class),
+        @XmlField(property = "string", type = String.class),
+        @XmlField(path = "string/@attribute", property = "stringAttribute", type = String.class),
+        @XmlField(property = "fatGlobalItem", type = FatGlobalItem.class),
+        @XmlField(property = "skinnyNestedItem", type = SkinnyNestedItem.class),
+        @XmlField(property = "arrayOfIntegerObjects", type = Integer.class, array = true),
+        @XmlField(property = "arrayOfStrings", type = String.class, array = true),
+        @XmlField(path = "arrayOfSkinnyNestedItems/skinnyNestedItem", property = "arrayOfSkinnyNestedItems", type = SkinnyNestedItem.class, array = true),
+        @XmlField(property = "arrayOfFatGlobalItems", type = FatGlobalItem.class, array = true),
+        @XmlField(property = "arrayOfLists", type = List.class, array = true),
+        @XmlField(property = "arrayOfMaps", type = Map.class, array = true),
+        @XmlField(property = "collectionOfIntegerObjects", type = Collection.class, typeVariable = Integer.class),
+        @XmlField(property = "collectionOfStrings", type = Collection.class, typeVariable = String.class),
+        @XmlField(path = "collectionOfSkinnyNestedItems/skinnyNestedItem", property = "collectionOfSkinnyNestedItems", type = Collection.class, typeVariable = SkinnyNestedItem.class),
+        @XmlField(property = "untypedCollection", type = Collection.class),
+        @XmlField(property = "collectionOfFatGlobalItems", type = Collection.class, typeVariable = FatGlobalItem.class),
+        @XmlField(property = "collectionOfCollections", type = Collection.class, typeVariable = Collection.class),
+        @XmlField(property = "collectionOfMaps", type = Collection.class, typeVariable = Map.class),
+        @XmlField(property = "listOfIntegerObjects", type = List.class, typeVariable = Integer.class),
+        @XmlField(property = "listOfStrings", type = List.class, typeVariable = String.class),
+        @XmlField(path = "listOfSkinnyNestedItems/skinnyNestedItem", property = "listOfSkinnyNestedItems", type = List.class, typeVariable = SkinnyNestedItem.class),
+        @XmlField(property = "untypedList", type = List.class),
+        @XmlField(property = "listOfFatGlobalItems", type = List.class, typeVariable = FatGlobalItem.class),
+        @XmlField(property = "listOfLists", type = List.class, typeVariable = List.class),
+        @XmlField(property = "listOfMaps", type = List.class, typeVariable = Map.class),
+        @XmlField(property = "setOfIntegerObjects", type = Set.class, typeVariable = Integer.class),
+        @XmlField(property = "setOfStrings", type = Set.class, typeVariable = String.class),
+        @XmlField(path = "setOfSkinnyNestedItems/skinnyNestedItem", property = "setOfSkinnyNestedItems", type = Set.class, typeVariable = SkinnyNestedItem.class),
+        @XmlField(property = "untypedSet", type = Set.class),
+        @XmlField(property = "setOfFatGlobalItems", type = Set.class, typeVariable = FatGlobalItem.class),
+        @XmlField(property = "setOfLists", type = Set.class, typeVariable = Set.class),
+        @XmlField(property = "setOfMaps", type = Set.class, typeVariable = Map.class)})
+@JsonModel( {
+        @JsonField(property = "booleanObject", type = Boolean.class),
+        @JsonField(property = "byteObject", type = Byte.class),
+        @JsonField(property = "characterObject", type = Character.class),
+        @JsonField(property = "date", type = Date.class),
+        @JsonField(property = "amount", type = Amount.class),
+        @JsonField(property = "doubleObject", type = Double.class),
+        @JsonField(property = "floatObject", type = Float.class),
+        @JsonField(property = "integerObject", type = Integer.class),
+        @JsonField(property = "longObject", type = Long.class),
+        @JsonField(property = "shortObject", type = Short.class),
+        @JsonField(property = "string", type = String.class),
+        @JsonField(property = "stringAttribute", type = String.class),
+        @JsonField(property = "fatGlobalItem", type = FatGlobalItem.class),
+        @JsonField(property = "skinnyNestedItem", type = SkinnyNestedItem.class),
+        @JsonField(property = "arrayOfIntegerObjects", type = Integer.class, array = true),
+        @JsonField(property = "arrayOfStrings", type = String.class, array = true),
+        @JsonField(property = "arrayOfSkinnyNestedItems", type = SkinnyNestedItem.class, array = true),
+        @JsonField(property = "arrayOfFatGlobalItems", type = FatGlobalItem.class, array = true),
+        @JsonField(property = "arrayOfLists", type = List.class, array = true),
+        @JsonField(property = "arrayOfMaps", type = Map.class, array = true),
+        @JsonField(property = "collectionOfIntegerObjects", type = Collection.class, typeVariable = Integer.class),
+        @JsonField(property = "collectionOfStrings", type = Collection.class, typeVariable = String.class),
+        @JsonField(property = "collectionOfSkinnyNestedItems", type = Collection.class, typeVariable = SkinnyNestedItem.class),
+        @JsonField(property = "untypedCollection", type = Collection.class),
+        @JsonField(property = "collectionOfFatGlobalItems", type = Collection.class, typeVariable = FatGlobalItem.class),
+        @JsonField(property = "collectionOfCollections", type = Collection.class, typeVariable = Collection.class),
+        @JsonField(property = "collectionOfMaps", type = Collection.class, typeVariable = Map.class),
+        @JsonField(property = "listOfIntegerObjects", type = List.class, typeVariable = Integer.class),
+        @JsonField(property = "listOfStrings", type = List.class, typeVariable = String.class),
+        @JsonField(property = "listOfSkinnyNestedItems", type = List.class, typeVariable = SkinnyNestedItem.class),
+        @JsonField(property = "untypedList", type = List.class),
+        @JsonField(property = "listOfFatGlobalItems", type = List.class, typeVariable = FatGlobalItem.class),
+        @JsonField(property = "listOfLists", type = List.class, typeVariable = List.class),
+        @JsonField(property = "listOfMaps", type = List.class, typeVariable = Map.class),
+        @JsonField(property = "setOfIntegerObjects", type = Set.class, typeVariable = Integer.class),
+        @JsonField(property = "setOfStrings", type = Set.class, typeVariable = String.class),
+        @JsonField(property = "setOfSkinnyNestedItems", type = Set.class, typeVariable = SkinnyNestedItem.class),
+        @JsonField(property = "untypedSet", type = Set.class),
+        @JsonField(property = "setOfFatGlobalItems", type = Set.class, typeVariable = FatGlobalItem.class),
+        @JsonField(property = "setOfLists", type = Set.class, typeVariable = Set.class),
+        @JsonField(property = "setOfMaps", type = Set.class, typeVariable = Map.class)})
 public class FatGlobalItem extends BaseModel
 {
     // ------------------------------------------------------------- xml reader
@@ -27,248 +122,4 @@ public class FatGlobalItem extends BaseModel
     }
 
     public static final FatGlobalItemJsonReader JSON = GWT.create(FatGlobalItemJsonReader.class);
-
-    // ------------------------------------------ primitives and simple objects
-    /*
-    @XmlField
-    @JsonField
-    public boolean booleanPrimitive;
-
-    @XmlField
-    @JsonField
-    public Boolean booleanObject;
-
-    @XmlField
-    @JsonField
-    public byte bytePrimitive;
-
-    @XmlField
-    @JsonField
-    public Byte byteObject;
-
-    @XmlField
-    @JsonField
-    public char characterPrimitive;
-
-    @XmlField
-    @JsonField
-    public Character characterObject;
-
-    @XmlField
-    @JsonField
-    public Date date;
-
-    @XmlField
-    @JsonField
-    public Amount amount;
-
-    @XmlField
-    @JsonField
-    public double doublePrimitive;
-
-    @XmlField
-    @JsonField
-    public Double doubleObject;
-
-    @XmlField
-    @JsonField
-    public float floatPrimitive;
-
-    @XmlField
-    @JsonField
-    public Float floatObject;
-
-    @XmlField
-    @JsonField
-    public int integerPrimitive;
-
-    @XmlField
-    @JsonField
-    public Integer integerObject;
-
-    @XmlField
-    @JsonField
-    public long longPrimitive;
-
-    @XmlField
-    @JsonField
-    public Long longObject;
-
-    @XmlField
-    @JsonField
-    public short shortPrimitive;
-
-    @XmlField
-    @JsonField
-    public Short shortObject;
-
-    @XmlField
-    @JsonField
-    public String string;
-
-    @XmlField("string/@attribute")
-    @JsonField
-    public String stringAttribute;
-
-    // --------------------------------------------------------- nested objects
-
-    @XmlField
-    @JsonField
-    public FatGlobalItem fatGlobalItem;
-
-    @XmlField
-    @JsonField
-    public SkinnyNestedItem skinnyNestedItem;
-
-    // ----------------------------------------------------------------- arrays
-
-    @XmlField
-    @JsonField
-    public int[] arrayOfIntegerPrimitives;
-
-    @XmlField
-    @JsonField
-    public Integer[] arrayOfIntegerObjects;
-
-    @XmlField
-    @JsonField
-    public String[] arrayOfStrings;
-
-    @XmlField("arrayOfSkinnyNestedItems/skinnyNestedItem")
-    @JsonField
-    public SkinnyNestedItem[] arrayOfSkinnyNestedItems;
-
-    // --------------------------------------------------------- invalid arrays
-
-    @XmlField
-    @JsonField
-    public FatGlobalItem[] arrayOfFatGlobalItems;
-
-    @XmlField
-    @JsonField
-    public List<String>[] arrayOfLists;
-
-    @XmlField
-    @JsonField
-    public Map<String, String>[] arrayOfMaps;
-
-    @XmlField
-    @JsonField
-    public int[][] multiDimensionalIntegerPrimitiveArray;
-
-    @XmlField
-    @JsonField
-    public Integer[][] multiDimensionalIntegerObjectArray;
-
-    // ------------------------------------------------------------ collections
-
-    @XmlField
-    @JsonField
-    public Collection<Integer> collectionOfIntegerObjects;
-
-    @XmlField
-    @JsonField
-    public Collection<String> collectionOfStrings;
-
-    @XmlField("collectionOfSkinnyNestedItems/skinnyNestedItem")
-    @JsonField
-    public Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems;
-
-    // ---------------------------------------------------- invalid collections
-
-    @XmlField
-    @JsonField
-    public @SuppressWarnings("unchecked")
-    Collection untypedCollection;
-
-    @XmlField
-    @JsonField
-    public Collection<FatGlobalItem> collectionOfFatGlobalItems;
-
-    @XmlField
-    @JsonField
-    public Collection<String[]> collectionOfArrays;
-
-    @XmlField
-    @JsonField
-    public Collection<Collection<String>> collectionOfCollections;
-
-    @XmlField
-    @JsonField
-    public Collection<Map<String, String>> collectionOfMaps;
-
-    // ------------------------------------------------------------------ lists
-
-    @XmlField
-    @JsonField
-    public List<Integer> listOfIntegerObjects;
-
-    @XmlField
-    @JsonField
-    public List<String> listOfStrings;
-
-    @XmlField("listOfSkinnyNestedItems/skinnyNestedItem")
-    @JsonField
-    public List<SkinnyNestedItem> listOfSkinnyNestedItems;
-
-    // ---------------------------------------------------------- invalid lists
-
-    @XmlField
-    @JsonField
-    public @SuppressWarnings("unchecked")
-    List untypedList;
-
-    @XmlField
-    @JsonField
-    public List<FatGlobalItem> listOfFatGlobalItems;
-
-    @XmlField
-    @JsonField
-    public List<String[]> listOfArrays;
-
-    @XmlField
-    @JsonField
-    public List<List<String>> listOfLists;
-
-    @XmlField
-    @JsonField
-    public List<Map<String, String>> listOfMaps;
-
-    // ------------------------------------------------------------------- sets
-
-    @XmlField
-    @JsonField
-    public Set<Integer> setOfIntegerObjects;
-
-    @XmlField
-    @JsonField
-    public Set<String> setOfStrings;
-
-    @XmlField("setOfSkinnyNestedItems/skinnyNestedItem")
-    @JsonField
-    public Set<SkinnyNestedItem> setOfSkinnyNestedItems;
-
-    // ----------------------------------------------------------- invalid sets
-
-    @XmlField
-    @JsonField
-    public @SuppressWarnings("unchecked")
-    Set untypedSet;
-
-    @XmlField
-    @JsonField
-    public Set<FatGlobalItem> setOfFatGlobalItems;
-
-    @XmlField
-    @JsonField
-    public Set<String[]> setOfArrays;
-
-    @XmlField
-    @JsonField
-    public Set<Set<String>> setOfSets;
-
-    @XmlField
-    @JsonField
-    public Set<Map<String, String>> setOfMaps;
-    */
 }

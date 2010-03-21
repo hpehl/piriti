@@ -84,7 +84,16 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
 
     private JClassType getFieldType(XmlField xmlField) throws UnableToCompleteException
     {
-        JClassType fieldType = context.getTypeOracle().findType(xmlField.type().getName());
+        JClassType fieldType = null;
+        if (xmlField.array())
+        {
+            JClassType componentType = context.getTypeOracle().findType(xmlField.type().getName());
+            fieldType = context.getTypeOracle().getArrayType(componentType);
+        }
+        else
+        {
+            fieldType = context.getTypeOracle().findType(xmlField.type().getName());
+        }
         if (fieldType == null)
         {
             die("Cannot find type {0}", xmlField.type().getName());

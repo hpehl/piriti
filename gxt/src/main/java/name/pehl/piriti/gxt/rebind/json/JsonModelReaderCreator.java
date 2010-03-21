@@ -84,7 +84,16 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
 
     private JClassType getFieldType(JsonField jsonField) throws UnableToCompleteException
     {
-        JClassType fieldType = context.getTypeOracle().findType(jsonField.type().getName());
+        JClassType fieldType = null;
+        if (jsonField.array())
+        {
+            JClassType componentType = context.getTypeOracle().findType(jsonField.type().getName());
+            fieldType = context.getTypeOracle().getArrayType(componentType);
+        }
+        else
+        {
+            fieldType = context.getTypeOracle().findType(jsonField.type().getName());
+        }
         if (fieldType == null)
         {
             die("Cannot find type {0}", jsonField.type().getName());

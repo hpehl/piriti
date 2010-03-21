@@ -34,8 +34,8 @@
             <artifactId>gwtxpath</artifactId>
         </dependency>
     </dependencies>
-    
-    
+        
+
     <build>
         <plugins>
             <plugin>
