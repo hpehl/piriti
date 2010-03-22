@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Implementation with default converter. Currently these converters are
+ * Implementation with default converters. Currently these converters are
  * registered:
  * <ul>
  * <li>Boolean.class --> {@link BooleanConverter}
@@ -27,6 +27,10 @@ public class ConverterRegistryImpl implements ConverterRegistry
     private Map<Class<?>, Converter<?>> registry;
 
 
+    /**
+     * Construct a new instance of this class and registers the default
+     * converters by calling {@link #registerDefaultConverters()}.
+     */
     public ConverterRegistryImpl()
     {
         registry = new HashMap<Class<?>, Converter<?>>();
