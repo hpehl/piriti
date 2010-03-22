@@ -27,7 +27,7 @@ public @interface XmlField
 {
     /**
      * An XPath expression to select the XML data. If not specified the property
-     * is taken as path.
+     * is taken as a base for the XPath expression.
      * 
      * @return
      */
