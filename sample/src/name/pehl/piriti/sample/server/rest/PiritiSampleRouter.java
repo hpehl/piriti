@@ -7,8 +7,8 @@ import org.restlet.Context;
 import com.google.inject.Injector;
 
 /**
- * @author $Author:$
- * @version $Revision:$
+ * @author $Author$
+ * @version $Revision$
  */
 public class PiritiSampleRouter extends GuiceRouter
 {
@@ -22,6 +22,6 @@ public class PiritiSampleRouter extends GuiceRouter
     protected void attachRoutes()
     {
         // TODO attach resources
-        // attach("/{token}/projects", ProjectsResource.class);
+        attach("/books", BooksResource.class);
     }
 }

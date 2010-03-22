@@ -12,7 +12,7 @@
 
 
     <listener>
-        <listener-class>name.pehl.tire.server.servlet.ServletConfig</listener-class>
+        <listener-class>name.pehl.piriti.sample.server.servlet.ServletConfig</listener-class>
     </listener>
 
 
