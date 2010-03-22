@@ -3,15 +3,16 @@ package name.pehl.piriti.sample.server.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.pehl.piriti.sample.shared.model.Author;
-import name.pehl.piriti.sample.shared.model.Book;
+import name.pehl.piriti.sample.server.model.Author;
+import name.pehl.piriti.sample.server.model.Book;
 
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 272
+ *          $
  */
 public class BooksResource extends ServerResource
 {

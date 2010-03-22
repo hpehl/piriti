@@ -1,10 +1,7 @@
-package name.pehl.piriti.sample.shared.model;
+package name.pehl.piriti.sample.server.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import name.pehl.piriti.client.json.JsonField;
-import name.pehl.piriti.client.xml.XmlField;
 
 /**
  * @author $Author$
@@ -13,26 +10,14 @@ import name.pehl.piriti.client.xml.XmlField;
  */
 public class Book
 {
-    @XmlField
-    @JsonField
-    String isbn;
+    private String isbn;
+    private int pages;
+    private String title;
+    private Author author;
+    private List<String> reviews;
 
-    @XmlField
-    @JsonField
-    int pages;
 
-    @XmlField
-    @JsonField
-    String title;
-
-    @XmlField
-    @JsonField
-    Author author;
-
-    @XmlField("reviews/review")
-    @JsonField
-    List<String> reviews;
-
+    // ----------------------------------------------------------- constructors
 
     public Book(String isbn)
     {
@@ -48,6 +33,17 @@ public class Book
         this.reviews = new ArrayList<String>();
     }
 
+
+    // --------------------------------------------------------- public methods
+
+    @Override
+    public String toString()
+    {
+        return new StringBuilder().append("Book [").append(isbn).append(", ").append(title).append("]").toString();
+    }
+
+
+    // ------------------------------------------------------------- properties
 
     public int getPages()
     {
@@ -100,12 +96,5 @@ public class Book
     public String getIsbn()
     {
         return isbn;
-    }
-
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder().append("Book [").append(isbn).append(", ").append(title).append("]").toString();
     }
 }

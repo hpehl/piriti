@@ -21,7 +21,6 @@ public class PiritiSampleRouter extends GuiceRouter
     @Override
     protected void attachRoutes()
     {
-        // TODO attach resources
         attach("/books", BooksResource.class);
     }
 }

@@ -9,7 +9,4 @@
     
     <entry-point class="name.pehl.piriti.sample.client.PiritiSample" />
 
-    <source path="client" />
-    <source path="shared" />
-
 </module>
