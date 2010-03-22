@@ -3,7 +3,7 @@ package name.pehl.piriti.restlet.client.xml;
 import java.io.IOException;
 
 import name.pehl.piriti.client.xml.XmlReader;
-import name.pehl.piriti.restlet.client.PiritiResource;
+import name.pehl.piriti.restlet.client.PiritiRepresentation;
 
 import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.xml.DomRepresentation;
@@ -20,7 +20,7 @@ import com.google.gwt.xml.client.Document;
  * @author $Author$
  * @version $Date$ $Revision$
  */
-public class PiritiXmlRepresentation<T> extends DomRepresentation implements PiritiResource<T>
+public class PiritiXmlRepresentation<T> extends DomRepresentation implements PiritiRepresentation<T>
 {
     /** The XmlReader for converting the XML to an instance of T. */
     private final XmlReader<T> xmlReader;

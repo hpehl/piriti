@@ -3,7 +3,7 @@ package name.pehl.piriti.restlet.client.json;
 import java.io.IOException;
 
 import name.pehl.piriti.client.json.JsonReader;
-import name.pehl.piriti.restlet.client.PiritiResource;
+import name.pehl.piriti.restlet.client.PiritiRepresentation;
 
 import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.json.JsonRepresentation;
@@ -21,7 +21,7 @@ import com.google.gwt.json.client.JSONValue;
  * @author $Author$
  * @version $Date$ $Revision$
  */
-public class PiritiJsonRepresentation<T> extends JsonRepresentation implements PiritiResource<T>
+public class PiritiJsonRepresentation<T> extends JsonRepresentation implements PiritiRepresentation<T>
 {
     /** The JsonReader for converting the JSON to an instance of T. */
     private final JsonReader<T> jsonReader;
