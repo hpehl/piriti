@@ -59,7 +59,7 @@ public @interface XmlField
 
 
     /**
-     * If the type is a collection, the type variable of the collection.
+     * The type variable in case of a collection.
      * 
      * @return
      */
