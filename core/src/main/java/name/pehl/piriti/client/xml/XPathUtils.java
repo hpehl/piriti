@@ -1,11 +1,13 @@
 package name.pehl.piriti.client.xml;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.xml.client.Attr;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
+import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.Text;
 import com.mouchel.gwt.xpath.client.XPath;
 
@@ -19,6 +21,57 @@ public final class XPathUtils
 {
     private XPathUtils()
     {
+    }
+
+
+    /**
+     * Returns all elements which are direct children of the documents root
+     * element.
+     * 
+     * @param document
+     * @return all elements which are direct children of the documents root
+     *         element or <code>null</code> if the document is null or if the
+     *         documents root element is empty.
+     */
+    public static List<Element> getElements(Document document)
+    {
+        List<Element> elements = null;
+        if (document != null)
+        {
+            elements = getElements(document.getDocumentElement());
+        }
+        return elements;
+    }
+
+
+    /**
+     * Returns all elements which are direct children of the specified element.
+     * 
+     * @param element
+     * @return all elements which are direct children of the specified element
+     *         or <code>null</code> if the element is null or empty.
+     */
+    public static List<Element> getElements(Element element)
+    {
+        List<Element> elements = null;
+        if (element != null)
+        {
+            NodeList childNodes = element.getChildNodes();
+            int length = childNodes.getLength();
+            if (length > 0)
+            {
+                elements = new ArrayList<Element>();
+                for (int i = 0; i < length; i++)
+                {
+                    Node item = childNodes.item(i);
+                    if (item instanceof Element)
+                    {
+                        elements.add((Element) item);
+                    }
+                }
+            }
+        }
+        return elements;
     }
 
 

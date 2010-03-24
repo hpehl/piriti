@@ -69,6 +69,18 @@ public interface XmlReader<T>
 
 
     /**
+     * Convert the direct children of the documents root element to a list of Ts
+     * according to the annotated fields in T.
+     * 
+     * @param document
+     *            The XML document used as input. May be <code>null</code>.
+     * @return A list of T instances with the mapped XML data or an empty list
+     *         if the document was {@code null}.
+     */
+    List<T> readList(@Nullable Document document);
+
+
+    /**
      * Convert the data in the specified document to a list of Ts according to
      * the annotated fields in T.
      * 
@@ -81,6 +93,18 @@ public interface XmlReader<T>
      *         if the document was {@code null}.
      */
     List<T> readList(@Nullable Document document, String xpath);
+
+
+    /**
+     * Convert the direct children of the specified element to a list of Ts
+     * according to the annotated fields in T.
+     * 
+     * @param document
+     *            The XML element used as input. May be <code>null</code>.
+     * @return A list of T instances with the mapped XML data or an empty list
+     *         if the element was {@code null}.
+     */
+    List<T> readList(@Nullable Element element);
 
 
     /**

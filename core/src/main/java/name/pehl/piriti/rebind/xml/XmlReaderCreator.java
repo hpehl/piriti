@@ -76,7 +76,16 @@ public class XmlReaderCreator extends AbstractReaderCreator
         readListFromDocument(writer);
         writer.newline();
 
+        readListFromDocumentUsingXpath(writer);
+        writer.newline();
+
         readListFromElement(writer);
+        writer.newline();
+
+        readListFromElementUsingXpath(writer);
+        writer.newline();
+        
+        readListInternal(writer);
         writer.newline();
     }
 
@@ -116,31 +125,62 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
+    protected void readListFromDocumentUsingXpath(IndentedWriter writer) throws UnableToCompleteException
+    {
+        readListUsingXpath(writer, "Document", "document");
+    }
+
+
     protected void readListFromElement(IndentedWriter writer) throws UnableToCompleteException
     {
         readList(writer, "Element", "element");
     }
 
 
+    protected void readListFromElementUsingXpath(IndentedWriter writer) throws UnableToCompleteException
+    {
+        readListUsingXpath(writer, "Element", "element");
+    }
+
+
     protected void readList(IndentedWriter writer, String xmlType, String xmlVariable) throws UnableToCompleteException
+    {
+        writer.write("public List<%s> readList(%s %s) {", modelType.getParameterizedQualifiedSourceName(), xmlType,
+                xmlVariable);
+        writer.indent();
+        writer.write("List<Element> elements = XPathUtils.getElements(%s);", xmlVariable);
+        writer.write("return readListInternal(elements);");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void readListUsingXpath(IndentedWriter writer, String xmlType, String xmlVariable)
+            throws UnableToCompleteException
     {
         writer.write("public List<%s> readList(%s %s, String xpath) {",
                 modelType.getParameterizedQualifiedSourceName(), xmlType, xmlVariable);
         writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (%s != null && xpath != null && xpath.length() != 0) {", xmlVariable);
-        writer.indent();
         writer.write("List<Element> elements = XPathUtils.getElements(%s, xpath);", xmlVariable);
+        writer.write("return readListInternal(elements);");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void readListInternal(IndentedWriter writer)
+    {
+        writer.write("private List<%s> readListInternal(List<Element> elements) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (elements != null && !elements.isEmpty()) {");
         writer.indent();
-        writer.write("for (Element currentElement : elements) {");
+        writer.write("for (Element element : elements) {");
         writer.indent();
-        writer.write("%s model = read(currentElement);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("%s model = read(element);", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (model != null) {");
         writer.indent();
         writer.write("models.add(model);");
-        writer.outdent();
-        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();
