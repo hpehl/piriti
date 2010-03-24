@@ -74,36 +74,4 @@ public final class StopWatch
     {
         return new TimeInterval(System.currentTimeMillis() - startTime);
     }
-
-    /**
-     * Represents a span of time.
-     */
-    public static class TimeInterval
-    {
-        private long interval;
-
-
-        private TimeInterval(long interval)
-        {
-            this.interval = interval;
-        }
-
-
-        public long ms()
-        {
-            return interval;
-        }
-
-
-        public double seconds()
-        {
-            return (double) interval / (double) 1000;
-        }
-
-
-        public String toString()
-        {
-            return interval + " ms";
-        }
-    }
 }

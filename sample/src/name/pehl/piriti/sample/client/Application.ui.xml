@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style>
+        .important {
+            font-weight: bold;
+        }
+    </ui:style>
+    <g:DockLayoutPanel unit="EM">
+        <g:west size="10">
+            <g:HTML>
+                <ul>
+                    <g:Hyperlink ui:field="fromJsonAsPojo">Read from JSON as POJO</g:Hyperlink>
+                    <g:Hyperlink ui:field="fromJsonAsGxtModel">Read from JSON as GXT model</g:Hyperlink>
+                    <g:Hyperlink ui:field="fromXmlAsPojo">Read from XML as POJO</g:Hyperlink>
+                    <g:Hyperlink ui:field="fromXmlAsGxtModel">Read from XML as POJO</g:Hyperlink>
+                </ul>
+            </g:HTML>
+        </g:west>
+        <g:center>
+            <g:ScrollPanel>
+                <g:Label ui:field="sourceCode" wordWrap="true"></g:Label>
+            </g:ScrollPanel>
+        </g:center>
+        <g:north size="10">
+            <g:HTML>
+                <div>
+                    Read <span ui:field="size" /> books in <span ui:field="interval" /> ms.
+                </div>
+            </g:HTML>
+        </g:north>
+    </g:DockLayoutPanel>
+</ui:UiBinder> 
