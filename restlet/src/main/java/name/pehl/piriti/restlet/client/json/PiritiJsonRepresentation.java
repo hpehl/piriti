@@ -1,6 +1,7 @@
 package name.pehl.piriti.restlet.client.json;
 
 import java.io.IOException;
+import java.util.List;
 
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.restlet.client.PiritiRepresentation;
@@ -9,6 +10,7 @@ import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.json.JsonRepresentation;
 import org.restlet.client.representation.Representation;
 
+import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
@@ -19,7 +21,8 @@ import com.google.gwt.json.client.JSONValue;
  * @param <T>
  *            The model type
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 264
+ *          $
  */
 public class PiritiJsonRepresentation<T> extends JsonRepresentation implements PiritiRepresentation<T>
 {
@@ -121,5 +124,32 @@ public class PiritiJsonRepresentation<T> extends JsonRepresentation implements P
             model = jsonReader.read(jsonObject);
         }
         return model;
+    }
+
+
+    /**
+     * Converts the JSON to a list of Ts using the {@link JsonReader} given as
+     * constructor argument. Returns null if {@link #getJsonObject()} or
+     * {@link JsonReader} is null. The {@link #getJsonObject()} has to be a
+     * valid JSON array.
+     * 
+     * @return the list of converted Ts or null if {@link #getJsonObject()} or
+     *         {@link JsonReader} is null.
+     * @throws IOException
+     */
+    @Override
+    public List<T> getModels() throws IOException
+    {
+        List<T> models = null;
+        JSONObject jsonObject = getJsonObject();
+        if (jsonObject != null)
+        {
+            JSONArray jsonArray = jsonObject.isArray();
+            if (jsonArray != null)
+            {
+                models = jsonReader.readList(jsonArray);
+            }
+        }
+        return models;
     }
 }

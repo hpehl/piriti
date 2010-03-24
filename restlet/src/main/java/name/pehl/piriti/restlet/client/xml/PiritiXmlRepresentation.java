@@ -1,6 +1,7 @@
 package name.pehl.piriti.restlet.client.xml;
 
 import java.io.IOException;
+import java.util.List;
 
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.restlet.client.PiritiRepresentation;
@@ -18,7 +19,8 @@ import com.google.gwt.xml.client.Document;
  * @param <T>
  *            The model type
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 264
+ *          $
  */
 public class PiritiXmlRepresentation<T> extends DomRepresentation implements PiritiRepresentation<T>
 {
@@ -105,5 +107,27 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
             model = xmlReader.read(document);
         }
         return model;
+    }
+
+
+    /**
+     * Converts the XML to a list of Ts using the {@link XmlReader} given as
+     * constructor argument. Returns null if {@link #getDocument()} or
+     * {@link XmlReader} is null.
+     * 
+     * @return the list of converted Ts or null if {@link #getDocument()} or
+     *         {@link XmlReader} is null.
+     * @throws IOException
+     */
+    @Override
+    public List<T> getModels() throws IOException
+    {
+        List<T> models = null;
+        Document document = getDocument();
+        if (document != null)
+        {
+            models = xmlReader.readList(document);
+        }
+        return models;
     }
 }
