@@ -1,5 +1,5 @@
-#Mon Mar 22 17:28:44 CET 2010
+#Wed Mar 24 01:33:06 CET 2010
 eclipse.preferences.version=1
-jarsExcludedFromWebInfLib=/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gin-1.0.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gwtxpath-1.0.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/gxt-2.1.1.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet-2.0-M7.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.json-2.0-M7.jar|/home/lfstad-pehl/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.xml-2.0-M7.jar
+jarsExcludedFromWebInfLib=/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/gin-1.0.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/gwtxpath-1.0.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/gxt-2.1.1.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/org.restlet-2.0-M7.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.json-2.0-M7.jar|/home/pehlh/Projekte/Piriti/impl/sample/lib/gwt/org.restlet.ext.xml-2.0-M7.jar
 warSrcDir=war
 warSrcDirIsOutput=true
