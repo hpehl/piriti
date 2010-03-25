@@ -23,13 +23,13 @@ public class Book
     {
     }
 
-    BookJsonReader JSON = GWT.create(BookJsonReader.class);
+    public static final BookJsonReader JSON = GWT.create(BookJsonReader.class);
 
     public interface BookXmlReader extends XmlReader<Book>
     {
     }
 
-    BookXmlReader XML = GWT.create(BookXmlReader.class);
+    public static final BookXmlReader XML = GWT.create(BookXmlReader.class);
 
     // ---------------------------------------------------------------- members
 

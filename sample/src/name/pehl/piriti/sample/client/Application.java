@@ -1,6 +1,6 @@
 package name.pehl.piriti.sample.client;
 
-import name.pehl.piriti.gxt.client.gwttest.book.Book;
+import name.pehl.piriti.sample.client.model.Book;
 import name.pehl.piriti.sample.client.model.BookModel;
 import name.pehl.piriti.sample.client.rest.BooksClient;
 

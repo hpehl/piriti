@@ -20,13 +20,13 @@ public class Author
     {
     }
 
-    AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
+    public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
 
     public interface AuthorXmlReader extends XmlReader<Author>
     {
     }
 
-    AuthorXmlReader XML = GWT.create(AuthorXmlReader.class);
+    public static final AuthorXmlReader XML = GWT.create(AuthorXmlReader.class);
 
     // ---------------------------------------------------------------- members
 
