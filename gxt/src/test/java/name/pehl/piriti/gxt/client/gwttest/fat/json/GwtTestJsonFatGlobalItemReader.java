@@ -1,8 +1,8 @@
-package name.pehl.piriti.gxt.client.fat.json;
+package name.pehl.piriti.gxt.client.gwttest.fat.json;
 
-import name.pehl.piriti.client.fat.json.JsonFatGlobalItemFactory;
-import name.pehl.piriti.gxt.client.fat.FatGlobalItem;
-import name.pehl.piriti.gxt.client.fat.FatGlobalItemTestCase;
+import name.pehl.piriti.client.gwttest.fat.json.JsonFatGlobalItemFactory;
+import name.pehl.piriti.gxt.client.gwttest.fat.FatGlobalItem;
+import name.pehl.piriti.gxt.client.gwttest.fat.FatGlobalItemTestCase;
 
 /**
  * @author $Author: harald.pehl $

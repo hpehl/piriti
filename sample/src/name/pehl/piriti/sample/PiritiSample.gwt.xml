@@ -5,9 +5,7 @@
         $LastChangedBy: harald.pehl 
         $LastChangedRevision: 138 $
     -->
-    <inherits name="name.pehl.piriti.Piriti" />
     <inherits name="name.pehl.piriti.gxt.PiritiGxt" />
     <inherits name="name.pehl.piriti.restlet.PiritiRestlet" />
-    
     <entry-point class="name.pehl.piriti.sample.client.PiritiSample" />
 </module>

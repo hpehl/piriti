@@ -1,8 +1,8 @@
-package name.pehl.piriti.gxt.client.fat.xml;
+package name.pehl.piriti.gxt.client.gwttest.fat.xml;
 
-import name.pehl.piriti.client.fat.xml.XmlFatGlobalItemFactory;
-import name.pehl.piriti.gxt.client.fat.FatGlobalItem;
-import name.pehl.piriti.gxt.client.fat.FatGlobalItemTestCase;
+import name.pehl.piriti.client.gwttest.fat.xml.XmlFatGlobalItemFactory;
+import name.pehl.piriti.gxt.client.gwttest.fat.FatGlobalItem;
+import name.pehl.piriti.gxt.client.gwttest.fat.FatGlobalItemTestCase;
 
 import com.google.gwt.xml.client.Document;
 
