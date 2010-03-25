@@ -1,4 +1,4 @@
-package name.pehl.piriti.gxt.client.fat;
+package name.pehl.piriti.gxt.client.gwttest.fat;
 
 import java.util.Collection;
 import java.util.Date;
@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import name.pehl.piriti.client.fat.Amount;
+import name.pehl.piriti.client.gwttest.fat.Amount;
 
 import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.junit.client.GWTTestCase;

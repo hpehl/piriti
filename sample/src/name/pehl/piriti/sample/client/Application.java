@@ -1,6 +1,6 @@
 package name.pehl.piriti.sample.client;
 
-import name.pehl.piriti.gxt.client.book.Book;
+import name.pehl.piriti.gxt.client.gwttest.book.Book;
 import name.pehl.piriti.sample.client.model.BookModel;
 import name.pehl.piriti.sample.client.rest.BooksClient;
 
@@ -16,8 +16,8 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class Application extends Composite
 {

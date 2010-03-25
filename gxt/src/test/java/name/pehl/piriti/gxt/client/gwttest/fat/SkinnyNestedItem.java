@@ -1,8 +1,8 @@
-package name.pehl.piriti.gxt.client.fat;
+package name.pehl.piriti.gxt.client.gwttest.fat;
 
 import java.util.Date;
 
-import name.pehl.piriti.client.fat.Amount;
+import name.pehl.piriti.client.gwttest.fat.Amount;
 import name.pehl.piriti.gxt.client.json.JsonField;
 import name.pehl.piriti.gxt.client.json.JsonModel;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;

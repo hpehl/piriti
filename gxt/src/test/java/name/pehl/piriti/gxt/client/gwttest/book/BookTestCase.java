@@ -1,8 +1,8 @@
-package name.pehl.piriti.gxt.client.book;
+package name.pehl.piriti.gxt.client.gwttest.book;
 
 import java.util.List;
 
-import name.pehl.piriti.client.book.BookFactory;
+import name.pehl.piriti.client.gwttest.book.BookFactory;
 
 import com.google.gwt.junit.client.GWTTestCase;
 

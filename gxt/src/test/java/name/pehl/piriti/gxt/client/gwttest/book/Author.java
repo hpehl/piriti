@@ -1,4 +1,4 @@
-package name.pehl.piriti.gxt.client.book;
+package name.pehl.piriti.gxt.client.gwttest.book;
 
 import name.pehl.piriti.gxt.client.json.JsonField;
 import name.pehl.piriti.gxt.client.json.JsonModel;
