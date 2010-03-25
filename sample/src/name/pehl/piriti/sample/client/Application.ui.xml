@@ -19,7 +19,7 @@
         </g:west>
         <g:north size="13">
             <g:HTML addStyleNames="{style.box}">
-                This demo demonstrates the features of <a href="http://code.google.com/p/piriti/" target="_blank">Piriti.</a><br />
+                This application demonstrates the features of <a href="http://code.google.com/p/piriti/" target="_blank">Piriti.</a><br />
                 Therefore the demo provides a 'books' resources which returns three books. 
                 The resource is available in two representations:
                 <ul>
