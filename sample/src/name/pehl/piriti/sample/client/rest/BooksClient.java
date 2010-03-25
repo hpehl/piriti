@@ -20,7 +20,8 @@ import org.restlet.client.resource.ClientResource;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 299
+ *          $
  */
 public class BooksClient
 {
@@ -35,6 +36,7 @@ public class BooksClient
             @Override
             public void handle(Request request, Response response)
             {
+                BooksReadEvent booksReadEvent = null;
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 PiritiJsonRepresentation<T> representation = new PiritiJsonRepresentation<T>(jsonReader, response
@@ -43,13 +45,13 @@ public class BooksClient
                 {
                     List<T> books = representation.getModels();
                     TimeInterval timeInterval = stopWatch.stop();
-                    BooksReadEvent booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
-                    EventBus.get().fireEvent(booksReadEvent);
+                    booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    booksReadEvent = new BooksReadEvent(null, null, null);
                 }
+                EventBus.get().fireEvent(booksReadEvent);
             }
         });
         clientResource.get(MediaType.APPLICATION_JSON);
@@ -64,6 +66,7 @@ public class BooksClient
             @Override
             public void handle(Request request, Response response)
             {
+                BooksReadEvent booksReadEvent = null;
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 PiritiXmlRepresentation<T> representation = new PiritiXmlRepresentation<T>(xmlReader, response
@@ -72,13 +75,13 @@ public class BooksClient
                 {
                     List<T> books = representation.getModels();
                     TimeInterval timeInterval = stopWatch.stop();
-                    BooksReadEvent booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
-                    EventBus.get().fireEvent(booksReadEvent);
+                    booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    booksReadEvent = new BooksReadEvent(null, null, null);
                 }
+                EventBus.get().fireEvent(booksReadEvent);
             }
         });
         clientResource.get(MediaType.TEXT_XML);
