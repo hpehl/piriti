@@ -11,6 +11,7 @@ import name.pehl.piriti.sample.client.rest.BooksClient;
 import name.pehl.piriti.sample.client.util.TimeInterval;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.PreElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -46,7 +47,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     Hyperlink xmlToGxtModel;
 
     @UiField
-    Label sourceCode;
+    PreElement sourceCode;
 
     @UiField
     Label status;
@@ -97,7 +98,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
         TimeInterval timeInterval = event.getTimeInterval();
         if (books != null)
         {
-            sourceCode.setText(event.getSourceCode());
+            sourceCode.setInnerText(event.getSourceCode());
             Object book = books.get(0);
             String kind = book instanceof Book ? "POJO" : "GXT model";
             status.setText("Successfully read " + event.getBooks().size() + " books as " + kind + " in "
@@ -105,7 +106,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
         }
         else
         {
-            sourceCode.setText("");
+            sourceCode.setInnerText("");
             status.setText("Error reading books");
         }
     }

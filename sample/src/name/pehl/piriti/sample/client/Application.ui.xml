@@ -4,9 +4,6 @@
         .box {
             margin: 5px;
         }
-        .code {
-            font-family: monospace; 
-        }
     </ui:style>
     <g:DockLayoutPanel unit="EM">
         <g:west size="12">
@@ -33,9 +30,9 @@
             </g:HTML>
         </g:north>
         <g:center>
-            <g:ScrollPanel addStyleNames="{style.box}">
-                <g:Label ui:field="sourceCode" addStyleNames="{style.code}" />
-            </g:ScrollPanel>
+            <g:HTML addStyleNames="{style.box}">
+                <pre ui:field="sourceCode"/>
+            </g:HTML>
         </g:center>
         <g:south size="2">
             <g:Label ui:field="status" addStyleNames="{style.box}" />
