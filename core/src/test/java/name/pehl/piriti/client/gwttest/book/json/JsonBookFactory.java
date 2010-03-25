@@ -1,6 +1,6 @@
-package name.pehl.piriti.client.book.json;
+package name.pehl.piriti.client.gwttest.book.json;
 
-import name.pehl.piriti.client.book.BookFactory;
+import name.pehl.piriti.client.gwttest.book.BookFactory;
 
 /**
  * @author $LastChangedBy: harald.pehl $

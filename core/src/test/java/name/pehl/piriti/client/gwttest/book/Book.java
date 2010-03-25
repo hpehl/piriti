@@ -1,4 +1,4 @@
-package name.pehl.piriti.client.book;
+package name.pehl.piriti.client.gwttest.book;
 
 import java.util.List;
 

@@ -1,10 +1,10 @@
-package name.pehl.piriti.client.book;
+package name.pehl.piriti.client.gwttest.book;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public abstract class BookTestCase extends GWTTestCase
 {

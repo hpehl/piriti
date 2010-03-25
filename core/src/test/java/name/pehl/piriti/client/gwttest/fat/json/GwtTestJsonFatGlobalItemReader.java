@@ -1,7 +1,7 @@
-package name.pehl.piriti.client.fat.json;
+package name.pehl.piriti.client.gwttest.fat.json;
 
-import name.pehl.piriti.client.fat.FatGlobalItem;
-import name.pehl.piriti.client.fat.FatGlobalItemTestCase;
+import name.pehl.piriti.client.gwttest.fat.FatGlobalItem;
+import name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase;
 
 /**
  * @author $Author$

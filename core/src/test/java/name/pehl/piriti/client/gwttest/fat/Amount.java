@@ -1,4 +1,4 @@
-package name.pehl.piriti.client.fat;
+package name.pehl.piriti.client.gwttest.fat;
 
 /**
  * @author $LastChangedBy: harald.pehl $ 

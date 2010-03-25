@@ -1,7 +1,7 @@
-package name.pehl.piriti.client.book.xml;
+package name.pehl.piriti.client.gwttest.book.xml;
 
-import name.pehl.piriti.client.book.Book;
-import name.pehl.piriti.client.book.BookTestCase;
+import name.pehl.piriti.client.gwttest.book.Book;
+import name.pehl.piriti.client.gwttest.book.BookTestCase;
 
 import com.google.gwt.xml.client.Document;
 

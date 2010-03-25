@@ -1,11 +1,11 @@
-package name.pehl.piriti.client.fat.json;
+package name.pehl.piriti.client.gwttest.fat.json;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
 import name.pehl.piriti.client.converter.DateConverter;
-import name.pehl.piriti.client.fat.Amount;
+import name.pehl.piriti.client.gwttest.fat.Amount;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 

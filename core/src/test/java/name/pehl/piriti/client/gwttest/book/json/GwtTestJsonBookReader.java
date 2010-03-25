@@ -1,7 +1,7 @@
-package name.pehl.piriti.client.book.json;
+package name.pehl.piriti.client.gwttest.book.json;
 
-import name.pehl.piriti.client.book.Book;
-import name.pehl.piriti.client.book.BookTestCase;
+import name.pehl.piriti.client.gwttest.book.Book;
+import name.pehl.piriti.client.gwttest.book.BookTestCase;
 
 /**
  * @author $Author: harald.pehl $
