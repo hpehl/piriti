@@ -10,7 +10,6 @@ import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.json.JsonRepresentation;
 import org.restlet.client.representation.Representation;
 
-import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
@@ -130,8 +129,9 @@ public class PiritiJsonRepresentation<T> extends JsonRepresentation implements P
     /**
      * Converts the JSON to a list of Ts using the {@link JsonReader} given as
      * constructor argument. Returns null if {@link #getJsonObject()} or
-     * {@link JsonReader} is null. The {@link #getJsonObject()} has to be a
-     * valid JSON array.
+     * {@link JsonReader} is null. More precisely the JSON has to be a JSON
+     * object with one key (name does not matter). The value of this key has to
+     * be a JSON array which is converted to instances of T.
      * 
      * @return the list of converted Ts or null if {@link #getJsonObject()} or
      *         {@link JsonReader} is null.
@@ -144,11 +144,7 @@ public class PiritiJsonRepresentation<T> extends JsonRepresentation implements P
         JSONObject jsonObject = getJsonObject();
         if (jsonObject != null)
         {
-            JSONArray jsonArray = jsonObject.isArray();
-            if (jsonArray != null)
-            {
-                models = jsonReader.readList(jsonArray);
-            }
+            models = jsonReader.readList(jsonObject);
         }
         return models;
     }
