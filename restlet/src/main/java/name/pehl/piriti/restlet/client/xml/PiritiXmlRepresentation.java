@@ -113,7 +113,8 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
     /**
      * Converts the XML to a list of Ts using the {@link XmlReader} given as
      * constructor argument. Returns null if {@link #getDocument()} or
-     * {@link XmlReader} is null.
+     * {@link XmlReader} is null. More precisely the child elements of the
+     * documents root element are converted to instances of T.
      * 
      * @return the list of converted Ts or null if {@link #getDocument()} or
      *         {@link XmlReader} is null.
