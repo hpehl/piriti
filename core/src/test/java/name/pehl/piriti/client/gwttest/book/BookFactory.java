@@ -6,6 +6,9 @@ package name.pehl.piriti.client.gwttest.book;
  */
 public interface BookFactory
 {
+    String BOOKS = "books";
+    int BOOKS_COUNT = 3;
+
     String ISBN = "978-0345417954";
     int PAGES = 432;
     String TITLE = "The Hotel New Hampshire";

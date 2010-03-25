@@ -18,7 +18,9 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public abstract class FatGlobalItemTestCase extends GWTTestCase
 {
-    protected static final Date MY_BIRTHDAY = new Date(115813353000l);
+    public static final int SIZE = 3;
+    public static final String ITEMS = "items";
+    public static final Date MY_BIRTHDAY = new Date(115813353000l);
 
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;
@@ -52,6 +54,17 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
     }
 
 
+    protected void assertFatGlobalItems(List<FatGlobalItem> items)
+    {
+        assertNotNull(items);
+        assertEquals(SIZE, items.size());
+        for (FatGlobalItem fgi : items)
+        {
+            assertFatGlobalItem(fgi);
+        }
+    }
+    
+    
     protected void assertFatGlobalItem(FatGlobalItem fgm)
     {
         // Basic stuff
@@ -64,35 +77,35 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
 
         // Arrays
         Integer[] arrayOfIntegerObjects = fgm.get("arrayOfIntegerObjects");
-        assertEquals(3, arrayOfIntegerObjects.length);
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, arrayOfIntegerObjects.length);
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(i, arrayOfIntegerObjects[i].intValue());
         }
         String[] arrayOfStrings = fgm.get("arrayOfStrings");
-        assertEquals(3, arrayOfStrings.length);
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, arrayOfStrings.length);
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(String.valueOf(i), arrayOfStrings[i]);
         }
         SkinnyNestedItem[] arrayOfSkinnyNestedItems = fgm.get("arrayOfSkinnyNestedItems");
-        assertEquals(3, arrayOfSkinnyNestedItems.length);
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, arrayOfSkinnyNestedItems.length);
+        for (int i = 0; i < SIZE; i++)
         {
             assertBasicStuff(arrayOfSkinnyNestedItems[i]);
         }
 
         // Collections
         Collection<Integer> collectionOfIntegerObjects = fgm.get("collectionOfIntegerObjects");
-        assertEquals(3, collectionOfIntegerObjects.size());
+        assertEquals(SIZE, collectionOfIntegerObjects.size());
         collectionOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
         assertTrue(collectionOfIntegerObjects.isEmpty());
         Collection<String> collectionOfStrings = fgm.get("collectionOfStrings");
-        assertEquals(3, collectionOfStrings.size());
+        assertEquals(SIZE, collectionOfStrings.size());
         collectionOfStrings.removeAll(setOfStringsFixture);
         assertTrue(collectionOfStrings.isEmpty());
         Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems = fgm.get("collectionOfSkinnyNestedItems");
-        assertEquals(3, collectionOfSkinnyNestedItems.size());
+        assertEquals(SIZE, collectionOfSkinnyNestedItems.size());
         for (SkinnyNestedItem sni : collectionOfSkinnyNestedItems)
         {
             assertBasicStuff(sni);
@@ -100,35 +113,35 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
 
         // Lists
         List<Integer> listOfIntegerObjects = fgm.get("listOfIntegerObjects");
-        assertEquals(3, listOfIntegerObjects.size());
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, listOfIntegerObjects.size());
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(i, listOfIntegerObjects.get(i).intValue());
         }
         List<String> listOfStrings = fgm.get("listOfStrings");
-        assertEquals(3, listOfStrings.size());
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, listOfStrings.size());
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(String.valueOf(i), listOfStrings.get(i));
         }
         List<SkinnyNestedItem> listOfSkinnyNestedItems = fgm.get("listOfSkinnyNestedItems");
-        assertEquals(3, listOfSkinnyNestedItems.size());
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, listOfSkinnyNestedItems.size());
+        for (int i = 0; i < SIZE; i++)
         {
             assertBasicStuff(listOfSkinnyNestedItems.get(i));
         }
 
         // Sets
         Set<Integer> setOfIntegerObjects = fgm.get("setOfIntegerObjects");
-        assertEquals(3, setOfIntegerObjects.size());
+        assertEquals(SIZE, setOfIntegerObjects.size());
         setOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
         assertTrue(setOfIntegerObjects.isEmpty());
         Set<String> setOfStrings = fgm.get("setOfStrings");
-        assertEquals(3, setOfStrings.size());
+        assertEquals(SIZE, setOfStrings.size());
         setOfStrings.removeAll(setOfStringsFixture);
         assertTrue(setOfStrings.isEmpty());
         Set<SkinnyNestedItem> setOfSkinnyNestedItems = fgm.get("setOfSkinnyNestedItems");
-        assertEquals(3, setOfSkinnyNestedItems.size());
+        assertEquals(SIZE, setOfSkinnyNestedItems.size());
         for (SkinnyNestedItem sni : setOfSkinnyNestedItems)
         {
             assertBasicStuff(sni);

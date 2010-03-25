@@ -39,6 +39,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createImports(writer);
+        writer.write("import java.util.Iterator;");
+        writer.write("import java.util.Set;");
         writer.write("import com.google.gwt.json.client.*;");
         writer.write("import name.pehl.piriti.client.json.*;");
     }
@@ -70,7 +72,16 @@ public class JsonReaderCreator extends AbstractReaderCreator
         readFromJsonObject(writer);
         writer.newline();
 
-        readListFromString(writer);
+        readListFromStringUsingFirstKey(writer);
+        writer.newline();
+
+        readListFromStringUsingNamedKey(writer);
+        writer.newline();
+
+        readListFromJsonObjectUsingFirstKey(writer);
+        writer.newline();
+
+        readListFromJsonObjectUsingNamedKey(writer);
         writer.newline();
 
         readListFromJsonArray(writer);
@@ -123,7 +134,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    protected void readListFromString(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListFromStringUsingFirstKey(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public List<%s> readList(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
@@ -133,22 +144,21 @@ public class JsonReaderCreator extends AbstractReaderCreator
         writer.write("JSONValue jsonValue = JSONParser.parse(jsonString);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
+        writer.write("JSONObject jsonObject = jsonValue.isObject();");
+        writer.write("if (jsonObject != null) {");
+        writer.indent();
+        writer.write("Set<String> keys = jsonObject.keySet();");
+        writer.write("if (keys != null && !keys.isEmpty()) {");
+        writer.indent();
+        writer.write("String arrayKey = keys.iterator().next();");
+        writer.write("jsonValue = jsonObject.get(arrayKey);");
+        writer.write("if (jsonValue != null) {");
+        writer.indent();
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
-        writer.write("int size = jsonArray.size();");
-        writer.write("for (int i = 0; i < size; i++) {");
-        writer.indent();
-        writer.write("JSONValue currentJsonValue = jsonArray.get(i);");
-        writer.write("if (currentJsonValue != null) {");
-        writer.indent();
-        writer.write("JSONObject currentJsonObject = currentJsonValue.isObject();");
-        writer.write("if (currentJsonObject != null) {");
-        writer.indent();
-        writer.write("%s model = internalRead(currentJsonObject);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (model != null) {");
-        writer.indent();
-        writer.write("models.add(model);");
+        writer.write("models = readList(jsonArray);");
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -158,6 +168,95 @@ public class JsonReaderCreator extends AbstractReaderCreator
         writer.outdent();
         writer.write("}");
         writer.outdent();
+        writer.write("}");
+        writer.write("return models;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void readListFromStringUsingNamedKey(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public List<%s> readList(String jsonString, String arrayKey) {", modelType
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
+        writer.indent();
+        writer.write("JSONValue jsonValue = JSONParser.parse(jsonString);");
+        writer.write("if (jsonValue != null) {");
+        writer.indent();
+        writer.write("JSONObject jsonObject = jsonValue.isObject();");
+        writer.write("if (jsonObject != null) {");
+        writer.indent();
+        writer.write("jsonValue = jsonObject.get(arrayKey);");
+        writer.write("if (jsonValue != null) {");
+        writer.indent();
+        writer.write("JSONArray jsonArray = jsonValue.isArray();");
+        writer.write("if (jsonArray != null) {");
+        writer.indent();
+        writer.write("models = readList(jsonArray);");
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return models;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void readListFromJsonObjectUsingFirstKey(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public List<%s> readList(JSONObject jsonObject) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("if (jsonObject != null) {");
+        writer.indent();
+        writer.write("Set<String> keys = jsonObject.keySet();");
+        writer.write("if (keys != null && !keys.isEmpty()) {");
+        writer.indent();
+        writer.write("String arrayKey = keys.iterator().next();");
+        writer.write("JSONValue jsonValue = jsonObject.get(arrayKey);");
+        writer.write("if (jsonValue != null) {");
+        writer.indent();
+        writer.write("JSONArray jsonArray = jsonValue.isArray();");
+        writer.write("if (jsonArray != null) {");
+        writer.indent();
+        writer.write("models = readList(jsonArray);");
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return models;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void readListFromJsonObjectUsingNamedKey(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public List<%s> readList(JSONObject jsonObject, String arrayKey) {", modelType
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("if (jsonObject != null) {");
+        writer.indent();
+        writer.write("JSONValue jsonValue = jsonObject.get(arrayKey);");
+        writer.write("if (jsonValue != null) {");
+        writer.indent();
+        writer.write("JSONArray jsonArray = jsonValue.isArray();");
+        writer.write("if (jsonArray != null) {");
+        writer.indent();
+        writer.write("models = readList(jsonArray);");
         writer.write("}");
         writer.outdent();
         writer.write("}");

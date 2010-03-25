@@ -1,7 +1,6 @@
 package name.pehl.piriti.client.gwttest.fat.xml;
 
-import java.util.Date;
-
+import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase.*;
 import name.pehl.piriti.client.converter.DateConverter;
 import name.pehl.piriti.client.gwttest.fat.Amount;
 
@@ -17,93 +16,109 @@ import com.google.gwt.xml.client.XMLParser;
  */
 public final class XmlFatGlobalItemFactory
 {
-    private static final Date MY_BIRTHDAY = new Date(115813353000l);
-
-
     private XmlFatGlobalItemFactory()
     {
     }
 
 
-    public static Document createDocument()
+    public static Document createFatGlobalItems()
     {
-        int size = 3;
         Document document = XMLParser.createDocument();
-        Element model = document.createElement("model");
-
-        // Primitives and simple objects
-        createElementAndAppend(document, model, "booleanPrimitive", "true");
-        createElementAndAppend(document, model, "booleanObject", "true");
-        createElementAndAppend(document, model, "bytePrimitive", "1");
-        createElementAndAppend(document, model, "byteObject", "2");
-        createElementAndAppend(document, model, "characterPrimitive", "a");
-        createElementAndAppend(document, model, "characterObject", "b");
-        createElementAndAppend(document, model, "date", DateTimeFormat.getFormat(DateConverter.DEFAULT_FORMAT).format(
-                MY_BIRTHDAY));
-        createElementAndAppend(document, model, "amount", Amount.THREE.name());
-        createElementAndAppend(document, model, "doublePrimitive", "4.5");
-        createElementAndAppend(document, model, "doubleObject", "6.7");
-        createElementAndAppend(document, model, "floatPrimitive", "8.9");
-        createElementAndAppend(document, model, "floatObject", "10.11");
-        createElementAndAppend(document, model, "integerPrimitive", "12");
-        createElementAndAppend(document, model, "integerObject", "13");
-        createElementAndAppend(document, model, "longPrimitive", "14");
-        createElementAndAppend(document, model, "longObject", "15");
-        createElementAndAppend(document, model, "shortPrimitive", "16");
-        createElementAndAppend(document, model, "shortObject", "17");
-        Element stringElement = createElementAndAppend(document, model, "string", "achtzehn");
-        stringElement.setAttribute("attribute", "neunzehn");
-
-        // SkinnyNestedItem
-        model.appendChild(createNestedModel(document, "skinnyNestedItem"));
-
-        // Arrays
-        createElementsAndAppend(document, model, "arrayOfIntegerPrimitives", "0", "1", "2");
-        createElementsAndAppend(document, model, "arrayOfIntegerObjects", "0", "1", "2");
-        createElementsAndAppend(document, model, "arrayOfStrings", "0", "1", "2");
-        Element arrayOfDemoNestedModels = document.createElement("arrayOfSkinnyNestedItems");
-        for (int i = 0; i < size; i++)
+        Element items = document.createElement("fatGlobalItems");
+        for (int i = 0; i < SIZE; i++)
         {
-            arrayOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
+            items.appendChild(createFatGlobalItemElement(document, "fatGlobalItem"));
         }
-        model.appendChild(arrayOfDemoNestedModels);
 
-        // Collections
-        createElementsAndAppend(document, model, "collectionOfIntegerObjects", "0", "1", "2");
-        createElementsAndAppend(document, model, "collectionOfStrings", "0", "1", "2");
-        Element collectionOfDemoNestedModels = document.createElement("collectionOfSkinnyNestedItems");
-        for (int i = 0; i < size; i++)
-        {
-            collectionOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
-        }
-        model.appendChild(collectionOfDemoNestedModels);
-
-        // Lists
-        createElementsAndAppend(document, model, "listOfIntegerObjects", "0", "1", "2");
-        createElementsAndAppend(document, model, "listOfStrings", "0", "1", "2");
-        Element listOfDemoNestedModels = document.createElement("listOfSkinnyNestedItems");
-        for (int i = 0; i < size; i++)
-        {
-            listOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
-        }
-        model.appendChild(listOfDemoNestedModels);
-
-        // Sets
-        createElementsAndAppend(document, model, "setOfIntegerObjects", "0", "1", "2");
-        createElementsAndAppend(document, model, "setOfStrings", "0", "1", "2");
-        Element setOfDemoNestedModels = document.createElement("setOfSkinnyNestedItems");
-        for (int i = 0; i < size; i++)
-        {
-            setOfDemoNestedModels.appendChild(createNestedModel(document, "skinnyNestedItem"));
-        }
-        model.appendChild(setOfDemoNestedModels);
-
-        document.appendChild(model);
+        document.appendChild(items);
         return document;
     }
 
 
-    private static Element createNestedModel(Document document, String elementName)
+    public static Document createFatGlobalItem()
+    {
+        Document document = XMLParser.createDocument();
+        document.appendChild(createFatGlobalItemElement(document, "fatGlobalItem"));
+        return document;
+    }
+
+
+    private static Element createFatGlobalItemElement(Document document, String elementName)
+    {
+        Element fgi = document.createElement(elementName);
+
+        // Primitives and simple objects
+        createElementAndAppend(document, fgi, "booleanPrimitive", "true");
+        createElementAndAppend(document, fgi, "booleanObject", "true");
+        createElementAndAppend(document, fgi, "bytePrimitive", "1");
+        createElementAndAppend(document, fgi, "byteObject", "2");
+        createElementAndAppend(document, fgi, "characterPrimitive", "a");
+        createElementAndAppend(document, fgi, "characterObject", "b");
+        createElementAndAppend(document, fgi, "date", DateTimeFormat.getFormat(DateConverter.DEFAULT_FORMAT).format(
+                MY_BIRTHDAY));
+        createElementAndAppend(document, fgi, "amount", Amount.THREE.name());
+        createElementAndAppend(document, fgi, "doublePrimitive", "4.5");
+        createElementAndAppend(document, fgi, "doubleObject", "6.7");
+        createElementAndAppend(document, fgi, "floatPrimitive", "8.9");
+        createElementAndAppend(document, fgi, "floatObject", "10.11");
+        createElementAndAppend(document, fgi, "integerPrimitive", "12");
+        createElementAndAppend(document, fgi, "integerObject", "13");
+        createElementAndAppend(document, fgi, "longPrimitive", "14");
+        createElementAndAppend(document, fgi, "longObject", "15");
+        createElementAndAppend(document, fgi, "shortPrimitive", "16");
+        createElementAndAppend(document, fgi, "shortObject", "17");
+        Element stringElement = createElementAndAppend(document, fgi, "string", "achtzehn");
+        stringElement.setAttribute("attribute", "neunzehn");
+
+        // SkinnyNestedItem
+        fgi.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+
+        // Arrays
+        createElementsAndAppend(document, fgi, "arrayOfIntegerPrimitives", "0", "1", "2");
+        createElementsAndAppend(document, fgi, "arrayOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, fgi, "arrayOfStrings", "0", "1", "2");
+        Element arrayOfDemoNestedModels = document.createElement("arrayOfSkinnyNestedItems");
+        for (int i = 0; i < SIZE; i++)
+        {
+            arrayOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+        }
+        fgi.appendChild(arrayOfDemoNestedModels);
+
+        // Collections
+        createElementsAndAppend(document, fgi, "collectionOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, fgi, "collectionOfStrings", "0", "1", "2");
+        Element collectionOfDemoNestedModels = document.createElement("collectionOfSkinnyNestedItems");
+        for (int i = 0; i < SIZE; i++)
+        {
+            collectionOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+        }
+        fgi.appendChild(collectionOfDemoNestedModels);
+
+        // Lists
+        createElementsAndAppend(document, fgi, "listOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, fgi, "listOfStrings", "0", "1", "2");
+        Element listOfDemoNestedModels = document.createElement("listOfSkinnyNestedItems");
+        for (int i = 0; i < SIZE; i++)
+        {
+            listOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+        }
+        fgi.appendChild(listOfDemoNestedModels);
+
+        // Sets
+        createElementsAndAppend(document, fgi, "setOfIntegerObjects", "0", "1", "2");
+        createElementsAndAppend(document, fgi, "setOfStrings", "0", "1", "2");
+        Element setOfDemoNestedModels = document.createElement("setOfSkinnyNestedItems");
+        for (int i = 0; i < SIZE; i++)
+        {
+            setOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+        }
+        fgi.appendChild(setOfDemoNestedModels);
+
+        return fgi;
+    }
+
+
+    private static Element createNestedModelElement(Document document, String elementName)
     {
         Element nestedModel = document.createElement(elementName);
 

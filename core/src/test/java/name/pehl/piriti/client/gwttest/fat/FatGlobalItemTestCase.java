@@ -2,6 +2,7 @@ package name.pehl.piriti.client.gwttest.fat;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -12,7 +13,9 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public abstract class FatGlobalItemTestCase extends GWTTestCase
 {
-    protected static final Date MY_BIRTHDAY = new Date(115813353000l);
+    public static final int SIZE = 3;
+    public static final String ITEMS = "items"; 
+    public static final Date MY_BIRTHDAY = new Date(115813353000l);
 
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;
@@ -46,6 +49,17 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
     }
 
 
+    protected void assertFatGlobalItems(List<FatGlobalItem> items)
+    {
+        assertNotNull(items);
+        assertEquals(SIZE, items.size());
+        for (FatGlobalItem fgi : items)
+        {
+            assertFatGlobalItem(fgi);
+        }
+    }
+    
+    
     protected void assertFatGlobalItem(FatGlobalItem fgi)
     {
         // Primitives and simple objects
@@ -76,23 +90,23 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         assertSkinnyNestedItem(fgi.skinnyNestedItem);
 
         // Arrays
-        assertEquals(3, fgi.arrayOfIntegerPrimitives.length);
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, fgi.arrayOfIntegerPrimitives.length);
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(i, fgi.arrayOfIntegerPrimitives[i]);
         }
-        assertEquals(3, fgi.arrayOfIntegerObjects.length);
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, fgi.arrayOfIntegerObjects.length);
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(i, fgi.arrayOfIntegerObjects[i].intValue());
         }
-        assertEquals(3, fgi.arrayOfStrings.length);
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, fgi.arrayOfStrings.length);
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(String.valueOf(i), fgi.arrayOfStrings[i]);
         }
-        assertEquals(3, fgi.arrayOfSkinnyNestedItems.length);
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, fgi.arrayOfSkinnyNestedItems.length);
+        for (int i = 0; i < SIZE; i++)
         {
             assertSkinnyNestedItem(fgi.arrayOfSkinnyNestedItems[i]);
         }
@@ -105,13 +119,13 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         assertNull(fgi.multiDimensionalIntegerObjectArray);
 
         // Collections
-        assertEquals(3, fgi.collectionOfIntegerObjects.size());
+        assertEquals(SIZE, fgi.collectionOfIntegerObjects.size());
         fgi.collectionOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
         assertTrue(fgi.collectionOfIntegerObjects.isEmpty());
-        assertEquals(3, fgi.collectionOfStrings.size());
+        assertEquals(SIZE, fgi.collectionOfStrings.size());
         fgi.collectionOfStrings.removeAll(setOfStringsFixture);
         assertTrue(fgi.collectionOfStrings.isEmpty());
-        assertEquals(3, fgi.collectionOfSkinnyNestedItems.size());
+        assertEquals(SIZE, fgi.collectionOfSkinnyNestedItems.size());
         for (SkinnyNestedItem sni : fgi.collectionOfSkinnyNestedItems)
         {
             assertSkinnyNestedItem(sni);
@@ -125,18 +139,18 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         assertNull(fgi.collectionOfMaps);
 
         // Lists
-        assertEquals(3, fgi.listOfIntegerObjects.size());
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, fgi.listOfIntegerObjects.size());
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(i, fgi.listOfIntegerObjects.get(i).intValue());
         }
-        assertEquals(3, fgi.listOfStrings.size());
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, fgi.listOfStrings.size());
+        for (int i = 0; i < SIZE; i++)
         {
             assertEquals(String.valueOf(i), fgi.listOfStrings.get(i));
         }
-        assertEquals(3, fgi.listOfSkinnyNestedItems.size());
-        for (int i = 0; i < 3; i++)
+        assertEquals(SIZE, fgi.listOfSkinnyNestedItems.size());
+        for (int i = 0; i < SIZE; i++)
         {
             assertSkinnyNestedItem(fgi.listOfSkinnyNestedItems.get(i));
         }
@@ -149,13 +163,13 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         assertNull(fgi.listOfMaps);
 
         // Sets
-        assertEquals(3, fgi.setOfIntegerObjects.size());
+        assertEquals(SIZE, fgi.setOfIntegerObjects.size());
         fgi.setOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
         assertTrue(fgi.setOfIntegerObjects.isEmpty());
-        assertEquals(3, fgi.setOfStrings.size());
+        assertEquals(SIZE, fgi.setOfStrings.size());
         fgi.setOfStrings.removeAll(setOfStringsFixture);
         assertTrue(fgi.setOfStrings.isEmpty());
-        assertEquals(3, fgi.setOfSkinnyNestedItems.size());
+        assertEquals(SIZE, fgi.setOfSkinnyNestedItems.size());
         for (SkinnyNestedItem sni : fgi.setOfSkinnyNestedItems)
         {
             assertSkinnyNestedItem(sni);

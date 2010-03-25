@@ -18,24 +18,43 @@ public final class XmlBookFactory implements BookFactory
     }
 
 
-    public static Document createDocument()
+    public static Document createBooks()
     {
         Document document = XMLParser.createDocument();
-        Element book = document.createElement("book");
+        Element books = document.createElement(BOOKS);
+        for (int i = 0; i < BOOKS_COUNT; i++)
+        {
+            books.appendChild(createBookElement(document, "book"));
+        }
 
-        createElementAndAppend(document, book, "isbn", ISBN);
-        createElementAndAppend(document, book, "pages", String.valueOf(PAGES));
-        createElementAndAppend(document, book, "title", TITLE);
-
-        createAuthor(document, book, "author");
-        createReviews(document, book, "reviews");
-
-        document.appendChild(book);
+        document.appendChild(books);
         return document;
     }
 
 
-    private static void createAuthor(Document document, Element bookElement, String elementName)
+    public static Document createBook()
+    {
+        Document document = XMLParser.createDocument();
+        document.appendChild(createBookElement(document, "book"));
+        return document;
+    }
+
+
+    private static Element createBookElement(Document document, String elementName)
+    {
+        Element book = document.createElement(elementName);
+
+        createElementAndAppend(document, book, "isbn", ISBN);
+        createElementAndAppend(document, book, "pages", String.valueOf(PAGES));
+        createElementAndAppend(document, book, "title", TITLE);
+        createAuthorElement(document, book, "author");
+        createReviewsElement(document, book, "reviews");
+
+        return book;
+    }
+
+
+    private static void createAuthorElement(Document document, Element bookElement, String elementName)
     {
         Element author = document.createElement(elementName);
         createElementAndAppend(document, author, "firstname", AUTHOR_FIRSTNAME);
@@ -44,7 +63,7 @@ public final class XmlBookFactory implements BookFactory
     }
 
 
-    private static void createReviews(Document document, Element bookElement, String elementName)
+    private static void createReviewsElement(Document document, Element bookElement, String elementName)
     {
         Element reviews = document.createElement(elementName);
         createElementsAndAppend(document, reviews, "review", REVIEWS);

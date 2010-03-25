@@ -13,7 +13,22 @@ public final class JsonBookFactory implements BookFactory
     }
 
 
-    public static String createJson()
+    public static String createBooks()
+    {
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append(BOOKS);
+        json.append(": [");
+        for (int i = 0; i < BOOKS_COUNT; i++)
+        {
+            appendValue(json, createBook(), false, (i < BOOKS_COUNT - 1));
+        }
+        json.append("]}");
+        return json.toString();
+    }
+
+
+    public static String createBook()
     {
         StringBuilder json = new StringBuilder();
 

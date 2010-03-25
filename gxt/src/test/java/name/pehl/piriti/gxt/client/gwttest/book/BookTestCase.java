@@ -31,6 +31,17 @@ public abstract class BookTestCase extends GWTTestCase
     }
 
 
+    protected void assertBooks(List<Book> books)
+    {
+        assertNotNull(books);
+        assertEquals(BookFactory.BOOKS_COUNT, books.size());
+        for (Book book : books)
+        {
+            assertBook(book);
+        }
+    }
+    
+    
     protected void assertBook(Book book)
     {
         assertNotNull(book);

@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.gwttest.book;
 
+import java.util.List;
+
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
@@ -26,6 +28,17 @@ public abstract class BookTestCase extends GWTTestCase
     }
 
 
+    protected void assertBooks(List<Book> books)
+    {
+        assertNotNull(books);
+        assertEquals(BookFactory.BOOKS_COUNT, books.size());
+        for (Book book : books)
+        {
+            assertBook(book);
+        }
+    }
+    
+    
     protected void assertBook(Book book)
     {
         assertNotNull(book);
