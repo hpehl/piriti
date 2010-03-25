@@ -12,8 +12,8 @@
     <inherits name="com.mouchel.gwt.xpath.xpath" />
 
     <source path="client">
+        <exclude name="gwttest/**/*" />
         <exclude name="**/*Test.java" />
-        <exclude name="gwttest" />
     </source>
 
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">

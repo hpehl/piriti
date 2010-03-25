@@ -9,7 +9,7 @@
     <inherits name="name.pehl.piriti.Piriti" />
 
     <source path="client">
-        <exclude name="gwttest" />
+        <exclude name="gwttest/**/*" />
     </source>
     
     <generate-with class="name.pehl.piriti.gxt.rebind.xml.XmlModelReaderGenerator">
