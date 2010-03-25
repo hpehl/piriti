@@ -4,6 +4,11 @@
         .box {
             margin: 5px;
         }
+        .code {
+            background-color: #ffff99;
+            border: 1px solid grey;
+            padding: 5px;
+        }
     </ui:style>
     <g:DockLayoutPanel unit="EM">
         <g:west size="12">
@@ -31,7 +36,7 @@
         </g:north>
         <g:center>
             <g:HTML addStyleNames="{style.box}">
-                <pre ui:field="sourceCode"/>
+                <pre class="{style.code}" ui:field="sourceCode">Please select a link, to see the relevant code.</pre>
             </g:HTML>
         </g:center>
         <g:south size="2">

@@ -100,7 +100,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
         {
             sourceCode.setInnerText(event.getSourceCode());
             Object book = books.get(0);
-            String kind = book instanceof Book ? "POJO" : "GXT model";
+            String kind = book instanceof Book ? "POJOs" : "GXT models";
             status.setText("Successfully read " + event.getBooks().size() + " books as " + kind + " in "
                     + timeInterval.ms() + " ms.");
         }
