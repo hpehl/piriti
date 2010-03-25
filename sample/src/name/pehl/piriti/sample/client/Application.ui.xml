@@ -6,27 +6,25 @@
         }
     </ui:style>
     <g:DockLayoutPanel unit="EM">
-        <g:west size="10">
-            <g:HTML>
-                <ul>
-                    <g:Hyperlink ui:field="fromJsonAsPojo">Read from JSON as POJO</g:Hyperlink>
-                    <g:Hyperlink ui:field="fromJsonAsGxtModel">Read from JSON as GXT model</g:Hyperlink>
-                    <g:Hyperlink ui:field="fromXmlAsPojo">Read from XML as POJO</g:Hyperlink>
-                    <g:Hyperlink ui:field="fromXmlAsGxtModel">Read from XML as POJO</g:Hyperlink>
-                </ul>
-            </g:HTML>
+        <g:west size="15">
+            <g:VerticalPanel>
+                <g:Hyperlink ui:field="fromJsonAsPojo" targetHistoryToken="fromJsonAsPojo">JSON &rarr; POJO</g:Hyperlink>
+                <g:Hyperlink ui:field="fromJsonAsGxtModel" targetHistoryToken="fromJsonAsGxtModel">JSON &rarr; GXT Model</g:Hyperlink>
+                <g:Hyperlink ui:field="fromXmlAsPojo" targetHistoryToken="fromXmlAsPojo">XML &rarr; POJO</g:Hyperlink>
+                <g:Hyperlink ui:field="fromXmlAsGxtModel" targetHistoryToken="fromXmlAsGxtModel">XML &rarr; GXT Model</g:Hyperlink>
+            </g:VerticalPanel>
         </g:west>
         <g:center>
             <g:ScrollPanel>
-                <g:Label ui:field="sourceCode" wordWrap="true"></g:Label>
+                <g:Label ui:field="sourceCode"/>
             </g:ScrollPanel>
         </g:center>
-        <g:north size="10">
+        <g:south size="2">
             <g:HTML>
                 <div>
-                    Read <span ui:field="size" /> books in <span ui:field="interval" /> ms.
+                    Read <span ui:field="bookCount">n/a</span> books in <span ui:field="interval">n/a</span> ms.
                 </div>
             </g:HTML>
-        </g:north>
+        </g:south>
     </g:DockLayoutPanel>
 </ui:UiBinder> 

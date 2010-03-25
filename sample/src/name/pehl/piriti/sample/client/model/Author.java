@@ -37,38 +37,4 @@ public class Author
     @XmlField
     @JsonField
     String surname;
-
-
-    // ----------------------------------------------------------- constructors
-
-    public Author(String firstname, String surname)
-    {
-        super();
-        this.firstname = firstname;
-        this.surname = surname;
-    }
-
-
-    // --------------------------------------------------------- public methods
-
-    @Override
-    public String toString()
-    {
-        return new StringBuilder().append("Author [").append(firstname).append(", ").append(surname).append("]")
-                .toString();
-    }
-
-
-    // ------------------------------------------------------------- properties
-
-    public String getFirstname()
-    {
-        return firstname;
-    }
-
-
-    public String getSurname()
-    {
-        return surname;
-    }
 }

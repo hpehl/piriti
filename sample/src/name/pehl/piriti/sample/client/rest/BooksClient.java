@@ -19,8 +19,8 @@ import org.restlet.client.data.MediaType;
 import org.restlet.client.resource.ClientResource;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class BooksClient
 {
@@ -37,7 +37,7 @@ public class BooksClient
             {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
-                PiritiJsonRepresentation<T> representation = new PiritiJsonRepresentation<T>(jsonReader, request
+                PiritiJsonRepresentation<T> representation = new PiritiJsonRepresentation<T>(jsonReader, response
                         .getEntity());
                 try
                 {
@@ -66,7 +66,7 @@ public class BooksClient
             {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
-                PiritiXmlRepresentation<T> representation = new PiritiXmlRepresentation<T>(xmlReader, request
+                PiritiXmlRepresentation<T> representation = new PiritiXmlRepresentation<T>(xmlReader, response
                         .getEntity());
                 try
                 {

@@ -42,7 +42,7 @@ public class BooksResource extends ServerResource
     {
         StringWriter buffer = new StringWriter();
         JSONWriter writer = new JSONWriter(buffer);
-        writer.array();
+        writer.object().key("books").array();
         for (Book book : books)
         {
             writer.object().key("isbn").value(book.getIsbn()).key("pages").value(book.getPages()).key("title").value(
@@ -55,8 +55,11 @@ public class BooksResource extends ServerResource
             }
             writer.endArray().endObject();
         }
-        writer.endArray();
-        JsonRepresentation representation = new JsonRepresentation(buffer.toString());
+        writer.endArray().endObject();
+        String jsonString = buffer.toString() + " ";
+        int size = jsonString.length();
+        JsonRepresentation representation = new JsonRepresentation(jsonString);
+        representation.setSize(size);
         return representation;
     }
 
