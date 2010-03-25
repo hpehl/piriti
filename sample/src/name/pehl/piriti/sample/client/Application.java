@@ -1,14 +1,16 @@
 package name.pehl.piriti.sample.client;
 
+import java.util.List;
+
 import name.pehl.piriti.sample.client.event.BooksReadEvent;
 import name.pehl.piriti.sample.client.event.BooksReadHandler;
 import name.pehl.piriti.sample.client.event.EventBus;
 import name.pehl.piriti.sample.client.model.Book;
 import name.pehl.piriti.sample.client.model.BookModel;
 import name.pehl.piriti.sample.client.rest.BooksClient;
+import name.pehl.piriti.sample.client.util.TimeInterval;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -23,7 +25,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @version $Date$ $Revision: 292
  *          $
  */
-public class Application extends Composite implements BooksReadHandler
+public class Application extends Composite implements BooksReadHandler, SourceCodes
 {
     private static ApplicationUiBinder uiBinder = GWT.create(ApplicationUiBinder.class);
 
@@ -32,25 +34,22 @@ public class Application extends Composite implements BooksReadHandler
     }
 
     @UiField
-    Hyperlink fromJsonAsPojo;
+    Hyperlink jsonToPojo;
 
     @UiField
-    Hyperlink fromJsonAsGxtModel;
+    Hyperlink jsonToGxtModel;
 
     @UiField
-    Hyperlink fromXmlAsPojo;
+    Hyperlink xmlToPojo;
 
     @UiField
-    Hyperlink fromXmlAsGxtModel;
+    Hyperlink xmlToGxtModel;
 
     @UiField
     Label sourceCode;
 
     @UiField
-    SpanElement bookCount;
-
-    @UiField
-    SpanElement interval;
+    Label status;
 
     BooksClient client = null;
 
@@ -63,41 +62,51 @@ public class Application extends Composite implements BooksReadHandler
     }
 
 
-    @UiHandler("fromJsonAsPojo")
+    @UiHandler("jsonToPojo")
     void onFromJsonAsPojo(ClickEvent e)
     {
-        client.readFromJson(Book.JSON);
+        client.readFromJson(Book.JSON, JSON_TO_POJO);
     }
 
 
-    @UiHandler("fromJsonAsGxtModel")
+    @UiHandler("jsonToGxtModel")
     void onFromJsonAsGxtModel(ClickEvent e)
     {
-        client.readFromJson(BookModel.JSON);
+        client.readFromJson(BookModel.JSON, JSON_TO_GXT_MODEL);
     }
 
 
-    @UiHandler("fromXmlAsPojo")
+    @UiHandler("xmlToPojo")
     void onFromXmlAsPojo(ClickEvent e)
     {
-        client.readFromXml(Book.XML);
+        client.readFromXml(Book.XML, XML_TO_POJO);
     }
 
 
-    @UiHandler("fromXmlAsGxtModel")
+    @UiHandler("xmlToGxtModel")
     void onFromXmlAsGxtModel(ClickEvent e)
     {
-        client.readFromXml(BookModel.XML);
+        client.readFromXml(BookModel.XML, XML_TO_GXT_MODEL);
     }
 
 
     @Override
     public void onTimeInterval(BooksReadEvent event)
     {
-        if (event.getBooks() != null)
+        List<Object> books = event.getBooks();
+        TimeInterval timeInterval = event.getTimeInterval();
+        if (books != null)
         {
-            bookCount.setInnerText(String.valueOf(event.getBooks().size()));
-            interval.setInnerText(String.valueOf(event.getTimeInterval().ms()));
+            sourceCode.setText(event.getSourceCode());
+            Object book = books.get(0);
+            String kind = book instanceof Book ? "POJO" : "GXT model";
+            status.setText("Successfully read " + event.getBooks().size() + " books as " + kind + " in "
+                    + timeInterval.ms() + " ms.");
+        }
+        else
+        {
+            sourceCode.setText("");
+            status.setText("Error reading books");
         }
     }
 }

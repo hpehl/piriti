@@ -27,7 +27,7 @@ public class BooksClient
     public static final String URL = "/rest/v1/books";
 
 
-    public <T> void readFromJson(final JsonReader<T> jsonReader)
+    public <T> void readFromJson(final JsonReader<T> jsonReader, final String sourceCode)
     {
         ClientResource clientResource = new ClientResource(URL);
         clientResource.setOnResponse(new Uniform()
@@ -43,7 +43,7 @@ public class BooksClient
                 {
                     List<T> books = representation.getModels();
                     TimeInterval timeInterval = stopWatch.stop();
-                    BooksReadEvent booksReadEvent = new BooksReadEvent(books, timeInterval);
+                    BooksReadEvent booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
                     EventBus.get().fireEvent(booksReadEvent);
                 }
                 catch (IOException e)
@@ -56,7 +56,7 @@ public class BooksClient
     }
 
 
-    public <T> void readFromXml(final XmlReader<T> xmlReader)
+    public <T> void readFromXml(final XmlReader<T> xmlReader, final String sourceCode)
     {
         ClientResource clientResource = new ClientResource(URL);
         clientResource.setOnResponse(new Uniform()
@@ -72,7 +72,7 @@ public class BooksClient
                 {
                     List<T> books = representation.getModels();
                     TimeInterval timeInterval = stopWatch.stop();
-                    BooksReadEvent booksReadEvent = new BooksReadEvent(books, timeInterval);
+                    BooksReadEvent booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
                     EventBus.get().fireEvent(booksReadEvent);
                 }
                 catch (IOException e)

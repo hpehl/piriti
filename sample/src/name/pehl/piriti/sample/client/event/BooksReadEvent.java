@@ -7,8 +7,9 @@ import name.pehl.piriti.sample.client.util.TimeInterval;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 280
+ *          $
  */
 public class BooksReadEvent extends GwtEvent<BooksReadHandler>
 {
@@ -26,13 +27,15 @@ public class BooksReadEvent extends GwtEvent<BooksReadHandler>
 
     private final List<?> books;
     private final TimeInterval timeInterval;
+    private final String sourceCode;
 
 
-    public BooksReadEvent(List<?> books, TimeInterval timeInterval)
+    public BooksReadEvent(List<?> books, TimeInterval timeInterval, String sourceCode)
     {
         super();
         this.books = books;
         this.timeInterval = timeInterval;
+        this.sourceCode = sourceCode;
     }
 
 
@@ -60,5 +63,11 @@ public class BooksReadEvent extends GwtEvent<BooksReadHandler>
     public TimeInterval getTimeInterval()
     {
         return timeInterval;
+    }
+
+
+    public String getSourceCode()
+    {
+        return sourceCode;
     }
 }
