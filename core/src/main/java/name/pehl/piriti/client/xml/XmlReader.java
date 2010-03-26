@@ -88,7 +88,7 @@ public interface XmlReader<T>
      *            The XML document used as input. May be <code>null</code>.
      * @param xpath
      *            An xpath expression which should result in a list of elements
-     *            which in turn is used to generated the instances of T
+     *            which in turn is used to generate the instances of T
      * @return A list of T instances with the mapped XML data or an empty list
      *         if the document was {@code null}.
      */
@@ -115,7 +115,7 @@ public interface XmlReader<T>
      *            The XML element used as input. May be <code>null</code>.
      * @param xpath
      *            An xpath expression which should result in a list of elements
-     *            which in turn are used to generated the instances of T
+     *            which in turn are used to generate the instances of T
      * @return A list of T instances with the mapped XML data or an empty list
      *         if the element was {@code null}.
      */
