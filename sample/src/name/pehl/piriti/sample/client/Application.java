@@ -66,6 +66,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     @UiHandler("jsonToPojo")
     void onFromJsonAsPojo(ClickEvent e)
     {
+        setStatus("Reading JSON representation...");
         client.readFromJson(Book.JSON, JSON_TO_POJO);
     }
 
@@ -73,6 +74,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     @UiHandler("jsonToGxtModel")
     void onFromJsonAsGxtModel(ClickEvent e)
     {
+        setStatus("Reading JSON representation...");
         client.readFromJson(BookModel.JSON, JSON_TO_GXT_MODEL);
     }
 
@@ -80,6 +82,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     @UiHandler("xmlToPojo")
     void onFromXmlAsPojo(ClickEvent e)
     {
+        setStatus("Reading XML representation...");
         client.readFromXml(Book.XML, XML_TO_POJO);
     }
 
@@ -87,6 +90,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     @UiHandler("xmlToGxtModel")
     void onFromXmlAsGxtModel(ClickEvent e)
     {
+        setStatus("Reading XML representation...");
         client.readFromXml(BookModel.XML, XML_TO_GXT_MODEL);
     }
 
@@ -101,13 +105,26 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
             sourceCode.setInnerText(event.getSourceCode());
             Object book = books.get(0);
             String kind = book instanceof Book ? "POJOs" : "GXT models";
-            status.setText("Successfully read " + event.getBooks().size() + " books as " + kind + " in "
-                    + timeInterval.ms() + " ms.");
+            setStatus("Successfully read " + event.getBooks().size() + " books as " + kind + " in " + timeInterval.ms()
+                    + " ms.");
         }
         else
         {
             sourceCode.setInnerText("");
-            status.setText("Error reading books");
+            setStatus("Error reading books");
+        }
+    }
+
+
+    private void setStatus(String message)
+    {
+        if (message != null)
+        {
+            status.setText(message);
+        }
+        else
+        {
+            status.setText("n/a");
         }
     }
 }
