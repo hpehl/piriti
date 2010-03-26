@@ -26,13 +26,15 @@
         <when-type-assignable class="name.pehl.piriti.client.json.JsonReader" />
     </generate-with>
 
-    <!-- Ginjector configuration: NYI
+    <!-- Ginjector configuration: 
+    Please note that this feature is not yet implemented!
     <define-configuration-property name="converter.ginjector" is-multi-valued="false" />
     <define-configuration-property name="json.ginjector" is-multi-valued="false" />
     <define-configuration-property name="xml.ginjector" is-multi-valued="false" />
     -->
 
-    <!-- Default implementations. Overwrite to provide your own implementations: NYI 
+    <!-- Default implementations. Overwrite to provide your own implementations: 
+    Please note that this feature is not yet implemented! 
     <set-configuration-property name="converter.ginjector" value="name.pehl.piriti.client.converter.ConverterGinjector" />
     <set-configuration-property name="json.ginjector" value="name.pehl.piriti.client.json.JsonGinjector" />
     <set-configuration-property name="xml.ginjector" value="name.pehl.piriti.client.xml.XmlGinjector" />
