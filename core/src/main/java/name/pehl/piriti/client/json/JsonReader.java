@@ -77,8 +77,8 @@ public interface JsonReader<T>
     /**
      * Convert the specified JSON string to a list of Ts according to the
      * annotated fields in T. The JSON string must be a valid JSON object with
-     * <i>one</i> key/value pair. The value must be JSON array which converted
-     * to the list of Ts.
+     * <i>one</i> key/value pair. The value must be a JSON array which is
+     * converted to the list of Ts.
      * <p>
      * Please note that the JSON string is parsed using
      * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
@@ -114,15 +114,11 @@ public interface JsonReader<T>
      * Convert the specified JSON object to a list of Ts according to the
      * annotated fields in T. The JSON object must contain <i>one</i> key/value
      * pair. The value must be JSON array which converted to the list of Ts.
-     * <p>
-     * Please note that the JSON string is parsed using
-     * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
-     * function. So please *do not* pass an untrusted string into this method.
      * 
-     * @param jsonString
-     *            The JSON string used as input. May be <code>null</code>.
+     * @param jsonObject
+     *            The JSON object used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped JSON data or {@code null}
-     *         if the JSON string was {@code null}.
+     *         if the JSON object was {@code null}.
      */
     List<T> readList(@Nullable JSONObject jsonObject);
 
@@ -131,15 +127,11 @@ public interface JsonReader<T>
      * Convert the specified JSON object to a list of Ts according to the
      * annotated fields in T. The JSON object must contains the specified array.
      * This array is converted to the list of Ts.
-     * <p>
-     * Please note that the JSON string is parsed using
-     * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
-     * function. So please *do not* pass an untrusted string into this method.
      * 
-     * @param jsonString
-     *            The JSON string used as input. May be <code>null</code>.
+     * @param jsonObject
+     *            The JSON object used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped JSON data or {@code null}
-     *         if the JSON string was {@code null}.
+     *         if the JSON object was {@code null}.
      */
     List<T> readList(@Nullable JSONObject jsonObject, String arrayKey);
 
