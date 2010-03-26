@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=0.3
+VERSION=0.3.1
 LOCAL_REPO=/tmp/$(date +%N)
 mkdir $LOCAL_REPO
 echo [INFO] ------------------------------------------------------------------------
