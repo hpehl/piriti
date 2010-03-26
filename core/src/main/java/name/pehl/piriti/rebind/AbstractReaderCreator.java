@@ -1,7 +1,10 @@
 package name.pehl.piriti.rebind;
 
 import java.io.PrintWriter;
+import java.util.List;
 
+import com.google.gwt.core.ext.BadPropertyValueException;
+import com.google.gwt.core.ext.ConfigurationProperty;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -16,6 +19,24 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public abstract class AbstractReaderCreator
 {
+    // -------------------------------------------------------------- constants
+
+    // Constants for the GinJectors NYI
+    /**
+     * The configuration property for the Converter GinJector
+     */
+    public static final String CONVERTER_GINJECTOR = "converter.ginjector";
+
+    /**
+     * The configuration property for the JSON GinJector
+     */
+    public static final String JSON_GINJECTOR = "json.ginjector";
+
+    /**
+     * The configuration property for the XML GinJector
+     */
+    public static final String XML_GINJECTOR = "xml.ginjector";
+
     // -------------------------------------------------------- private members
 
     protected final GeneratorContext context;
@@ -230,6 +251,47 @@ public abstract class AbstractReaderCreator
 
 
     // --------------------------------------------------------- helper methods
+
+    /**
+     * Reads a configuration property from the module definition. Throws a
+     * {@link UnableToCompleteException} if the property is not definied or
+     * empty.
+     * 
+     * @param propertyName
+     * @return
+     */
+    protected String readConfigurationProperty(String propertyName) throws UnableToCompleteException
+    {
+        String value = null;
+        ConfigurationProperty property = null;
+        String missingProperty = "No configuration property found for '" + property
+                + "'.\n    Did you specifiy <set-configuration-property name=\"" + property
+                + "\" value=\"...\" /> in the module definition?";
+        try
+        {
+            property = context.getPropertyOracle().getConfigurationProperty(propertyName);
+            if (property == null)
+            {
+                die(missingProperty);
+            }
+            List<String> values = property.getValues();
+            if (values == null || values.isEmpty())
+            {
+                die(missingProperty);
+            }
+            value = values.get(0);
+            if (value == null || value.length() == 0)
+            {
+                die(missingProperty);
+            }
+        }
+        catch (BadPropertyValueException e)
+        {
+            die(missingProperty);
+        }
+        return value;
+    }
+
 
     /**
      * Post an error message and halt processing. This method always throws an

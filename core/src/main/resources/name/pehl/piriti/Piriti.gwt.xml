@@ -16,11 +16,25 @@
         <exclude name="**/*Test.java" />
     </source>
 
+    <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">
         <when-type-assignable class="name.pehl.piriti.client.xml.XmlReader" />
     </generate-with>
 
+    <!-- Generator for JsonReader -->
     <generate-with class="name.pehl.piriti.rebind.json.JsonReaderGenerator">
         <when-type-assignable class="name.pehl.piriti.client.json.JsonReader" />
     </generate-with>
+
+    <!-- Ginjector configuration: NYI
+    <define-configuration-property name="converter.ginjector" is-multi-valued="false" />
+    <define-configuration-property name="json.ginjector" is-multi-valued="false" />
+    <define-configuration-property name="xml.ginjector" is-multi-valued="false" />
+    -->
+
+    <!-- Default implementations. Overwrite to provide your own implementations: NYI 
+    <set-configuration-property name="converter.ginjector" value="name.pehl.piriti.client.converter.ConverterGinjector" />
+    <set-configuration-property name="json.ginjector" value="name.pehl.piriti.client.json.JsonGinjector" />
+    <set-configuration-property name="xml.ginjector" value="name.pehl.piriti.client.xml.XmlGinjector" />
+    -->
 </module>
