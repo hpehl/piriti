@@ -56,6 +56,8 @@ public class StringFieldHandler extends AbstractFieldHandler
         {
             writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
         }
+        writer.write("if (%s != null) {", jsonValue);
+        writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         String jsonString = fieldContext.newVariableName("AsJsonString");
@@ -63,6 +65,8 @@ public class StringFieldHandler extends AbstractFieldHandler
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
         writer.write("%s = %s.stringValue();", fieldContext.getValueVariable(), jsonString);
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();

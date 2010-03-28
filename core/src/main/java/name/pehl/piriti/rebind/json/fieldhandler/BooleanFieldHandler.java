@@ -59,6 +59,8 @@ public class BooleanFieldHandler extends AbstractFieldHandler
         {
             writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
         }
+        writer.write("if (%s != null) {", jsonValue);
+        writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         String jsonBoolean = fieldContext.newVariableName("AsJsonBoolean");
@@ -66,6 +68,8 @@ public class BooleanFieldHandler extends AbstractFieldHandler
         writer.write("if (%s != null) {", jsonBoolean);
         writer.indent();
         writer.write("%s = %s.booleanValue();", fieldContext.getValueVariable(), jsonBoolean);
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();

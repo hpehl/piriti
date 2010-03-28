@@ -44,6 +44,8 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         {
             writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
         }
+        writer.write("if (%s != null) {", jsonValue);
+        writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         JClassType classType = fieldContext.getClassOrInterfaceType();
@@ -55,6 +57,8 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.indent();
         writer.write("%s = %s.%s.read(%s.toString());", fieldContext.getValueVariable(), classType
                 .getQualifiedSourceName(), jsonRegistryField.getName(), jsonValue);
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();

@@ -43,6 +43,8 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
         {
             writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
         }
+        writer.write("if (%s != null) {", jsonValue);
+        writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         String jsonString = fieldContext.newVariableName("AsJsonString");
@@ -56,6 +58,8 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
         writer.outdent();
         writer.write("}");
         writer.write("catch (IllegalArgumentException e) {}");
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();

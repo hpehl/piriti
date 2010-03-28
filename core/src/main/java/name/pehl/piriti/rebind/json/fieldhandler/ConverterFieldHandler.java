@@ -34,6 +34,8 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+        writer.outdent();
+        writer.write("}");
     }
 
 
@@ -62,6 +64,8 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
         {
             writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
         }
+        writer.write("if (%s != null) {", jsonValue);
+        writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         String jsonString = fieldContext.getValueVariable() + "AsJsonString";

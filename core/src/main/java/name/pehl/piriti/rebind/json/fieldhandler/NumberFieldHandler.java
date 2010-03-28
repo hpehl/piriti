@@ -75,6 +75,8 @@ public class NumberFieldHandler extends AbstractFieldHandler
         {
             writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
         }
+        writer.write("if (%s != null) {", jsonValue);
+        writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
         String jsonNumber = fieldContext.newVariableName("AsJsonNumber");
@@ -107,6 +109,8 @@ public class NumberFieldHandler extends AbstractFieldHandler
         {
             writer.write("%s = %s;", fieldContext.getValueVariable(), doubleValue);
         }
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();
