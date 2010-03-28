@@ -28,9 +28,13 @@ public class Author
 
     @XmlField
     @JsonField
-    public String firstname;
+    String firstname;
 
     @XmlField
     @JsonField
-    public String surname;
+    String surname;
+    
+    @XmlField
+    @JsonField
+    Book bestseller;
 }

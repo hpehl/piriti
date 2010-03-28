@@ -30,21 +30,25 @@ public class Book
 
     @XmlField
     @JsonField
-    public String isbn;
+    String isbn;
 
     @XmlField
     @JsonField
-    public int pages;
+    int pages;
 
     @XmlField
     @JsonField
-    public String title;
+    String title;
 
     @XmlField
     @JsonField
-    public Author author;
+    Author author;
 
     @XmlField("reviews/review")
     @JsonField
-    public List<String> reviews;
+    List<String> reviews;
+    
+    @XmlField
+    @JsonField
+    List<Book> related;
 }

@@ -32,7 +32,7 @@ public class GwtTestXmlBookReader extends BookTestCase
     public void testReadListWithXpath()
     {
         Document document = XmlBookFactory.createBooks();
-        List<Book> books = Book.XML.readList(document, "//book");
+        List<Book> books = Book.XML.readList(document, "/books/book");
         assertBooks(books);
     }
 

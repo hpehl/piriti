@@ -24,7 +24,7 @@ public final class XmlBookFactory implements BookFactory
         Element books = document.createElement(BOOKS);
         for (int i = 0; i < BOOKS_COUNT; i++)
         {
-            books.appendChild(createBookElement(document, "book"));
+            books.appendChild(createBookElement(document, "book", true, true));
         }
 
         document.appendChild(books);
@@ -35,20 +35,33 @@ public final class XmlBookFactory implements BookFactory
     public static Document createBook()
     {
         Document document = XMLParser.createDocument();
-        document.appendChild(createBookElement(document, "book"));
+        document.appendChild(createBookElement(document, "book", true, true));
         return document;
     }
 
 
-    private static Element createBookElement(Document document, String elementName)
+    private static Element createBookElement(Document document, String elementName, boolean withAuthor,
+            boolean withRelated)
     {
         Element book = document.createElement(elementName);
 
         createElementAndAppend(document, book, "isbn", ISBN);
         createElementAndAppend(document, book, "pages", String.valueOf(PAGES));
         createElementAndAppend(document, book, "title", TITLE);
-        createAuthorElement(document, book, "author");
+        if (withAuthor)
+        {
+            createAuthorElement(document, book, "author");
+        }
         createReviewsElement(document, book, "reviews");
+        if (withRelated)
+        {
+            Element related = document.createElement("related");
+            for (int i = 0; i < BOOKS_COUNT; i++)
+            {
+                related.appendChild(createBookElement(document, "book", true, false));
+            }
+            book.appendChild(related);
+        }
 
         return book;
     }
@@ -59,6 +72,9 @@ public final class XmlBookFactory implements BookFactory
         Element author = document.createElement(elementName);
         createElementAndAppend(document, author, "firstname", AUTHOR_FIRSTNAME);
         createElementAndAppend(document, author, "surname", AUTHOR_SURNAME);
+        Element bestseller = document.createElement("bestseller");
+        bestseller.appendChild(createBookElement(document, "book", false, false));
+        author.appendChild(bestseller);
         bookElement.appendChild(author);
     }
 

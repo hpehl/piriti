@@ -57,11 +57,11 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
         JClassType parameterType = getTypeVariable(fieldContext);
         if (parameterType != null)
         {
-            if (fieldContext.getModelType().equals(parameterType))
-            {
-                skipField(writer, fieldContext, "Type argument of the collection equals the model type");
-                return false;
-            }
+//            if (fieldContext.getModelType().equals(parameterType))
+//            {
+//                skipField(writer, fieldContext, "Type argument of the collection equals the model type");
+//                return false;
+//            }
             if (parameterType.isArray() != null || TypeUtils.isCollection(parameterType)
                     || TypeUtils.isMap(parameterType))
             {
