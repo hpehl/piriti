@@ -16,8 +16,8 @@ import com.google.gwt.core.ext.typeinfo.JType;
 public abstract class AbstractArrayFieldHandler extends AbstractFieldHandler
 {
     /**
-     * Returns <code>false</code> if the field type is no array or if the
-     * component type of the array equals the model type, <code>true</code>
+     * Returns <code>false</code> if the field type is no array, or if the
+     * component type is another array, collection or map, <code>true</code>
      * otherwise.
      * 
      * @param writer
@@ -34,11 +34,6 @@ public abstract class AbstractArrayFieldHandler extends AbstractFieldHandler
             return false;
         }
         JType componentType = fieldContext.getArrayType().getComponentType();
-        if (componentType.equals(fieldContext.getModelType()))
-        {
-            skipField(writer, fieldContext, "Component type of the array equals the model type");
-            return false;
-        }
         if (componentType.isArray() != null)
         {
             skipField(writer, fieldContext, "Multi-dimensional arrays are not supported");

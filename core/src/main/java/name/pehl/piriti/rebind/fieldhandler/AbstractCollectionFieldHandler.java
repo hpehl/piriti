@@ -39,7 +39,7 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
     /**
      * Returns <code>false</code> if the field type is no collection, if the
      * collection has no type arguments or if the type argument of the
-     * collection equals the model type, <code>true</code> otherwise.
+     * collection is an array, collection or map, <code>true</code> otherwise.
      * 
      * @param writer
      * @param fieldContext
@@ -57,11 +57,6 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
         JClassType parameterType = getTypeVariable(fieldContext);
         if (parameterType != null)
         {
-//            if (fieldContext.getModelType().equals(parameterType))
-//            {
-//                skipField(writer, fieldContext, "Type argument of the collection equals the model type");
-//                return false;
-//            }
             if (parameterType.isArray() != null || TypeUtils.isCollection(parameterType)
                     || TypeUtils.isMap(parameterType))
             {

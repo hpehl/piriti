@@ -48,7 +48,7 @@ public class Book
     @JsonField
     List<String> reviews;
     
-    @XmlField
+    @XmlField("related/book")
     @JsonField
     List<Book> related;
 }

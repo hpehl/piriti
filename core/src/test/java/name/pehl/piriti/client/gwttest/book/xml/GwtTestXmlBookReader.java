@@ -17,7 +17,7 @@ public class GwtTestXmlBookReader extends BookTestCase
     {
         Document document = XmlBookFactory.createBook();
         Book book = Book.XML.read(document);
-        assertBook(book);
+        assertBook(book, true, true);
     }
 
 
@@ -25,7 +25,7 @@ public class GwtTestXmlBookReader extends BookTestCase
     {
         Document document = XmlBookFactory.createBooks();
         List<Book> books = Book.XML.readList(document);
-        assertBooks(books);
+        assertBooks(books, true, true);
     }
 
 
@@ -33,7 +33,7 @@ public class GwtTestXmlBookReader extends BookTestCase
     {
         Document document = XmlBookFactory.createBooks();
         List<Book> books = Book.XML.readList(document, "/books/book");
-        assertBooks(books);
+        assertBooks(books, true, true);
     }
 
 

@@ -34,7 +34,7 @@ public class Author
     @JsonField
     String surname;
     
-    @XmlField
+    @XmlField("bestseller/book")
     @JsonField
     Book bestseller;
 }

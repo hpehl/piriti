@@ -33,11 +33,6 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
             skipField(writer, fieldContext, "Type is no class or interface");
             return false;
         }
-//        if (fieldContext.getModelType().equals(fieldContext.getFieldType()))
-//        {
-//            skipField(writer, fieldContext, "Field type must not be the same as the model type");
-//            return false;
-//        }
         JField registryField = findRegistryMember(fieldContext.getClassOrInterfaceType());
         if (registryField == null)
         {

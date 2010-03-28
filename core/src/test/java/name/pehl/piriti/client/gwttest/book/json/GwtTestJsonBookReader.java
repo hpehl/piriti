@@ -16,7 +16,7 @@ public class GwtTestJsonBookReader extends BookTestCase
     {
         String json = JsonBookFactory.createBook();
         Book book = Book.JSON.read(json);
-        assertBook(book);
+        assertBook(book, true, true);
     }
 
 
@@ -24,7 +24,7 @@ public class GwtTestJsonBookReader extends BookTestCase
     {
         String json = JsonBookFactory.createBooks();
         List<Book> books = Book.JSON.readList(json);
-        assertBooks(books);
+        assertBooks(books, true, true);
     }
 
 
@@ -32,7 +32,7 @@ public class GwtTestJsonBookReader extends BookTestCase
     {
         String json = JsonBookFactory.createBooks();
         List<Book> books = Book.JSON.readList(json, BookFactory.BOOKS);
-        assertBooks(books);
+        assertBooks(books, true, true);
     }
 
 
