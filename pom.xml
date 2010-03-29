@@ -93,7 +93,7 @@
 
 
     <properties>
-        <piriti.version>0.3</piriti.version>
+        <piriti.version>0.3.2</piriti.version>
         <gwt.version>2.0.3</gwt.version>
         <gxt.version>2.1.1</gxt.version>
         <restlet.version>2.0-RC1</restlet.version>
@@ -300,6 +300,7 @@
                 <configuration>
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
+                    <useProjectReferences>true</useProjectReferences>
                     <classpathContainers>
                         <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
                         <classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
