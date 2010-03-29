@@ -18,6 +18,11 @@ public final class XmlBookFactory implements BookFactory
     }
 
 
+    /**
+     * Creates books with author and related books.
+     * 
+     * @return
+     */
     public static Document createBooks()
     {
         Document document = XMLParser.createDocument();
@@ -32,6 +37,11 @@ public final class XmlBookFactory implements BookFactory
     }
 
 
+    /**
+     * Creates a book with author and related books.
+     * 
+     * @return
+     */
     public static Document createBook()
     {
         Document document = XMLParser.createDocument();
@@ -40,6 +50,14 @@ public final class XmlBookFactory implements BookFactory
     }
 
 
+    /**
+     * Create a book. Depending on the parameters {@code withAuthor} and
+     * {@code withRelated} the author and related elements are also generated.
+     * 
+     * @param withAuthor
+     * @param withRelated
+     * @return
+     */
     private static Element createBookElement(Document document, String elementName, boolean withAuthor,
             boolean withRelated)
     {

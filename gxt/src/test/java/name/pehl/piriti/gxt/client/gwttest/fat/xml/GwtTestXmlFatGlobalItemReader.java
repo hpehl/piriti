@@ -18,7 +18,7 @@ public class GwtTestXmlFatGlobalItemReader extends FatGlobalItemTestCase
     {
         Document document = XmlFatGlobalItemFactory.createFatGlobalItem();
         FatGlobalItem model = FatGlobalItem.XML.read(document);
-        assertFatGlobalItem(model);
+        assertFatGlobalItem(model, true);
     }
 
 
@@ -26,15 +26,15 @@ public class GwtTestXmlFatGlobalItemReader extends FatGlobalItemTestCase
     {
         Document document = XmlFatGlobalItemFactory.createFatGlobalItems();
         List<FatGlobalItem> items = FatGlobalItem.XML.readList(document);
-        assertFatGlobalItems(items);
+        assertFatGlobalItems(items, true);
     }
 
 
     public void testReadListWithXpath()
     {
         Document document = XmlFatGlobalItemFactory.createFatGlobalItems();
-        List<FatGlobalItem> items = FatGlobalItem.XML.readList(document, "//fatGlobalItem");
-        assertFatGlobalItems(items);
+        List<FatGlobalItem> items = FatGlobalItem.XML.readList(document, "/fatGlobalItems/fatGlobalItem");
+        assertFatGlobalItems(items, true);
     }
 
 

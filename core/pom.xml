@@ -55,6 +55,7 @@
                 <configuration>
                     <gwtVersion>${gwt.version}</gwtVersion>
                     <module>name.pehl.piriti.PiritiTest</module>
+                    <timeOut>180</timeOut>
                 </configuration>
                 <executions>
                     <execution>

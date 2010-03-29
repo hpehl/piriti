@@ -15,6 +15,14 @@ import com.google.gwt.core.client.GWT;
  */
 public class SkinnyNestedItem
 {
+    // ------------------------------------------------------------ json reader
+    
+    interface SkinnyNestedItemJsonReader extends JsonReader<SkinnyNestedItem>
+    {
+    }
+    
+    public static final SkinnyNestedItemJsonReader SOME_FANCY_JSON_NAME = GWT.create(SkinnyNestedItemJsonReader.class);
+    
     // ------------------------------------------------------------- xml reader
 
     interface SkinnyNestedItemXmlReader extends XmlReader<SkinnyNestedItem>
@@ -23,93 +31,85 @@ public class SkinnyNestedItem
 
     public static final SkinnyNestedItemXmlReader SOME_FANCY_XML_NAME = GWT.create(SkinnyNestedItemXmlReader.class);
 
-    // ------------------------------------------------------------ json reader
-
-    interface SkinnyNestedItemJsonReader extends JsonReader<SkinnyNestedItem>
-    {
-    }
-
-    public static final SkinnyNestedItemJsonReader SOME_FANCY_JSON_NAME = GWT.create(SkinnyNestedItemJsonReader.class);
-
     // -------------------------------------------------------- private members
 
-    @XmlField
     @JsonField
+    @XmlField
     public boolean booleanPrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Boolean booleanObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public byte bytePrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Byte byteObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public char characterPrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Character characterObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Date date;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Amount amount;
 
-    @XmlField
     @JsonField
+    @XmlField
     public double doublePrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Double doubleObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public float floatPrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Float floatObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public int integerPrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Integer integerObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public long longPrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Long longObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public short shortPrimitive;
 
-    @XmlField
     @JsonField
+    @XmlField
     public Short shortObject;
 
-    @XmlField
     @JsonField
+    @XmlField
     public String string;
 
-    @XmlField("string/@attribute")
     @JsonField
+    @XmlField("string/@attribute")
     public String stringAttribute;
 }

@@ -1,5 +1,6 @@
 package name.pehl.piriti.gxt.client.gwttest.fat;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -54,41 +55,51 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
     }
 
 
-    protected void assertFatGlobalItems(List<FatGlobalItem> items)
+    protected void assertFatGlobalItems(Collection<FatGlobalItem> items, boolean withNestedFatGlobalItems)
     {
         assertNotNull(items);
         assertEquals(SIZE, items.size());
         for (FatGlobalItem fgi : items)
         {
-            assertFatGlobalItem(fgi);
+            assertFatGlobalItem(fgi, withNestedFatGlobalItems);
         }
     }
-    
-    
-    protected void assertFatGlobalItem(FatGlobalItem fgm)
+
+
+    protected void assertFatGlobalItem(FatGlobalItem fgi, boolean withNestedFatGlobalItems)
     {
         // Basic stuff
-        assertBasicStuff(fgm);
+        assertBasicStuff(fgi);
 
         // Nested objects
-        SkinnyNestedItem skinnyNestedItem = fgm.get("skinnyNestedItem");
+        if (withNestedFatGlobalItems)
+        {
+            assertFatGlobalItem((FatGlobalItem) fgi.get("fatGlobalItem"), false);
+        }
+        SkinnyNestedItem skinnyNestedItem = fgi.get("skinnyNestedItem");
         assertNotNull(skinnyNestedItem);
         assertBasicStuff(skinnyNestedItem);
 
         // Arrays
-        Integer[] arrayOfIntegerObjects = fgm.get("arrayOfIntegerObjects");
+        Integer[] arrayOfIntegerObjects = fgi.get("arrayOfIntegerObjects");
         assertEquals(SIZE, arrayOfIntegerObjects.length);
         for (int i = 0; i < SIZE; i++)
         {
             assertEquals(i, arrayOfIntegerObjects[i].intValue());
         }
-        String[] arrayOfStrings = fgm.get("arrayOfStrings");
+        String[] arrayOfStrings = fgi.get("arrayOfStrings");
         assertEquals(SIZE, arrayOfStrings.length);
         for (int i = 0; i < SIZE; i++)
         {
             assertEquals(String.valueOf(i), arrayOfStrings[i]);
         }
-        SkinnyNestedItem[] arrayOfSkinnyNestedItems = fgm.get("arrayOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            FatGlobalItem[] arrayOfFatGlobalItems = fgi.get("arrayOfFatGlobalItems");
+            assertNotNull(arrayOfFatGlobalItems);
+            assertFatGlobalItems(Arrays.asList(arrayOfFatGlobalItems), false);
+        }
+        SkinnyNestedItem[] arrayOfSkinnyNestedItems = fgi.get("arrayOfSkinnyNestedItems");
         assertEquals(SIZE, arrayOfSkinnyNestedItems.length);
         for (int i = 0; i < SIZE; i++)
         {
@@ -96,15 +107,20 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         }
 
         // Collections
-        Collection<Integer> collectionOfIntegerObjects = fgm.get("collectionOfIntegerObjects");
+        Collection<Integer> collectionOfIntegerObjects = fgi.get("collectionOfIntegerObjects");
         assertEquals(SIZE, collectionOfIntegerObjects.size());
         collectionOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
         assertTrue(collectionOfIntegerObjects.isEmpty());
-        Collection<String> collectionOfStrings = fgm.get("collectionOfStrings");
+        Collection<String> collectionOfStrings = fgi.get("collectionOfStrings");
         assertEquals(SIZE, collectionOfStrings.size());
         collectionOfStrings.removeAll(setOfStringsFixture);
         assertTrue(collectionOfStrings.isEmpty());
-        Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems = fgm.get("collectionOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            Collection<FatGlobalItem> collectionOfFatGlobalItems = fgi.get("collectionOfFatGlobalItems");
+            assertFatGlobalItems(collectionOfFatGlobalItems, false);
+        }
+        Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems = fgi.get("collectionOfSkinnyNestedItems");
         assertEquals(SIZE, collectionOfSkinnyNestedItems.size());
         for (SkinnyNestedItem sni : collectionOfSkinnyNestedItems)
         {
@@ -112,19 +128,24 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         }
 
         // Lists
-        List<Integer> listOfIntegerObjects = fgm.get("listOfIntegerObjects");
+        List<Integer> listOfIntegerObjects = fgi.get("listOfIntegerObjects");
         assertEquals(SIZE, listOfIntegerObjects.size());
         for (int i = 0; i < SIZE; i++)
         {
             assertEquals(i, listOfIntegerObjects.get(i).intValue());
         }
-        List<String> listOfStrings = fgm.get("listOfStrings");
+        List<String> listOfStrings = fgi.get("listOfStrings");
         assertEquals(SIZE, listOfStrings.size());
         for (int i = 0; i < SIZE; i++)
         {
             assertEquals(String.valueOf(i), listOfStrings.get(i));
         }
-        List<SkinnyNestedItem> listOfSkinnyNestedItems = fgm.get("listOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            List<FatGlobalItem> listOfFatGlobalItems = fgi.get("listOfFatGlobalItems");
+            assertFatGlobalItems(listOfFatGlobalItems, false);
+        }
+        List<SkinnyNestedItem> listOfSkinnyNestedItems = fgi.get("listOfSkinnyNestedItems");
         assertEquals(SIZE, listOfSkinnyNestedItems.size());
         for (int i = 0; i < SIZE; i++)
         {
@@ -132,15 +153,20 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
         }
 
         // Sets
-        Set<Integer> setOfIntegerObjects = fgm.get("setOfIntegerObjects");
+        Set<Integer> setOfIntegerObjects = fgi.get("setOfIntegerObjects");
         assertEquals(SIZE, setOfIntegerObjects.size());
         setOfIntegerObjects.removeAll(setOfIntegerObjectsFixture);
         assertTrue(setOfIntegerObjects.isEmpty());
-        Set<String> setOfStrings = fgm.get("setOfStrings");
+        Set<String> setOfStrings = fgi.get("setOfStrings");
         assertEquals(SIZE, setOfStrings.size());
         setOfStrings.removeAll(setOfStringsFixture);
         assertTrue(setOfStrings.isEmpty());
-        Set<SkinnyNestedItem> setOfSkinnyNestedItems = fgm.get("setOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            Set<FatGlobalItem> setOfFatGlobalItems = fgi.get("setOfFatGlobalItems");
+            assertFatGlobalItems(setOfFatGlobalItems, false);
+        }
+        Set<SkinnyNestedItem> setOfSkinnyNestedItems = fgi.get("setOfSkinnyNestedItems");
         assertEquals(SIZE, setOfSkinnyNestedItems.size());
         for (SkinnyNestedItem sni : setOfSkinnyNestedItems)
         {

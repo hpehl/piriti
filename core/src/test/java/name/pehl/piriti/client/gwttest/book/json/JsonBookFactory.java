@@ -13,6 +13,11 @@ public final class JsonBookFactory implements BookFactory
     }
 
 
+    /**
+     * Creates books with author and related books.
+     * 
+     * @return
+     */
     public static String createBooks()
     {
         StringBuilder json = new StringBuilder();
@@ -29,7 +34,7 @@ public final class JsonBookFactory implements BookFactory
 
 
     /**
-     * Creates a JSON book with author and related books.
+     * Creates a book with author and related books.
      * 
      * @return
      */
@@ -40,7 +45,7 @@ public final class JsonBookFactory implements BookFactory
 
 
     /**
-     * Create a JSON book. Depending on the parameters {@code withAuthor} and
+     * Create a book. Depending on the parameters {@code withAuthor} and
      * {@code withRelated} the author and related elements are also generated.
      * 
      * @param withAuthor

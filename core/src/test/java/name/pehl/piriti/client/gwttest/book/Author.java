@@ -14,27 +14,27 @@ import com.google.gwt.core.client.GWT;
  */
 public class Author
 {
+    public interface AuthorJsonReader extends JsonReader<Author>
+    {
+    }
+    
+    public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
+    
     public interface AuthorXmlReader extends XmlReader<Author>
     {
     }
 
     public static final AuthorXmlReader XML = GWT.create(AuthorXmlReader.class);
 
-    public interface AuthorJsonReader extends JsonReader<Author>
-    {
-    }
-
-    public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
-
-    @XmlField
     @JsonField
+    @XmlField
     String firstname;
 
-    @XmlField
     @JsonField
+    @XmlField
     String surname;
     
-    @XmlField("bestseller/book")
     @JsonField
+    @XmlField("bestseller/book")
     Book bestseller;
 }

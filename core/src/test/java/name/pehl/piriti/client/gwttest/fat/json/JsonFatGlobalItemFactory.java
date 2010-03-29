@@ -25,6 +25,11 @@ public final class JsonFatGlobalItemFactory
     }
 
 
+    /**
+     * Create FatGlobalItems with nested FatGlobalItems.
+     * 
+     * @return
+     */
     public static String createFatGlobalItems()
     {
         StringBuilder json = new StringBuilder();
@@ -40,7 +45,25 @@ public final class JsonFatGlobalItemFactory
     }
 
 
+    /**
+     * Create a FatGlobalItem with nested FatGlobalItems.
+     * 
+     * @return
+     */
     public static String createFatGlobalItem()
+    {
+        return createFatGlobalItem(true);
+    }
+
+
+    /**
+     * Create a FatGlobalItem. Depending on the parameter {@code
+     * withNestedFatGlobalItems} nested FatGlobalItems are also generated.
+     * 
+     * @param withNestedFatGlobalItems
+     * @return
+     */
+    private static String createFatGlobalItem(boolean withNestedFatGlobalItems)
     {
         StringBuilder json = new StringBuilder();
         json.append("{");
@@ -49,7 +72,13 @@ public final class JsonFatGlobalItemFactory
         appendSimpleObjects(json);
         json.append(", ");
 
-        // SkinnyNestedItem
+        // Nested objects
+        if (withNestedFatGlobalItems)
+        {
+            json.append("fatGlobalItem: ");
+            json.append(createFatGlobalItem(false));
+            json.append(", ");
+        }
         json.append("skinnyNestedItem: {");
         appendSimpleObjects(json);
         json.append("}, ");
@@ -58,29 +87,64 @@ public final class JsonFatGlobalItemFactory
         appendKeyValueArray(json, "arrayOfIntegerPrimitives", false, true, "0", "1", "2");
         appendKeyValueArray(json, "arrayOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "arrayOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "arrayOfSkinnyNestedItems", SIZE, true);
+        if (withNestedFatGlobalItems)
+        {
+            appendFatGlobalItmes(json, "arrayOfFatGlobalItems", SIZE, true);
+        }
+        appendSkinnyNestedItems(json, "arrayOfSkinnyNestedItems", SIZE, true);
 
         // Collections
         appendKeyValueArray(json, "collectionOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "collectionOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "collectionOfSkinnyNestedItems", SIZE, true);
+        if (withNestedFatGlobalItems)
+        {
+            appendFatGlobalItmes(json, "collectionOfFatGlobalItems", SIZE, true);
+        }
+        appendSkinnyNestedItems(json, "collectionOfSkinnyNestedItems", SIZE, true);
 
         // Lists
         appendKeyValueArray(json, "listOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "listOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "listOfSkinnyNestedItems", SIZE, true);
+        if (withNestedFatGlobalItems)
+        {
+            appendFatGlobalItmes(json, "listOfFatGlobalItems", SIZE, true);
+        }
+        appendSkinnyNestedItems(json, "listOfSkinnyNestedItems", SIZE, true);
 
         // Sets
         appendKeyValueArray(json, "setOfIntegerObjects", false, true, "0", "1", "2");
         appendKeyValueArray(json, "setOfStrings", true, true, "0", "1", "2");
-        appendKeyNestedModelsArray(json, "setOfSkinnyNestedItems", SIZE, false);
+        if (withNestedFatGlobalItems)
+        {
+            appendFatGlobalItmes(json, "setOfFatGlobalItems", SIZE, true);
+        }
+        appendSkinnyNestedItems(json, "setOfSkinnyNestedItems", SIZE, false);
 
         json.append("}");
         return json.toString();
     }
 
 
-    private static void appendKeyNestedModelsArray(StringBuilder json, String key, int size, boolean goon)
+    private static void appendFatGlobalItmes(StringBuilder json, String key, int size, boolean goon)
+    {
+        json.append(key).append(": [");
+        for (int i = 0; i < size; i++)
+        {
+            json.append(createFatGlobalItem(false));
+            if (i < size - 1)
+            {
+                json.append(", ");
+            }
+        }
+        json.append("]");
+        if (goon)
+        {
+            json.append(", ");
+        }
+    }
+
+
+    private static void appendSkinnyNestedItems(StringBuilder json, String key, int size, boolean goon)
     {
         json.append(key).append(": [");
         for (int i = 0; i < size; i++)

@@ -16,39 +16,39 @@ import com.google.gwt.core.client.GWT;
  */
 public class Book
 {
+    public interface BookJsonReader extends JsonReader<Book>
+    {
+    }
+    
+    public static final BookJsonReader JSON = GWT.create(BookJsonReader.class);
+    
     public interface BookXmlReader extends XmlReader<Book>
     {
     }
 
     public static final BookXmlReader XML = GWT.create(BookXmlReader.class);
 
-    public interface BookJsonReader extends JsonReader<Book>
-    {
-    }
-
-    public static final BookJsonReader JSON = GWT.create(BookJsonReader.class);
-
-    @XmlField
     @JsonField
+    @XmlField
     String isbn;
 
-    @XmlField
     @JsonField
+    @XmlField
     int pages;
 
-    @XmlField
     @JsonField
+    @XmlField
     String title;
 
-    @XmlField
     @JsonField
+    @XmlField
     Author author;
 
-    @XmlField("reviews/review")
     @JsonField
+    @XmlField("reviews/review")
     List<String> reviews;
     
-    @XmlField("related/book")
     @JsonField
+    @XmlField("related/book")
     List<Book> related;
 }

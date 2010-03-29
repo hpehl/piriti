@@ -21,13 +21,18 @@ public final class XmlFatGlobalItemFactory
     }
 
 
+    /**
+     * Create FatGlobalItems with nested FatGlobalItems.
+     * 
+     * @return
+     */
     public static Document createFatGlobalItems()
     {
         Document document = XMLParser.createDocument();
         Element items = document.createElement("fatGlobalItems");
         for (int i = 0; i < SIZE; i++)
         {
-            items.appendChild(createFatGlobalItemElement(document, "fatGlobalItem"));
+            items.appendChild(createFatGlobalItemElement(document, "fatGlobalItem", true));
         }
 
         document.appendChild(items);
@@ -35,15 +40,28 @@ public final class XmlFatGlobalItemFactory
     }
 
 
+    /**
+     * Create a FatGlobalItem with nested FatGlobalItems.
+     * 
+     * @return
+     */
     public static Document createFatGlobalItem()
     {
         Document document = XMLParser.createDocument();
-        document.appendChild(createFatGlobalItemElement(document, "fatGlobalItem"));
+        document.appendChild(createFatGlobalItemElement(document, "fatGlobalItem", true));
         return document;
     }
 
 
-    private static Element createFatGlobalItemElement(Document document, String elementName)
+    /**
+     * Create a FatGlobalItem. Depending on the parameter {@code
+     * withNestedFatGlobalItems} nested FatGlobalItems are also generated.
+     * 
+     * @param withNestedFatGlobalItems
+     * @return
+     */
+    private static Element createFatGlobalItemElement(Document document, String elementName,
+            boolean withNestedFatGlobalItems)
     {
         Element fgi = document.createElement(elementName);
 
@@ -70,49 +88,89 @@ public final class XmlFatGlobalItemFactory
         Element stringElement = createElementAndAppend(document, fgi, "string", "achtzehn");
         stringElement.setAttribute("attribute", "neunzehn");
 
-        // SkinnyNestedItem
+        // Nested objects
+        if (withNestedFatGlobalItems)
+        {
+            fgi.appendChild(createFatGlobalItemElement(document, "fatGlobalItem", false));
+        }
         fgi.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
 
         // Arrays
         createElementsAndAppend(document, fgi, "arrayOfIntegerPrimitives", "0", "1", "2");
         createElementsAndAppend(document, fgi, "arrayOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, fgi, "arrayOfStrings", "0", "1", "2");
-        Element arrayOfDemoNestedModels = document.createElement("arrayOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            Element arrayOfFatGlobalItems = document.createElement("arrayOfFatGlobalItems");
+            for (int i = 0; i < SIZE; i++)
+            {
+                arrayOfFatGlobalItems.appendChild(createFatGlobalItemElement(document, "fatGlobalItem", false));
+            }
+            fgi.appendChild(arrayOfFatGlobalItems);
+        }
+        Element arrayOfSkinnyNestedModels = document.createElement("arrayOfSkinnyNestedItems");
         for (int i = 0; i < SIZE; i++)
         {
-            arrayOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+            arrayOfSkinnyNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
         }
-        fgi.appendChild(arrayOfDemoNestedModels);
+        fgi.appendChild(arrayOfSkinnyNestedModels);
 
         // Collections
         createElementsAndAppend(document, fgi, "collectionOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, fgi, "collectionOfStrings", "0", "1", "2");
-        Element collectionOfDemoNestedModels = document.createElement("collectionOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            Element collectionOfFatGlobalItems = document.createElement("collectionOfFatGlobalItems");
+            for (int i = 0; i < SIZE; i++)
+            {
+                collectionOfFatGlobalItems.appendChild(createFatGlobalItemElement(document, "fatGlobalItem", false));
+            }
+            fgi.appendChild(collectionOfFatGlobalItems);
+        }
+        Element collectionOfSkinnyNestedModels = document.createElement("collectionOfSkinnyNestedItems");
         for (int i = 0; i < SIZE; i++)
         {
-            collectionOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+            collectionOfSkinnyNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
         }
-        fgi.appendChild(collectionOfDemoNestedModels);
+        fgi.appendChild(collectionOfSkinnyNestedModels);
 
         // Lists
         createElementsAndAppend(document, fgi, "listOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, fgi, "listOfStrings", "0", "1", "2");
-        Element listOfDemoNestedModels = document.createElement("listOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            Element listOfFatGlobalItems = document.createElement("listOfFatGlobalItems");
+            for (int i = 0; i < SIZE; i++)
+            {
+                listOfFatGlobalItems.appendChild(createFatGlobalItemElement(document, "fatGlobalItem", false));
+            }
+            fgi.appendChild(listOfFatGlobalItems);
+        }
+        Element listOfSkinnyNestedModels = document.createElement("listOfSkinnyNestedItems");
         for (int i = 0; i < SIZE; i++)
         {
-            listOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+            listOfSkinnyNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
         }
-        fgi.appendChild(listOfDemoNestedModels);
+        fgi.appendChild(listOfSkinnyNestedModels);
 
         // Sets
         createElementsAndAppend(document, fgi, "setOfIntegerObjects", "0", "1", "2");
         createElementsAndAppend(document, fgi, "setOfStrings", "0", "1", "2");
-        Element setOfDemoNestedModels = document.createElement("setOfSkinnyNestedItems");
+        if (withNestedFatGlobalItems)
+        {
+            Element setOfFatGlobalItems = document.createElement("setOfFatGlobalItems");
+            for (int i = 0; i < SIZE; i++)
+            {
+                setOfFatGlobalItems.appendChild(createFatGlobalItemElement(document, "fatGlobalItem", false));
+            }
+            fgi.appendChild(setOfFatGlobalItems);
+        }
+        Element setOfSkinnyNestedModels = document.createElement("setOfSkinnyNestedItems");
         for (int i = 0; i < SIZE; i++)
         {
-            setOfDemoNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
+            setOfSkinnyNestedModels.appendChild(createNestedModelElement(document, "skinnyNestedItem"));
         }
-        fgi.appendChild(setOfDemoNestedModels);
+        fgi.appendChild(setOfSkinnyNestedModels);
 
         return fgi;
     }

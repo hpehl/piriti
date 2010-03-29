@@ -15,7 +15,7 @@ public class GwtTestJsonFatGlobalItemReader extends FatGlobalItemTestCase
     {
         String json = JsonFatGlobalItemFactory.createFatGlobalItem();
         FatGlobalItem fgi = FatGlobalItem.JSON.read(json);
-        assertFatGlobalItem(fgi);
+        assertFatGlobalItem(fgi, true);
     }
 
 
@@ -23,7 +23,7 @@ public class GwtTestJsonFatGlobalItemReader extends FatGlobalItemTestCase
     {
         String json = JsonFatGlobalItemFactory.createFatGlobalItems();
         List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json);
-        assertFatGlobalItems(items);
+        assertFatGlobalItems(items, true);
     }
 
 
@@ -31,7 +31,7 @@ public class GwtTestJsonFatGlobalItemReader extends FatGlobalItemTestCase
     {
         String json = JsonFatGlobalItemFactory.createFatGlobalItems();
         List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json, ITEMS);
-        assertFatGlobalItems(items);
+        assertFatGlobalItems(items, true);
     }
 
 
