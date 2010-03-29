@@ -20,8 +20,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.json-2.0-20100326.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.servlet-2.0-20100326.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.xml-2.0-20100326.jar"/>
-	<classpathentry kind="lib" path="lib/gwt/piriti-core-0.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/gwt/piriti-gxt-0.3.1.jar"/>
-	<classpathentry kind="lib" path="lib/gwt/piriti-restlet-0.3.1.jar"/>
+	<classpathentry kind="lib" path="lib/gwt/piriti-core-0.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/gwt/piriti-gxt-0.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/gwt/piriti-restlet-0.3.2.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
