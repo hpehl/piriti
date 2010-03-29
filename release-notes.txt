@@ -1,6 +1,6 @@
 == Piriti 0.3.2 ==
-  * Added checks for NPE in generated JsonReader code
-  * Added support for nested models of same type: 1-1 and 1-n 
+  * Models can now have annotated fields of the same type. This works for 1-1 and 1-n relations
+  * Added saftey checks for null JSON values in generated JsonReader code
 
 == Piriti 0.3.1 ==
   * Added methods to JsonReader for reading lists of models
