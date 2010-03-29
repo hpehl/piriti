@@ -1,5 +1,6 @@
 package name.pehl.piriti.client.gwttest.fat.xml;
 
+import static name.pehl.piriti.client.gwttest.XmlFactoryHelper.*;
 import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase.*;
 import name.pehl.piriti.client.converter.DateConverter;
 import name.pehl.piriti.client.gwttest.fat.Amount;
@@ -7,7 +8,6 @@ import name.pehl.piriti.client.gwttest.fat.Amount;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
@@ -203,27 +203,5 @@ public final class XmlFatGlobalItemFactory
         stringElement.setAttribute("attribute", "neunzehn");
 
         return nestedModel;
-    }
-
-
-    private static void createElementsAndAppend(Document document, Element parent, String elementName, String... values)
-    {
-        if (values != null && values.length != 0)
-        {
-            for (String value : values)
-            {
-                createElementAndAppend(document, parent, elementName, value);
-            }
-        }
-    }
-
-
-    private static Element createElementAndAppend(Document document, Element parent, String elementName, String value)
-    {
-        Element element = document.createElement(elementName);
-        Text text = document.createTextNode(value);
-        element.appendChild(text);
-        parent.appendChild(element);
-        return element;
     }
 }

@@ -1,10 +1,9 @@
 package name.pehl.piriti.client.gwttest.fat.json;
 
+import static name.pehl.piriti.client.gwttest.JsonFactoryHelper.*;
 import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase.*;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 
 import name.pehl.piriti.client.converter.DateConverter;
 import name.pehl.piriti.client.gwttest.fat.Amount;
@@ -188,60 +187,5 @@ public final class JsonFatGlobalItemFactory
         appendKeyValue(json, "shortObject", String.valueOf(17), false, true);
         appendKeyValue(json, "string", "achtzehn", true, true);
         appendKeyValue(json, "stringAttribute", "neunzehn", true, false);
-    }
-
-
-    private static void appendKeyValue(StringBuilder json, String key, String value, boolean quote, boolean goon)
-    {
-        json.append(key).append(": ");
-        if (quote)
-        {
-            json.append("\"");
-        }
-        json.append(value);
-        if (quote)
-        {
-            json.append("\"");
-        }
-        if (goon)
-        {
-            json.append(", ");
-        }
-    }
-
-
-    private static void appendKeyValueArray(StringBuilder json, String key, boolean quote, boolean goon,
-            String... values)
-    {
-        json.append(key).append(": [");
-        Iterator<String> iter = Arrays.asList(values).iterator();
-        while (iter.hasNext())
-        {
-            String value = iter.next();
-            appendValue(json, value, quote, iter.hasNext());
-        }
-        json.append("]");
-        if (goon)
-        {
-            json.append(", ");
-        }
-    }
-
-
-    private static void appendValue(StringBuilder json, String value, boolean quote, boolean goon)
-    {
-        if (quote)
-        {
-            json.append("\"");
-        }
-        json.append(value);
-        if (quote)
-        {
-            json.append("\"");
-        }
-        if (goon)
-        {
-            json.append(", ");
-        }
     }
 }

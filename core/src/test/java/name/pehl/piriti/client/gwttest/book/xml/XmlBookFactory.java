@@ -1,10 +1,10 @@
 package name.pehl.piriti.client.gwttest.book.xml;
 
+import static name.pehl.piriti.client.gwttest.XmlFactoryHelper.*;
 import name.pehl.piriti.client.gwttest.book.BookFactory;
 
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
-import com.google.gwt.xml.client.Text;
 import com.google.gwt.xml.client.XMLParser;
 
 /**
@@ -51,8 +51,8 @@ public final class XmlBookFactory implements BookFactory
 
 
     /**
-     * Create a book. Depending on the parameters {@code withAuthor} and
-     * {@code withRelated} the author and related elements are also generated.
+     * Create a book. Depending on the parameters {@code withAuthor} and {@code
+     * withRelated} the author and related elements are also generated.
      * 
      * @param withAuthor
      * @param withRelated
@@ -102,27 +102,5 @@ public final class XmlBookFactory implements BookFactory
         Element reviews = document.createElement(elementName);
         createElementsAndAppend(document, reviews, "review", REVIEWS);
         bookElement.appendChild(reviews);
-    }
-
-
-    private static void createElementsAndAppend(Document document, Element parent, String elementName, String... values)
-    {
-        if (values != null && values.length != 0)
-        {
-            for (String value : values)
-            {
-                createElementAndAppend(document, parent, elementName, value);
-            }
-        }
-    }
-
-
-    private static Element createElementAndAppend(Document document, Element parent, String elementName, String value)
-    {
-        Element element = document.createElement(elementName);
-        Text text = document.createTextNode(value);
-        element.appendChild(text);
-        parent.appendChild(element);
-        return element;
     }
 }

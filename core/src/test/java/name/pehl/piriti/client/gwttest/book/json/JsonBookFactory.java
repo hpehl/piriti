@@ -1,5 +1,6 @@
 package name.pehl.piriti.client.gwttest.book.json;
 
+import static name.pehl.piriti.client.gwttest.JsonFactoryHelper.*;
 import name.pehl.piriti.client.gwttest.book.BookFactory;
 
 /**
@@ -45,8 +46,8 @@ public final class JsonBookFactory implements BookFactory
 
 
     /**
-     * Create a book. Depending on the parameters {@code withAuthor} and
-     * {@code withRelated} the author and related elements are also generated.
+     * Create a book. Depending on the parameters {@code withAuthor} and {@code
+     * withRelated} the author and related elements are also generated.
      * 
      * @param withAuthor
      * @param withRelated
@@ -96,42 +97,5 @@ public final class JsonBookFactory implements BookFactory
         json.append("}");
 
         return json.toString();
-    }
-
-
-    private static void appendKeyValue(StringBuilder json, String key, String value, boolean quote, boolean goon)
-    {
-        json.append(key).append(": ");
-        if (quote)
-        {
-            json.append("\"");
-        }
-        json.append(value);
-        if (quote)
-        {
-            json.append("\"");
-        }
-        if (goon)
-        {
-            json.append(", ");
-        }
-    }
-
-
-    private static void appendValue(StringBuilder json, String value, boolean quote, boolean goon)
-    {
-        if (quote)
-        {
-            json.append("\"");
-        }
-        json.append(value);
-        if (quote)
-        {
-            json.append("\"");
-        }
-        if (goon)
-        {
-            json.append(", ");
-        }
     }
 }
