@@ -6,10 +6,14 @@ package name.pehl.piriti.client.gwttest.employee;
  */
 public interface EmployeeFactory
 {
-    String EL_PRESIDENTE = "El Presidente";
-    String SENIOR_SALESMAN = "Senior Salesman";
-    String SALESMAN = "Salesman";
-    String CTO = "CTO";
-    String DEVELOPER = "Developer";
-    String QA = "QA";
+    String BOSS_ID = "boss";
+    String BOSS_NAME = "Big Boss";
+    String SELLER_ID = "seller";
+    String SELLER_NAME = "Sally Seller";
+    String IT_ID = "it";
+    String IT_NAME = "Ike It";
+    String CODER_ID = "coder";
+    String CODER_NAME = "Carl Coder";
+    String TESTER_ID = "tester";
+    String TESTER_NAME = "Tom Tester";
 }

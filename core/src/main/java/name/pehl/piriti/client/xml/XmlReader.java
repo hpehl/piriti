@@ -120,4 +120,14 @@ public interface XmlReader<T>
      *         if the element was {@code null}.
      */
     List<T> readList(@Nullable Element element, String xpath);
+
+
+    /**
+     * Returns the reference for the specified identifier or <code>null</code>
+     * if no reference was found.
+     * 
+     * @param id
+     * @return
+     */
+    T idRef(String id);
 }

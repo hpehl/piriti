@@ -67,6 +67,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
+        super.createMethods(writer);
+        
         readFromDocument(writer);
         writer.newline();
 

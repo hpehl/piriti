@@ -156,6 +156,8 @@ public abstract class AbstractReaderCreator
     {
         writer.write("import java.util.ArrayList;");
         writer.write("import java.util.List;");
+        writer.write("import java.util.Map;");
+        writer.write("import java.util.HashMap;");
         writer.write("import name.pehl.piriti.client.converter.*;");
     }
 
@@ -204,6 +206,7 @@ public abstract class AbstractReaderCreator
     protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private ConverterRegistry converterRegistry;");
+        writer.write("private Map<String,%s> idMap;", modelType.getQualifiedSourceName());
     }
 
 
@@ -237,16 +240,29 @@ public abstract class AbstractReaderCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         writer.write("this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();");
+        writer.write("this.idMap = new HashMap<String,%s>();", modelType.getQualifiedSourceName());
     }
 
 
     /**
-     * Empty implementation. Subclasses should override this method.
+     * Generates the idRef method.
      * 
      * @param writer
      */
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
+        idRef(writer);
+        writer.newline();
+    }
+
+
+    protected void idRef(IndentedWriter writer)
+    {
+        writer.write("public %s idRef(String id) {", modelType.getQualifiedSourceName());
+        writer.indent();
+        writer.write("return this.idMap.get(id);");
+        writer.outdent();
+        writer.write("}");
     }
 
 

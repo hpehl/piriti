@@ -26,39 +26,38 @@ public abstract class EmployeeTestCase extends GWTTestCase
     }
 
 
-    protected void assertEmployee(Employee elPresidente)
+    protected void assertEmployees(Employee boss)
     {
-        assertNotNull(elPresidente);
-        assertEquals(EmployeeFactory.EL_PRESIDENTE, elPresidente.name);
-        assertNull(elPresidente.boos);
-        assertNotNull(elPresidente.team);
-        assertEquals(2, elPresidente.team.size());
+        assertNotNull(boss);
+        assertEquals(EmployeeFactory.BOSS_ID, boss.id);
+        assertEquals(EmployeeFactory.BOSS_NAME, boss.name);
+        assertNull(boss.boss);
+        assertNotNull(boss.team);
+        assertEquals(2, boss.team.size());
 
-        Employee seniorSalesman = elPresidente.team.get(0);
-        assertEquals(EmployeeFactory.SENIOR_SALESMAN, seniorSalesman.name);
-        assertEquals(elPresidente, seniorSalesman.boos);
-        assertNotNull(seniorSalesman.team);
-        assertEquals(1, seniorSalesman.team.size());
+        Employee seller = boss.team.get(0);
+        assertEquals(EmployeeFactory.SELLER_ID, seller.id);
+        assertEquals(EmployeeFactory.SELLER_NAME, seller.name);
+        assertEquals(boss, seller.boss);
+        assertNull(seller.team);
 
-        Employee salesman = seniorSalesman.team.get(0);
-        assertEquals(EmployeeFactory.SALESMAN, salesman.name);
-        assertEquals(seniorSalesman, salesman.boos);
-        assertNull(seniorSalesman.team);
+        Employee it = boss.team.get(1);
+        assertEquals(EmployeeFactory.IT_ID, it.id);
+        assertEquals(EmployeeFactory.IT_NAME, it.name);
+        assertEquals(boss, it.boss);
+        assertNotNull(it.team);
+        assertEquals(2, it.team.size());
 
-        Employee cto = elPresidente.team.get(1);
-        assertEquals(EmployeeFactory.CTO, cto.name);
-        assertEquals(elPresidente, cto.boos);
-        assertNotNull(cto.team);
-        assertEquals(2, cto.team.size());
+        Employee coder = it.team.get(0);
+        assertEquals(EmployeeFactory.CODER_ID, coder.id);
+        assertEquals(EmployeeFactory.CODER_NAME, coder.name);
+        assertEquals(it, coder.boss);
+        assertNull(coder.team);
 
-        Employee qa = cto.team.get(0);
-        assertEquals(EmployeeFactory.QA, qa.name);
-        assertEquals(cto, qa.boos);
-        assertNull(qa.team);
-
-        Employee developer = cto.team.get(0);
-        assertEquals(EmployeeFactory.DEVELOPER, developer.name);
-        assertEquals(cto, developer.boos);
-        assertNull(developer.team);
+        Employee tester = it.team.get(1);
+        assertEquals(EmployeeFactory.TESTER_ID, tester.id);
+        assertEquals(EmployeeFactory.TESTER_NAME, tester.name);
+        assertEquals(it, tester.boss);
+        assertNull(tester.team);
     }
 }

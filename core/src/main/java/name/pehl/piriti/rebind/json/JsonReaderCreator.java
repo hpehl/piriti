@@ -66,6 +66,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
+        super.createMethods(writer);
+        
         readFromString(writer);
         writer.newline();
 

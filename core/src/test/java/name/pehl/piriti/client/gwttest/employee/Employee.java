@@ -2,16 +2,20 @@ package name.pehl.piriti.client.gwttest.employee;
 
 import java.util.List;
 
-import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.JsonId;
+import name.pehl.piriti.client.json.JsonIdRef;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.XmlId;
+import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.client.xml.XmlReader;
 
 import com.google.gwt.core.client.GWT;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 408
+ *          $
  */
 public class Employee
 {
@@ -27,63 +31,18 @@ public class Employee
 
     public static final EmployeeXmlReader XML = GWT.create(EmployeeXmlReader.class);
 
-    @JsonField
+    @JsonId
+    @XmlId
+    String id;
+
     @XmlField
     String name;
 
-    @JsonField
-    @XmlField
-    Employee boos;
+    @JsonIdRef
+    @XmlIdRef("boss/@ref")
+    Employee boss;
 
-    @JsonField
-    @XmlField("team/employee")
+    @JsonIdRef
+    @XmlIdRef("team/member/@ref")
     List<Employee> team;
-
-
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        Employee other = (Employee) obj;
-        if (name == null)
-        {
-            if (other.name != null)
-            {
-                return false;
-            }
-        }
-        else if (!name.equals(other.name))
-        {
-            return false;
-        }
-        return true;
-    }
-
-
-    @Override
-    public String toString()
-    {
-        return "Employee[" + name + "]";
-    }
 }
