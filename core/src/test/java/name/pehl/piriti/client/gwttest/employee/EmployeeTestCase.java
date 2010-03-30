@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.gwttest.employee;
 
+import java.util.List;
+
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
@@ -22,42 +24,72 @@ public abstract class EmployeeTestCase extends GWTTestCase
         System.out.println("Running " + getClass().getName());
 
         // Register readers
+        new Department();
         new Employee();
     }
 
 
-    protected void assertEmployees(Employee boss)
+    protected void assertEmployees(List<Employee> employees)
     {
+        assertNotNull(employees);
+        assertEquals(5, employees.size());
+
+        Employee boss = employees.get(0);
         assertNotNull(boss);
         assertEquals(EmployeeFactory.BOSS_ID, boss.id);
         assertEquals(EmployeeFactory.BOSS_NAME, boss.name);
         assertNull(boss.boss);
         assertNotNull(boss.team);
         assertEquals(2, boss.team.size());
+        assertNotNull(boss.department);
+        assertEquals(EmployeeFactory.BOARD_DEPARTMENT_ID, boss.department.id);
+        assertEquals(EmployeeFactory.BOARD_DEPARTMENT_NAME, boss.department.name);
+        assertNotNull(boss.department.employees);
+        assertEquals(1, boss.department.employees.size());
+        assertSame(boss, boss.department.employees.get(0));
 
         Employee seller = boss.team.get(0);
         assertEquals(EmployeeFactory.SELLER_ID, seller.id);
         assertEquals(EmployeeFactory.SELLER_NAME, seller.name);
         assertEquals(boss, seller.boss);
         assertNull(seller.team);
+        assertNotNull(seller.department);
+        assertEquals(EmployeeFactory.SALES_DEPARTMENT_ID, seller.department.id);
+        assertEquals(EmployeeFactory.SALES_DEPARTMENT_ID, seller.department.name);
+        assertNotNull(seller.department.employees);
+        assertEquals(1, seller.department.employees.size());
+        assertSame(boss, seller.department.employees.get(0));
 
-        Employee it = boss.team.get(1);
-        assertEquals(EmployeeFactory.IT_ID, it.id);
-        assertEquals(EmployeeFactory.IT_NAME, it.name);
-        assertEquals(boss, it.boss);
-        assertNotNull(it.team);
-        assertEquals(2, it.team.size());
+        Employee engineer = boss.team.get(1);
+        assertEquals(EmployeeFactory.ENGINEER_ID, engineer.id);
+        assertEquals(EmployeeFactory.ENGINEER_NAME, engineer.name);
+        assertEquals(boss, engineer.boss);
+        assertNotNull(engineer.team);
+        assertEquals(2, engineer.team.size());
 
-        Employee coder = it.team.get(0);
+        Employee coder = engineer.team.get(0);
         assertEquals(EmployeeFactory.CODER_ID, coder.id);
         assertEquals(EmployeeFactory.CODER_NAME, coder.name);
-        assertEquals(it, coder.boss);
+        assertEquals(engineer, coder.boss);
         assertNull(coder.team);
 
-        Employee tester = it.team.get(1);
+        Employee tester = engineer.team.get(1);
         assertEquals(EmployeeFactory.TESTER_ID, tester.id);
         assertEquals(EmployeeFactory.TESTER_NAME, tester.name);
-        assertEquals(it, tester.boss);
+        assertEquals(engineer, tester.boss);
         assertNull(tester.team);
+
+        Department itDepartment = engineer.department;
+        assertNotNull(itDepartment);
+        assertEquals(EmployeeFactory.IT_DEPARTMENT_ID, itDepartment.id);
+        assertEquals(EmployeeFactory.IT_DEPARTMENT_NAME, itDepartment.name);
+        assertNotNull(itDepartment.employees);
+        assertEquals(3, itDepartment.employees.size());
+        assertSame(engineer, itDepartment.employees.get(0));
+        assertSame(coder, itDepartment.employees.get(1));
+        assertSame(tester, itDepartment.employees.get(2));
+
+        assertSame(itDepartment, coder.department);
+        assertSame(itDepartment, tester.department);
     }
 }

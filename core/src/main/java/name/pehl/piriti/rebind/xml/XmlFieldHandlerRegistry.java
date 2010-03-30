@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
@@ -19,6 +20,8 @@ import name.pehl.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.EnumFieldHandler;
+import name.pehl.piriti.rebind.xml.fieldhandler.IdFieldHandler;
+import name.pehl.piriti.rebind.xml.fieldhandler.IdRefFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.StringFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
 
@@ -131,7 +134,16 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
     public FieldHandler findFieldHandler(FieldContext fieldContext)
     {
         FieldHandler handler = null;
-        if (fieldContext.isPrimitive())
+
+        if (fieldContext.getAssignmentType() == AssignmentType.ID)
+        {
+            handler = newIdFieldHandler();
+        }
+        else if (fieldContext.getAssignmentType() == AssignmentType.IDREF)
+        {
+            handler = newIdRefFieldHandler();
+        }
+        else if (fieldContext.isPrimitive())
         {
             handler = newConverterFieldHandler();
         }
@@ -155,6 +167,18 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
             }
         }
         return handler;
+    }
+
+
+    protected FieldHandler newIdFieldHandler()
+    {
+        return new IdFieldHandler();
+    }
+
+
+    protected FieldHandler newIdRefFieldHandler()
+    {
+        return new IdRefFieldHandler();
     }
 
 

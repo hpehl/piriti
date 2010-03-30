@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
+import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractArrayFieldHandler;
@@ -53,7 +54,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         // handler must take care of this!
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
                 .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(), null,
-                fieldContext.getFormat(), nestedJsonValueVariable, nestedValueVariable);
+                fieldContext.getFormat(), AssignmentType.MAPPING, nestedJsonValueVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

@@ -131,6 +131,66 @@ public final class XPathUtils
 
 
     /**
+     * Returns the string values for the specified xpath. The nodes selected by
+     * the xpath expression must be attribute or a text nodes.
+     * 
+     * @param document
+     * @param xpath
+     * @return The string values matched by the xpath or {@code null} if the
+     *         xpath does not resolve to attribute or text nodes
+     */
+    public static String[] getValues(Document document, String xpath)
+    {
+        List<Node> nodes = XPath.evaluate(document, xpath);
+        return internalGetValues(nodes, xpath);
+    }
+
+
+    /**
+     * Returns the string values for the specified xpath. The nodes selected by
+     * the xpath expression must be attribute or a text nodes.
+     * 
+     * @param document
+     * @param xpath
+     * @return The string values matched by the xpath or {@code null} if the
+     *         xpath does not resolve to attribute or text nodes
+     */
+    public static String[] getValues(Element element, String xpath)
+    {
+        List<Node> nodes = XPath.evaluate(element, xpath);
+        return internalGetValues(nodes, xpath);
+    }
+
+
+    private static String[] internalGetValues(List<Node> nodes, String xpath)
+    {
+        List<String> values = null;
+        if (nodes != null && !nodes.isEmpty())
+        {
+            values = new ArrayList<String>();
+            for (Node node : nodes)
+            {
+                String value = null;
+                if (node instanceof Attr)
+                {
+                    value = ((Attr) node).getValue();
+                }
+                else if (node instanceof Text)
+                {
+                    value = ((Text) node).getData();
+                }
+                values.add(value);
+            }
+        }
+        if (values != null)
+        {
+            return values.toArray(new String[0]);
+        }
+        return null;
+    }
+
+
+    /**
      * Returns the string value for the specified xpath. The node selected by
      * the xpath expression must be an attribute or a text node.
      * 

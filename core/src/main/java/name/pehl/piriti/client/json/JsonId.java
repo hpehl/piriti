@@ -18,8 +18,8 @@ import java.lang.annotation.Target;
 public @interface JsonId
 {
     /**
-     * An path expression to select the JSON id. Defaults to "" which means
-     * that the fields name is taken as a base for the XPath expression.
+     * An path expression to select the JSON id. Defaults to "" which means that
+     * the fields name is taken as a base for the XPath expression.
      * 
      * @return
      */

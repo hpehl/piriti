@@ -1,7 +1,10 @@
 package name.pehl.piriti.rebind.xml;
 
 import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.XmlId;
+import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
+import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
@@ -68,7 +71,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createMethods(writer);
-        
+
         readFromDocument(writer);
         writer.newline();
 
@@ -86,7 +89,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
         readListFromElementUsingXpath(writer);
         writer.newline();
-        
+
         readListInternal(writer);
         writer.newline();
     }
@@ -112,7 +115,9 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("if (%s != null) {", xmlVariable);
         writer.indent();
         writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
+        processIds(writer, xmlVariable);
         processMappings(writer, xmlVariable);
+        processIdRefs(writer, xmlVariable);
         writer.outdent();
         writer.write("}");
         writer.write("return model;");
@@ -172,7 +177,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readListInternal(IndentedWriter writer)
     {
-        writer.write("private List<%s> readListInternal(List<Element> elements) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("private List<%s> readListInternal(List<Element> elements) {", modelType
+                .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (elements != null && !elements.isEmpty()) {");
@@ -209,7 +215,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
                     writer.newline();
                     String xpath = calculateXpath(field, xmlField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, xmlField.format(), xmlVariable, "value" + counter);
+                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
+                            xmlVariable, "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)
                     {
@@ -223,6 +230,72 @@ public class XmlReaderCreator extends AbstractReaderCreator
                         }
                     }
                     // TODO What to do if no handler was found?
+                }
+            }
+        }
+    }
+
+
+    protected void processIds(IndentedWriter writer, String xmlVariable) throws UnableToCompleteException
+    {
+        JField[] fields = modelType.getFields();
+        if (fields != null && fields.length != 0)
+        {
+            int counter = 0;
+            for (JField field : fields)
+            {
+                XmlId xmlId = field.getAnnotation(XmlId.class);
+                if (xmlId != null)
+                {
+                    writer.newline();
+                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, xmlVariable,
+                            "idValue" + counter);
+                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+                    if (handler != null)
+                    {
+                        if (handler.isValid(writer, fieldContext))
+                        {
+                            handler.writeComment(writer, fieldContext);
+                            handler.writeDeclaration(writer, fieldContext);
+                            handler.writeConverterCode(writer, fieldContext);
+                            handler.writeAssignment(writer, fieldContext);
+                            counter++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    protected void processIdRefs(IndentedWriter writer, String xmlVariable) throws UnableToCompleteException
+    {
+        JField[] fields = modelType.getFields();
+        if (fields != null && fields.length != 0)
+        {
+            int counter = 0;
+            for (JField field : fields)
+            {
+                XmlIdRef xmlIdRef = field.getAnnotation(XmlIdRef.class);
+                if (xmlIdRef != null)
+                {
+                    writer.newline();
+                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xmlIdRef.value(), null, AssignmentType.IDREF,
+                            xmlVariable, "idRefValue" + counter);
+                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+                    if (handler != null)
+                    {
+                        if (handler.isValid(writer, fieldContext))
+                        {
+                            handler.writeComment(writer, fieldContext);
+                            handler.writeDeclaration(writer, fieldContext);
+                            handler.writeConverterCode(writer, fieldContext);
+                            handler.writeAssignment(writer, fieldContext);
+                            counter++;
+                        }
+                    }
                 }
             }
         }

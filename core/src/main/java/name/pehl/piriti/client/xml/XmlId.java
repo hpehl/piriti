@@ -18,10 +18,9 @@ import java.lang.annotation.Target;
 public @interface XmlId
 {
     /**
-     * An XPath expression to select the XML Id. Defaults to "" which means that
-     * the fields name is taken as a base for the XPath expression.
+     * An XPath expression to select the XML Id. Defaults to "@id".
      * 
      * @return
      */
-    String value() default "";
+    String value() default "@id";
 }

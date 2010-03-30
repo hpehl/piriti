@@ -2,6 +2,7 @@ package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
+import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
@@ -67,7 +68,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createMethods(writer);
-        
+
         readFromString(writer);
         writer.newline();
 
@@ -215,7 +216,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     protected void readListFromJsonObjectUsingFirstKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(JSONObject jsonObject) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(JSONObject jsonObject) {", modelType
+                .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
@@ -335,8 +337,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
                     writer.newline();
                     String jsonPath = calculateJsonPath(field, jsonField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), jsonPath, jsonField.format(), jsonVariable, "value"
-                                    + counter);
+                            field.getType(), field.getName(), jsonPath, jsonField.format(), AssignmentType.MAPPING,
+                            jsonVariable, "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)
                     {

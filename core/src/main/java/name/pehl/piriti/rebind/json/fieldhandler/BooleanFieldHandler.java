@@ -9,7 +9,8 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 364
+ *          $
  */
 public class BooleanFieldHandler extends AbstractFieldHandler
 {

@@ -33,6 +33,7 @@ public class FieldContext
     private final String fieldName;
     private final String path;
     private final String format;
+    private AssignmentType assignmentType;
     private final String inputVariable;
     private final String valueVariable;
     private final Map<String, Object> metadata;
@@ -55,6 +56,8 @@ public class FieldContext
      *            The path information which was specified in the annotation
      * @param format
      *            The format which was specified in the annotation
+     * @param assignmentType
+     *            Kind of assignment.
      * @param inputVariable
      *            The name of the input variable
      * @param valueVariable
@@ -62,8 +65,8 @@ public class FieldContext
      * @throws UnableToCompleteException
      */
     public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
-            JType fieldType, String fieldName, String path, String format, String inputVariable, String valueVariable)
-            throws UnableToCompleteException
+            JType fieldType, String fieldName, String path, String format, AssignmentType assignmentType,
+            String inputVariable, String valueVariable) throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
@@ -98,6 +101,7 @@ public class FieldContext
         {
             this.format = format;
         }
+        this.assignmentType = assignmentType;
 
         // Variable names
         this.inputVariable = inputVariable;
@@ -218,6 +222,12 @@ public class FieldContext
     public String getFormat()
     {
         return format;
+    }
+
+
+    public AssignmentType getAssignmentType()
+    {
+        return assignmentType;
     }
 
 

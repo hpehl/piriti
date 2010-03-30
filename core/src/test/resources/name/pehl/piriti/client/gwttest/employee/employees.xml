@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Only for documentation. This XML document is built by   
+    name.pehl.piriti.client.gwttest.employee.xml.XmlEmployeeFactory
+ -->
+<employees>
+    <employee id="boss">
+        <name>Big Boss</name>
+        <team>
+            <member ref="seller" />
+            <member ref="engineer" />
+        </team>
+        <department id="board">
+            <name>Board</name>
+            <employees members="boss" />
+        </department>
+    </employee>
+
+    <employee id="seller">
+        <name>Sally Seller</name>
+        <boss ref="boss" />
+        <department id="sales">
+            <name>Sales</name>
+            <employees members="seller" />
+        </department>
+    </employee>
+
+    <employee id="engineer">
+        <name>Ed Engineer</name>
+        <boss ref="boss" />
+        <team>
+            <member ref="coder" />
+            <member ref="tester" />
+        </team>
+        <department id="it">
+            <name>IT</name>
+            <employees members="engineer coder test" />
+        </department>
+    </employee>
+
+    <employee id="coder">
+        <name>Carl Coder</name>
+        <boss ref="engineer" />
+        <department ref="it" />
+    </employee>
+
+    <employee id="tester">
+        <name>Tom Tester</name>
+        <boss ref="engineer" />
+        <department ref="it" />
+    </employee>
+</employees>

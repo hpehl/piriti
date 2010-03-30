@@ -11,7 +11,8 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 364
+ *          $
  */
 public class NumberFieldHandler extends AbstractFieldHandler
 {

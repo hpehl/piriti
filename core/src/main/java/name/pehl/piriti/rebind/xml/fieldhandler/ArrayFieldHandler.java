@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
+import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -60,7 +61,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
 
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
                 .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(),
-                nestedXpath, fieldContext.getFormat(), nestedElementVariable, nestedValueVariable);
+                nestedXpath, fieldContext.getFormat(), AssignmentType.MAPPING, nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

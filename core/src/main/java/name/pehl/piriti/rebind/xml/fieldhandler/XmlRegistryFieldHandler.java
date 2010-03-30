@@ -31,7 +31,7 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         JClassType classType = fieldContext.getClassOrInterfaceType();
-        JField xmlRegistryField = findRegistryMember(fieldContext.getClassOrInterfaceType());
+        JField xmlReaderField = findReaderMember(fieldContext.getClassOrInterfaceType());
         // Cast because subclasses might use a subtype of getReaderClassname()
         writer.write("%1$s<%2$s> %3$sReader = (%1$s)xmlRegistry.get(%2$s.class);", getReaderClassname(), classType
                 .getQualifiedSourceName(), fieldContext.getValueVariable());
@@ -42,7 +42,7 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.write("if (nestedElement != null) {");
         writer.indent();
         writer.write("%s = %s.%s.read(nestedElement);", fieldContext.getValueVariable(), classType
-                .getQualifiedSourceName(), xmlRegistryField.getName());
+                .getQualifiedSourceName(), xmlReaderField.getName());
         writer.outdent();
         writer.write("}");
         writer.outdent();

@@ -11,8 +11,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
  * GWT Generator for XmlReaders. The generator delegates to
- * {@link XmlModelReaderCreator} which is responsible for generating the
- * code.
+ * {@link XmlModelReaderCreator} which is responsible for generating the code.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $

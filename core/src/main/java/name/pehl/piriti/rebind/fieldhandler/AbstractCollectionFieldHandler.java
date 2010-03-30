@@ -16,7 +16,6 @@ import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 
 /**
  * Abstract {@link FieldHandler} for collections.
@@ -26,7 +25,7 @@ import com.google.gwt.core.ext.typeinfo.JParameterizedType;
  */
 public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandler
 {
-    protected static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
+    public static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
     static
     {
         interfaceToImplementation.put(Collection.class.getName(), ArrayList.class.getName());
@@ -77,16 +76,6 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
 
     protected JClassType getTypeVariable(FieldContext fieldContext)
     {
-        JClassType parameterType = null;
-        JParameterizedType parameterizedType = fieldContext.getFieldType().isParameterized();
-        if (parameterizedType != null)
-        {
-            JClassType[] typeArgs = parameterizedType.getTypeArgs();
-            if (typeArgs != null && typeArgs.length > 0)
-            {
-                parameterType = typeArgs[0];
-            }
-        }
-        return parameterType;
+        return TypeUtils.getTypeVariable(fieldContext.getFieldType());
     }
 }

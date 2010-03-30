@@ -14,6 +14,8 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 
@@ -264,6 +266,30 @@ public final class TypeUtils
             return true;
         }
         return false;
+    }
+
+
+    /**
+     * Returns the first type variable of the specified parameterized type or
+     * null if {@code type} is <code>null</code> or does not have any type
+     * variables.
+     * 
+     * @param type
+     * @return
+     */
+    public static JClassType getTypeVariable(JType type)
+    {
+        JClassType parameterType = null;
+        JParameterizedType parameterizedType = type.isParameterized();
+        if (parameterizedType != null)
+        {
+            JClassType[] typeArgs = parameterizedType.getTypeArgs();
+            if (typeArgs != null && typeArgs.length > 0)
+            {
+                parameterType = typeArgs[0];
+            }
+        }
+        return parameterType;
     }
 
 

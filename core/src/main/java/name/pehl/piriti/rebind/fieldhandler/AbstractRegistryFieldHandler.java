@@ -33,7 +33,7 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
             skipField(writer, fieldContext, "Type is no class or interface");
             return false;
         }
-        JField registryField = findRegistryMember(fieldContext.getClassOrInterfaceType());
+        JField registryField = findReaderMember(fieldContext.getClassOrInterfaceType());
         if (registryField == null)
         {
             skipField(writer, fieldContext, String.format("No public static field of type %1$s<%2$s> found in %2$s",
@@ -44,7 +44,7 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
     }
 
 
-    protected JField findRegistryMember(JClassType type)
+    protected JField findReaderMember(JClassType type)
     {
         JField[] fields = type.getFields();
         if (fields != null)
