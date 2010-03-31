@@ -28,6 +28,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
 {
     protected final FieldContext idFieldContext;
 
+
     public XmlReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
@@ -275,7 +276,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 if (xmlField != null)
                 {
                     writer.newline();
-                    String xpath = calculateXpath(field, xmlField);
+                    String xpath = calculateXpath(field, xmlField.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
                             "element", "value" + counter);
@@ -310,8 +311,9 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 if (xmlIdRef != null)
                 {
                     writer.newline();
+                    String xpath = calculateXpath(field, xmlIdRef.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xmlIdRef.value(), null, AssignmentType.IDREF, "element",
+                            field.getType(), field.getName(), xpath, null, AssignmentType.IDREF, "element",
                             "idRefValue" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)
@@ -331,9 +333,9 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    protected String calculateXpath(JField field, XmlField xmlField)
+    protected String calculateXpath(JField field, String defaultValue)
     {
-        String xpath = xmlField.value();
+        String xpath = defaultValue;
         if (xpath == null || xpath.length() == 0)
         {
             xpath = field.getName();
