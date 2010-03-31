@@ -23,24 +23,25 @@ public final class XmlEmployeeFactory implements EmployeeFactory
         Document document = XMLParser.createDocument();
         Element employees = document.createElement("employees");
 
-        Element board = createDepartment(document, BOARD_DEPARTMENT_ID, BOARD_DEPARTMENT_NAME, "boss");
-        Element boss = createEmployee(document, BOSS_ID, BOSS_NAME, null, new String[] {"seller", "engineer"}, board,
+        Element board = createDepartment(document, BOARD_DEPARTMENT_ID, BOARD_DEPARTMENT_NAME, BOSS_ID);
+        Element boss = createEmployee(document, BOSS_ID, BOSS_NAME, null, new String[] {SELLER_ID, ENGINEER_ID}, board,
                 null);
         employees.appendChild(boss);
 
-        Element sales = createDepartment(document, SALES_DEPARTMENT_ID, SALES_DEPARTMENT_NAME, "seller");
-        Element seller = createEmployee(document, SELLER_ID, SELLER_NAME, "boss", null, sales, null);
+        Element sales = createDepartment(document, SALES_DEPARTMENT_ID, SALES_DEPARTMENT_NAME, SELLER_ID);
+        Element seller = createEmployee(document, SELLER_ID, SELLER_NAME, BOSS_ID, null, sales, null);
         employees.appendChild(seller);
 
-        Element it = createDepartment(document, IT_DEPARTMENT_ID, IT_DEPARTMENT_NAME, "engineer coder tester");
-        Element engineer = createEmployee(document, ENGINEER_ID, ENGINEER_NAME, "boss",
-                new String[] {"coder", "tester"}, it, null);
+        Element it = createDepartment(document, IT_DEPARTMENT_ID, IT_DEPARTMENT_NAME, ENGINEER_ID + " " + CODER_ID
+                + " " + TESTER_ID);
+        Element engineer = createEmployee(document, ENGINEER_ID, ENGINEER_NAME, BOSS_ID, new String[] {CODER_ID,
+                TESTER_ID}, it, null);
         employees.appendChild(engineer);
 
-        Element coder = createEmployee(document, CODER_ID, CODER_NAME, "engineer", null, null, "it");
+        Element coder = createEmployee(document, CODER_ID, CODER_NAME, ENGINEER_ID, null, null, IT_DEPARTMENT_ID);
         employees.appendChild(coder);
 
-        Element tester = createEmployee(document, TESTER_ID, TESTER_NAME, "engineer", null, null, "it");
+        Element tester = createEmployee(document, TESTER_ID, TESTER_NAME, ENGINEER_ID, null, null, IT_DEPARTMENT_ID);
         employees.appendChild(tester);
 
         document.appendChild(employees);

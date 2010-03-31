@@ -47,7 +47,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
 
 
     @Override
-    protected void processMappings(IndentedWriter writer, String xmlVariable) throws UnableToCompleteException
+    protected void processMappings(IndentedWriter writer) throws UnableToCompleteException
     {
         XmlModel xmlModel = modelType.getAnnotation(XmlModel.class);
         if (xmlModel != null)
@@ -63,7 +63,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
                     String xpath = calculateXpath(fieldType, xmlField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             fieldType, xmlField.property(), xpath, xmlField.format(), AssignmentType.MAPPING,
-                            xmlVariable, "value" + counter);
+                            "element", "value" + counter);
                     fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)

@@ -316,14 +316,14 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-        processMappings(writer, "jsonObject");
+        processMappings(writer);
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void processMappings(IndentedWriter writer, String jsonVariable) throws UnableToCompleteException
+    protected void processMappings(IndentedWriter writer) throws UnableToCompleteException
     {
         JField[] fields = modelType.getFields();
         if (fields != null && fields.length != 0)
@@ -338,7 +338,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
                     String jsonPath = calculateJsonPath(field, jsonField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             field.getType(), field.getName(), jsonPath, jsonField.format(), AssignmentType.MAPPING,
-                            jsonVariable, "value" + counter);
+                            "jsonObject", "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)
                     {

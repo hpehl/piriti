@@ -46,7 +46,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
 
 
     @Override
-    protected void processMappings(IndentedWriter writer, String jsonVariable) throws UnableToCompleteException
+    protected void processMappings(IndentedWriter writer) throws UnableToCompleteException
     {
         JsonModel jsonModel = modelType.getAnnotation(JsonModel.class);
         if (jsonModel != null)
@@ -62,7 +62,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
                     String jsonPath = calculateJsonPath(jsonField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             fieldType, jsonField.property(), jsonPath, jsonField.format(), AssignmentType.MAPPING,
-                            jsonVariable, "value" + counter);
+                            "jsonObject", "value" + counter);
                     fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null)

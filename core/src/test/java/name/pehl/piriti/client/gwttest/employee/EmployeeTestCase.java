@@ -45,38 +45,38 @@ public abstract class EmployeeTestCase extends GWTTestCase
         assertEquals(EmployeeFactory.BOARD_DEPARTMENT_ID, boss.department.id);
         assertEquals(EmployeeFactory.BOARD_DEPARTMENT_NAME, boss.department.name);
         assertNotNull(boss.department.employees);
-        assertEquals(1, boss.department.employees.size());
-        assertSame(boss, boss.department.employees.get(0));
+        assertEquals(1, boss.department.employees.length);
+        assertSame(boss, boss.department.employees[0]);
 
         Employee seller = boss.team.get(0);
         assertEquals(EmployeeFactory.SELLER_ID, seller.id);
         assertEquals(EmployeeFactory.SELLER_NAME, seller.name);
-        assertEquals(boss, seller.boss);
+        assertSame(boss, seller.boss);
         assertNull(seller.team);
         assertNotNull(seller.department);
         assertEquals(EmployeeFactory.SALES_DEPARTMENT_ID, seller.department.id);
-        assertEquals(EmployeeFactory.SALES_DEPARTMENT_ID, seller.department.name);
+        assertEquals(EmployeeFactory.SALES_DEPARTMENT_NAME, seller.department.name);
         assertNotNull(seller.department.employees);
-        assertEquals(1, seller.department.employees.size());
-        assertSame(boss, seller.department.employees.get(0));
+        assertEquals(1, seller.department.employees.length);
+        assertSame(seller, seller.department.employees[0]);
 
         Employee engineer = boss.team.get(1);
         assertEquals(EmployeeFactory.ENGINEER_ID, engineer.id);
         assertEquals(EmployeeFactory.ENGINEER_NAME, engineer.name);
-        assertEquals(boss, engineer.boss);
+        assertSame(boss, engineer.boss);
         assertNotNull(engineer.team);
         assertEquals(2, engineer.team.size());
 
         Employee coder = engineer.team.get(0);
         assertEquals(EmployeeFactory.CODER_ID, coder.id);
         assertEquals(EmployeeFactory.CODER_NAME, coder.name);
-        assertEquals(engineer, coder.boss);
+        assertSame(engineer, coder.boss);
         assertNull(coder.team);
 
         Employee tester = engineer.team.get(1);
         assertEquals(EmployeeFactory.TESTER_ID, tester.id);
         assertEquals(EmployeeFactory.TESTER_NAME, tester.name);
-        assertEquals(engineer, tester.boss);
+        assertSame(engineer, tester.boss);
         assertNull(tester.team);
 
         Department itDepartment = engineer.department;
@@ -84,10 +84,10 @@ public abstract class EmployeeTestCase extends GWTTestCase
         assertEquals(EmployeeFactory.IT_DEPARTMENT_ID, itDepartment.id);
         assertEquals(EmployeeFactory.IT_DEPARTMENT_NAME, itDepartment.name);
         assertNotNull(itDepartment.employees);
-        assertEquals(3, itDepartment.employees.size());
-        assertSame(engineer, itDepartment.employees.get(0));
-        assertSame(coder, itDepartment.employees.get(1));
-        assertSame(tester, itDepartment.employees.get(2));
+        assertEquals(3, itDepartment.employees.length);
+        assertSame(engineer, itDepartment.employees[0]);
+        assertSame(coder, itDepartment.employees[1]);
+        assertSame(tester, itDepartment.employees[2]);
 
         assertSame(itDepartment, coder.department);
         assertSame(itDepartment, tester.department);

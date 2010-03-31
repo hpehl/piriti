@@ -146,14 +146,4 @@ public interface JsonReader<T>
      *         if the JSON array was {@code null}.
      */
     List<T> readList(@Nullable JSONArray jsonArray);
-
-
-    /**
-     * Returns the reference for the specified identifier or <code>null</code>
-     * if no reference was found.
-     * 
-     * @param id
-     * @return
-     */
-    T idRef(String id);
 }

@@ -13,11 +13,16 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 421
+ *          $
  */
 public class IdRefFieldHandler extends AbstractRegistryFieldHandler
 {
+    private static final String FQ_XML_READER = "fqXmlReader";
+    private static final String NESTED_TYPE = "nestedType";
+
+
     /**
      * Returns <code>true</code> if the field type is a class or interface and
      * if there's a public static field of type {@link #getReaderClassname()} in
@@ -59,7 +64,8 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
                     getReaderClassname(), type.getQualifiedSourceName()));
             return false;
         }
-        fieldContext.addMetadata("fqXmlReader", classOrInterface.getQualifiedSourceName() + "."
+        fieldContext.addMetadata(NESTED_TYPE, classOrInterface);
+        fieldContext.addMetadata(FQ_XML_READER, classOrInterface.getQualifiedSourceName() + "."
                 + xmlReaderField.getName());
         return true;
     }
@@ -68,7 +74,9 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        String fqXmlReader = fieldContext.getMetadata("fqXmlReader");
+        JClassType nestedType = fieldContext.getMetadata(NESTED_TYPE);
+        String fqXmlReader = fieldContext.getMetadata(FQ_XML_READER);
+
         String references = fieldContext.newVariableName("References");
         writer.write("String[] %s = XPathUtils.getValues(%s, \"%s\");", references, fieldContext.getInputVariable(),
                 fieldContext.getPath());
@@ -81,35 +89,55 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         writer.write("%1$s = %1$s[0].split(\" \");", references);
         writer.outdent();
         writer.write("}");
-        if (fieldContext.isArray())
+        if (fieldContext.isArray() || TypeUtils.isCollection(fieldContext.getFieldType()))
         {
-        }
-        else if (TypeUtils.isCollection(fieldContext.getFieldType()))
-        {
-            JClassType typeVariable = TypeUtils.getTypeVariable(fieldContext.getFieldType());
-            String collectionImplementation = AbstractCollectionFieldHandler.interfaceToImplementation.get(fieldContext
-                    .getFieldType().getErasedType().getQualifiedSourceName());
-            if (collectionImplementation == null)
+            String collectionVariable = null;
+            if (fieldContext.isArray())
             {
-                // the field type is already an implementation
-                collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
+                collectionVariable = fieldContext.newVariableName("AsList");
+                writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", nestedType
+                        .getParameterizedQualifiedSourceName(), collectionVariable);
             }
-            writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, typeVariable
-                    .getQualifiedSourceName());
+            else
+            {
+                collectionVariable = fieldContext.getValueVariable();
+                String collectionImplementation = AbstractCollectionFieldHandler.interfaceToImplementation
+                        .get(fieldContext.getFieldType().getErasedType().getQualifiedSourceName());
+                if (collectionImplementation == null)
+                {
+                    // the field type is already an implementation
+                    collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
+                }
+                writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation,
+                        nestedType.getQualifiedSourceName());
+            }
             writer.write("for (String reference : %s) {", references);
             writer.indent();
-            writer.write("%s referenceInstance = %s.idRef(reference);", typeVariable
+            writer.write("%s referenceInstance = %s.idRef(reference);", nestedType
                     .getParameterizedQualifiedSourceName(), fqXmlReader);
             writer.write("if (referenceInstance != null) {");
             writer.indent();
-            writer.write("%s.add(referenceInstance);", fieldContext.getValueVariable());
+            writer.write("%s.add(referenceInstance);", collectionVariable);
             writer.outdent();
             writer.write("}");
             writer.outdent();
             writer.write("}");
+            if (fieldContext.isArray())
+            {
+                writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), nestedType
+                        .getQualifiedSourceName(), collectionVariable);
+                writer.write("int index = 0;");
+                writer.write("for(%s currentValue : %s) {", nestedType.getQualifiedSourceName(), collectionVariable);
+                writer.indent();
+                writer.write("%s[index] = currentValue;", fieldContext.getValueVariable());
+                writer.write("index++;");
+                writer.outdent();
+                writer.write("}");
+            }
         }
         else
         {
+            writer.write("%s = %s.idRef(%s[0]);", fieldContext.getValueVariable(), fqXmlReader, references);
         }
         writer.outdent();
         writer.write("}");

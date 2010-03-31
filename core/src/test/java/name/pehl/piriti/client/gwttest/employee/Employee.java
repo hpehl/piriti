@@ -16,13 +16,6 @@ import com.google.gwt.core.client.GWT;
  */
 public class Employee
 {
-    // public interface EmployeeJsonReader extends JsonReader<Employee>
-    // {
-    // }
-    //
-    // public static final EmployeeJsonReader JSON =
-    // GWT.create(EmployeeJsonReader.class);
-
     public interface EmployeeXmlReader extends XmlReader<Employee>
     {
     }
@@ -44,4 +37,11 @@ public class Employee
     @XmlField
     @XmlIdRef("department/@ref")
     Department department;
+
+
+    @Override
+    public String toString()
+    {
+        return "Employee [" + id + "]";
+    }
 }
