@@ -9,7 +9,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.pehl.piriti</groupId>
     <artifactId>piriti-parent</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
     <description>Annotation based JSON and XML mapper for GWT</description>
@@ -93,7 +93,6 @@
 
 
     <properties>
-        <piriti.version>0.3.3</piriti.version>
         <gwt.version>2.0.3</gwt.version>
         <gxt.version>2.1.1</gxt.version>
         <restlet.version>2.0-RC2</restlet.version>
@@ -116,26 +115,26 @@
             <dependency>
                 <groupId>name.pehl.piriti</groupId>
                 <artifactId>piriti-core</artifactId>
-                <version>${piriti.version}</version>
+                <version>${version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>name.pehl.piriti</groupId>
                 <artifactId>piriti-core</artifactId>
-                <version>${piriti.version}</version>
+                <version>${version}</version>
                 <classifier>tests</classifier>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>name.pehl.piriti</groupId>
                 <artifactId>piriti-gxt</artifactId>
-                <version>${piriti.version}</version>
+                <version>${version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>name.pehl.piriti</groupId>
                 <artifactId>piriti-restlet</artifactId>
-                <version>${piriti.version}</version>
+                <version>${version}</version>
                 <scope>provided</scope>
             </dependency>
             

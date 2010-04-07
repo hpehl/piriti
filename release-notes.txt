@@ -1,28 +1,31 @@
-== Piriti 0.3.3 ==
-  * Added @XmlId and @XmlIdRef to map references
+=== Piriti 0.3.4 ===
+  * Fixed bug related to @XmlId / @XmlIdRef processing
 
-== Piriti 0.3.2 ==
+=== Piriti 0.3.3 ===
+  * Added @XmlId and @XmlIdRef to map references. See [XMLReferences XML references] for an example
+
+=== Piriti 0.3.2 ===
   * Models can now have annotated fields of the same type. This works for 1-1 and 1-n relations
   * Added saftey checks for null JSON values in generated JsonReader code
 
-== Piriti 0.3.1 ==
+=== Piriti 0.3.1 ===
   * Added methods to JsonReader for reading lists of models
   * Added methods to XmlReader for reading lists of models
   * Finished Restlet extension
   * Added sample application
 
-== Piriti 0.3 ==
+=== Piriti 0.3 ===
   * Added support for JSON mapping
   * Split Piriti into three modules: piriti-core, piriti-gxt and piriti-restlet
   * Added a sample application
 
-== Piriti 0.2.1 ==
+=== Piriti 0.2.1 ===
   * Added import statements in generated XmlReader implementations.
   * Added GWT unit test for Book / Author example from [GettingStarted Getting Started Page]
 
-== Piriti 0.2 ==
+=== Piriti 0.2 ===
   * Added collection and array mapping
   * Discarded the mapping of maps
 
-== Piriti 0.1 ==
+=== Piriti 0.1 ===
   * Initial release
