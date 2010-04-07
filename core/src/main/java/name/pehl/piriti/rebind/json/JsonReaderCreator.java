@@ -69,12 +69,6 @@ public class JsonReaderCreator extends AbstractReaderCreator
     {
         super.createMethods(writer);
 
-        readFromString(writer);
-        writer.newline();
-
-        readFromJsonObject(writer);
-        writer.newline();
-
         readListFromStringUsingFirstKey(writer);
         writer.newline();
 
@@ -90,52 +84,18 @@ public class JsonReaderCreator extends AbstractReaderCreator
         readListFromJsonArray(writer);
         writer.newline();
 
+        readFromString(writer);
+        writer.newline();
+
+        readFromJsonObject(writer);
+        writer.newline();
+
         internalRead(writer);
         writer.newline();
     }
 
 
-    protected void readFromString(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("public %s read(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
-        writer.indent();
-        writer.write("JSONValue jsonValue = JSONParser.parse(jsonString);");
-        writer.write("if (jsonValue != null) {");
-        writer.indent();
-        writer.write("JSONObject jsonObject = jsonValue.isObject();");
-        writer.write("if (jsonObject != null) {");
-        writer.indent();
-        writer.write("model = internalRead(jsonObject);");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return model;");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    protected void readFromJsonObject(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("public %s read(JSONObject jsonObject) {", modelType.getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (jsonObject != null) {");
-        writer.indent();
-        writer.write("model = internalRead(jsonObject);");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return model;");
-        writer.outdent();
-        writer.write("}");
-    }
-
+    // ------------------------------------------------------ read list methods
 
     protected void readListFromStringUsingFirstKey(IndentedWriter writer) throws UnableToCompleteException
     {
@@ -310,20 +270,66 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
+    // ---------------------------------------------------- read single methods
+
+    protected void readFromString(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %s internalRead(JSONObject jsonObject) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("public %s read(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-        processMappings(writer);
+        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
+        writer.indent();
+        writer.write("JSONValue jsonValue = JSONParser.parse(jsonString);");
+        writer.write("if (jsonValue != null) {");
+        writer.indent();
+        writer.write("JSONObject jsonObject = jsonValue.isObject();");
+        writer.write("if (jsonObject != null) {");
+        writer.indent();
+        writer.write("model = internalRead(jsonObject);");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void processMappings(IndentedWriter writer) throws UnableToCompleteException
+    protected void readFromJsonObject(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public %s read(JSONObject jsonObject) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("if (jsonObject != null) {");
+        writer.indent();
+        writer.write("model = internalRead(jsonObject);");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return model;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    // --------------------------------------------------------- helper methods
+    
+    protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("private %s internalRead(JSONObject jsonObject) {", modelType
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
+        handleFields(writer);
+        writer.write("return model;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         JField[] fields = modelType.getFields();
         if (fields != null && fields.length != 0)
@@ -334,24 +340,20 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 JsonField jsonField = field.getAnnotation(JsonField.class);
                 if (jsonField != null)
                 {
-                    writer.newline();
                     String jsonPath = calculateJsonPath(field, jsonField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                             field.getType(), field.getName(), jsonPath, jsonField.format(), AssignmentType.MAPPING,
                             "jsonObject", "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-                    if (handler != null)
+                    if (handler != null && handler.isValid(writer, fieldContext))
                     {
-                        if (handler.isValid(writer, fieldContext))
-                        {
-                            handler.writeComment(writer, fieldContext);
-                            handler.writeDeclaration(writer, fieldContext);
-                            handler.writeConverterCode(writer, fieldContext);
-                            handler.writeAssignment(writer, fieldContext);
-                            counter++;
-                        }
+                        writer.newline();
+                        handler.writeComment(writer, fieldContext);
+                        handler.writeDeclaration(writer, fieldContext);
+                        handler.writeConverterCode(writer, fieldContext);
+                        handler.writeAssignment(writer, fieldContext);
+                        counter++;
                     }
-                    // TODO What to do if no handler was found?
                 }
             }
         }

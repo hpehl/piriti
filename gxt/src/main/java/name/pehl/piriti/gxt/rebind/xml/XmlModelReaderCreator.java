@@ -47,7 +47,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
 
 
     @Override
-    protected void processMappings(IndentedWriter writer) throws UnableToCompleteException
+    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         XmlModel xmlModel = modelType.getAnnotation(XmlModel.class);
         if (xmlModel != null)
@@ -77,7 +77,6 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
                             counter++;
                         }
                     }
-                    // TODO What to do if no handler was found?
                 }
             }
         }

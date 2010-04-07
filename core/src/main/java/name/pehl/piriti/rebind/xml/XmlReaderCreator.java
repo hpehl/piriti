@@ -10,6 +10,9 @@ import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
+import name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
+import name.pehl.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -26,14 +29,10 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class XmlReaderCreator extends AbstractReaderCreator
 {
-    protected final FieldContext idFieldContext;
-
-
     public XmlReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
-        this.idFieldContext = checkForIdField();
     }
 
 
@@ -76,12 +75,6 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         super.createMethods(writer);
 
-        readFromDocument(writer);
-        writer.newline();
-
-        readFromElement(writer);
-        writer.newline();
-
         readListFromDocument(writer);
         writer.newline();
 
@@ -94,40 +87,30 @@ public class XmlReaderCreator extends AbstractReaderCreator
         readListFromElementUsingXpath(writer);
         writer.newline();
 
+        readFromDocument(writer);
+        writer.newline();
+
+        readFromElement(writer);
+        writer.newline();
+
         internalReadList(writer);
         writer.newline();
 
         internalRead(writer);
         writer.newline();
+
+        readIds(writer);
+        writer.newline();
+
+        readFields(writer);
+        writer.newline();
+
+        readIdRefs(writer);
+        writer.newline();
     }
 
 
-    protected void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("public %s read(Document document) {", modelType.getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("return read(document.getDocumentElement());");
-        writer.outdent();
-        writer.write("}");
-
-    }
-
-
-    protected void readFromElement(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("public %s read(Element element) {", modelType.getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("if (element != null) {");
-        writer.indent();
-        writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("return internalRead(element, model);", modelType.getParameterizedQualifiedSourceName());
-        writer.outdent();
-        writer.write("}");
-        writer.write("return null;");
-        writer.outdent();
-        writer.write("}");
-    }
-
+    // ------------------------------------------------------ read list methods
 
     protected void readListFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
@@ -171,65 +154,54 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
+    // ---------------------------------------------------- read single methods
+
+    protected void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public %s read(Document document) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("return read(document.getDocumentElement());");
+        writer.outdent();
+        writer.write("}");
+
+    }
+
+
+    protected void readFromElement(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public %s read(Element element) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("readFields(element, model);");
+        writer.write("readIdRefs(element, model);");
+        writer.write("return model;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    // --------------------------------------------------------- helper methods
+
     protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
     {
-        boolean handleId = false;
-        FieldHandler idFieldHandler = null;
-        if (idFieldContext != null)
-        {
-            idFieldHandler = handlerRegistry.findFieldHandler(idFieldContext);
-            handleId = idFieldHandler != null && idFieldHandler.isValid(writer, idFieldContext);
-        }
-
         writer.write("private List<%s> internalReadList(List<Element> elements) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (elements != null && !elements.isEmpty()) {");
         writer.indent();
-        if (handleId)
-        {
-            // Create the model and put it in the idMap
-            writer.write("for (Element element : elements) {");
-            writer.indent();
-            writer.write("if (element != null) {");
-            writer.indent();
-            writer.write("%1$s model = new %s();", modelType.getParameterizedQualifiedSourceName());
-            idFieldHandler.writeComment(writer, idFieldContext);
-            idFieldHandler.writeDeclaration(writer, idFieldContext);
-            idFieldHandler.writeConverterCode(writer, idFieldContext);
-            idFieldHandler.writeAssignment(writer, idFieldContext);
-            writer.outdent();
-            writer.write("}");
-            writer.outdent();
-            writer.write("}");
-        }
         writer.write("for (Element element : elements) {");
         writer.indent();
-        writer.write("if (element != null) {");
-        writer.indent();
-        if (handleId)
-        {
-            // Lookup the model from the idMap
-            idFieldHandler.writeDeclaration(writer, idFieldContext);
-            idFieldHandler.writeConverterCode(writer, idFieldContext);
-            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), idFieldContext
-                    .getValueVariable());
-            writer.write("if (model != null) {");
-            writer.indent();
-            writer.write("model = internalRead(element, model);", modelType.getParameterizedQualifiedSourceName());
-            writer.write("models.add(model);");
-            writer.outdent();
-            writer.write("}");
-        }
-        else
-        {
-            writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-            writer.write("model = internalRead(element, model);");
-            writer.write("models.add(model);");
-        }
+        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("models.add(model);");
         writer.outdent();
         writer.write("}");
+        writer.write("int index = 0;");
+        writer.write("for (Element element : elements) {");
+        writer.indent();
+        writer.write("%s model = models.get(index++);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("readFields(element, model);");
+        writer.write("readIdRefs(element, model);");
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -242,122 +214,100 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s internalRead(Element element, %1$s model) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %s internalRead(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        if (idFieldContext != null)
-        {
-            FieldHandler idFieldHandler = handlerRegistry.findFieldHandler(idFieldContext);
-            if (idFieldHandler != null && idFieldHandler.isValid(writer, idFieldContext))
-            {
-                idFieldHandler.writeComment(writer, idFieldContext);
-                idFieldHandler.writeDeclaration(writer, idFieldContext);
-                idFieldHandler.writeConverterCode(writer, idFieldContext);
-                idFieldHandler.writeAssignment(writer, idFieldContext);
-            }
-        }
-        processMappings(writer);
-        processIdRefs(writer);
+        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("model = readIds(element);");
+        writer.write("readFields(element, model);");
+        writer.write("readIdRefs(element, model);");
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void processMappings(IndentedWriter writer) throws UnableToCompleteException
+    protected void readIds(IndentedWriter writer) throws UnableToCompleteException
     {
-        JField[] fields = modelType.getFields();
-        if (fields != null && fields.length != 0)
+        boolean validIdField = false;
+        FieldHandler handler = null;
+        FieldContext fieldContext = checkForIdField();
+        if (fieldContext != null)
         {
-            int counter = 0;
-            for (JField field : fields)
-            {
-                XmlField xmlField = field.getAnnotation(XmlField.class);
-                if (xmlField != null)
-                {
-                    writer.newline();
-                    String xpath = calculateXpath(field, xmlField.value());
-                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
-                            "element", "value" + counter);
-                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-                    if (handler != null)
-                    {
-                        if (handler.isValid(writer, fieldContext))
-                        {
-                            handler.writeComment(writer, fieldContext);
-                            handler.writeDeclaration(writer, fieldContext);
-                            handler.writeConverterCode(writer, fieldContext);
-                            handler.writeAssignment(writer, fieldContext);
-                            counter++;
-                        }
-                    }
-                    // TODO What to do if no handler was found?
-                }
-            }
+            handler = handlerRegistry.findFieldHandler(fieldContext);
+            validIdField = handler != null && handler.isValid(writer, fieldContext);
         }
+
+        writer.write("private %s readIds(Element element) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("if (element != null) {");
+        writer.indent();
+        if (validIdField)
+        {
+            handler.writeComment(writer, fieldContext);
+            handler.writeDeclaration(writer, fieldContext);
+            handler.writeConverterCode(writer, fieldContext);
+            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), fieldContext
+                    .getValueVariable());
+            writer.write("if (model == null) {");
+            writer.indent();
+            writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
+            handler.writeAssignment(writer, fieldContext);
+            writer.outdent();
+            writer.write("}");
+            handleIdsInNestedModels(writer);
+            writer.write("return model;");
+        }
+        else
+        {
+            writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
+            writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
+            handleIdsInNestedModels(writer);
+            writer.write("return model;");
+        }
+        writer.outdent();
+        writer.write("}");
+        writer.write("return null;");
+        writer.outdent();
+        writer.write("}");
     }
 
 
-    protected void processIdRefs(IndentedWriter writer) throws UnableToCompleteException
+    protected void readFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        JField[] fields = modelType.getFields();
-        if (fields != null && fields.length != 0)
-        {
-            int counter = 0;
-            for (JField field : fields)
-            {
-                XmlIdRef xmlIdRef = field.getAnnotation(XmlIdRef.class);
-                if (xmlIdRef != null)
-                {
-                    writer.newline();
-                    String xpath = calculateXpath(field, xmlIdRef.value());
-                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, null, AssignmentType.IDREF, "element",
-                            "idRefValue" + counter);
-                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-                    if (handler != null)
-                    {
-                        if (handler.isValid(writer, fieldContext))
-                        {
-                            handler.writeComment(writer, fieldContext);
-                            handler.writeDeclaration(writer, fieldContext);
-                            handler.writeConverterCode(writer, fieldContext);
-                            handler.writeAssignment(writer, fieldContext);
-                            counter++;
-                        }
-                    }
-                }
-            }
-        }
+        writer.write("private %1$s readFields(Element element, %1$s model) {", modelType
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("if (element != null) {");
+        writer.indent();
+
+        handleFields(writer);
+
+        writer.outdent();
+        writer.write("}");
+        writer.write("return model;");
+        writer.outdent();
+        writer.write("}");
     }
 
 
-    protected String calculateXpath(JField field, String defaultValue)
+    protected void readIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
-        String xpath = defaultValue;
-        if (xpath == null || xpath.length() == 0)
-        {
-            xpath = field.getName();
-            JType fieldType = field.getType();
-            if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
-            {
-                xpath += "/text()";
-            }
-        }
-        return xpath;
+        writer.write("private %1$s readIdRefs(Element element, %1$s model) {", modelType
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("if (element != null) {");
+        writer.indent();
+
+        handleIdRefs(writer);
+
+        writer.outdent();
+        writer.write("}");
+        writer.write("return model;");
+        writer.outdent();
+        writer.write("}");
     }
 
 
-    /**
-     * Checks whether there's a field annotated with {@link XmlId} and returns
-     * the relevant field context.
-     * 
-     * @return The field context for the field annotated with {@link XmlId} or
-     *         null if there's no field is annotated with {@link XmlId}.
-     * @throws UnableToCompleteException
-     *             if there's more than one field annotated with {@link XmlId}.
-     */
     protected FieldContext checkForIdField() throws UnableToCompleteException
     {
         FieldContext fieldContext = null;
@@ -382,5 +332,115 @@ public class XmlReaderCreator extends AbstractReaderCreator
             }
         }
         return fieldContext;
+    }
+
+
+    protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
+    {
+        JField[] fields = modelType.getFields();
+        if (fields != null && fields.length != 0)
+        {
+            int counter = 1; // checkForIdField() uses counter = 0!
+            for (JField field : fields)
+            {
+                XmlField xmlField = field.getAnnotation(XmlField.class);
+                if (xmlField != null)
+                {
+                    String xpath = calculateXpath(field, xmlField.value());
+                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
+                            "element", "value" + counter);
+                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+                    if ((handler instanceof XmlRegistryFieldHandler || handler instanceof ArrayFieldHandler || handler instanceof CollectionFieldHandler)
+                            && handler.isValid(writer, fieldContext))
+                    {
+                        writer.newline();
+                        handler.writeComment(writer, fieldContext);
+                        handler.writeDeclaration(writer, fieldContext);
+                        handler.writeConverterCode(writer, fieldContext);
+                        handler.writeAssignment(writer, fieldContext);
+                        counter++;
+                    }
+                }
+            }
+        }
+    }
+
+
+    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
+    {
+        JField[] fields = modelType.getFields();
+        if (fields != null && fields.length != 0)
+        {
+            int counter = 0;
+            for (JField field : fields)
+            {
+                XmlField xmlField = field.getAnnotation(XmlField.class);
+                if (xmlField != null)
+                {
+                    String xpath = calculateXpath(field, xmlField.value());
+                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
+                            "element", "value" + counter);
+                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+                    if (handler != null && handler.isValid(writer, fieldContext))
+                    {
+                        writer.newline();
+                        handler.writeComment(writer, fieldContext);
+                        handler.writeDeclaration(writer, fieldContext);
+                        handler.writeConverterCode(writer, fieldContext);
+                        handler.writeAssignment(writer, fieldContext);
+                        counter++;
+                    }
+                }
+            }
+        }
+    }
+
+
+    protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
+    {
+        JField[] fields = modelType.getFields();
+        if (fields != null && fields.length != 0)
+        {
+            int counter = 0;
+            for (JField field : fields)
+            {
+                XmlIdRef xmlIdRef = field.getAnnotation(XmlIdRef.class);
+                if (xmlIdRef != null)
+                {
+                    String xpath = calculateXpath(field, xmlIdRef.value());
+                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xpath, null, AssignmentType.IDREF, "element",
+                            "idRefValue" + counter);
+                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+                    if (handler != null && handler.isValid(writer, fieldContext))
+                    {
+                        writer.newline();
+                        handler.writeComment(writer, fieldContext);
+                        handler.writeDeclaration(writer, fieldContext);
+                        handler.writeConverterCode(writer, fieldContext);
+                        handler.writeAssignment(writer, fieldContext);
+                        counter++;
+                    }
+                }
+            }
+        }
+    }
+
+
+    protected String calculateXpath(JField field, String defaultValue)
+    {
+        String xpath = defaultValue;
+        if (xpath == null || xpath.length() == 0)
+        {
+            xpath = field.getName();
+            JType fieldType = field.getType();
+            if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
+            {
+                xpath += "/text()";
+            }
+        }
+        return xpath;
     }
 }

@@ -46,35 +46,6 @@ import com.google.inject.internal.Nullable;
 public interface JsonReader<T>
 {
     /**
-     * Convert the specified JSON string to an instance of T according to the
-     * annotated fields in T. The JSON string must be a valid JSON object with
-     * key/value pairs.
-     * <p>
-     * Please note that the JSON string is parsed using
-     * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
-     * function. So please *do not* pass an untrusted string into this method.
-     * 
-     * @param jsonString
-     *            The JSON string used as input. May be <code>null</code>.
-     * @return An instance of T with the mapped JSON data or {@code null} if the
-     *         JSON string was {@code null}.
-     */
-    T read(@Nullable String jsonString);
-
-
-    /**
-     * Convert the specified JSON object to an instance of T according to the
-     * annotated fields in T.
-     * 
-     * @param jsonObject
-     *            The JSON object used as input. May be <code>null</code>.
-     * @return An instance of T with the mapped JSON data or {@code null} if the
-     *         JSON object was {@code null}.
-     */
-    T read(@Nullable JSONObject jsonObject);
-
-
-    /**
      * Convert the specified JSON string to a list of Ts according to the
      * annotated fields in T. The JSON string must be a valid JSON object with
      * <i>one</i> key/value pair. The value must be a JSON array which is
@@ -146,4 +117,33 @@ public interface JsonReader<T>
      *         if the JSON array was {@code null}.
      */
     List<T> readList(@Nullable JSONArray jsonArray);
+
+
+    /**
+     * Convert the specified JSON string to an instance of T according to the
+     * annotated fields in T. The JSON string must be a valid JSON object with
+     * key/value pairs.
+     * <p>
+     * Please note that the JSON string is parsed using
+     * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
+     * function. So please *do not* pass an untrusted string into this method.
+     * 
+     * @param jsonString
+     *            The JSON string used as input. May be <code>null</code>.
+     * @return An instance of T with the mapped JSON data or {@code null} if the
+     *         JSON string was {@code null}.
+     */
+    T read(@Nullable String jsonString);
+
+
+    /**
+     * Convert the specified JSON object to an instance of T according to the
+     * annotated fields in T.
+     * 
+     * @param jsonObject
+     *            The JSON object used as input. May be <code>null</code>.
+     * @return An instance of T with the mapped JSON data or {@code null} if the
+     *         JSON object was {@code null}.
+     */
+    T read(@Nullable JSONObject jsonObject);
 }

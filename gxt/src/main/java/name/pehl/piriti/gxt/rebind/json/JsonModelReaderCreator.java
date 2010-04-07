@@ -46,7 +46,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
 
 
     @Override
-    protected void processMappings(IndentedWriter writer) throws UnableToCompleteException
+    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         JsonModel jsonModel = modelType.getAnnotation(JsonModel.class);
         if (jsonModel != null)
@@ -76,7 +76,6 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
                             counter++;
                         }
                     }
-                    // TODO What to do if no handler was found?
                 }
             }
         }
