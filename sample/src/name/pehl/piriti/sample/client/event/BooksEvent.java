@@ -11,16 +11,16 @@ import com.google.gwt.event.shared.GwtEvent;
  * @version $Date$ $Revision: 280
  *          $
  */
-public class BooksReadEvent extends GwtEvent<BooksReadHandler>
+public class BooksEvent extends GwtEvent<BooksHandler>
 {
-    private static Type<BooksReadHandler> TYPE;
+    private static Type<BooksHandler> TYPE;
 
 
-    public static Type<BooksReadHandler> getType()
+    public static Type<BooksHandler> getType()
     {
         if (TYPE == null)
         {
-            TYPE = new Type<BooksReadHandler>();
+            TYPE = new Type<BooksHandler>();
         }
         return TYPE;
     }
@@ -30,7 +30,7 @@ public class BooksReadEvent extends GwtEvent<BooksReadHandler>
     private final String sourceCode;
 
 
-    public BooksReadEvent(List<?> books, TimeInterval timeInterval, String sourceCode)
+    public BooksEvent(List<?> books, TimeInterval timeInterval, String sourceCode)
     {
         super();
         this.books = books;
@@ -40,14 +40,14 @@ public class BooksReadEvent extends GwtEvent<BooksReadHandler>
 
 
     @Override
-    protected void dispatch(BooksReadHandler handler)
+    protected void dispatch(BooksHandler handler)
     {
-        handler.onTimeInterval(this);
+        handler.onBooks(this);
     }
 
 
     @Override
-    public Type<BooksReadHandler> getAssociatedType()
+    public Type<BooksHandler> getAssociatedType()
     {
         return getType();
     }

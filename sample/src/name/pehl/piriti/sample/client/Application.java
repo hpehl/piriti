@@ -2,12 +2,16 @@ package name.pehl.piriti.sample.client;
 
 import java.util.List;
 
-import name.pehl.piriti.sample.client.event.BooksReadEvent;
-import name.pehl.piriti.sample.client.event.BooksReadHandler;
+import name.pehl.piriti.sample.client.event.BooksEvent;
+import name.pehl.piriti.sample.client.event.BooksHandler;
 import name.pehl.piriti.sample.client.event.EventBus;
+import name.pehl.piriti.sample.client.event.PlaygroundEvent;
+import name.pehl.piriti.sample.client.event.PlaygroundHandler;
 import name.pehl.piriti.sample.client.model.Book;
 import name.pehl.piriti.sample.client.model.BookModel;
+import name.pehl.piriti.sample.client.model.Playground;
 import name.pehl.piriti.sample.client.rest.BooksClient;
+import name.pehl.piriti.sample.client.rest.PlaygroundClient;
 import name.pehl.piriti.sample.client.util.TimeInterval;
 
 import com.google.gwt.core.client.GWT;
@@ -26,7 +30,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @version $Date$ $Revision: 292
  *          $
  */
-public class Application extends Composite implements BooksReadHandler, SourceCodes
+public class Application extends Composite implements BooksHandler, PlaygroundHandler, SourceCodes
 {
     private static ApplicationUiBinder uiBinder = GWT.create(ApplicationUiBinder.class);
 
@@ -47,19 +51,24 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     Hyperlink xmlToGxtModel;
 
     @UiField
+    Hyperlink xmlToPlayground;
+
+    @UiField
     PreElement sourceCode;
 
     @UiField
     Label status;
 
-    BooksClient client = null;
+    BooksClient booksClient = null;
+    PlaygroundClient playgroundClient = null;
 
 
     public Application()
     {
-        client = new BooksClient();
+        booksClient = new BooksClient();
+        playgroundClient = new PlaygroundClient();
         initWidget(uiBinder.createAndBindUi(this));
-        EventBus.get().addHandler(BooksReadEvent.getType(), this);
+        EventBus.get().addHandler(BooksEvent.getType(), this);
     }
 
 
@@ -67,7 +76,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     void onFromJsonAsPojo(ClickEvent e)
     {
         setStatus("Reading JSON representation...");
-        client.readFromJson(Book.JSON, JSON_TO_POJO);
+        booksClient.readFromJson(Book.JSON, JSON_TO_POJO);
     }
 
 
@@ -75,7 +84,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     void onFromJsonAsGxtModel(ClickEvent e)
     {
         setStatus("Reading JSON representation...");
-        client.readFromJson(BookModel.JSON, JSON_TO_GXT_MODEL);
+        booksClient.readFromJson(BookModel.JSON, JSON_TO_GXT_MODEL);
     }
 
 
@@ -83,7 +92,7 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     void onFromXmlAsPojo(ClickEvent e)
     {
         setStatus("Reading XML representation...");
-        client.readFromXml(Book.XML, XML_TO_POJO);
+        booksClient.readFromXml(Book.XML, XML_TO_POJO);
     }
 
 
@@ -91,12 +100,20 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
     void onFromXmlAsGxtModel(ClickEvent e)
     {
         setStatus("Reading XML representation...");
-        client.readFromXml(BookModel.XML, XML_TO_GXT_MODEL);
+        booksClient.readFromXml(BookModel.XML, XML_TO_GXT_MODEL);
+    }
+
+
+    @UiHandler("xmlToPlayground")
+    void onFromXmlToPlayground(ClickEvent e)
+    {
+        setStatus("Reading XML representation...");
+        playgroundClient.readFromXml(Playground.XML, XML_TO_PLAYGROUND);
     }
 
 
     @Override
-    public void onTimeInterval(BooksReadEvent event)
+    public void onBooks(BooksEvent event)
     {
         List<Object> books = event.getBooks();
         TimeInterval timeInterval = event.getTimeInterval();
@@ -111,7 +128,25 @@ public class Application extends Composite implements BooksReadHandler, SourceCo
         else
         {
             sourceCode.setInnerText("");
-            setStatus("Error reading books");
+            setStatus("Error reading books.");
+        }
+    }
+
+
+    @Override
+    public void onPlayground(PlaygroundEvent event)
+    {
+        Playground playground = event.getPlayground();
+        TimeInterval timeInterval = event.getTimeInterval();
+        if (playground != null)
+        {
+            sourceCode.setInnerText(event.getSourceCode());
+            setStatus("Successfully read the playground POJO in " + timeInterval.ms() + " ms.");
+        }
+        else
+        {
+            sourceCode.setInnerText("");
+            setStatus("Error reading playground POJO.");
         }
     }
 

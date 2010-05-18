@@ -4,7 +4,8 @@ import com.google.gwt.event.shared.HandlerManager;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 327
+ *          $
  */
 public class EventBus
 {

@@ -5,7 +5,8 @@ import com.google.gwt.user.client.ui.RootLayoutPanel;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 327
+ *          $
  */
 public class PiritiSample implements EntryPoint
 {

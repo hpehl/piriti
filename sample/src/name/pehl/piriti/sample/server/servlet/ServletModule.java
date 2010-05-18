@@ -1,9 +1,8 @@
 package name.pehl.piriti.sample.server.servlet;
 
-
 /**
- * @author $Author:$
- * @version $Revision:$
+ * @author $Author$
+ * @version $Revision$
  */
 public class ServletModule extends com.google.inject.servlet.ServletModule
 {

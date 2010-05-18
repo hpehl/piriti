@@ -14,7 +14,8 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 327
+ *          $
  */
 @XmlModel( {@XmlField(property = "isbn", type = String.class), @XmlField(property = "pages", type = Integer.class),
         @XmlField(property = "title", type = String.class), @XmlField(property = "author", type = Author.class),

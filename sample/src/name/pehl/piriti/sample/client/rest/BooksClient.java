@@ -7,7 +7,7 @@ import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.restlet.client.json.PiritiJsonRepresentation;
 import name.pehl.piriti.restlet.client.xml.PiritiXmlRepresentation;
-import name.pehl.piriti.sample.client.event.BooksReadEvent;
+import name.pehl.piriti.sample.client.event.BooksEvent;
 import name.pehl.piriti.sample.client.event.EventBus;
 import name.pehl.piriti.sample.client.util.StopWatch;
 import name.pehl.piriti.sample.client.util.TimeInterval;
@@ -36,7 +36,7 @@ public class BooksClient
             @Override
             public void handle(Request request, Response response)
             {
-                BooksReadEvent booksReadEvent = null;
+                BooksEvent booksEvent = null;
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 PiritiJsonRepresentation<T> representation = new PiritiJsonRepresentation<T>(jsonReader, response
@@ -45,13 +45,13 @@ public class BooksClient
                 {
                     List<T> books = representation.getModels();
                     TimeInterval timeInterval = stopWatch.stop();
-                    booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
+                    booksEvent = new BooksEvent(books, timeInterval, sourceCode);
                 }
                 catch (IOException e)
                 {
-                    booksReadEvent = new BooksReadEvent(null, null, null);
+                    booksEvent = new BooksEvent(null, null, null);
                 }
-                EventBus.get().fireEvent(booksReadEvent);
+                EventBus.get().fireEvent(booksEvent);
             }
         });
         clientResource.get(MediaType.APPLICATION_JSON);
@@ -66,7 +66,7 @@ public class BooksClient
             @Override
             public void handle(Request request, Response response)
             {
-                BooksReadEvent booksReadEvent = null;
+                BooksEvent booksEvent = null;
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 PiritiXmlRepresentation<T> representation = new PiritiXmlRepresentation<T>(xmlReader, response
@@ -75,13 +75,13 @@ public class BooksClient
                 {
                     List<T> books = representation.getModels();
                     TimeInterval timeInterval = stopWatch.stop();
-                    booksReadEvent = new BooksReadEvent(books, timeInterval, sourceCode);
+                    booksEvent = new BooksEvent(books, timeInterval, sourceCode);
                 }
                 catch (IOException e)
                 {
-                    booksReadEvent = new BooksReadEvent(null, null, null);
+                    booksEvent = new BooksEvent(null, null, null);
                 }
-                EventBus.get().fireEvent(booksReadEvent);
+                EventBus.get().fireEvent(booksEvent);
             }
         });
         clientResource.get(MediaType.TEXT_XML);

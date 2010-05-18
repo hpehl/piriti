@@ -12,7 +12,8 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 327
+ *          $
  */
 @XmlModel( {@XmlField(property = "firstname", type = String.class),
         @XmlField(property = "surname", type = String.class)})

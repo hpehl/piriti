@@ -11,7 +11,8 @@ import com.google.inject.Singleton;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 165
+ *          $
  */
 @Singleton
 public class PiritiSampleServlet extends RestletServlet
