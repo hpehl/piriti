@@ -6,9 +6,9 @@
     -->
     <modelVersion>4.0.0</modelVersion>
     <parent>
-		<groupId>name.pehl.piriti</groupId>
-		<artifactId>piriti-parent</artifactId>
-		<version>0.3.4</version>
+        <groupId>name.pehl.piriti</groupId>
+        <artifactId>piriti-parent</artifactId>
+        <version>0.3.5</version>
     </parent>
 
 
@@ -31,6 +31,18 @@
         </dependency>
         <dependency>
             <groupId>org.restlet.gwt</groupId>
+            <artifactId>org.restlet.ext.xml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.jse</groupId>
+            <artifactId>org.restlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.jse</groupId>
+            <artifactId>org.restlet.ext.json</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.restlet.jse</groupId>
             <artifactId>org.restlet.ext.xml</artifactId>
         </dependency>
     </dependencies>
