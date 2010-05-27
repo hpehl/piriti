@@ -12,16 +12,16 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-servlet-2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.json-2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/taoki-0.1.jar"/>
-	<classpathentry kind="lib" path="lib/gwt/org.restlet-2.0-RC2.jar"/>
-	<classpathentry kind="lib" path="lib/gwt/org.restlet.ext.json-2.0-RC2.jar"/>
-	<classpathentry kind="lib" path="lib/gwt/org.restlet.ext.xml-2.0-RC2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet-2.0-RC2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.gwt-2.0-RC2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.json-2.0-RC2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.servlet-2.0-RC2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.xml-2.0-RC2.jar"/>
 	<classpathentry kind="lib" path="lib/gwt/piriti-core-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/gwt/piriti-gxt-0.3.4.jar"/>
 	<classpathentry kind="lib" path="lib/gwt/piriti-restlet-0.3.4.jar"/>
+	<classpathentry kind="lib" path="lib/gwt/org.restlet-2.0-RC3.jar"/>
+	<classpathentry kind="lib" path="lib/gwt/org.restlet.ext.json-2.0-RC3.jar"/>
+	<classpathentry kind="lib" path="lib/gwt/org.restlet.ext.xml-2.0-RC3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet-2.0-RC3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.gwt-2.0-RC3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.json-2.0-RC3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.servlet-2.0-RC3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/org.restlet.ext.xml-2.0-RC3.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
