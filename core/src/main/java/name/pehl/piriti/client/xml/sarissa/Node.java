@@ -1,7 +1,4 @@
-/**
- * Created on Sep 1, 2006
- */
-package name.pehl.piriti.client.sarissa;
+package name.pehl.piriti.client.xml.sarissa;
 
 import java.util.ArrayList;
 import java.util.List;

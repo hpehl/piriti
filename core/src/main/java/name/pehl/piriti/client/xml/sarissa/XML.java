@@ -1,7 +1,4 @@
-/**
- * Created on Aug 19, 2006
- */
-package name.pehl.piriti.client.sarissa;
+package name.pehl.piriti.client.xml.sarissa;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
@@ -55,7 +52,7 @@ public class XML
      * @return The DOM representation for the XML node
      */
     private static native Node parseImpl(String xmlString) /*-{
-        var domDoc = @name.pehl.piriti.client.sarissa.XML::domParser.parseFromString( xmlString, "text/xml" );
+        var domDoc = @name.pehl.piriti.client.xml.sarissa.XML::domParser.parseFromString( xmlString, "text/xml" );
 
         var error = $wnd.Sarissa.getParseErrorText( domDoc );
         if ( error != $wnd.Sarissa.PARSED_OK ) {
@@ -75,7 +72,7 @@ public class XML
         domDoc.setProperty("SelectionNamespaces", "xmlns:xsl='http://www.w3.org/1999/XSL/Transform'");
         domDoc.setProperty("SelectionLanguage", "XPath");
 
-        return @name.pehl.piriti.client.sarissa.Node::create(Lcom/google/gwt/core/client/JavaScriptObject;)( domDoc );
+        return @name.pehl.piriti.client.xml.sarissa.Node::create(Lcom/google/gwt/core/client/JavaScriptObject;)( domDoc );
     }-*/;
 
 

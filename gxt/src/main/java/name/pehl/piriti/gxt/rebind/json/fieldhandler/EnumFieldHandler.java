@@ -8,7 +8,7 @@ import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link FieldHandler} for enum types. This implementation reads the XML data
+ * {@link FieldHandler} for enum types. This implementation reads the JSON data
  * as string and tries to convert it using <code>enumType.valueOf(String)</code>
  * .
  * 

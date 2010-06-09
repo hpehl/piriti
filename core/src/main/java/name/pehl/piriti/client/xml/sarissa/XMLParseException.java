@@ -1,7 +1,4 @@
-/**
- * Created on Sep 4, 2006
- */
-package name.pehl.piriti.client.sarissa;
+package name.pehl.piriti.client.xml.sarissa;
 
 /**
  * An exception for XML parsing errors

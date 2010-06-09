@@ -1,7 +1,4 @@
-/**
- * Created on Sep 4, 2006
- */
-package name.pehl.piriti.client.sarissa;
+package name.pehl.piriti.client.xml.sarissa;
 
 import java.util.List;
 
@@ -41,7 +38,7 @@ class NodeImpl
      *         matches, then only the first node will be returned
      */
     public native JavaScriptObject getNode(String expr) /*-{
-        var node = this.@name.pehl.piriti.client.sarissa.NodeImpl::jsNode;
+        var node = this.@name.pehl.piriti.client.xml.sarissa.NodeImpl::jsNode;
 
         var n = node.selectSingleNode( expr );
 
@@ -66,13 +63,13 @@ class NodeImpl
         return;
         }
 
-        var node = this.@name.pehl.piriti.client.sarissa.NodeImpl::jsNode;
+        var node = this.@name.pehl.piriti.client.xml.sarissa.NodeImpl::jsNode;
 
         var nodeSet = node.selectNodes( expr );
 
         for ( var i = 0; i < nodeSet.length; i++ ) {
         var n = nodeSet[ i ];
-        nodeList.@java.util.List::add(Ljava/lang/Object;)( @name.pehl.piriti.client.sarissa.Node::create(Lcom/google/gwt/core/client/JavaScriptObject;)( n ) );
+        nodeList.@java.util.List::add(Ljava/lang/Object;)( @name.pehl.piriti.client.xml.sarissa.Node::create(Lcom/google/gwt/core/client/JavaScriptObject;)( n ) );
         }
     }-*/;
 
@@ -83,7 +80,7 @@ class NodeImpl
      * @return The node value
      */
     public native String getStringValue() /*-{
-        var node = this.@name.pehl.piriti.client.sarissa.NodeImpl::jsNode;
+        var node = this.@name.pehl.piriti.client.xml.sarissa.NodeImpl::jsNode;
 
         if ( !node ) {
         return null;
@@ -108,7 +105,7 @@ class NodeImpl
      * @return The value of the attribute, empty if not found
      */
     public native String getAttribute(String name) /*-{
-        var node = this.@name.pehl.piriti.client.sarissa.NodeImpl::jsNode;
+        var node = this.@name.pehl.piriti.client.xml.sarissa.NodeImpl::jsNode;
 
         var value = node.getAttribute( name );
 
@@ -127,7 +124,7 @@ class NodeImpl
      * @return The name
      */
     public native String getNodeName() /*-{
-        var node = this.@name.pehl.piriti.client.sarissa.NodeImpl::jsNode;
+        var node = this.@name.pehl.piriti.client.xml.sarissa.NodeImpl::jsNode;
 
         return node.nodeName;
     }-*/;
@@ -138,7 +135,7 @@ class NodeImpl
      * @see java.lang.Object#toString()
      */
     public native String toString() /*-{
-        var node = this.@name.pehl.piriti.client.sarissa.NodeImpl::jsNode;
+        var node = this.@name.pehl.piriti.client.xml.sarissa.NodeImpl::jsNode;
 
         return node.xml;
     }-*/;
@@ -151,11 +148,11 @@ class NodeImpl
      *            The list to populate
      */
     public native void getChildNodes(List<Node> nodeList) /*-{
-        var node = this.@name.pehl.piriti.client.sarissa.NodeImpl::jsNode;
+        var node = this.@name.pehl.piriti.client.xml.sarissa.NodeImpl::jsNode;
 
         for ( i = 0; i < node.childNodes.length; i++ ) {
         var n = node.childNodes[ i ];
-        nodeList.@java.util.List::add(Ljava/lang/Object;)( @name.pehl.piriti.client.sarissa.Node::create(Lcom/google/gwt/core/client/JavaScriptObject;)( n ) );
+        nodeList.@java.util.List::add(Ljava/lang/Object;)( @name.pehl.piriti.client.xml.sarissa.Node::create(Lcom/google/gwt/core/client/JavaScriptObject;)( n ) );
         }
     }-*/;
 }

@@ -24,8 +24,8 @@ public abstract class EmployeeTestCase extends GWTTestCase
         System.out.println("Running " + getClass().getName());
 
         // Register readers
-        new Department();
-        new Employee();
+//        new Department();
+//        new Employee();
     }
 
 

@@ -61,6 +61,9 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             // the field type is already an implementation
             collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
         }
+        // Initialize the parameter type to make sure the relevant XmlReader 
+        // is in the XmlRegistry (ugly - but it works)
+        writer.write("new %s();", parameterType.getQualifiedSourceName());
         writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, parameterType
                 .getQualifiedSourceName());
         writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);

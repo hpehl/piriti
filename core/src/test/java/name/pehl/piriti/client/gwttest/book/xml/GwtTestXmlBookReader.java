@@ -4,9 +4,9 @@ import java.util.List;
 
 import name.pehl.piriti.client.gwttest.book.Book;
 import name.pehl.piriti.client.gwttest.book.BookTestCase;
-import name.pehl.piriti.client.sarissa.Node;
-import name.pehl.piriti.client.sarissa.XML;
-import name.pehl.piriti.client.sarissa.XMLParseException;
+import name.pehl.piriti.client.xml.sarissa.Node;
+import name.pehl.piriti.client.xml.sarissa.XML;
+import name.pehl.piriti.client.xml.sarissa.XMLParseException;
 
 import com.google.gwt.xml.client.Document;
 

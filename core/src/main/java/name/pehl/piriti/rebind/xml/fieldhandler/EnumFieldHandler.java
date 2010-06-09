@@ -39,7 +39,17 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
                 .getQualifiedSourceName(), fieldContext.getValueAsStringVariable());
         writer.outdent();
         writer.write("}");
-        writer.write("catch (IllegalArgumentException e) {}");
+        writer.write("catch (IllegalArgumentException e1) {");
+        writer.indent();
+        writer.write("try {");
+        writer.indent();
+        writer.write("%s = %s.valueOf(%s.toUpperCase());", fieldContext.getValueVariable(), fieldContext.getEnumType()
+                .getQualifiedSourceName(), fieldContext.getValueAsStringVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.write("catch (IllegalArgumentException e2) {}");
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
     }
