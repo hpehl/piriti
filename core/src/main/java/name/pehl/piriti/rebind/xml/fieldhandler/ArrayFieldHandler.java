@@ -67,7 +67,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         {
             return;
         }
-        writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
+        writer.write("List<Element> %s = this.xpath.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
                 .getInputVariable(), fieldContext.getPath());
         writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();

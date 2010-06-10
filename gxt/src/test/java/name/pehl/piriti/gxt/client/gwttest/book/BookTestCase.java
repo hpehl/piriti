@@ -24,10 +24,6 @@ public abstract class BookTestCase extends GWTTestCase
     protected void gwtSetUp() throws Exception
     {
         System.out.println("Running " + getClass().getName());
-
-        // Register readers
-        new Book();
-        new Author();
     }
 
 

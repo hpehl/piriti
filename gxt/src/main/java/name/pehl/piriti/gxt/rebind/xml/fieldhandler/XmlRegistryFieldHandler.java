@@ -2,7 +2,7 @@ package name.pehl.piriti.gxt.rebind.xml.fieldhandler;
 
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
-import name.pehl.piriti.gxt.rebind.AssignmentHelper;
+import name.pehl.piriti.gxt.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
@@ -20,7 +20,7 @@ public class XmlRegistryFieldHandler extends name.pehl.piriti.rebind.xml.fieldha
     @Override
     public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        AssignmentHelper.writeAssignement(writer, fieldContext);
+        CodeGeneration.writeAssignement(writer, fieldContext);
     }
 
 

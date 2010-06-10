@@ -35,10 +35,6 @@ public abstract class FatGlobalItemTestCase extends GWTTestCase
     {
         System.out.println("Running " + getClass().getName());
 
-        // Register readers
-//        new FatGlobalItem();
-//        new SkinnyNestedItem();
-
         // Setup collection fixtures
         setOfIntegerObjectsFixture = new HashSet<Integer>();
         setOfIntegerObjectsFixture.add(0);

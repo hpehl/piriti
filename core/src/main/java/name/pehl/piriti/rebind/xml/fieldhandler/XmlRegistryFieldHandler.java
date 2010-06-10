@@ -33,11 +33,11 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
         JClassType classType = fieldContext.getClassOrInterfaceType();
         JField xmlReaderField = findReaderMember(fieldContext.getClassOrInterfaceType());
         // Cast because subclasses might use a subtype of getReaderClassname()
-        writer.write("%1$s<%2$s> %3$sReader = (%1$s)xmlRegistry.get(%2$s.class);", getReaderClassname(), classType
+        writer.write("%1$s<%2$s> %3$sReader = (%1$s)this.xmlRegistry.get(%2$s.class);", getReaderClassname(), classType
                 .getQualifiedSourceName(), fieldContext.getValueVariable());
         writer.write("if (%sReader != null) {", fieldContext.getValueVariable());
         writer.indent();
-        writer.write("Element nestedElement = XPathUtils.getElement(%s, \"%s\");", fieldContext.getInputVariable(),
+        writer.write("Element nestedElement = this.xpath.getElement(%s, \"%s\");", fieldContext.getInputVariable(),
                 fieldContext.getPath());
         writer.write("if (nestedElement != null) {");
         writer.indent();

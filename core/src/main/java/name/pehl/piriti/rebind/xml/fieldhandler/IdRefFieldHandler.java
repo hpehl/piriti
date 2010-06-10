@@ -78,7 +78,7 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         String fqXmlReader = fieldContext.getMetadata(FQ_XML_READER);
 
         String references = fieldContext.newVariableName("References");
-        writer.write("String[] %s = XPathUtils.getValues(%s, \"%s\");", references, fieldContext.getInputVariable(),
+        writer.write("String[] %s = this.xpath.getValues(%s, \"%s\");", references, fieldContext.getInputVariable(),
                 fieldContext.getPath());
         writer.write("if (%1$s != null && %1$s.length != 0) {", references);
         writer.indent();

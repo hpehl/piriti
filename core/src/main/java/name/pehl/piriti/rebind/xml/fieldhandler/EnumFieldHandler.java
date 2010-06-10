@@ -29,7 +29,7 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
+        writer.write("String %s = this.xpath.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
                 fieldContext.getInputVariable(), fieldContext.getPath());
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();

@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.fieldhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 
@@ -40,6 +41,9 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
                     getReaderClassname(), fieldContext.getFieldType().getQualifiedSourceName()));
             return false;
         }
+        // Initialize the parameter type to make sure the relevant reader
+        // is in the registry (ugly - but it works)
+        CodeGeneration.writeReaderInitialization(writer, fieldContext.getClassOrInterfaceType());
         return true;
     }
 

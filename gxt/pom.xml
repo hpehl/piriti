@@ -57,7 +57,7 @@
                 <configuration>
                     <gwtVersion>${gwt.version}</gwtVersion>
                     <module>name.pehl.piriti.gxt.PiritiGxtTest</module>
-                    <timeOut>300</timeOut>
+                    <timeOut>600</timeOut>
                 </configuration>
                 <executions>
                     <execution>

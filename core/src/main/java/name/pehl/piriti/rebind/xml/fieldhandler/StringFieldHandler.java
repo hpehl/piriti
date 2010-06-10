@@ -42,7 +42,7 @@ public class StringFieldHandler extends AbstractFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("%s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
+        writer.write("%s = this.xpath.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
                 .getInputVariable(), fieldContext.getPath());
     }
 }

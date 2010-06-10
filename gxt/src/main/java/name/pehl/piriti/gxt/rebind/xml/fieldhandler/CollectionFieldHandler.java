@@ -1,6 +1,6 @@
 package name.pehl.piriti.gxt.rebind.xml.fieldhandler;
 
-import name.pehl.piriti.gxt.rebind.AssignmentHelper;
+import name.pehl.piriti.gxt.rebind.CodeGeneration;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
@@ -29,7 +29,7 @@ public class CollectionFieldHandler extends name.pehl.piriti.rebind.xml.fieldhan
     @Override
     public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        AssignmentHelper.writeAssignement(writer, fieldContext);
+        CodeGeneration.writeAssignement(writer, fieldContext);
     }
 
 

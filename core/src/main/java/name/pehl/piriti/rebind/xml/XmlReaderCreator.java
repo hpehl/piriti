@@ -58,6 +58,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         super.createMemberVariables(writer);
         writer.write("private XmlRegistry xmlRegistry;");
+        writer.write("private XPath xpath;");
     }
 
 
@@ -67,6 +68,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         super.createConstructorBody(writer);
         writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
+        writer.write("this.xpath = XmlGinjector.INJECTOR.getXPath();");
     }
 
 
@@ -116,7 +118,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(XPathUtils.getElements(document));");
+        writer.write("return internalReadList(this.xpath.getElements(document));");
         writer.outdent();
         writer.write("}");
     }
@@ -127,7 +129,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("public List<%s> readList(Document document, String xpath) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(XPathUtils.getElements(document, xpath));");
+        writer.write("return internalReadList(this.xpath.getElements(document, xpath));");
         writer.outdent();
         writer.write("}");
     }
@@ -137,7 +139,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(XPathUtils.getElements(element));");
+        writer.write("return internalReadList(this.xpath.getElements(element));");
         writer.outdent();
         writer.write("}");
     }
@@ -148,7 +150,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("public List<%s> readList(Element element, String xpath) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(XPathUtils.getElements(element, xpath));");
+        writer.write("return internalReadList(this.xpath.getElements(element, xpath));");
         writer.outdent();
         writer.write("}");
     }
@@ -260,7 +262,6 @@ public class XmlReaderCreator extends AbstractReaderCreator
         else
         {
             writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-            writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
             handleIdsInNestedModels(writer);
             writer.write("return model;");
         }

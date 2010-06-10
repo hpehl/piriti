@@ -43,14 +43,15 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
 
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
                 .getHandlerRegistry(), fieldContext.getModelType(), parameterType, fieldContext.getFieldName(),
-                nestedXpath, fieldContext.getFormat(), AssignmentType.MAPPING, nestedElementVariable, nestedValueVariable);
+                nestedXpath, fieldContext.getFormat(), AssignmentType.MAPPING, nestedElementVariable,
+                nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
         }
 
-        writer.write("List<Element> %s = XPathUtils.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
+        writer.write("List<Element> %s = this.xpath.getElements(%s, \"%s\");", nestedElementsVariable, fieldContext
                 .getInputVariable(), fieldContext.getPath());
         writer.write("if (%1$s != null && !%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
@@ -61,9 +62,6 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             // the field type is already an implementation
             collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
         }
-        // Initialize the parameter type to make sure the relevant XmlReader 
-        // is in the XmlRegistry (ugly - but it works)
-        writer.write("new %s();", parameterType.getQualifiedSourceName());
         writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, parameterType
                 .getQualifiedSourceName());
         writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);

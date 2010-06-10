@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -70,6 +71,9 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
             skipField(writer, fieldContext, "Collection has no type argument");
             return false;
         }
+        // Initialize the parameter type to make sure the relevant reader
+        // is in the registry (ugly - but it works)
+        CodeGeneration.writeReaderInitialization(writer, parameterType);
         return true;
     }
 

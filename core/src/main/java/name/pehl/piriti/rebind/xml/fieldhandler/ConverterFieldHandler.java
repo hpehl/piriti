@@ -18,7 +18,7 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
 {
     /**
      * Reads the string value using
-     * <code>XPathUtils.getValue(&lt;element&gt;, &lt;xpath&gt;)</code>
+     * <code>XPath.getValue(&lt;element&gt;, &lt;xpath&gt;)</code>
      * 
      * @param writer
      * @param fieldContext
@@ -28,7 +28,7 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
     @Override
     protected void writeReadValueAsString(IndentedWriter writer, FieldContext fieldContext)
     {
-        writer.write("String %s = XPathUtils.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
+        writer.write("String %s = this.xpath.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
                 fieldContext.getInputVariable(), fieldContext.getPath());
     }
 }

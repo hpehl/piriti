@@ -26,4 +26,12 @@ public interface XmlGinjector extends Ginjector
      * @return
      */
     XmlRegistry getXmlRegistry();
+
+
+    /**
+     * Provides the implementation for the {@link XPath} implementation
+     * 
+     * @return
+     */
+    XPath getXPath();
 }

@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.xml;
 
+import name.pehl.piriti.client.xml.gwtxpath.GwtXPathImpl;
+
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
@@ -21,5 +23,6 @@ public class XmlModule extends AbstractGinModule
     protected void configure()
     {
         bind(XmlRegistry.class).to(XmlRegistryImpl.class).in(Singleton.class);
+        bind(XPath.class).to(GwtXPathImpl.class).in(Singleton.class);
     }
 }

@@ -1,6 +1,6 @@
 package name.pehl.piriti.gxt.rebind.json.fieldhandler;
 
-import name.pehl.piriti.gxt.rebind.AssignmentHelper;
+import name.pehl.piriti.gxt.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 
@@ -16,6 +16,6 @@ public class NumberFieldHandler extends name.pehl.piriti.rebind.json.fieldhandle
     @Override
     public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        AssignmentHelper.writeAssignement(writer, fieldContext);
+        CodeGeneration.writeAssignement(writer, fieldContext);
     }
 }

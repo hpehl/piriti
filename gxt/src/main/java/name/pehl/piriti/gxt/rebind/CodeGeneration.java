@@ -8,9 +8,9 @@ import name.pehl.piriti.rebind.IndentedWriter;
  * @version $Date$ $Revision: 236
  *          $
  */
-public final class AssignmentHelper
+public final class CodeGeneration
 {
-    private AssignmentHelper()
+    private CodeGeneration()
     {
     }
 
