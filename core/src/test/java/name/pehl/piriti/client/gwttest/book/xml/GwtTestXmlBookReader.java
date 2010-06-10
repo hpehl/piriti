@@ -4,9 +4,6 @@ import java.util.List;
 
 import name.pehl.piriti.client.gwttest.book.Book;
 import name.pehl.piriti.client.gwttest.book.BookTestCase;
-import name.pehl.piriti.client.xml.sarissa.Node;
-import name.pehl.piriti.client.xml.sarissa.XML;
-import name.pehl.piriti.client.xml.sarissa.XMLParseException;
 
 import com.google.gwt.xml.client.Document;
 
@@ -18,17 +15,6 @@ public class GwtTestXmlBookReader extends BookTestCase
 {
     public void testRead()
     {
-        try
-        {
-            Node document = XML.parse("<root><child>text</child></root>");
-            Node node = document.getNode("/root/child/text()");
-            String value = node.getStringValue();
-            System.out.println("Value: " + value);
-        }
-        catch (XMLParseException e)
-        {
-            System.out.println(e.getMessage());
-        }
         Document document = XmlBookFactory.createBook();
         Book book = Book.XML.read(document);
         assertBook(book, true, true);

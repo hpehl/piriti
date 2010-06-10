@@ -3,11 +3,12 @@ package name.pehl.piriti.client.xml.gwtxpath;
 import java.util.ArrayList;
 import java.util.List;
 
+import name.pehl.piriti.client.xml.AbstractXPathImpl;
+
 import com.google.gwt.xml.client.Attr;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.Node;
-import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.Text;
 import com.mouchel.gwt.xpath.client.XPath;
 
@@ -20,54 +21,8 @@ import com.mouchel.gwt.xpath.client.XPath;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
+public class GwtXPathImpl extends AbstractXPathImpl
 {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Element> getElements(Document document)
-    {
-        List<Element> elements = null;
-        if (document != null)
-        {
-            elements = getElements(document.getDocumentElement());
-        }
-        return elements;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Element> getElements(Element element)
-    {
-        List<Element> elements = null;
-        if (element != null)
-        {
-            NodeList childNodes = element.getChildNodes();
-            int length = childNodes.getLength();
-            if (length > 0)
-            {
-                elements = new ArrayList<Element>();
-                for (int i = 0; i < length; i++)
-                {
-                    Node item = childNodes.item(i);
-                    if (item instanceof Element)
-                    {
-                        elements.add((Element) item);
-                    }
-                }
-            }
-        }
-        return elements;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Element> getElements(Document document, String xpath)
     {
@@ -75,9 +30,6 @@ public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Element> getElements(Element element, String xpath)
     {
@@ -85,9 +37,6 @@ public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Element getElement(Document document, String xpath)
     {
@@ -95,9 +44,6 @@ public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Element getElement(Element element, String xpath)
     {
@@ -105,9 +51,6 @@ public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String[] getValues(Document document, String xpath)
     {
@@ -116,9 +59,6 @@ public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String[] getValues(Element element, String xpath)
     {
@@ -155,9 +95,6 @@ public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getValue(Document document, String xpath)
     {
@@ -166,9 +103,6 @@ public class GwtXPathImpl implements name.pehl.piriti.client.xml.XPath
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getValue(Element element, String xpath)
     {

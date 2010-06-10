@@ -15,9 +15,6 @@
         <exclude name="converter/*Test.java" />
     </source>
 
-    <script src="sarissa.js" />
-    <script src="sarissa_ieemu.js" />
-
     <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">
         <when-type-assignable class="name.pehl.piriti.client.xml.XmlReader" />
