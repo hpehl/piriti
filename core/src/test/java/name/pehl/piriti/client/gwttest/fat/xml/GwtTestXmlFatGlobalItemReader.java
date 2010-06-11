@@ -1,7 +1,5 @@
 package name.pehl.piriti.client.gwttest.fat.xml;
 
-import java.util.List;
-
 import name.pehl.piriti.client.gwttest.fat.FatGlobalItem;
 import name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase;
 
@@ -18,30 +16,5 @@ public class GwtTestXmlFatGlobalItemReader extends FatGlobalItemTestCase
         Document document = XmlFatGlobalItemFactory.createFatGlobalItem();
         FatGlobalItem model = FatGlobalItem.XML.read(document);
         assertFatGlobalItem(model, true);
-    }
-
-
-    public void testReadList()
-    {
-        Document document = XmlFatGlobalItemFactory.createFatGlobalItems();
-        List<FatGlobalItem> items = FatGlobalItem.XML.readList(document);
-        assertFatGlobalItems(items, true);
-    }
-
-
-    public void testReadListWithXpath()
-    {
-        Document document = XmlFatGlobalItemFactory.createFatGlobalItems();
-        List<FatGlobalItem> items = FatGlobalItem.XML.readList(document, "//fatGlobalItem");
-        assertFatGlobalItems(items, true);
-    }
-
-
-    public void testReadListWithWrongXpath()
-    {
-        Document document = XmlFatGlobalItemFactory.createFatGlobalItems();
-        List<FatGlobalItem> items = FatGlobalItem.XML.readList(document, "//moo");
-        assertNotNull(items);
-        assertTrue(items.isEmpty());
     }
 }
