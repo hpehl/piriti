@@ -95,7 +95,7 @@
     <properties>
         <gwt.version>2.0.3</gwt.version>
         <gxt.version>2.1.1</gxt.version>
-        <restlet.version>2.0-RC3</restlet.version>
+        <restlet.version>2.0-RC4</restlet.version>
         <junit.version>4.7</junit.version>
         <easymock.version>2.4</easymock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -206,24 +206,6 @@
                 <artifactId>org.restlet.ext.xml</artifactId>
                 <version>${restlet.version}</version>
                 <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.restlet.jse</groupId>
-                <artifactId>org.restlet</artifactId>
-                <version>${restlet.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.restlet.jse</groupId>
-                <artifactId>org.restlet.ext.json</artifactId>
-                <version>${restlet.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.restlet.jse</groupId>
-                <artifactId>org.restlet.ext.xml</artifactId>
-                <version>${restlet.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <!-- Test -->
