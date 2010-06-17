@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
 import com.google.inject.internal.Nullable;
 
 /**
@@ -50,10 +49,6 @@ public interface JsonReader<T>
      * annotated fields in T. The JSON string must be a valid JSON object with
      * <i>one</i> key/value pair. The value must be a JSON array which is
      * converted to the list of Ts.
-     * <p>
-     * Please note that the JSON string is parsed using
-     * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
-     * function. So please *do not* pass an untrusted string into this method.
      * 
      * @param jsonString
      *            The JSON string used as input. May be <code>null</code>.
@@ -68,10 +63,6 @@ public interface JsonReader<T>
      * annotated fields in T. The JSON string must be a valid JSON object with
      * key/value pairs. The array is taken from the specified key and is
      * converted to the list of Ts.
-     * <p>
-     * Please note that the JSON string is parsed using
-     * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
-     * function. So please *do not* pass an untrusted string into this method.
      * 
      * @param jsonString
      *            The JSON string used as input. May be <code>null</code>.
@@ -123,10 +114,6 @@ public interface JsonReader<T>
      * Convert the specified JSON string to an instance of T according to the
      * annotated fields in T. The JSON string must be a valid JSON object with
      * key/value pairs.
-     * <p>
-     * Please note that the JSON string is parsed using
-     * {@link JSONParser#parse(String)} which in turn uses the JavaScript eval()
-     * function. So please *do not* pass an untrusted string into this method.
      * 
      * @param jsonString
      *            The JSON string used as input. May be <code>null</code>.

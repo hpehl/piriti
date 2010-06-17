@@ -1,4 +1,4 @@
-package name.pehl.piriti.client.xml.gwtxpath;
+package name.pehl.piriti.client.xml.internal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import com.mouchel.gwt.xpath.client.XPath;
  * {@link name.pehl.piriti.client.xml.XPath} implementation using <a
  * href="http://code.google.com/p/gwtxpath/">gwtxpath</a>.
  * <p>
- * Does <b>not</b> support namespaces!
+ * Does <b>not</b> support namespaces in IE!
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$

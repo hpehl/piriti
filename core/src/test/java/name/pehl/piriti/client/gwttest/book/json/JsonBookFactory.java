@@ -23,7 +23,9 @@ public final class JsonBookFactory implements BookFactory
     {
         StringBuilder json = new StringBuilder();
         json.append("{");
+        json.append("\"");
         json.append(BOOKS);
+        json.append("\"");
         json.append(": [");
         for (int i = 0; i < BOOKS_COUNT; i++)
         {
@@ -65,7 +67,7 @@ public final class JsonBookFactory implements BookFactory
         {
             appendKeyValue(json, "author", createAuthor(), false, true);
         }
-        json.append("reviews: [");
+        json.append("\"reviews\": [");
         for (int i = 0; i < REVIEWS.length; i++)
         {
             appendValue(json, REVIEWS[i], true, (i < REVIEWS.length - 1));
@@ -73,7 +75,7 @@ public final class JsonBookFactory implements BookFactory
         json.append("]");
         if (withRelated)
         {
-            json.append(", related: [");
+            json.append(", \"related\": [");
             for (int i = 0; i < BOOKS_COUNT; i++)
             {
                 appendValue(json, createBook(true, false), false, (i < BOOKS_COUNT - 1));

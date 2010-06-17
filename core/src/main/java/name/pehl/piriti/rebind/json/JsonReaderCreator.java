@@ -52,6 +52,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
     {
         super.createMemberVariables(writer);
         writer.write("private JsonRegistry jsonRegistry;");
+        writer.write("private JsonParser jsonParser;");
     }
 
 
@@ -61,6 +62,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
         super.createConstructorBody(writer);
         writer.write("this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();");
         writer.write("this.jsonRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
+        writer.write("this.jsonParser = JsonGinjector.INJECTOR.getJsonParser();");
     }
 
 
@@ -104,7 +106,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONValue jsonValue = JSONParser.parse(jsonString);");
+        writer.write("JSONValue jsonValue = this.jsonParser.parse(jsonString);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("JSONObject jsonObject = jsonValue.isObject();");
@@ -146,7 +148,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONValue jsonValue = JSONParser.parse(jsonString);");
+        writer.write("JSONValue jsonValue = this.jsonParser.parse(jsonString);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("JSONObject jsonObject = jsonValue.isObject();");
@@ -279,7 +281,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONValue jsonValue = JSONParser.parse(jsonString);");
+        writer.write("JSONValue jsonValue = this.jsonParser.parse(jsonString);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("JSONObject jsonObject = jsonValue.isObject();");

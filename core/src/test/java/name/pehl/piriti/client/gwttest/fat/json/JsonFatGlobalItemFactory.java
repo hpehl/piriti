@@ -33,7 +33,9 @@ public final class JsonFatGlobalItemFactory
     {
         StringBuilder json = new StringBuilder();
         json.append("{");
+        json.append("\"");
         json.append(ITEMS);
+        json.append("\"");
         json.append(": [");
         for (int i = 0; i < SIZE; i++)
         {
@@ -74,11 +76,11 @@ public final class JsonFatGlobalItemFactory
         // Nested objects
         if (withNestedFatGlobalItems)
         {
-            json.append("fatGlobalItem: ");
+            json.append("\"fatGlobalItem\": ");
             json.append(createFatGlobalItem(false));
             json.append(", ");
         }
-        json.append("skinnyNestedItem: {");
+        json.append("\"skinnyNestedItem\": {");
         appendSimpleObjects(json);
         json.append("}, ");
 
@@ -126,7 +128,7 @@ public final class JsonFatGlobalItemFactory
 
     private static void appendFatGlobalItmes(StringBuilder json, String key, int size, boolean goon)
     {
-        json.append(key).append(": [");
+        json.append("\"").append(key).append("\"").append(": [");
         for (int i = 0; i < size; i++)
         {
             json.append(createFatGlobalItem(false));
@@ -145,7 +147,7 @@ public final class JsonFatGlobalItemFactory
 
     private static void appendSkinnyNestedItems(StringBuilder json, String key, int size, boolean goon)
     {
-        json.append(key).append(": [");
+        json.append("\"").append(key).append("\"").append(": [");
         for (int i = 0; i < size; i++)
         {
             json.append("{");

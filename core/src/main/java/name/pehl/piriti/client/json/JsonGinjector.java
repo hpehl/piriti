@@ -26,4 +26,12 @@ public interface JsonGinjector extends Ginjector
      * @return
      */
     JsonRegistry getJsonRegistry();
+
+
+    /**
+     * Provides the implementation for the {@link JsonParser} implementation
+     * 
+     * @return
+     */
+    JsonParser getJsonParser();
 }

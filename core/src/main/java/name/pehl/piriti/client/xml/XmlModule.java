@@ -1,6 +1,6 @@
 package name.pehl.piriti.client.xml;
 
-import name.pehl.piriti.client.xml.gwtxpath.GwtXPathImpl;
+import name.pehl.piriti.client.xml.internal.GwtXPathImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;

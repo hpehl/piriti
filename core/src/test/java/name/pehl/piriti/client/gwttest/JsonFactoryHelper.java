@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public final class JsonFactoryHelper
 {
@@ -16,7 +16,7 @@ public final class JsonFactoryHelper
 
     public static void appendKeyValue(StringBuilder json, String key, String value, boolean quote, boolean goon)
     {
-        json.append(key).append(": ");
+        json.append("\"").append(key).append("\"").append(": ");
         if (quote)
         {
             json.append("\"");
@@ -36,7 +36,7 @@ public final class JsonFactoryHelper
     public static void appendKeyValueArray(StringBuilder json, String key, boolean quote, boolean goon,
             String... values)
     {
-        json.append(key).append(": [");
+        json.append("\"").append(key).append("\"").append(": [");
         Iterator<String> iter = Arrays.asList(values).iterator();
         while (iter.hasNext())
         {
