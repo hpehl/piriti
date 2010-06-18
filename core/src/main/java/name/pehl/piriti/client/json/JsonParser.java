@@ -1,14 +1,15 @@
 package name.pehl.piriti.client.json;
 
 import com.google.gwt.json.client.JSONException;
-import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.json.client.JSONObject;
 import com.google.inject.internal.Nullable;
 
 /**
  * Interface for parsing JSON.
  * 
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 531
+ *          $
  */
 public interface JsonParser
 {
@@ -18,5 +19,5 @@ public interface JsonParser
      * @param text
      * @return
      */
-    public JSONValue parse(@Nullable String text) throws JSONException;
+    public JSONObject parse(@Nullable String text) throws JSONException;
 }

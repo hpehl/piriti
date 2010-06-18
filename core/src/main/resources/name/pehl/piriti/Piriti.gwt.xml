@@ -16,6 +16,8 @@
         <exclude name="**/*Test.java" />
     </source>
 
+    <script src="json2.js" />
+
     <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">
         <when-type-assignable class="name.pehl.piriti.client.xml.XmlReader" />
