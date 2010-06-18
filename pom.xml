@@ -321,6 +321,10 @@ encoding/<project>=${project.build.sourceEncoding}]]>
                             </content>
                         </file>
                     </additionalConfig>
+                    <excludes>
+                        <exclude>com.google.gwt/gwt-user</exclude>
+                        <exclude>com.google.gwt/gwt-dev</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
