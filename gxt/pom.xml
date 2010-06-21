@@ -68,6 +68,7 @@
                     <gwtVersion>${gwt.version}</gwtVersion>
                     <module>name.pehl.piriti.gxt.PiritiGxtTest</module>
                     <includes>name/pehl/piriti/gxt/PiritiGxtGwtTestSuite.java</includes>
+                    <timeOut>300</timeOut>
                 </configuration>
                 <executions>
                     <execution>
