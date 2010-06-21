@@ -3,7 +3,7 @@ package name.pehl.piriti.client.gwttest.employee.xml;
 import java.util.List;
 
 import name.pehl.piriti.client.gwttest.employee.Employee;
-import name.pehl.piriti.client.gwttest.employee.EmployeeTestCase;
+import name.pehl.piriti.client.gwttest.employee.AbstractEmployeeReaderTest;
 
 import com.google.gwt.xml.client.Document;
 
@@ -11,7 +11,7 @@ import com.google.gwt.xml.client.Document;
  * @author $Author$
  * @version $Revision$
  */
-public class GwtTestXmlEmployeeReader extends EmployeeTestCase
+public class XmlEmployeeReaderTest extends AbstractEmployeeReaderTest
 {
     public void testRead()
     {

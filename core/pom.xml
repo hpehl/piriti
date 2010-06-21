@@ -50,11 +50,22 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>name/pehl/piriti/PiritiCoreGwtTestSuite.java</exclude>
+                        <exclude>name/pehl/piriti/client/gwttest/**/**Test.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
                 <configuration>
                     <gwtVersion>${gwt.version}</gwtVersion>
                     <module>name.pehl.piriti.PiritiTest</module>
+                    <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
                     <timeOut>600</timeOut>
                 </configuration>
                 <executions>

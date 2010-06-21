@@ -9,7 +9,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class BookTestCase extends GWTTestCase
+public abstract class AbstractBookReaderTest extends GWTTestCase
 {
     @Override
     public String getModuleName()

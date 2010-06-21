@@ -1,7 +1,7 @@
 package name.pehl.piriti.client.gwttest.fat.json;
 
 import static name.pehl.piriti.client.gwttest.JsonFactoryHelper.*;
-import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase.*;
+import static name.pehl.piriti.client.gwttest.fat.AbstractFatGlobalItemReaderTest.*;
 
 import java.util.Date;
 

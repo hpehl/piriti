@@ -3,13 +3,13 @@ package name.pehl.piriti.client.gwttest.fat.json;
 import java.util.List;
 
 import name.pehl.piriti.client.gwttest.fat.FatGlobalItem;
-import name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase;
+import name.pehl.piriti.client.gwttest.fat.AbstractFatGlobalItemReaderTest;
 
 /**
  * @author $Author$
  * @version $Revision$
  */
-public class GwtTestJsonFatGlobalItemReader extends FatGlobalItemTestCase
+public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
 {
     public void testRead()
     {

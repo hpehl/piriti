@@ -1,7 +1,7 @@
 package name.pehl.piriti.client.gwttest.fat.xml;
 
 import static name.pehl.piriti.client.gwttest.XmlFactoryHelper.*;
-import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemTestCase.*;
+import static name.pehl.piriti.client.gwttest.fat.AbstractFatGlobalItemReaderTest.*;
 import name.pehl.piriti.client.converter.DateConverter;
 import name.pehl.piriti.client.gwttest.fat.Amount;
 

@@ -3,7 +3,7 @@ package name.pehl.piriti.client.gwttest.book.xml;
 import java.util.List;
 
 import name.pehl.piriti.client.gwttest.book.Book;
-import name.pehl.piriti.client.gwttest.book.BookTestCase;
+import name.pehl.piriti.client.gwttest.book.AbstractBookReaderTest;
 
 import com.google.gwt.xml.client.Document;
 
@@ -11,7 +11,7 @@ import com.google.gwt.xml.client.Document;
  * @author $Author: harald.pehl $
  * @version $Revision: 133 $
  */
-public class GwtTestXmlBookReader extends BookTestCase
+public class XmlBookReaderTest extends AbstractBookReaderTest
 {
     public void testRead()
     {

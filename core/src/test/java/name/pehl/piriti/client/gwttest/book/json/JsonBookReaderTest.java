@@ -4,13 +4,13 @@ import java.util.List;
 
 import name.pehl.piriti.client.gwttest.book.Book;
 import name.pehl.piriti.client.gwttest.book.BookFactory;
-import name.pehl.piriti.client.gwttest.book.BookTestCase;
+import name.pehl.piriti.client.gwttest.book.AbstractBookReaderTest;
 
 /**
  * @author $Author: harald.pehl $
  * @version $Revision: 131 $
  */
-public class GwtTestJsonBookReader extends BookTestCase
+public class JsonBookReaderTest extends AbstractBookReaderTest
 {
     public void testRead()
     {
