@@ -52,12 +52,22 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>name/pehl/piriti/gxt/PiritiGxtGwtTestSuite.java</exclude>
+                        <exclude>name/pehl/piriti/gxt/client/gwttest/**/**Test.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
                 <configuration>
                     <gwtVersion>${gwt.version}</gwtVersion>
                     <module>name.pehl.piriti.gxt.PiritiGxtTest</module>
-                    <timeOut>600</timeOut>
+                    <includes>name/pehl/piriti/gxt/PiritiGxtGwtTestSuite.java</includes>
                 </configuration>
                 <executions>
                     <execution>
