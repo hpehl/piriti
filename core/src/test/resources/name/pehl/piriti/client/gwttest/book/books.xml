@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <book>
+        <isbn>978-0345417954</isbn>
+        <pages>432</pages>
+        <title>The Hotel New Hampshire</title>
+        <author>
+            <firstname>John</firstname>
+            <surname>Irving</surname>
+            <bestseller>
+                <book>
+                    <isbn>978-0345417954</isbn>
+                    <pages>432</pages>
+                    <title>The Hotel New Hampshire</title>
+                    <reviews>
+                        <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                        <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                        <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                    </reviews>
+                </book>
+            </bestseller>
+        </author>
+        <reviews>
+            <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+            <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+            <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+        </reviews>
+        <related>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+        </related>
+    </book>
+    <book>
+        <isbn>978-0345417954</isbn>
+        <pages>432</pages>
+        <title>The Hotel New Hampshire</title>
+        <author>
+            <firstname>John</firstname>
+            <surname>Irving</surname>
+            <bestseller>
+                <book>
+                    <isbn>978-0345417954</isbn>
+                    <pages>432</pages>
+                    <title>The Hotel New Hampshire</title>
+                    <reviews>
+                        <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                        <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                        <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                    </reviews>
+                </book>
+            </bestseller>
+        </author>
+        <reviews>
+            <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+            <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+            <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+        </reviews>
+        <related>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+        </related>
+    </book>
+    <book>
+        <isbn>978-0345417954</isbn>
+        <pages>432</pages>
+        <title>The Hotel New Hampshire</title>
+        <author>
+            <firstname>John</firstname>
+            <surname>Irving</surname>
+            <bestseller>
+                <book>
+                    <isbn>978-0345417954</isbn>
+                    <pages>432</pages>
+                    <title>The Hotel New Hampshire</title>
+                    <reviews>
+                        <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                        <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                        <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                    </reviews>
+                </book>
+            </bestseller>
+        </author>
+        <reviews>
+            <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+            <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+            <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+        </reviews>
+        <related>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+            <book>
+                <isbn>978-0345417954</isbn>
+                <pages>432</pages>
+                <title>The Hotel New Hampshire</title>
+                <author>
+                    <firstname>John</firstname>
+                    <surname>Irving</surname>
+                    <bestseller>
+                        <book>
+                            <isbn>978-0345417954</isbn>
+                            <pages>432</pages>
+                            <title>The Hotel New Hampshire</title>
+                            <reviews>
+                                <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                                <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                                <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                            </reviews>
+                        </book>
+                    </bestseller>
+                </author>
+                <reviews>
+                    <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+                    <review>Rejoice! John Irving has written another book according to your world. You must read this book.</review>
+                    <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+                </reviews>
+            </book>
+        </related>
+    </book>
+</books>
