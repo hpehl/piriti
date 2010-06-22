@@ -176,8 +176,8 @@ public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
         assertEquals('b', ((Character) model.get("characterObject")).charValue());
         assertEquals(MY_BIRTHDAY, model.get("date"));
         assertEquals(Amount.THREE, model.get("amount"));
-        assertEquals(6.7, ((Double) model.get("doubleObject")).doubleValue());
-        assertEquals(10.11f, ((Float) model.get("floatObject")).floatValue());
+        assertEquals(6.7, ((Double) model.get("doubleObject")).doubleValue(), .05);
+        assertEquals(10.11f, ((Float) model.get("floatObject")).floatValue(), .05f);
         assertEquals(13, ((Integer) model.get("integerObject")).intValue());
         assertEquals(15l, ((Long) model.get("longObject")).longValue());
         assertEquals(17, ((Short) model.get("shortObject")).shortValue());
