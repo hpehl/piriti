@@ -9,7 +9,7 @@
     <foo:player vip="true" foo:gender="male" bar:age="42">
         <foo:firstname>Homer</foo:firstname>
         <foo:surname>Simpson</foo:surname>
-        <bar:address type="home">24, evergreen terrace, springfield</bar:address>
+        <bar:address>24, evergreen terrace, springfield</bar:address>
     </foo:player>
 
     <numbers>
