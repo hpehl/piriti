@@ -1,8 +1,8 @@
 package name.pehl.piriti.gxt.client.gwttest.book;
 
-import java.util.List;
+import static name.pehl.piriti.client.gwttest.book.BookResources.*;
 
-import name.pehl.piriti.client.gwttest.book.BookFactory;
+import java.util.List;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
@@ -30,7 +30,7 @@ public abstract class AbstractBookReaderTest extends GWTTestCase
     protected void assertBooks(List<Book> books, boolean withAuthor, boolean withRelated)
     {
         assertNotNull(books);
-        assertEquals(BookFactory.BOOKS_COUNT, books.size());
+        assertEquals(BOOKS_COUNT, books.size());
         for (Book book : books)
         {
             assertBook(book, withAuthor, withRelated);
@@ -41,26 +41,26 @@ public abstract class AbstractBookReaderTest extends GWTTestCase
     protected void assertBook(Book book, boolean withAuthor, boolean withRelated)
     {
         assertNotNull(book);
-        assertEquals(BookFactory.ISBN, book.get("isbn"));
-        assertEquals(BookFactory.PAGES, book.get("pages"));
-        assertEquals(BookFactory.TITLE, book.get("title"));
+        assertEquals(ISBN, book.get("isbn"));
+        assertEquals(PAGES, book.get("pages"));
+        assertEquals(TITLE, book.get("title"));
         if (withAuthor)
         {
             Author author = book.get("author");
-            assertEquals(BookFactory.AUTHOR_FIRSTNAME, author.get("firstname"));
-            assertEquals(BookFactory.AUTHOR_SURNAME, author.get("surname"));
+            assertEquals(AUTHOR_FIRSTNAME, author.get("firstname"));
+            assertEquals(AUTHOR_SURNAME, author.get("surname"));
             assertBook((Book) author.get("bestseller"), false, false);
         }
         List<String> reviews = book.get("reviews");
-        assertEquals(BookFactory.REVIEWS.length, reviews.size());
-        for (int index = 0; index < BookFactory.REVIEWS.length; index++)
+        assertEquals(REVIEWS.length, reviews.size());
+        for (int index = 0; index < REVIEWS.length; index++)
         {
-            assertEquals(BookFactory.REVIEWS[index], reviews.get(index));
+            assertEquals(REVIEWS[index], reviews.get(index));
         }
         if (withRelated)
         {
             List<Book> related = book.get("related");
-            assertEquals(BookFactory.BOOKS_COUNT, related.size());
+            assertEquals(BOOKS_COUNT, related.size());
             for (Book relatedEntry : related)
             {
                 assertBook(relatedEntry, true, false);

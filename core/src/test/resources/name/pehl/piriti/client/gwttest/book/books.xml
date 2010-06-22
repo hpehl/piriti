@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Please make sure that there are no line line breaks
+    in the elements. Otherwise the asserts will fail!
+ -->
 <books>
     <book>
         <isbn>978-0345417954</isbn>
@@ -106,6 +110,7 @@
             </book>
         </related>
     </book>
+    
     <book>
         <isbn>978-0345417954</isbn>
         <pages>432</pages>
@@ -212,6 +217,7 @@
             </book>
         </related>
     </book>
+    
     <book>
         <isbn>978-0345417954</isbn>
         <pages>432</pages>

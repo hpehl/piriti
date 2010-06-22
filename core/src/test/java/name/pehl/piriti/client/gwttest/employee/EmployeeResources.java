@@ -1,11 +1,18 @@
 package name.pehl.piriti.client.gwttest.employee;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ClientBundle;
+import com.google.gwt.resources.client.TextResource;
+
 /**
- * @author $LastChangedBy$
- * @version $LastChangedRevision$
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  */
-public interface EmployeeFactory
+
+public interface EmployeeResources extends ClientBundle
 {
+    // -------------------------------------------------------------- constants
+
     String BOSS_ID = "boss";
     String BOSS_NAME = "Big Boss";
     String SELLER_ID = "seller";
@@ -23,4 +30,12 @@ public interface EmployeeFactory
     String SALES_DEPARTMENT_NAME = "Sales";
     String IT_DEPARTMENT_ID = "it";
     String IT_DEPARTMENT_NAME = "IT";
+
+    // ------------------------------------------------------- deferred binding
+
+    EmployeeResources INSTANCE = GWT.create(EmployeeResources.class);
+
+
+    @Source("employees.xml")
+    public TextResource employeesXml();
 }

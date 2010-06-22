@@ -1,8 +1,9 @@
 package name.pehl.piriti.client.gwttest.fat;
 
+import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.*;
+
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,10 +16,6 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
 {
-    public static final int SIZE = 3;
-    public static final String ITEMS = "items";
-    public static final Date MY_BIRTHDAY = new Date(115813353000l);
-
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;
 
@@ -70,10 +67,10 @@ public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
         assertEquals('b', fgi.characterObject.charValue());
         assertEquals(MY_BIRTHDAY, fgi.date);
         assertEquals(Amount.THREE, fgi.amount);
-        assertEquals(4.5, fgi.doublePrimitive);
-        assertEquals(6.7, fgi.doubleObject.doubleValue());
-        assertEquals(8.9f, fgi.floatPrimitive);
-        assertEquals(10.11f, fgi.floatObject.floatValue());
+        assertEquals(4.5, fgi.doublePrimitive, .05);
+        assertEquals(6.7, fgi.doubleObject.doubleValue(), .05);
+        assertEquals(8.9f, fgi.floatPrimitive, .05f);
+        assertEquals(10.11f, fgi.floatObject.floatValue(), .05f);
         assertEquals(12, fgi.integerPrimitive);
         assertEquals(13, fgi.integerObject.intValue());
         assertEquals(14l, fgi.longPrimitive);
@@ -209,10 +206,10 @@ public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
         assertEquals('b', sni.characterObject.charValue());
         assertEquals(MY_BIRTHDAY, sni.date);
         assertEquals(Amount.THREE, sni.amount);
-        assertEquals(4.5, sni.doublePrimitive);
-        assertEquals(6.7, sni.doubleObject.doubleValue());
-        assertEquals(8.9f, sni.floatPrimitive);
-        assertEquals(10.11f, sni.floatObject.floatValue());
+        assertEquals(4.5, sni.doublePrimitive, .05);
+        assertEquals(6.7, sni.doubleObject.doubleValue(), .05);
+        assertEquals(8.9f, sni.floatPrimitive, .05f);
+        assertEquals(10.11f, sni.floatObject.floatValue(), .05f);
         assertEquals(12, sni.integerPrimitive);
         assertEquals(13, sni.integerObject.intValue());
         assertEquals(14l, sni.longPrimitive);

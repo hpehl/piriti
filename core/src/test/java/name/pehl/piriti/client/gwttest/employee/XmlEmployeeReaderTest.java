@@ -1,11 +1,9 @@
-package name.pehl.piriti.client.gwttest.employee.xml;
+package name.pehl.piriti.client.gwttest.employee;
 
 import java.util.List;
 
-import name.pehl.piriti.client.gwttest.employee.Employee;
-import name.pehl.piriti.client.gwttest.employee.AbstractEmployeeReaderTest;
-
 import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.XMLParser;
 
 /**
  * @author $Author$
@@ -15,7 +13,8 @@ public class XmlEmployeeReaderTest extends AbstractEmployeeReaderTest
 {
     public void testRead()
     {
-        Document document = XmlEmployeeFactory.createEmployees();
+        String xml = EmployeeResources.INSTANCE.employeesXml().getText();
+        Document document = XMLParser.parse(xml);
         List<Employee> employees = Employee.XML.readList(document);
         assertEmployees(employees);
     }

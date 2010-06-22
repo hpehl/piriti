@@ -1,22 +1,20 @@
-package name.pehl.piriti.gxt.client.gwttest.book.xml;
+package name.pehl.piriti.client.gwttest.book;
 
 import java.util.List;
 
-import name.pehl.piriti.client.gwttest.book.xml.XmlBookFactory;
-import name.pehl.piriti.gxt.client.gwttest.book.Book;
-import name.pehl.piriti.gxt.client.gwttest.book.AbstractBookReaderTest;
-
 import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.XMLParser;
 
 /**
- * @author $Author$
- * @version $Revision$
+ * @author $Author: harald.pehl $
+ * @version $Revision: 133 $
  */
 public class XmlBookReaderTest extends AbstractBookReaderTest
 {
     public void testRead()
     {
-        Document document = XmlBookFactory.createBook();
+        String xml = BookResources.INSTANCE.bookXml().getText();
+        Document document = XMLParser.parse(xml);
         Book book = Book.XML.read(document);
         assertBook(book, true, true);
     }
@@ -24,7 +22,8 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
 
     public void testReadList()
     {
-        Document document = XmlBookFactory.createBooks();
+        String xml = BookResources.INSTANCE.booksXml().getText();
+        Document document = XMLParser.parse(xml);
         List<Book> books = Book.XML.readList(document);
         assertBooks(books, true, true);
     }
@@ -32,7 +31,8 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
 
     public void testReadListWithXpath()
     {
-        Document document = XmlBookFactory.createBooks();
+        String xml = BookResources.INSTANCE.booksXml().getText();
+        Document document = XMLParser.parse(xml);
         List<Book> books = Book.XML.readList(document, "/books/book");
         assertBooks(books, true, true);
     }
@@ -40,7 +40,8 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
 
     public void testReadListWithWrongXpath()
     {
-        Document document = XmlBookFactory.createBooks();
+        String xml = BookResources.INSTANCE.booksXml().getText();
+        Document document = XMLParser.parse(xml);
         List<Book> books = Book.XML.readList(document, "//moo");
         assertNotNull(books);
         assertTrue(books.isEmpty());

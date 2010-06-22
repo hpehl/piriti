@@ -1,10 +1,10 @@
-package name.pehl.piriti.gxt.client.gwttest.fat.json;
+package name.pehl.piriti.gxt.client.gwttest.fat;
+
+import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.*;
 
 import java.util.List;
 
-import name.pehl.piriti.client.gwttest.fat.json.JsonFatGlobalItemFactory;
-import name.pehl.piriti.gxt.client.gwttest.fat.FatGlobalItem;
-import name.pehl.piriti.gxt.client.gwttest.fat.AbstractFatGlobalItemReaderTest;
+import name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources;
 
 /**
  * @author $Author: harald.pehl $
@@ -14,7 +14,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
 {
     public void testRead()
     {
-        String json = JsonFatGlobalItemFactory.createFatGlobalItem();
+        String json = FatGlobalItemResources.INSTANCE.fatGlobalItemJson().getText();
         FatGlobalItem fgi = FatGlobalItem.JSON.read(json);
         assertFatGlobalItem(fgi, true);
     }
@@ -22,7 +22,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
 
     public void testReadList()
     {
-        String json = JsonFatGlobalItemFactory.createFatGlobalItems();
+        String json = FatGlobalItemResources.INSTANCE.fatGlobalItemsJson().getText();
         List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json);
         assertFatGlobalItems(items, true);
     }
@@ -30,7 +30,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
 
     public void testReadListWithKey()
     {
-        String json = JsonFatGlobalItemFactory.createFatGlobalItems();
+        String json = FatGlobalItemResources.INSTANCE.fatGlobalItemsJson().getText();
         List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json, ITEMS);
         assertFatGlobalItems(items, true);
     }
@@ -38,7 +38,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
 
     public void testReadListWithWrongKey()
     {
-        String json = JsonFatGlobalItemFactory.createFatGlobalItems();
+        String json = FatGlobalItemResources.INSTANCE.fatGlobalItemsJson().getText();
         List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json, "moo");
         assertNotNull(items);
         assertTrue(items.isEmpty());

@@ -1,8 +1,9 @@
 package name.pehl.piriti.gxt.client.gwttest.fat;
 
+import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.*;
+
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,10 +20,6 @@ import com.google.gwt.junit.client.GWTTestCase;
  */
 public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
 {
-    public static final int SIZE = 3;
-    public static final String ITEMS = "items";
-    public static final Date MY_BIRTHDAY = new Date(115813353000l);
-
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;
 

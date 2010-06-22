@@ -2,10 +2,10 @@ package name.pehl.piriti.gxt;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.gxt.client.gwttest.book.json.JsonBookReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.book.xml.XmlBookReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.fat.json.JsonFatGlobalItemReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.fat.xml.XmlFatGlobalItemReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.book.JsonBookReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.book.XmlBookReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.fat.JsonFatGlobalItemReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.fat.XmlFatGlobalItemReaderTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 

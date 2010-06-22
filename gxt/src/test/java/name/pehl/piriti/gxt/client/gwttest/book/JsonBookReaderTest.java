@@ -1,11 +1,10 @@
-package name.pehl.piriti.gxt.client.gwttest.book.json;
+package name.pehl.piriti.gxt.client.gwttest.book;
+
+import static name.pehl.piriti.client.gwttest.book.BookResources.*;
 
 import java.util.List;
 
-import name.pehl.piriti.client.gwttest.book.BookFactory;
-import name.pehl.piriti.client.gwttest.book.json.JsonBookFactory;
-import name.pehl.piriti.gxt.client.gwttest.book.Book;
-import name.pehl.piriti.gxt.client.gwttest.book.AbstractBookReaderTest;
+import name.pehl.piriti.client.gwttest.book.BookResources;
 
 /**
  * @author $Author$
@@ -15,7 +14,7 @@ public class JsonBookReaderTest extends AbstractBookReaderTest
 {
     public void testRead()
     {
-        String json = JsonBookFactory.createBook();
+        String json = BookResources.INSTANCE.bookJson().getText();
         Book book = Book.JSON.read(json);
         assertBook(book, true, true);
     }
@@ -23,7 +22,7 @@ public class JsonBookReaderTest extends AbstractBookReaderTest
 
     public void testReadList()
     {
-        String json = JsonBookFactory.createBooks();
+        String json = BookResources.INSTANCE.booksJson().getText();
         List<Book> books = Book.JSON.readList(json);
         assertBooks(books, true, true);
     }
@@ -31,15 +30,15 @@ public class JsonBookReaderTest extends AbstractBookReaderTest
 
     public void testReadListWithKey()
     {
-        String json = JsonBookFactory.createBooks();
-        List<Book> books = Book.JSON.readList(json, BookFactory.BOOKS);
+        String json = BookResources.INSTANCE.booksJson().getText();
+        List<Book> books = Book.JSON.readList(json, BOOKS);
         assertBooks(books, true, true);
     }
 
 
     public void testReadListWithWrongKey()
     {
-        String json = JsonBookFactory.createBooks();
+        String json = BookResources.INSTANCE.booksJson().getText();
         List<Book> books = Book.JSON.readList(json, "moo");
         assertNotNull(books);
         assertTrue(books.isEmpty());

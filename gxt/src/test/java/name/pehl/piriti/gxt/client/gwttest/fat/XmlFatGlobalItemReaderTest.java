@@ -1,10 +1,9 @@
-package name.pehl.piriti.gxt.client.gwttest.fat.xml;
+package name.pehl.piriti.gxt.client.gwttest.fat;
 
-import name.pehl.piriti.client.gwttest.fat.xml.XmlFatGlobalItemFactory;
-import name.pehl.piriti.gxt.client.gwttest.fat.FatGlobalItem;
-import name.pehl.piriti.gxt.client.gwttest.fat.AbstractFatGlobalItemReaderTest;
+import name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources;
 
 import com.google.gwt.xml.client.Document;
+import com.google.gwt.xml.client.XMLParser;
 
 /**
  * @author $Author: harald.pehl $
@@ -14,7 +13,8 @@ public class XmlFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
 {
     public void testRead()
     {
-        Document document = XmlFatGlobalItemFactory.createFatGlobalItem();
+        String xml = FatGlobalItemResources.INSTANCE.fatGlobalItemXml().getText();
+        Document document = XMLParser.parse(xml);
         FatGlobalItem model = FatGlobalItem.XML.read(document);
         assertFatGlobalItem(model, true);
     }
