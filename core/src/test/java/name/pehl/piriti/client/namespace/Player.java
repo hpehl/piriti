@@ -18,21 +18,21 @@ public class Player
 
     public static final PlayerXmlReader XML = GWT.create(PlayerXmlReader.class);
 
-    @XmlField("/@vip")
+    @XmlField("@vip")
     boolean vip;
 
-    @XmlField("/@foo:gender")
+    @XmlField("@foo:gender")
     Gender gender;
 
-    @XmlField("/@bar:age")
+    @XmlField("@bar:age")
     int age;
 
-    @XmlField("foo:firstname")
+    @XmlField("foo:firstname/text()")
     String firstname;
 
-    @XmlField("foo:surname")
+    @XmlField("foo:surname/text()")
     String surname;
 
-    @XmlField("bar:address")
+    @XmlField("bar:address/text()")
     String address;
 }

@@ -12,7 +12,7 @@
         <bar:address>24, evergreen terrace, springfield</bar:address>
     </foo:player>
 
-    <numbers>
+    <numbers game="6x49">
         <number>4</number>
         <number>8</number>
         <number>15</number>

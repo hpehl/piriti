@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+
+h1 {
+    font-size: 12pt;
+    margin: 0 0 1em 0;
+}
+
+pre {
+    background-color: #ff9;
+    border: black 1px solid;
+    padding: 1em;
+}
+pre#result {
+    white-space: pre-wrap;
+}
+
+textarea#xpath {
+    width: 98%;
+}
+
+/* 
+ * Two column layout. 
+ * See http://matthewjamestaylor.com/blog/perfect-2-column-double-page.htm
+ */
+.colmask {
+    clear: both;
+    float: left;
+    width: 100%;
+    overflow: hidden;
+}
+
+.colright,.colmid,.colleft {
+    float: left;
+    width: 100%;
+    position: relative;
+}
+
+.col1,.col2,.col3 {
+    float: left;
+    position: relative;
+    padding: 0 0 1em 0;
+    overflow: hidden;
+}
+
+.doublepage .colleft {
+    right: 50%;
+}
+
+.doublepage .col1 {
+    width: 46%;
+    left: 52%;
+}
+
+.doublepage .col2 {
+    width: 46%;
+    left: 56%;
+}

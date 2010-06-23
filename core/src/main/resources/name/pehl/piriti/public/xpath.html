@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" href="xpath.css">
+    <script type="text/javascript" src="sarissa.js"></script>
+    <script type="text/javascript" src="sarissa_ieemu_xpath.js"></script>
+    <script type="text/javascript" src="javeline_xpath.js"></script>
+    <script type="text/javascript" src="xpath.js"></script>
+    <title>XPath tests</title>
+</head>
+<body>
+<div class="colmask doublepage">
+<div class="colleft">
+<div class="col1">
+
+
+<!-- Left column -->
+<h1>XML</h1>
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;lotteryTicket xmlns="http://code.google.com/p/piriti" 
+    xmlns:foo="http://code.google.com/p/piriti/foo"
+    xmlns:bar="http://code.google.com/p/piriti/bar" 
+    foo:date="10.10.2010"&gt;
+
+    &lt;foo:player vip="true" foo:gender="male" bar:age="42"&gt;
+        &lt;foo:firstname&gt;Homer&lt;/foo:firstname&gt;
+        &lt;foo:surname&gt;Simpson&lt;/foo:surname&gt;
+        &lt;bar:address&gt;24, evergreen terrace, springfield&lt;/bar:address&gt;
+    &lt;/foo:player&gt;
+
+    &lt;numbers game="6x49"&gt;
+        &lt;number&gt;4&lt;/number&gt;
+        &lt;number&gt;8&lt;/number&gt;
+        &lt;number&gt;15&lt;/number&gt;
+        &lt;number&gt;16&lt;/number&gt;
+        &lt;number&gt;23&lt;/number&gt;
+        &lt;number&gt;42&lt;/number&gt;
+    &lt;/numbers&gt;
+
+&lt;/lotteryTicket&gt;
+</pre>
+</div>
+<div class="col2">
+
+
+<!-- Right column -->
+<h1>XPath</h1>
+<p>Selector<br/>
+<textarea rows="10" id="xpath">
+</textarea><br/>
+<button type="button" onclick="select(document.getElementById('xpath').value)">Evaluate</button>
+</p>
+<p>Ergebnis</p>
+<pre id="result">&nbsp;</pre>
+
+
+</div>
+</div>
+</div>
+</body>
+</html>

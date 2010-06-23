@@ -12,7 +12,6 @@ import com.google.gwt.core.client.GWT;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-
 public class LotteryTicket
 {
     public interface LotteryTicketXmlReader extends XmlReader<LotteryTicket>
@@ -21,12 +20,15 @@ public class LotteryTicket
 
     public static final LotteryTicketXmlReader XML = GWT.create(LotteryTicketXmlReader.class);
 
-    @XmlField(value = "/@foo:date", format = "dd.MM.yyyy")
+    @XmlField(value = "@foo:date", format = "dd.MM.yyyy")
     Date date;
 
     @XmlField("foo:player")
     Player player;
 
-    @XmlField("numbers/number")
+    @XmlField("default:numbers/@game")
+    String game;
+
+    @XmlField("default:numbers/default:number")
     List<Integer> numbers;
 }
