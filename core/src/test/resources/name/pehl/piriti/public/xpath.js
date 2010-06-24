@@ -29,7 +29,7 @@ function select()
     var xmlInValue = xmlIn.getCode();
     var xpath = document.getElementById("xpath").value;
     var namespace = document.getElementById("namespace").value;
-    if (xmlInValue == null || xmlInValue == "" || xpath == null || xpath == "" || namespace == null || namespace == "")
+    if (xmlInValue == null || xmlInValue == "" || xpath == null || xpath == "")
     {
         result = "No xml, xpath and/or namespace given";
     } 
@@ -37,7 +37,10 @@ function select()
     {
         var xmlDoc = Sarissa.getDomDocument();
         xmlDoc = (new DOMParser()).parseFromString(xmlInValue, "text/xml");
-        Sarissa.setXpathNamespaces(xmlDoc, namespace);
+        if (namespace != null && namespace != "")
+        {
+            Sarissa.setXpathNamespaces(xmlDoc, namespace);
+        }
         var rootElement = xmlDoc.documentElement;
         try
         {
