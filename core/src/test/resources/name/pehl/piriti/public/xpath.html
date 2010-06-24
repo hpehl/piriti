@@ -21,12 +21,13 @@
 &lt;lotteryTicket xmlns="http://code.google.com/p/piriti" 
     xmlns:foo="http://code.google.com/p/piriti/foo"
     xmlns:bar="http://code.google.com/p/piriti/bar" 
-    foo:date="10.10.2010"&gt;
-
-    &lt;foo:player vip="true" foo:gender="male" bar:age="42"&gt;
+    date="10.10.2010"&gt;
+    &lt;foo:player foo:gender="male" age="42"&gt;
         &lt;foo:firstname&gt;Homer&lt;/foo:firstname&gt;
         &lt;foo:surname&gt;Simpson&lt;/foo:surname&gt;
-        &lt;bar:address&gt;24, evergreen terrace, springfield&lt;/bar:address&gt;
+        &lt;bar:address bar:type="home" foo:primary="true"&gt;
+            24, evergreen terrace, springfield
+        &lt;/bar:address&gt;
     &lt;/foo:player&gt;
 
     &lt;numbers game="6x49"&gt;

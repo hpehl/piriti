@@ -139,7 +139,31 @@ public interface XmlReader<T>
 
     // ------------------------------------------------------------- namespace
 
-    String DEFAULT_NAMESPACE_PREFIX = "piriti_default_ns_prefix";
+    /**
+     * The prefix which has to be used in xpath selectors for the default
+     * namespace. Please note: The prefix does <strong>not</strong> contain the
+     * colon (:).
+     * <p>
+     * Usage:
+     * 
+     * <pre>
+     * import static name.pehl.piriti.client.xml.XmlReader.*;
+     * ...
+     * public class Meep
+     * {
+     *     public interface MeepReader extends XmlReader&lt;Meep&gt; {}
+     *     public static final MeepReader XML = GWT.create(MeepReader.class);
+     *     static
+     *     {
+     *         XML.registerNamespace("http://www.acme.org/dingus");
+     *     }
+     *     
+     *     &#64;XmlField(DNS + ":foo/" + DNS + ":bar/text()")
+     *     String fooBar;
+     * }
+     * </pre>
+     */
+    String DNS = "piriti_default_ns_prefix";
 
 
     /**

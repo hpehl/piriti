@@ -50,6 +50,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("import com.google.gwt.xml.client.Document;");
         writer.write("import com.google.gwt.xml.client.Element;");
         writer.write("import name.pehl.piriti.client.xml.*;");
+        writer.write("import static name.pehl.piriti.client.xml.XmlReader.*;");
     }
 
 
@@ -455,7 +456,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("private boolean hasDefaultNamespace() {");
         writer.indent();
-        writer.write("return this.namespaces.containsKey(DEFAULT_NAMESPACE_PREFIX);");
+        writer.write("return this.namespaces.containsKey(DNS);");
         writer.outdent();
         writer.write("}");
         
@@ -463,7 +464,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.indent();
         writer.write("if (uri != null && uri.length() != 0) {");
         writer.indent();
-        writer.write("this.namespaces.put(DEFAULT_NAMESPACE_PREFIX, uri);");
+        writer.write("this.namespaces.put(DNS, uri);");
         writer.outdent();
         writer.write("}");
         writer.outdent();

@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  * Annotation to select an identifier fo a POJO. The annotation can only be
  * specified for one field in the POJO. The field type must be string. In most
  * cases the id will be mapped to an ID attribute in the XML. That's why the
- * default value of the annotation is "@id".
+ * default value of the annotation is "&#64;id".
  * 
  * @see XmlIdRef
  * @author $LastChangedBy: harald.pehl $

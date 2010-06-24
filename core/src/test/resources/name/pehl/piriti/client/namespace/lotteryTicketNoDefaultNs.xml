@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <!--
+<!--
     Please make sure that there are no line line breaks
     in the elements. Otherwise the asserts will fail!
- -->
-<lotteryTicket xmlns="http://code.google.com/p/piriti/" xmlns:foo="http://code.google.com/p/piriti/foo"
-    xmlns:bar="http://code.google.com/p/piriti/bar" foo:date="10.10.2010">
+-->
+<lotteryTicket xmlns:foo="http://code.google.com/p/piriti/foo"
+    xmlns:bar="http://code.google.com/p/piriti/bar" date="10.10.2010">
 
-    <foo:player vip="true" foo:gender="male" bar:age="42">
+    <foo:player foo:gender="male" age="42">
         <foo:firstname>Homer</foo:firstname>
         <foo:surname>Simpson</foo:surname>
-        <bar:address>24, evergreen terrace, springfield</bar:address>
+        <bar:address bar:type="home" foo:valid="true">
+            24, evergreen terrace, springfield
+        </bar:address>
     </foo:player>
 
     <numbers game="6x49">

@@ -12,7 +12,8 @@ import com.google.gwt.junit.tools.GWTTestSuite;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 597
+ *          $
  */
 public class PiritiCoreGwtTestSuite extends GWTTestSuite
 {
@@ -27,6 +28,8 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
 
         suite.addTestSuite(JsonFatGlobalItemReaderTest.class);
         suite.addTestSuite(XmlFatGlobalItemReaderTest.class);
+
+        // suite.addTestSuite(LotteryTicketReaderTest.class);
 
         return suite;
     }

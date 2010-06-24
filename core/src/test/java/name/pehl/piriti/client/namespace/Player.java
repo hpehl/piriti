@@ -17,14 +17,17 @@ public class Player
     }
 
     public static final PlayerXmlReader XML = GWT.create(PlayerXmlReader.class);
-
-    @XmlField("@vip")
-    boolean vip;
+    // TODO What happens if we don't register namespaces for nested POJOs?
+    static
+    {
+        XML.registerNamespace("foo", "http://code.google.com/p/piriti/foo");
+        XML.registerNamespace("bar", "http://code.google.com/p/piriti/bar");
+    }
 
     @XmlField("@foo:gender")
     Gender gender;
 
-    @XmlField("@bar:age")
+    @XmlField("@age")
     int age;
 
     @XmlField("foo:firstname/text()")
@@ -35,4 +38,10 @@ public class Player
 
     @XmlField("bar:address/text()")
     String address;
+
+    @XmlField("bar:address/@bar:type")
+    String addressType;
+
+    @XmlField("bar:address/@foo:valid")
+    boolean validAddress;
 }
