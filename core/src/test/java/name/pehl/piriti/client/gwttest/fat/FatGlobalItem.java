@@ -20,13 +20,13 @@ import com.google.gwt.core.client.GWT;
 public class FatGlobalItem
 {
     // ------------------------------------------------------------ json reader
-    
+
     public interface FatGlobalItemJsonReader extends JsonReader<FatGlobalItem>
     {
     }
-    
+
     public static final FatGlobalItemJsonReader JSON = GWT.create(FatGlobalItemJsonReader.class);
-    
+
     // ------------------------------------------------------------- xml reader
 
     public interface FatGlobalItemXmlReader extends XmlReader<FatGlobalItem>
@@ -144,7 +144,7 @@ public class FatGlobalItem
     @JsonField
     @XmlField("arrayOfFatGlobalItems/fatGlobalItem")
     public FatGlobalItem[] arrayOfFatGlobalItems;
-    
+
     @JsonField
     @XmlField("arrayOfSkinnyNestedItems/skinnyNestedItem")
     public SkinnyNestedItem[] arrayOfSkinnyNestedItems;
@@ -180,7 +180,7 @@ public class FatGlobalItem
     @JsonField
     @XmlField("collectionOfFatGlobalItems/fatGlobalItem")
     public Collection<FatGlobalItem> collectionOfFatGlobalItems;
-    
+
     @JsonField
     @XmlField("collectionOfSkinnyNestedItems/skinnyNestedItem")
     public Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems;
@@ -189,8 +189,8 @@ public class FatGlobalItem
 
     @JsonField
     @XmlField
-    public @SuppressWarnings("unchecked")
-    Collection untypedCollection;
+    @SuppressWarnings("rawtypes")
+    public Collection untypedCollection;
 
     @JsonField
     @XmlField
@@ -217,7 +217,7 @@ public class FatGlobalItem
     @JsonField
     @XmlField("listOfFatGlobalItems/fatGlobalItem")
     public List<FatGlobalItem> listOfFatGlobalItems;
-    
+
     @JsonField
     @XmlField("listOfSkinnyNestedItems/skinnyNestedItem")
     public List<SkinnyNestedItem> listOfSkinnyNestedItems;
@@ -226,8 +226,8 @@ public class FatGlobalItem
 
     @JsonField
     @XmlField
-    public @SuppressWarnings("unchecked")
-    List untypedList;
+    @SuppressWarnings("rawtypes")
+    public List untypedList;
 
     @JsonField
     @XmlField
@@ -254,7 +254,7 @@ public class FatGlobalItem
     @JsonField
     @XmlField("setOfFatGlobalItems/fatGlobalItem")
     public Set<FatGlobalItem> setOfFatGlobalItems;
-    
+
     @JsonField
     @XmlField("setOfSkinnyNestedItems/skinnyNestedItem")
     public Set<SkinnyNestedItem> setOfSkinnyNestedItems;
@@ -263,8 +263,8 @@ public class FatGlobalItem
 
     @XmlField
     @JsonField
-    public @SuppressWarnings("unchecked")
-    Set untypedSet;
+    @SuppressWarnings("rawtypes")
+    public Set untypedSet;
 
     @XmlField
     @JsonField
