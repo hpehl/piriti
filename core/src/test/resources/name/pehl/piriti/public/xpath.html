@@ -4,21 +4,19 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" href="xpath.css">
-    <script type="text/javascript" src="sarissa.js"></script>
-    <script type="text/javascript" src="sarissa_ieemu_xpath.js"></script>
-<!--    <script type="text/javascript" src="javeline_xpath.js"></script> -->
+    <script type="text/javascript" src="../../../../../../main/resources/name/pehl/piriti/public/sarissa.js"></script>
+    <script type="text/javascript" src="../../../../../../main/resources/name/pehl/piriti/public/sarissa_ieemu_xpath.js"></script>
+<!--    <script type="text/javascript" src="../../../../../../main/resources/name/pehl/piriti/public/javeline_xpath.js"></script> -->
+    <script type="text/javascript" src="codemirror/codemirror.js" ></script>
     <script type="text/javascript" src="xpath.js"></script>
     <title>XPath tests</title>
 </head>
 <body>
-<div class="colmask doublepage">
-<div class="colleft">
-<div class="col1">
 
 
-<!-- Left column -->
 <h1>XML</h1>
-<pre>
+<div class="textarea">
+<textarea id="xmlIn">
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;lotteryTicket xmlns="http://code.google.com/p/piriti" 
     xmlns:foo="http://code.google.com/p/piriti/foo"
@@ -39,26 +37,27 @@
         &lt;number&gt;23&lt;/number&gt;
         &lt;number&gt;42&lt;/number&gt;
     &lt;/numbers&gt;
-
 &lt;/lotteryTicket&gt;
-</pre>
+</textarea>
 </div>
-<div class="col2">
 
 
-<!-- Right column -->
-<h1>XPath</h1>
-<p>Selector<br/>
-<textarea rows="10" id="xpath">
-</textarea><br/>
-<button type="button" onclick="select(document.getElementById('xpath').value)">Evaluate</button>
-</p>
-<p>Ergebnis</p>
-<pre id="result">&nbsp;</pre>
+<h1>XPath and Namespace</h1>
+<div class="input">
+XPath:&nbsp;<input type="text" id="xpath" /><br/>
+Namespace:&nbsp;<input type="text" id="namespace" value='xmlns:default="http://code.google.com/p/piriti" xmlns:foo="http://code.google.com/p/piriti/foo" xmlns:bar="http://code.google.com/p/piriti/bar"'/><br/>
+<button id="select" type="button" onclick="select()">Select</button>
+</div>
 
 
+<h1>Ergebnis</h1>
+<div class="textarea">
+<textarea id="xmlOut">n/a</textarea>
 </div>
-</div>
-</div>
+
+
+<script type="text/javascript">
+initEditors();
+</script>
 </body>
 </html>
