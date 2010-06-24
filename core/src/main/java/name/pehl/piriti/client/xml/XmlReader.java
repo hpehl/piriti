@@ -44,6 +44,8 @@ import com.google.inject.internal.Nullable;
  */
 public interface XmlReader<T>
 {
+    // ------------------------------------------------------...----- read list
+
     /**
      * Convert the direct children of the documents root element to a list of Ts
      * according to the annotated fields in T.
@@ -98,6 +100,8 @@ public interface XmlReader<T>
     List<T> readList(@Nullable Element element, String xpath);
 
 
+    // ------------------------------------------------------------ read single
+
     /**
      * Convert the data in the specified document to an instance of T according
      * to the annotated fields in T.
@@ -122,6 +126,8 @@ public interface XmlReader<T>
     T read(@Nullable Element element);
 
 
+    // ------------------------------------------------------------- references
+
     /**
      * Returns the reference for the specified identifier or <code>null</code>
      * if no reference was found.
@@ -130,4 +136,25 @@ public interface XmlReader<T>
      * @return
      */
     T idRef(String id);
+
+    // ------------------------------------------------------------- namespace
+
+    String DEFAULT_NAMESPACE_PREFIX = "piriti_default_ns_prefix";
+
+
+    /**
+     * Registers the specified namespace as default namespace.
+     * 
+     * @param uri
+     */
+    void registerNamespace(String uri);
+
+
+    /**
+     * Registers the specified prefix with the namespace.
+     * 
+     * @param prefix
+     * @param uri
+     */
+    void registerNamespace(String prefix, String uri);
 }

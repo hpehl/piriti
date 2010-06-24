@@ -59,6 +59,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         super.createMemberVariables(writer);
         writer.write("private XmlRegistry xmlRegistry;");
         writer.write("private XPath xpath;");
+        writer.write("private Map<String,String> namespaces;");
     }
 
 
@@ -69,6 +70,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
         writer.write("this.xpath = XmlGinjector.INJECTOR.getXPath();");
+        writer.write("this.namespaces = new HashMap<String,String>();");
     }
 
 
@@ -108,6 +110,9 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.newline();
 
         readIdRefs(writer);
+        writer.newline();
+
+        namespaceMethods(writer);
         writer.newline();
     }
 
@@ -443,5 +448,35 @@ public class XmlReaderCreator extends AbstractReaderCreator
             }
         }
         return xpath;
+    }
+    
+    
+    protected void namespaceMethods(IndentedWriter writer)
+    {
+        writer.write("private boolean hasDefaultNamespace() {");
+        writer.indent();
+        writer.write("return this.namespaces.containsKey(DEFAULT_NAMESPACE_PREFIX);");
+        writer.outdent();
+        writer.write("}");
+        
+        writer.write("public void registerNamespace(String uri) {");
+        writer.indent();
+        writer.write("if (uri != null && uri.length() != 0) {");
+        writer.indent();
+        writer.write("this.namespaces.put(DEFAULT_NAMESPACE_PREFIX, uri);");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        
+        writer.write("public void registerNamespace(String prefix, String uri) {");
+        writer.indent();
+        writer.write("if (prefix != null && prefix.length() != 0 && uri != null && uri.length() != 0) {");
+        writer.indent();
+        writer.write("this.namespaces.put(prefix, uri);");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
     }
 }
