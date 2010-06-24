@@ -1,9 +1,11 @@
 === Piriti 0.4 ===
   * Added support for [Namespaces namespaces].
+  * Removed dependency to [http://code.google.com/p/gwtxpath gwtxpath]
+  * Added dependency to [http://dev.abiss.gr/sarissa sarissa] which is used for XML parsing and namespace support
 
 === Piriti 0.3.5 ===
   * Fix for issue 5: Nested readers are now initialized correctly (thanks to dusan.maliarik)
-  * Added support for lowercase enum constants (thanks to dusan.maliarik).
+  * Added support for lowercase enum constants (thanks to dusan.maliarik)
   * Switched to native JSON parser (thanks to Olivier Monaco) 
 
 === Piriti 0.3.4 ===
