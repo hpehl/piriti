@@ -3,6 +3,8 @@ package name.pehl.piriti.restlet.client.xml;
 import java.io.IOException;
 import java.util.List;
 
+import name.pehl.piriti.client.xml.Node;
+import name.pehl.piriti.client.xml.XmlGinjector;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.restlet.client.PiritiRepresentation;
 
@@ -15,6 +17,8 @@ import com.google.gwt.xml.client.Document;
 /**
  * Representation which uses an {@link XmlReader} for converting XML to an
  * instance of T.
+ * <p>
+ * TODO Namespace support!
  * 
  * @param <T>
  *            The model type
@@ -26,6 +30,12 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
 {
     /** The XmlReader for converting the XML to an instance of T. */
     private final XmlReader<T> xmlReader;
+
+    /** The wrapped node instance. */
+    private Node node;
+
+    /** The source XML representation. */
+    private Representation xmlRepresentation;
 
 
     // ----------------------------------------------------------- constructors
@@ -74,6 +84,7 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
     {
         super(xmlRepresentation);
         this.xmlReader = xmlReader;
+        this.xmlRepresentation = xmlRepresentation;
     }
 
 
@@ -101,10 +112,10 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
     public T getModel() throws IOException
     {
         T model = null;
-        Document document = getDocument();
-        if (document != null)
+        Node node = getNode();
+        if (node != null)
         {
-            model = xmlReader.read(document);
+            model = xmlReader.read(node);
         }
         return model;
     }
@@ -124,11 +135,32 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
     public List<T> getModels() throws IOException
     {
         List<T> models = null;
-        Document document = getDocument();
-        if (document != null)
+        Node node = getNode();
+        if (node != null)
         {
-            models = xmlReader.readList(document);
+            models = xmlReader.readList(node);
         }
         return models;
+    }
+
+
+    /**
+     * Returns the wrapped node instance. If no node is defined yet, it attempts
+     * to parse the XML representation eventually given at construction time.
+     * Otherwise, it returns <code>null</code>.
+     * 
+     * @return The wrapped node instance.
+     * @throws IOException
+     */
+    public Node getNode() throws IOException
+    {
+        if (node == null)
+        {
+            if (xmlRepresentation != null)
+            {
+                node = XmlGinjector.INJECTOR.getXmlParser().parse(xmlRepresentation.getText());
+            }
+        }
+        return node;
     }
 }

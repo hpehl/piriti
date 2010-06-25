@@ -29,9 +29,9 @@ public interface XmlGinjector extends Ginjector
 
 
     /**
-     * Provides the implementation for the {@link XPath} implementation
+     * Provides the implementation for the {@link XmlParser} implementation
      * 
      * @return
      */
-    XPath getXPath();
+    XmlParser getXmlParser();
 }

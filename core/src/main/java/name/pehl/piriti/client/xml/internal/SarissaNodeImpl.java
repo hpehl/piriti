@@ -2,24 +2,37 @@ package name.pehl.piriti.client.xml.internal;
 
 import java.util.List;
 
-import name.pehl.piriti.client.xml.AbstractXPathImpl;
+import name.pehl.piriti.client.xml.Node;
 
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
+import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * {@link name.pehl.piriti.client.xml.XPath} implementation using <a
- * href="http://dev.abiss.gr/sarissa/">Sarissa</a>.
- * <p>
- * Supports namespaces!
- * 
  * @author $Author:$
  * @version $Date:$ $Revision:$
  */
-public class SarissaXPathImpl extends AbstractXPathImpl
+public class SarissaNodeImpl implements Node
 {
+    private JavaScriptObject jsNode;
+
+
+    // ----------------------------------------------------------- constructors
+
+    private SarissaNodeImpl(JavaScriptObject jso)
+    {
+        this.jsNode = jso;
+    }
+
+
+    public static Node create(JavaScriptObject jso)
+    {
+        return new SarissaNodeImpl(jso);
+    }
+
+
+    // -------------------------------------------------- basic node operations
+
     @Override
-    public Element getElement(Document document, String xpath)
+    public String getNodeName()
     {
         // TODO Implement me!
         throw new UnsupportedOperationException("Not implemented");
@@ -27,7 +40,7 @@ public class SarissaXPathImpl extends AbstractXPathImpl
 
 
     @Override
-    public Element getElement(Element element, String xpath)
+    public String getNodeValue()
     {
         // TODO Implement me!
         throw new UnsupportedOperationException("Not implemented");
@@ -35,7 +48,27 @@ public class SarissaXPathImpl extends AbstractXPathImpl
 
 
     @Override
-    public List<Element> getElements(Document document, String xpath)
+    public String getAttribute(String name)
+    {
+        // TODO Implement me!
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+
+    // ----------------------------------------------- nodes as direct children
+
+    @Override
+    public List<Node> getChildNodes(Node node)
+    {
+        // TODO Implement me!
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+
+    // ------------------------------------------------------- node(s) by xpath
+
+    @Override
+    public List<Node> selectNodes(Node node, String xpath)
     {
         // TODO Implement me!
         throw new UnsupportedOperationException("Not implemented");
@@ -43,7 +76,17 @@ public class SarissaXPathImpl extends AbstractXPathImpl
 
 
     @Override
-    public List<Element> getElements(Element element, String xpath)
+    public Node selectNode(Node node, String xpath)
+    {
+        // TODO Implement me!
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+
+    // ------------------------------------------------------ value(s) by xpath
+
+    @Override
+    public String[] selectValues(Node node, String xpath)
     {
         // TODO Implement me!
         throw new UnsupportedOperationException("Not implemented");
@@ -51,31 +94,7 @@ public class SarissaXPathImpl extends AbstractXPathImpl
 
 
     @Override
-    public String getValue(Document document, String xpath)
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-
-    @Override
-    public String getValue(Element element, String xpath)
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-
-    @Override
-    public String[] getValues(Document document, String xpath)
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-
-    @Override
-    public String[] getValues(Element element, String xpath)
+    public String selectValue(Node node, String xpath)
     {
         // TODO Implement me!
         throw new UnsupportedOperationException("Not implemented");

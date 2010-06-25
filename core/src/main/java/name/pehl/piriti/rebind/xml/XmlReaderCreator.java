@@ -124,6 +124,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("this.xpath.applyNamespaces(document, this.namespaces);");
         writer.write("return internalReadList(this.xpath.getElements(document));");
         writer.outdent();
         writer.write("}");
@@ -135,6 +136,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("public List<%s> readList(Document document, String xpath) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("this.xpath.applyNamespaces(document, this.namespaces);");
         writer.write("return internalReadList(this.xpath.getElements(document, xpath));");
         writer.outdent();
         writer.write("}");
@@ -145,6 +147,11 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (element != null) {");
+        writer.indent();
+        writer.write("this.xpath.applyNamespaces(element.getOwnerDocument(), this.namespaces);");
+        writer.outdent();
+        writer.write("}");
         writer.write("return internalReadList(this.xpath.getElements(element));");
         writer.outdent();
         writer.write("}");
@@ -156,6 +163,11 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("public List<%s> readList(Element element, String xpath) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (element != null) {");
+        writer.indent();
+        writer.write("this.xpath.applyNamespaces(element.getOwnerDocument(), this.namespaces);");
+        writer.outdent();
+        writer.write("}");
         writer.write("return internalReadList(this.xpath.getElements(element, xpath));");
         writer.outdent();
         writer.write("}");
@@ -168,7 +180,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public %s read(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return read(document.getDocumentElement());");
+        writer.write("this.xpath.applyNamespaces(document, this.namespaces);");
+        writer.write("return internalRead(document.getDocumentElement());");
         writer.outdent();
         writer.write("}");
 
@@ -179,10 +192,12 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public %s read(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("readFields(element, model);");
-        writer.write("readIdRefs(element, model);");
-        writer.write("return model;");
+        writer.write("if (element != null) {");
+        writer.indent();
+        writer.write("this.xpath.applyNamespaces(element.getOwnerDocument(), this.namespaces);");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return internalRead(element);");
         writer.outdent();
         writer.write("}");
     }
@@ -224,8 +239,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("private %s internalRead(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
-        writer.write("model = readIds(element);");
+        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
         writer.write("readFields(element, model);");
         writer.write("readIdRefs(element, model);");
         writer.write("return model;");
@@ -450,16 +464,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
         }
         return xpath;
     }
-    
-    
+
+
     protected void namespaceMethods(IndentedWriter writer)
     {
-        writer.write("private boolean hasDefaultNamespace() {");
-        writer.indent();
-        writer.write("return this.namespaces.containsKey(DNS);");
-        writer.outdent();
-        writer.write("}");
-        
         writer.write("public void registerNamespace(String uri) {");
         writer.indent();
         writer.write("if (uri != null && uri.length() != 0) {");
@@ -469,7 +477,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        
+        writer.newline();
+
         writer.write("public void registerNamespace(String prefix, String uri) {");
         writer.indent();
         writer.write("if (prefix != null && prefix.length() != 0 && uri != null && uri.length() != 0) {");

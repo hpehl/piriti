@@ -2,8 +2,6 @@ package name.pehl.piriti.client.xml;
 
 import java.util.List;
 
-import com.google.gwt.xml.client.Document;
-import com.google.gwt.xml.client.Element;
 import com.google.inject.internal.Nullable;
 
 /**
@@ -44,86 +42,62 @@ import com.google.inject.internal.Nullable;
  */
 public interface XmlReader<T>
 {
-    // ------------------------------------------------------...----- read list
+    // -------------------------------------------------------------- read list
 
     /**
-     * Convert the direct children of the documents root element to a list of Ts
-     * according to the annotated fields in T.
+     * Convert the direct children of the node to a list of Ts according to the
+     * annotated fields in T.
      * 
-     * @param document
-     *            The XML document used as input. May be <code>null</code>.
+     * @param node
+     *            The node used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped XML data or an empty list
-     *         if the document was {@code null}.
+     *         if the node was {@code null}.
      */
-    List<T> readList(@Nullable Document document);
+    List<T> readList(@Nullable Node node);
 
 
     /**
-     * Convert the data in the specified document to a list of Ts according to
-     * the annotated fields in T.
+     * Convert the data in the specified node to a list of Ts according to the
+     * annotated fields in T.
      * 
-     * @param document
-     *            The XML document used as input. May be <code>null</code>.
+     * @param node
+     *            The node used as input. May be <code>null</code>.
      * @param xpath
      *            An xpath expression which should result in a list of elements
      *            which in turn is used to generate the instances of T
      * @return A list of T instances with the mapped XML data or an empty list
-     *         if the document was {@code null}.
+     *         if the node was {@code null}.
      */
-    List<T> readList(@Nullable Document document, String xpath);
-
-
-    /**
-     * Convert the direct children of the specified element to a list of Ts
-     * according to the annotated fields in T.
-     * 
-     * @param document
-     *            The XML element used as input. May be <code>null</code>.
-     * @return A list of T instances with the mapped XML data or an empty list
-     *         if the element was {@code null}.
-     */
-    List<T> readList(@Nullable Element element);
-
-
-    /**
-     * Convert the data in the specified element to a list of Ts according to
-     * the annotated fields in T.
-     * 
-     * @param document
-     *            The XML element used as input. May be <code>null</code>.
-     * @param xpath
-     *            An xpath expression which should result in a list of elements
-     *            which in turn are used to generate the instances of T
-     * @return A list of T instances with the mapped XML data or an empty list
-     *         if the element was {@code null}.
-     */
-    List<T> readList(@Nullable Element element, String xpath);
+    List<T> readList(@Nullable Node node, String xpath);
 
 
     // ------------------------------------------------------------ read single
 
     /**
-     * Convert the data in the specified document to an instance of T according
-     * to the annotated fields in T.
+     * Convert the data in the specified node to an instance of T according to
+     * the annotated fields in T.
      * 
-     * @param document
-     *            The XML document used as input. May be <code>null</code>.
+     * @param node
+     *            The node used as input. May be <code>null</code>.
      * @return An instance of T with the mapped XML data or {@code null} if the
-     *         document was {@code null}.
+     *         node was {@code null}.
      */
-    T read(@Nullable Document document);
+    T read(@Nullable Node node);
 
 
     /**
      * Convert the data in the specified element to an instance of T according
      * to the annotated fields in T.
      * 
-     * @param element
-     *            The XML element used as input. May be <code>null</code>.
+     * @param node
+     *            The node used as input. May be <code>null</code>.
+     * @param xpath
+     *            An xpath expression which should result in a single element
+     *            which in turn is used to generate the instance of T
      * @return An instance of T with the mapped XML data or {@code null} if the
-     *         element was {@code null}.
+     *         node was {@code null}.
      */
-    T read(@Nullable Element element);
+    T read(@Nullable Node node, String xpath);
 
 
     // ------------------------------------------------------------- references

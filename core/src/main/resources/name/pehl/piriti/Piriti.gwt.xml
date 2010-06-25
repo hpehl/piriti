@@ -17,6 +17,8 @@
     </source>
 
     <script src="json2.js" />
+    <script src="sarissa.js" />
+    <script src="sarissa_ieemu_xpath.js" />
 
     <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">
