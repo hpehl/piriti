@@ -192,14 +192,6 @@
                 <scope>provided</scope>
             </dependency>
             
-            <!-- GWTXPath -->
-            <dependency>
-                <groupId>com.mouchel.gwt.xpath</groupId>
-                <artifactId>gwtxpath</artifactId>
-                <version>1.0</version>
-                <scope>provided</scope>
-            </dependency>
-            
             <!-- GXT -->
             <dependency>
                 <groupId>com.extjs</groupId>
