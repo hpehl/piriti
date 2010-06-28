@@ -7,11 +7,13 @@ import name.pehl.piriti.client.xml.Node;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 623
+ *          $
  */
 public class SarissaNodeImpl implements Node
 {
+    @SuppressWarnings("unused")
     private JavaScriptObject jsNode;
 
 
@@ -32,37 +34,49 @@ public class SarissaNodeImpl implements Node
     // -------------------------------------------------- basic node operations
 
     @Override
-    public String getNodeName()
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
+    public native String getNodeName()/*-{
+        var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
+        if (!node) 
+        {
+            return null;
+        }
+        return node.nodeName;
+    }-*/;
 
 
     @Override
-    public String getNodeValue()
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
+    public native String getNodeValue()/*-{
+        var value = null;
+        var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
+        if (node != null) 
+        {
+            if (node.childNodes.length == 1)
+            {
+                value = node.childNodes[0].nodeValue;
+            }
+            else
+            {
+                value = node.nodeValue;
+            }
+        }
+        return value;
+    }-*/;
 
 
     @Override
-    public String getAttribute(String name)
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
+    public native String getAttribute(String name)/*-{
+        var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
+        return node.getAttribute(name);
+    }-*/;
 
 
     // ----------------------------------------------- nodes as direct children
 
     @Override
-    public List<Node> getChildNodes(Node node)
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
+    public native List<Node> getChildNodes(Node node)/*-{
+    var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
+    return node.childNodes;
+}-*/;
 
 
     // ------------------------------------------------------- node(s) by xpath
