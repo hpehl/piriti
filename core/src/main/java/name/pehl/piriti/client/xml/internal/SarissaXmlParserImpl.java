@@ -10,12 +10,11 @@ import name.pehl.piriti.client.xml.XmlParser;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class SarissaXmlParserImpl implements XmlParser
 {
-    @SuppressWarnings("unused")
     private static final JavaScriptObject xmlParser = SarissaXmlParserImpl.initialize();
 
 

@@ -1,5 +1,6 @@
 package name.pehl.piriti.client.xml.internal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import name.pehl.piriti.client.xml.Node;
@@ -13,7 +14,6 @@ import com.google.gwt.core.client.JavaScriptObject;
  */
 public class SarissaNodeImpl implements Node
 {
-    @SuppressWarnings("unused")
     private JavaScriptObject jsNode;
 
 
@@ -34,7 +34,7 @@ public class SarissaNodeImpl implements Node
     // -------------------------------------------------- basic node operations
 
     @Override
-    public native String getNodeName()/*-{
+    public native String getNodeName() /*-{
         var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
         if (!node) 
         {
@@ -45,26 +45,14 @@ public class SarissaNodeImpl implements Node
 
 
     @Override
-    public native String getNodeValue()/*-{
+    public native String getNodeValue() /*-{
         var value = null;
-        var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
-        if (node != null) 
-        {
-            if (node.childNodes.length == 1)
-            {
-                value = node.childNodes[0].nodeValue;
-            }
-            else
-            {
-                value = node.nodeValue;
-            }
-        }
-        return value;
+        return this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
     }-*/;
 
 
     @Override
-    public native String getAttribute(String name)/*-{
+    public native String getAttribute(String name) /*-{
         var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
         return node.getAttribute(name);
     }-*/;
@@ -73,20 +61,38 @@ public class SarissaNodeImpl implements Node
     // ----------------------------------------------- nodes as direct children
 
     @Override
-    public native List<Node> getChildNodes(Node node)/*-{
-    var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
-    return node.childNodes;
-}-*/;
+    public List<Node> getChildNodes(Node node)
+    {
+        List<Node> result = new ArrayList<Node>();
+        getChildNodesImpl(node, result);
+        return result;
+    }
+
+
+    private native void getChildNodesImpl(Node node, List<Node> result) /*-{
+        var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
+        var children = node.childNodes;
+        if (children != null)
+        {
+            for (var i = 0; i < children.length; i++) 
+            {
+                var n = children[i];
+                result.@java.util.List::add(Ljava/lang/Object;)(@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::create(Lcom/google/gwt/core/client/JavaScriptObject;)(n));
+            }
+        }
+    }-*/;
 
 
     // ------------------------------------------------------- node(s) by xpath
 
     @Override
-    public List<Node> selectNodes(Node node, String xpath)
-    {
-        // TODO Implement me!
-        throw new UnsupportedOperationException("Not implemented");
-    }
+    public native List<Node> selectNodes(Node node, String xpath)/*-{
+        var result = @java.util.ArrayList::new()();
+        var node = this.@name.pehl.piriti.client.xml.internal.SarissaNodeImpl::jsNode;
+        var nodes = node.selectNodes(expr);
+
+        return node.childNodes;
+    }-*/;
 
 
     @Override
