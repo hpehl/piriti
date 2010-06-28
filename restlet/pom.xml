@@ -22,6 +22,10 @@
             <artifactId>piriti-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.restlet.gwt</groupId>
             <artifactId>org.restlet</artifactId>
         </dependency>
