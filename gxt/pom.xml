@@ -42,10 +42,6 @@
             <groupId>com.google.gwt.inject</groupId>
             <artifactId>gin</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.mouchel.gwt.xpath</groupId>
-            <artifactId>gwtxpath</artifactId>
-        </dependency>
     </dependencies>
     
     
