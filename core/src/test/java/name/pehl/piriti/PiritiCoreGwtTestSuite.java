@@ -21,6 +21,8 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
     {
         TestSuite suite = new TestSuite("GWT tests for piriti-core");
 
+        // suite.addTestSuite(NodeTest.class);
+
         suite.addTestSuite(JsonBookReaderTest.class);
         suite.addTestSuite(XmlBookReaderTest.class);
 

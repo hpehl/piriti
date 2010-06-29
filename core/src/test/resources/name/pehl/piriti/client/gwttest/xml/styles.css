@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+h1 {
+    font-size: 12pt;
+    margin: 1em 0 .5em 0;
+}
+
+.form {
+    width: 100%;
+    position: relative;
+}
+
+.input {
+    border: 1px solid black;
+}
+
+.fullSize {
+    width: 98%;
+}
+
+.rightAlign {
+    right: 0px;
+}
+
+.spacer {
+    margin: 1em;
+}
+
+.spacerTop {
+    margin-top: .5em;
+}

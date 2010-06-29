@@ -88,7 +88,7 @@ public class SarissaXmlParserImpl implements XmlParser
 
 
     private native Node parseImpl(String xml, String namespaces) /*-{
-        var domDoc = @name.pehl.piriti.client.xml.internal.SarissaXmlParserImpl::xmlParser.parseFromString(xmlString, "text/xml");
+        var domDoc = @name.pehl.piriti.client.xml.internal.SarissaXmlParserImpl::xmlParser.parseFromString(xml, "text/xml");
 
         var error = $wnd.Sarissa.getParseErrorText(domDoc);
         if (error != $wnd.Sarissa.PARSED_OK) 

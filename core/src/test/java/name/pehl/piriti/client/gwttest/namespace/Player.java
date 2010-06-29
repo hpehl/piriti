@@ -1,4 +1,4 @@
-package name.pehl.piriti.client.namespace;
+package name.pehl.piriti.client.gwttest.namespace;
 
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;

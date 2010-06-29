@@ -9,7 +9,6 @@
     <inherits name="com.google.gwt.json.JSON" />
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.xml.XML" />
-    <inherits name="com.mouchel.gwt.xpath.xpath" />
 
     <source path="client">
         <exclude name="gwttest/**/*" />

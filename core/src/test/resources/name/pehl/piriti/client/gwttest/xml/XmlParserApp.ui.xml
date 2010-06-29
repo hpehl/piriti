@@ -1,0 +1,31 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
+    <ui:style src="styles.css" />
+        
+    <g:DockLayoutPanel unit="PCT" addStyleNames="spacer">
+        <g:center>
+            <g:HTMLPanel>
+                <div class="{style.spacer}">
+                    <h1>XML</h1>
+                    <g:TextArea ui:field="xmlIn" visibleLines="30" addStyleNames="{style.input} {style.fullSize}"/>
+                </div>
+            </g:HTMLPanel>
+        </g:center>
+        
+        <g:east size="40">
+            <g:HTMLPanel>
+                <div class="{style.spacer}">
+                    <h1>XPath and Namespace</h1>
+                    XPath<g:TextBox ui:field="xpath" addStyleNames="{style.input} {style.fullSize}" 
+                        value="foo:player/bar:address/text()"/><br />
+                    <div class="{style.spacerTop}">Namespace<g:TextBox ui:field="namespaces" addStyleNames="{style.input} {style.fullSize}" 
+                        value='xmlns:default="http://code.google.com/p/piriti" xmlns:foo="http://code.google.com/p/piriti/foo" xmlns:bar="http://code.google.com/p/piriti/bar"' /><br />
+                    </div> 
+                    <div class="{style.spacerTop}"><g:Button ui:field="select">Select</g:Button></div>
+                    <h1>Ergebnis</h1>
+                    <g:TextArea ui:field="xmlOut" visibleLines="15" readOnly="true" addStyleNames="{style.input} {style.fullSize}"/>
+                </div>
+            </g:HTMLPanel>
+        </g:east>
+    </g:DockLayoutPanel>
+</ui:UiBinder> 

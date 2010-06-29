@@ -1,33 +1,18 @@
-package name.pehl.piriti.client.namespace;
+package name.pehl.piriti.client.gwttest.namespace;
 
-import static name.pehl.piriti.client.namespace.LotteryTicketResources.*;
+import static name.pehl.piriti.client.gwttest.namespace.LotteryTicketResources.*;
+import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
 import name.pehl.piriti.client.xml.Node;
 import name.pehl.piriti.client.xml.XmlGinjector;
 import name.pehl.piriti.client.xml.XmlParser;
-
-import com.google.gwt.junit.client.GWTTestCase;
 
 /**
  * @author $Author$
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class LotteryTicketReaderTest extends GWTTestCase
+public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
 {
-    @Override
-    public String getModuleName()
-    {
-        return "name.pehl.piriti.PiritiTest";
-    }
-
-
-    @Override
-    protected void gwtSetUp() throws Exception
-    {
-        System.out.println("Running " + getClass().getName());
-    }
-
-
     public void testDefaultNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketDefaultNs().getText();

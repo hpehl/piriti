@@ -4,29 +4,15 @@ import static name.pehl.piriti.client.gwttest.employee.EmployeeResources.*;
 
 import java.util.List;
 
-import com.google.gwt.junit.client.GWTTestCase;
+import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
 
 /**
  * @author $Author$
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractEmployeeReaderTest extends GWTTestCase
+public abstract class AbstractEmployeeReaderTest extends AbstractPiritiTest
 {
-    @Override
-    public String getModuleName()
-    {
-        return "name.pehl.piriti.PiritiTest";
-    }
-
-
-    @Override
-    protected void gwtSetUp() throws Exception
-    {
-        System.out.println("Running " + getClass().getName());
-    }
-
-
     protected void assertEmployees(List<Employee> employees)
     {
         assertNotNull(employees);

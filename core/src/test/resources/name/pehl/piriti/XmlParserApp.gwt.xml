@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0-rc2//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.0.0-rc2/distro-source/core/src/gwt-module.dtd">
-<module>
+<module rename-to="xmlparser">
     <!--
         $LastChangedBy: harald.pehl 
         $LastChangedRevision: 138 $
      -->
     <inherits name="com.google.gwt.inject.Inject" />
     <inherits name="com.google.gwt.json.JSON" />
+    <inherits name="com.google.gwt.junit.JUnit" />
     <inherits name="com.google.gwt.resources.Resources" />
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.xml.XML" />
@@ -19,14 +20,6 @@
     <script src="sarissa.js" />
     <script src="sarissa_ieemu_xpath.js" />
 
-    <!-- Generator for XmlReader -->
-    <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">
-        <when-type-assignable class="name.pehl.piriti.client.xml.XmlReader" />
-    </generate-with>
-
-    <!-- Generator for JsonReader -->
-    <generate-with class="name.pehl.piriti.rebind.json.JsonReaderGenerator">
-        <when-type-assignable class="name.pehl.piriti.client.json.JsonReader" />
-    </generate-with>
+    <entry-point class="name.pehl.piriti.client.gwttest.xml.XmlParserApp" />
 
 </module>

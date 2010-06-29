@@ -30,6 +30,14 @@ public interface Node
 
 
     /**
+     * Returns the type of this node.
+     * 
+     * @return The node type.
+     */
+    public NodeType getNodeType();
+
+
+    /**
      * Get the value of an attribute of this node.
      * 
      * @param name
@@ -45,11 +53,10 @@ public interface Node
      * Returns all nodes which are direct children of the specified node.
      * Returns an empty list if the node has no children.
      * 
-     * @param node
      * @return all nodes which are direct children of the specified node or an
      *         empty list, if the node is null or has no children.
      */
-    List<Node> getChildNodes(Node node);
+    List<Node> getChildNodes();
 
 
     // ------------------------------------------------------- node(s) by xpath
@@ -58,24 +65,22 @@ public interface Node
      * Returns a list of nodes for the specifed xpath or an empty list if
      * matching nodes were found.
      * 
-     * @param node
      * @param xpath
      * @return The list of nodes matching the xpath or an empty list if no
      *         matching nodes were found.
      */
-    List<Node> selectNodes(Node node, String xpath);
+    List<Node> selectNodes(String xpath);
 
 
     /**
      * Returns the node for the specifed xpath or <code>null</code> if no
      * mathing node was found.
      * 
-     * @param node
      * @param xpath
      * @return The node matching the xpath or <code>null</code> if no matching
      *         element was found.
      */
-    Node selectNode(Node node, String xpath);
+    Node selectNode(String xpath);
 
 
     // ------------------------------------------------------ value(s) by xpath
@@ -85,22 +90,20 @@ public interface Node
      * the xpath expression must be attribute or a text nodes. Returns an empty
      * array if no mathing nodes were found.
      * 
-     * @param node
      * @param xpath
      * @return The string values matched by the xpath or an empty array if no
      *         mathing nodes were found.
      */
-    String[] selectValues(Node node, String xpath);
+    String[] selectValues(String xpath);
 
 
     /**
      * Returns the string value for the specified xpath. The node selected by
      * the xpath expression must be an attribute or a text node.
      * 
-     * @param node
      * @param xpath
      * @return The string value matched by the xpath or <code>null</code> if no
      *         mathing node were found.
      */
-    String selectValue(Node node, String xpath);
+    String selectValue(String xpath);
 }

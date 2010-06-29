@@ -7,30 +7,23 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.google.gwt.junit.client.GWTTestCase;
+import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
 
 /**
  * @author $Author$
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
+public abstract class AbstractFatGlobalItemReaderTest extends AbstractPiritiTest
 {
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;
 
 
     @Override
-    public String getModuleName()
-    {
-        return "name.pehl.piriti.PiritiTest";
-    }
-
-
-    @Override
     protected void gwtSetUp() throws Exception
     {
-        System.out.println("Running " + getClass().getName());
+        super.gwtSetUp();
 
         // Setup collection fixtures
         setOfIntegerObjectsFixture = new HashSet<Integer>();
