@@ -7,8 +7,8 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.TextResource;
 
 /**
- * @author $LastChangedBy:$
- * @version $LastChangedRevision:$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 
 public interface FatGlobalItemResources extends ClientBundle
