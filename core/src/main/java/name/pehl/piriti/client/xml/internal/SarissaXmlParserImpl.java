@@ -11,7 +11,8 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 629
+ *          $
  */
 public class SarissaXmlParserImpl implements XmlParser
 {
@@ -20,19 +21,23 @@ public class SarissaXmlParserImpl implements XmlParser
 
     // ---------------------------------------------------------- parse methods
 
+    @Override
     public Node parse(String xml)
     {
-        return parse(xml, null);
+        return parseImpl(xml, null);
+    }
+
+
+    @Override
+    public Node parse(String xml, String namespaces)
+    {
+        return parseImpl(xml, namespaces);
     }
 
 
     @Override
     public Node parse(String xml, Map<String, String> namespaces)
     {
-        if (xml == null || xml.length() == 0)
-        {
-            return null;
-        }
         return parseImpl(xml, getNamespaces(namespaces));
     }
 
@@ -88,8 +93,12 @@ public class SarissaXmlParserImpl implements XmlParser
 
 
     private native Node parseImpl(String xml, String namespaces) /*-{
-        var domDoc = @name.pehl.piriti.client.xml.internal.SarissaXmlParserImpl::xmlParser.parseFromString(xml, "text/xml");
+        if (xml == null || xml == "")
+        {
+            return null;
+        }
 
+        var domDoc = @name.pehl.piriti.client.xml.internal.SarissaXmlParserImpl::xmlParser.parseFromString(xml, "text/xml");
         var error = $wnd.Sarissa.getParseErrorText(domDoc);
         if (error != $wnd.Sarissa.PARSED_OK) 
         {

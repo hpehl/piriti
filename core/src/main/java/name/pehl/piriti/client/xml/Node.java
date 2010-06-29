@@ -16,7 +16,7 @@ public interface Node
      * 
      * @return The name
      */
-    public String getNodeName();
+    String getNodeName();
 
 
     /**
@@ -26,7 +26,7 @@ public interface Node
      * 
      * @return The node value.
      */
-    public String getNodeValue();
+    String getNodeValue();
 
 
     /**
@@ -34,7 +34,7 @@ public interface Node
      * 
      * @return The node type.
      */
-    public NodeType getNodeType();
+    NodeType getNodeType();
 
 
     /**
@@ -44,7 +44,18 @@ public interface Node
      *            The name of the attribute
      * @return The value of the attribute, <code>null</code> if not found.
      */
-    public String getAttribute(String name);
+    String getAttribute(String name);
+
+
+    /**
+     * Returns the root node of the document in case the current node is the
+     * document node. If the current node is not the document node,
+     * <code>null</code> is returned.
+     * 
+     * @return the root node if the current node is the document node,
+     *         <code>null</code> otherwise.
+     */
+    Node getRoot();
 
 
     // ----------------------------------------------- nodes as direct children

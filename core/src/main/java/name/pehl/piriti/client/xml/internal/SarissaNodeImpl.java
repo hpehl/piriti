@@ -62,6 +62,24 @@ public class SarissaNodeImpl implements Node
     }-*/;
 
 
+    @Override
+    public Node getRoot()
+    {
+        if (NodeType.DOCUMENT.equals(getNodeType()))
+        {
+            List<Node> children = getChildNodes();
+            for (Node child : children)
+            {
+                if (NodeType.ELEMENT.equals(child.getNodeType()))
+                {
+                    return child;
+                }
+            }
+        }
+        return null;
+    }
+
+
     // ----------------------------------------------- nodes as direct children
 
     @Override
