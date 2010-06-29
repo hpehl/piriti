@@ -59,7 +59,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         super.createMemberVariables(writer);
         writer.write("private XmlRegistry xmlRegistry;");
-        writer.write("private XPath xpath;");
+        writer.write("private XmlParser xmlParser;");
         writer.write("private Map<String,String> namespaces;");
     }
 
@@ -70,7 +70,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         super.createConstructorBody(writer);
         writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
-        writer.write("this.xpath = XmlGinjector.INJECTOR.getXPath();");
+        writer.write("this.xmlParser = XmlGinjector.INJECTOR.getXmlParser();");
         writer.write("this.namespaces = new HashMap<String,String>();");
     }
 
@@ -80,25 +80,19 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         super.createMethods(writer);
 
-        readListFromDocument(writer);
+        readList(writer);
         writer.newline();
 
-        readListFromDocumentUsingXpath(writer);
-        writer.newline();
-
-        readListFromElement(writer);
-        writer.newline();
-
-        readListFromElementUsingXpath(writer);
-        writer.newline();
-
-        readFromDocument(writer);
-        writer.newline();
-
-        readFromElement(writer);
+        readListXpath(writer);
         writer.newline();
 
         internalReadList(writer);
+        writer.newline();
+
+//        read(writer);
+        writer.newline();
+
+//        readXpath(writer);
         writer.newline();
 
         internalRead(writer);
@@ -120,55 +114,64 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     // ------------------------------------------------------ read list methods
 
-    protected void readListFromDocument(IndentedWriter writer) throws UnableToCompleteException
+    protected void readList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(Document document) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(Node node) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("this.xpath.applyNamespaces(document, this.namespaces);");
-        writer.write("return internalReadList(this.xpath.getElements(document));");
+        writer.write("Node n = node;");
+        writer.write("if (node != null && NodeType.DOCUMENT.equals(node.getType())) {");
+        writer.indent();
+        writer.write("n = node.getRoot();");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return internalReadList(n, null);");
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void readListFromDocumentUsingXpath(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListXpath(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(Document document, String xpath) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(Node node, String xpath) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("this.xpath.applyNamespaces(document, this.namespaces);");
-        writer.write("return internalReadList(this.xpath.getElements(document, xpath));");
+        writer.write("Node n = node;");
+        writer.write("if (node != null && NodeType.DOCUMENT.equals(node.getType())) {");
+        writer.indent();
+        writer.write("n = node.getRoot();");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return internalReadList(n, xpath);");
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void readListFromElement(IndentedWriter writer) throws UnableToCompleteException
+    protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(Element element) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("private List<%s> internalReadList(Node node, String xpath) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("if (element != null) {");
+        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("if (elements != null && !elements.isEmpty()) {");
         writer.indent();
-        writer.write("this.xpath.applyNamespaces(element.getOwnerDocument(), this.namespaces);");
+        writer.write("for (Element element : elements) {");
+        writer.indent();
+        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("models.add(model);");
         writer.outdent();
         writer.write("}");
-        writer.write("return internalReadList(this.xpath.getElements(element));");
+        writer.write("int index = 0;");
+        writer.write("for (Element element : elements) {");
+        writer.indent();
+        writer.write("%s model = models.get(index++);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("readFields(element, model);");
+        writer.write("readIdRefs(element, model);");
         writer.outdent();
         writer.write("}");
-    }
-
-
-    protected void readListFromElementUsingXpath(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("public List<%s> readList(Element element, String xpath) {", modelType
-                .getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("if (element != null) {");
-        writer.indent();
-        writer.write("this.xpath.applyNamespaces(element.getOwnerDocument(), this.namespaces);");
         writer.outdent();
         writer.write("}");
-        writer.write("return internalReadList(this.xpath.getElements(element, xpath));");
+        writer.write("return models;");
         writer.outdent();
         writer.write("}");
     }
@@ -205,36 +208,6 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     // --------------------------------------------------------- helper methods
 
-    protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("private List<%s> internalReadList(List<Element> elements) {", modelType
-                .getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (elements != null && !elements.isEmpty()) {");
-        writer.indent();
-        writer.write("for (Element element : elements) {");
-        writer.indent();
-        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("models.add(model);");
-        writer.outdent();
-        writer.write("}");
-        writer.write("int index = 0;");
-        writer.write("for (Element element : elements) {");
-        writer.indent();
-        writer.write("%s model = models.get(index++);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("readFields(element, model);");
-        writer.write("readIdRefs(element, model);");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return models;");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
     protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private %s internalRead(Element element) {", modelType.getParameterizedQualifiedSourceName());
@@ -268,8 +241,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
             handler.writeComment(writer, fieldContext);
             handler.writeDeclaration(writer, fieldContext);
             handler.writeConverterCode(writer, fieldContext);
-            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), fieldContext
-                    .getValueVariable());
+            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(),
+                    fieldContext.getValueVariable());
             writer.write("if (model == null) {");
             writer.indent();
             writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
@@ -295,8 +268,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readFields(Element element, %1$s model) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %1$s readFields(Element element, %1$s model) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("if (element != null) {");
         writer.indent();
@@ -313,8 +286,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readIdRefs(Element element, %1$s model) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %1$s readIdRefs(Element element, %1$s model) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("if (element != null) {");
         writer.indent();
@@ -342,14 +315,15 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 if (xmlId != null)
                 {
                     counter++;
-                    fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType, field
-                            .getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "element", "idValue");
+                    fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "element",
+                            "idValue");
                 }
             }
             if (counter > 1)
             {
-                die("There are %d @XmlId annotations in %s, but only one is allowed!", counter, modelType
-                        .getQualifiedSourceName());
+                die("There are %d @XmlId annotations in %s, but only one is allowed!", counter,
+                        modelType.getQualifiedSourceName());
             }
         }
         return fieldContext;
