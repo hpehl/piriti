@@ -11,7 +11,7 @@
     <inherits name="com.google.gwt.xml.XML" />
 
     <source path="client">
-        <exclude name="gwttest/**/*" />
+        <exclude name="gwttest" />
         <exclude name="**/*Test.java" />
     </source>
 
