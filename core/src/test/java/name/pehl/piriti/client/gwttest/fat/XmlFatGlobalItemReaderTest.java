@@ -1,8 +1,7 @@
 package name.pehl.piriti.client.gwttest.fat;
 
-import name.pehl.piriti.client.xml.Node;
-import name.pehl.piriti.client.xml.XmlGinjector;
-import name.pehl.piriti.client.xml.XmlParser;
+import name.pehl.totoe.client.Document;
+import name.pehl.totoe.client.XmlParser;
 
 /**
  * @author $Author: harald.pehl $
@@ -13,9 +12,9 @@ public class XmlFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
     public void testRead()
     {
         String xml = FatGlobalItemResources.INSTANCE.fatGlobalItemXml().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        FatGlobalItem model = FatGlobalItem.XML.read(node);
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        FatGlobalItem model = FatGlobalItem.XML.read(document);
         assertFatGlobalItem(model, true);
     }
 }

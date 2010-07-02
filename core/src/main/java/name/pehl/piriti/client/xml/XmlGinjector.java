@@ -26,12 +26,4 @@ public interface XmlGinjector extends Ginjector
      * @return
      */
     XmlRegistry getXmlRegistry();
-
-
-    /**
-     * Provides the implementation for the {@link XmlParser} implementation
-     * 
-     * @return
-     */
-    XmlParser getXmlParser();
 }

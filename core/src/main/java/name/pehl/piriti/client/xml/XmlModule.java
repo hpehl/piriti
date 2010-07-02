@@ -1,7 +1,5 @@
 package name.pehl.piriti.client.xml;
 
-import name.pehl.piriti.client.xml.internal.SarissaXmlParserImpl;
-
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
@@ -23,6 +21,5 @@ public class XmlModule extends AbstractGinModule
     protected void configure()
     {
         bind(XmlRegistry.class).to(XmlRegistryImpl.class).in(Singleton.class);
-        bind(XmlParser.class).to(SarissaXmlParserImpl.class).in(Singleton.class);
     }
 }

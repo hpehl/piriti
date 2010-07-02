@@ -3,16 +3,14 @@ package name.pehl.piriti.restlet.client.xml;
 import java.io.IOException;
 import java.util.List;
 
-import name.pehl.piriti.client.xml.Node;
-import name.pehl.piriti.client.xml.XmlGinjector;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.restlet.client.PiritiRepresentation;
+import name.pehl.totoe.client.Document;
+import name.pehl.totoe.client.XmlParser;
 
 import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.xml.DomRepresentation;
 import org.restlet.client.representation.Representation;
-
-import com.google.gwt.xml.client.Document;
 
 /**
  * Representation which uses an {@link XmlReader} for converting XML to an
@@ -31,8 +29,8 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
     /** The XmlReader for converting the XML to an instance of T. */
     private final XmlReader<T> xmlReader;
 
-    /** The wrapped node instance. */
-    private Node node;
+    /** The wrapped document instance. */
+    private Document document;
 
     /** The source XML representation. */
     private Representation xmlRepresentation;
@@ -62,13 +60,14 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
      *            The XmlReader for converting the XML to an instance of T.
      * @param mediaType
      *            The representation's media type.
-     * @param xmlDocument
+     * @param document
      *            The source DOM document.
      */
-    public PiritiXmlRepresentation(XmlReader<T> xmlReader, MediaType mediaType, Document xmlDocument)
+    public PiritiXmlRepresentation(XmlReader<T> xmlReader, MediaType mediaType, Document document)
     {
-        super(mediaType, xmlDocument);
+        super(mediaType);
         this.xmlReader = xmlReader;
+        this.document = document;
     }
 
 
@@ -112,10 +111,10 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
     public T getModel() throws IOException
     {
         T model = null;
-        Node node = getNode();
-        if (node != null)
+        Document document = lazyGetDocument();
+        if (document != null)
         {
-            model = xmlReader.read(node);
+            model = xmlReader.read(document);
         }
         return model;
     }
@@ -135,32 +134,46 @@ public class PiritiXmlRepresentation<T> extends DomRepresentation implements Pir
     public List<T> getModels() throws IOException
     {
         List<T> models = null;
-        Node node = getNode();
-        if (node != null)
+        Document document = lazyGetDocument();
+        if (document != null)
         {
-            models = xmlReader.readList(node);
+            models = xmlReader.readList(document);
         }
         return models;
     }
 
 
     /**
-     * Returns the wrapped node instance. If no node is defined yet, it attempts
-     * to parse the XML representation eventually given at construction time.
-     * Otherwise, it returns <code>null</code>.
+     * Returns the wrapped document instance. If no document is defined yet, it
+     * attempts to parse the XML representation eventually given at construction
+     * time. Otherwise, it returns <code>null</code>.
      * 
-     * @return The wrapped node instance.
+     * @return The wrapped document instance.
      * @throws IOException
      */
-    public Node getNode() throws IOException
+    protected Document lazyGetDocument() throws IOException
     {
-        if (node == null)
+        if (document == null)
         {
             if (xmlRepresentation != null)
             {
-                node = XmlGinjector.INJECTOR.getXmlParser().parse(xmlRepresentation.getText());
+                document = new XmlParser().parse(xmlRepresentation.getText());
             }
         }
-        return node;
+        return document;
+    }
+
+
+    /**
+     * Returns always <code>null</code>.
+     * 
+     * @return <code>null</code>
+     * @throws IOException
+     * @see org.restlet.client.ext.xml.DomRepresentation#getDocument()
+     */
+    @Override
+    public com.google.gwt.xml.client.Document getDocument() throws IOException
+    {
+        return null;
     }
 }

@@ -2,9 +2,8 @@ package name.pehl.piriti.client.gwttest.namespace;
 
 import static name.pehl.piriti.client.gwttest.namespace.LotteryTicketResources.*;
 import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
-import name.pehl.piriti.client.xml.Node;
-import name.pehl.piriti.client.xml.XmlGinjector;
-import name.pehl.piriti.client.xml.XmlParser;
+import name.pehl.totoe.client.Document;
+import name.pehl.totoe.client.XmlParser;
 
 /**
  * @author $Author$
@@ -16,9 +15,9 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testDefaultNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketDefaultNs().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        LotteryTicketDefaultNamespace lt = LotteryTicketDefaultNamespace.XML.read(node);
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        LotteryTicketDefaultNamespace lt = LotteryTicketDefaultNamespace.XML.read(document);
         assertLotteryTicket(lt);
     }
 
@@ -26,9 +25,9 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testNoDefaultNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketNoDefaultNs().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        LotteryTicket lt = LotteryTicket.XML.read(node);
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        LotteryTicket lt = LotteryTicket.XML.read(document);
         assertLotteryTicket(lt);
     }
 
@@ -36,9 +35,9 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testDefaultAndNestedNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketDefaultAndNestedNs().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        LotteryTicketDefaultNamespace lt = LotteryTicketDefaultNamespace.XML.read(node);
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        LotteryTicketDefaultNamespace lt = LotteryTicketDefaultNamespace.XML.read(document);
         assertLotteryTicket(lt);
     }
 
@@ -46,9 +45,9 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testNoDefaultAndNestedNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketNoDefaultAndNestedNs().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        LotteryTicket lt = LotteryTicket.XML.read(node);
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        LotteryTicket lt = LotteryTicket.XML.read(document);
         assertLotteryTicket(lt);
     }
 

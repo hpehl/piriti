@@ -59,7 +59,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         super.createMemberVariables(writer);
         writer.write("private XmlRegistry xmlRegistry;");
-        writer.write("private XmlParser xmlParser;");
+        writer.write("private XPath xpath;");
         writer.write("private Map<String,String> namespaces;");
     }
 
@@ -70,7 +70,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         super.createConstructorBody(writer);
         writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
-        writer.write("this.xmlParser = XmlGinjector.INJECTOR.getXmlParser();");
+        writer.write("this.xpath = XmlGinjector.INJECTOR.getXPath();");
         writer.write("this.namespaces = new HashMap<String,String>();");
     }
 
@@ -80,19 +80,25 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         super.createMethods(writer);
 
-        readList(writer);
+        readListFromDocument(writer);
         writer.newline();
 
-        readListXpath(writer);
+        readListFromDocumentUsingXpath(writer);
+        writer.newline();
+
+        readListFromElement(writer);
+        writer.newline();
+
+        readListFromElementUsingXpath(writer);
+        writer.newline();
+
+        readFromDocument(writer);
+        writer.newline();
+
+        readFromElement(writer);
         writer.newline();
 
         internalReadList(writer);
-        writer.newline();
-
-//        read(writer);
-        writer.newline();
-
-//        readXpath(writer);
         writer.newline();
 
         internalRead(writer);
@@ -114,43 +120,80 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     // ------------------------------------------------------ read list methods
 
-    protected void readList(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(Node node) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("Node n = node;");
-        writer.write("if (node != null && NodeType.DOCUMENT.equals(node.getType())) {");
-        writer.indent();
-        writer.write("n = node.getRoot();");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return internalReadList(n, null);");
+        writer.write("return internalReadList(this.xpath.getElements(document));");
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void readListXpath(IndentedWriter writer) throws UnableToCompleteException
+    protected void readListFromDocumentUsingXpath(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(Node node, String xpath) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(Document document, String xpath) {", modelType
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("Node n = node;");
-        writer.write("if (node != null && NodeType.DOCUMENT.equals(node.getType())) {");
-        writer.indent();
-        writer.write("n = node.getRoot();");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return internalReadList(n, xpath);");
+        writer.write("return internalReadList(this.xpath.getElements(document, xpath));");
         writer.outdent();
         writer.write("}");
     }
 
+
+    protected void readListFromElement(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public List<%s> readList(Element element) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("return internalReadList(this.xpath.getElements(element));");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void readListFromElementUsingXpath(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public List<%s> readList(Element element, String xpath) {", modelType
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("return internalReadList(this.xpath.getElements(element, xpath));");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    // ---------------------------------------------------- read single methods
+
+    protected void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public %s read(Document document) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("return read(document.getDocumentElement());");
+        writer.outdent();
+        writer.write("}");
+
+    }
+
+
+    protected void readFromElement(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public %s read(Element element) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("readFields(element, model);");
+        writer.write("readIdRefs(element, model);");
+        writer.write("return model;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    // --------------------------------------------------------- helper methods
 
     protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private List<%s> internalReadList(Node node, String xpath) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("private List<%s> internalReadList(List<Element> elements) {", modelType
+                .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (elements != null && !elements.isEmpty()) {");
@@ -177,42 +220,12 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    // ---------------------------------------------------- read single methods
-
-    protected void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("public %s read(Document document) {", modelType.getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("this.xpath.applyNamespaces(document, this.namespaces);");
-        writer.write("return internalRead(document.getDocumentElement());");
-        writer.outdent();
-        writer.write("}");
-
-    }
-
-
-    protected void readFromElement(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("public %s read(Element element) {", modelType.getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("if (element != null) {");
-        writer.indent();
-        writer.write("this.xpath.applyNamespaces(element.getOwnerDocument(), this.namespaces);");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return internalRead(element);");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    // --------------------------------------------------------- helper methods
-
     protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private %s internalRead(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("model = readIds(element);");
         writer.write("readFields(element, model);");
         writer.write("readIdRefs(element, model);");
         writer.write("return model;");
@@ -241,8 +254,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
             handler.writeComment(writer, fieldContext);
             handler.writeDeclaration(writer, fieldContext);
             handler.writeConverterCode(writer, fieldContext);
-            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(),
-                    fieldContext.getValueVariable());
+            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), fieldContext
+                    .getValueVariable());
             writer.write("if (model == null) {");
             writer.indent();
             writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
@@ -268,8 +281,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readFields(Element element, %1$s model) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("private %1$s readFields(Element element, %1$s model) {", modelType
+                .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("if (element != null) {");
         writer.indent();
@@ -286,8 +299,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readIdRefs(Element element, %1$s model) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("private %1$s readIdRefs(Element element, %1$s model) {", modelType
+                .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("if (element != null) {");
         writer.indent();
@@ -315,15 +328,14 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 if (xmlId != null)
                 {
                     counter++;
-                    fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "element",
-                            "idValue");
+                    fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType, field
+                            .getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "element", "idValue");
                 }
             }
             if (counter > 1)
             {
-                die("There are %d @XmlId annotations in %s, but only one is allowed!", counter,
-                        modelType.getQualifiedSourceName());
+                die("There are %d @XmlId annotations in %s, but only one is allowed!", counter, modelType
+                        .getQualifiedSourceName());
             }
         }
         return fieldContext;
@@ -438,10 +450,16 @@ public class XmlReaderCreator extends AbstractReaderCreator
         }
         return xpath;
     }
-
-
+    
+    
     protected void namespaceMethods(IndentedWriter writer)
     {
+        writer.write("private boolean hasDefaultNamespace() {");
+        writer.indent();
+        writer.write("return this.namespaces.containsKey(DNS);");
+        writer.outdent();
+        writer.write("}");
+        
         writer.write("public void registerNamespace(String uri) {");
         writer.indent();
         writer.write("if (uri != null && uri.length() != 0) {");
@@ -451,8 +469,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        writer.newline();
-
+        
         writer.write("public void registerNamespace(String prefix, String uri) {");
         writer.indent();
         writer.write("if (prefix != null && prefix.length() != 0 && uri != null && uri.length() != 0) {");

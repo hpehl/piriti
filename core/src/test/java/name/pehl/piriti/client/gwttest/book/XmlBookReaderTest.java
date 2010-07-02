@@ -2,9 +2,8 @@ package name.pehl.piriti.client.gwttest.book;
 
 import java.util.List;
 
-import name.pehl.piriti.client.xml.Node;
-import name.pehl.piriti.client.xml.XmlGinjector;
-import name.pehl.piriti.client.xml.XmlParser;
+import name.pehl.totoe.client.Document;
+import name.pehl.totoe.client.XmlParser;
 
 /**
  * @author $Author: harald.pehl $
@@ -15,9 +14,9 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     public void testRead()
     {
         String xml = BookResources.INSTANCE.bookXml().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        Book book = Book.XML.read(node);
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        Book book = Book.XML.read(document);
         assertBook(book, true, true);
     }
 
@@ -25,9 +24,9 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     public void testReadList()
     {
         String xml = BookResources.INSTANCE.booksXml().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        List<Book> books = Book.XML.readList(node);
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        List<Book> books = Book.XML.readList(document);
         assertBooks(books, true, true);
     }
 
@@ -35,9 +34,9 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     public void testReadListWithXpath()
     {
         String xml = BookResources.INSTANCE.booksXml().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        List<Book> books = Book.XML.readList(node, "/books/book");
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        List<Book> books = Book.XML.readList(document, "/books/book");
         assertBooks(books, true, true);
     }
 
@@ -45,9 +44,9 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     public void testReadListWithWrongXpath()
     {
         String xml = BookResources.INSTANCE.booksXml().getText();
-        XmlParser xmlParser = XmlGinjector.INJECTOR.getXmlParser();
-        Node node = xmlParser.parse(xml);
-        List<Book> books = Book.XML.readList(node, "//moo");
+        XmlParser xmlParser = new XmlParser();
+        Document document = xmlParser.parse(xml);
+        List<Book> books = Book.XML.readList(document, "//moo");
         assertNotNull(books);
         assertTrue(books.isEmpty());
     }

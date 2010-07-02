@@ -9,6 +9,7 @@
     <inherits name="com.google.gwt.json.JSON" />
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.xml.XML" />
+    <inherits name="name.pehl.totoe.Totoe" />
 
     <source path="client">
         <exclude name="gwttest" />
@@ -16,8 +17,6 @@
     </source>
 
     <script src="json2.js" />
-    <script src="sarissa.js" />
-    <script src="sarissa_ieemu_xpath.js" />
 
     <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">

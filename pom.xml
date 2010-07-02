@@ -72,6 +72,11 @@
             <name>Piriti Repository</name>
             <url>http://piriti.googlecode.com/svn/repository</url>
         </repository>
+        <repository>
+            <id>totoe-repo</id>
+            <name>Taoki Repository</name>
+            <url>http://totoe.googlecode.com/svn/repository</url>
+        </repository>
         <repository>  
             <id>maven-restlet</id>  
             <name>Public online Restlet repository</name>  
@@ -113,6 +118,7 @@
 
 
     <properties>
+        <totoe.version>0.1</totoe.version>
         <gwt.version>2.0.3</gwt.version>
         <gxt.version>2.1.1</gxt.version>
         <restlet.version>2.0-RC4</restlet.version>
@@ -158,6 +164,14 @@
                 <scope>provided</scope>
             </dependency>
             
+            <!-- Totoe -->
+            <dependency>
+                <groupId>name.pehl</groupId>
+                <artifactId>totoe</artifactId>
+                <version>${totoe.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- GWT -->
             <dependency>
                 <groupId>com.google.gwt</groupId>
@@ -239,6 +253,10 @@
 
     <!-- Global dependencies used in all modules -->
     <dependencies>
+        <dependency>
+            <groupId>name.pehl</groupId>
+            <artifactId>totoe</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>

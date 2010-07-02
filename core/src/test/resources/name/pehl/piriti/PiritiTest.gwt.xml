@@ -10,6 +10,7 @@
     <inherits name="com.google.gwt.resources.Resources" />
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.xml.XML" />
+    <inherits name="name.pehl.totoe.Totoe" />
 
     <source path="client">
         <exclude name="converter/*Test.java" />
