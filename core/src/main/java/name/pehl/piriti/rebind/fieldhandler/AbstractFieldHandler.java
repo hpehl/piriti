@@ -1,6 +1,5 @@
 package name.pehl.piriti.rebind.fieldhandler;
 
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.client.GWT;

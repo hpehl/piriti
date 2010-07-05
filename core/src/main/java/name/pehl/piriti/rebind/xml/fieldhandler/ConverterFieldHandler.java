@@ -2,9 +2,9 @@ package name.pehl.piriti.rebind.xml.fieldhandler;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 /**
@@ -23,12 +23,12 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * @param writer
      * @param fieldContext
      * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#writeReadValueAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.FieldContext)
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     protected void writeReadValueAsString(IndentedWriter writer, FieldContext fieldContext)
     {
-        writer.write("String %s = this.xpath.getValue(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
+        writer.write("String %s = %s.selectValue(\"%s\");", fieldContext.getValueAsStringVariable(),
                 fieldContext.getInputVariable(), fieldContext.getPath());
     }
 }

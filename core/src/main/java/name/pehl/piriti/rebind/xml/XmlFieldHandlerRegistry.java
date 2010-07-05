@@ -13,9 +13,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import name.pehl.piriti.rebind.AssignmentType;
-import name.pehl.piriti.rebind.FieldContext;
-import name.pehl.piriti.rebind.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler;
@@ -129,7 +129,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      * 
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.FieldContext)
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     public FieldHandler findFieldHandler(FieldContext fieldContext)
     {

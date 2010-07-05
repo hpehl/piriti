@@ -3,10 +3,10 @@ package name.pehl.piriti.rebind.json;
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.AssignmentType;
-import name.pehl.piriti.rebind.FieldContext;
-import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;

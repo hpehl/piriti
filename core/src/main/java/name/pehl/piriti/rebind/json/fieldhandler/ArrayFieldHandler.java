@@ -1,9 +1,9 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
 import name.pehl.piriti.rebind.AssignmentType;
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractArrayFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -27,7 +27,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.FieldContext)
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

@@ -3,6 +3,8 @@ package name.pehl.piriti.rebind;
 import java.io.PrintWriter;
 import java.util.List;
 
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
+
 import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.ConfigurationProperty;
 import com.google.gwt.core.ext.GeneratorContext;

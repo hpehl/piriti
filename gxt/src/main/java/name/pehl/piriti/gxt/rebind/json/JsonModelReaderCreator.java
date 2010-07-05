@@ -4,10 +4,10 @@ import name.pehl.piriti.gxt.client.json.JsonField;
 import name.pehl.piriti.gxt.client.json.JsonModel;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.AssignmentType;
-import name.pehl.piriti.rebind.FieldContext;
-import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.json.JsonReaderCreator;
 
 import com.google.gwt.core.ext.GeneratorContext;

@@ -2,8 +2,8 @@ package name.pehl.piriti.gxt.rebind.json.fieldhandler;
 
 import name.pehl.piriti.gxt.rebind.CodeGeneration;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;

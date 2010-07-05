@@ -1,11 +1,11 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
 import name.pehl.piriti.client.xml.XmlReader;
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AbstractCollectionFieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.AbstractRegistryFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -32,7 +32,7 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.FieldContext)
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
@@ -78,7 +78,7 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         String fqXmlReader = fieldContext.getMetadata(FQ_XML_READER);
 
         String references = fieldContext.newVariableName("References");
-        writer.write("String[] %s = this.xpath.getValues(%s, \"%s\");", references, fieldContext.getInputVariable(),
+        writer.write("String[] %s = %s.selectValues(\"%s\");", references, fieldContext.getInputVariable(),
                 fieldContext.getPath());
         writer.write("if (%1$s != null && %1$s.length != 0) {", references);
         writer.indent();

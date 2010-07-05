@@ -6,8 +6,8 @@ import name.pehl.piriti.gxt.rebind.xml.fieldhandler.ConverterFieldHandler;
 import name.pehl.piriti.gxt.rebind.xml.fieldhandler.EnumFieldHandler;
 import name.pehl.piriti.gxt.rebind.xml.fieldhandler.StringFieldHandler;
 import name.pehl.piriti.gxt.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
-import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.xml.XmlFieldHandlerRegistry;
 
 /**

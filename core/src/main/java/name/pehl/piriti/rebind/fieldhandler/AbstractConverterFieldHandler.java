@@ -2,7 +2,6 @@ package name.pehl.piriti.rebind.fieldhandler;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
@@ -24,7 +23,7 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return always <code>true</code>
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.FieldContext)
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

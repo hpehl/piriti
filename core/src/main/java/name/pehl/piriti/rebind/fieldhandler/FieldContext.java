@@ -1,9 +1,10 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.fieldhandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.AssignmentType;
+import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;

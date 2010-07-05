@@ -1,7 +1,6 @@
 package name.pehl.piriti.rebind.fieldhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -24,7 +23,7 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.FieldContext)
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

@@ -1,9 +1,9 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -26,7 +26,7 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @return
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.FieldContext)
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
@@ -57,7 +57,7 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.FieldContext)
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

@@ -1,6 +1,5 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.fieldhandler;
 
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 /**
  * Registry to find {@link FieldHandler}s based on a {@link FieldContext}.

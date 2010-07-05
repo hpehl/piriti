@@ -12,10 +12,10 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.FieldContext;
-import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.json.fieldhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.BooleanFieldHandler;
 import name.pehl.piriti.rebind.json.fieldhandler.CollectionFieldHandler;
@@ -152,7 +152,7 @@ public class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * 
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.FieldContext)
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     public FieldHandler findFieldHandler(FieldContext fieldContext)
     {

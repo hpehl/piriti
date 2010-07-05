@@ -1,8 +1,8 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -21,7 +21,7 @@ public class StringFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return always <code>true</code>
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.FieldContext)
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
@@ -37,12 +37,12 @@ public class StringFieldHandler extends AbstractFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.FieldContext)
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("%s = this.xpath.getValue(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
-                .getInputVariable(), fieldContext.getPath());
+        writer.write("%s = %s.selectValue(\"%s\");", fieldContext.getValueVariable(), fieldContext.getInputVariable(),
+                fieldContext.getPath());
     }
 }

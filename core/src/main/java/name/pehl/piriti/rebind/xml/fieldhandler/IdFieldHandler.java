@@ -1,13 +1,13 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public class IdFieldHandler extends StringFieldHandler
 {

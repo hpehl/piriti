@@ -5,11 +5,11 @@ import name.pehl.piriti.client.xml.XmlId;
 import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.AssignmentType;
-import name.pehl.piriti.rebind.FieldContext;
-import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
@@ -104,6 +104,9 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
         readIdRefs(writer);
         writer.newline();
+
+        filterElements(writer);
+        writer.newline();
     }
 
 
@@ -113,7 +116,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(document.getRoot().getChildren());");
+        writer.write("return internalReadList(filterElements(document.getRoot().getChildren()));");
         writer.outdent();
         writer.write("}");
     }
@@ -121,10 +124,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readListFromDocumentUsingXpath(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(Document document, String xpath) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(Document document, String xpath) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(document.selectNodes(xpath));");
+        writer.write("return internalReadList(filterElements(document.selectNodes(xpath)));");
         writer.outdent();
         writer.write("}");
     }
@@ -134,7 +137,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(element.getChildren());");
+        writer.write("return internalReadList(filterElements(element.getChildren()));");
         writer.outdent();
         writer.write("}");
     }
@@ -142,10 +145,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readListFromElementUsingXpath(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(Element element, String xpath) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(Element element, String xpath) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(element.selectNodes(xpath));");
+        writer.write("return internalReadList(filterElements(element.selectNodes(xpath)));");
         writer.outdent();
         writer.write("}");
     }
@@ -181,24 +184,24 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private List<%s> internalReadList(List<Node> nodes) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("private List<%s> internalReadList(List<Element> elements) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (!nodes.isEmpty()) {");
+        writer.write("if (!elements.isEmpty()) {");
         writer.indent();
-        writer.write("for (Node node : nodes) {");
+        writer.write("for (Element element : elements) {");
         writer.indent();
-        writer.write("%s model = readIds(node);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
         writer.write("models.add(model);");
         writer.outdent();
         writer.write("}");
         writer.write("int index = 0;");
-        writer.write("for (Node node : nodes) {");
+        writer.write("for (Element element : elements) {");
         writer.indent();
         writer.write("%s model = models.get(index++);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("readFields(node, model);");
-        writer.write("readIdRefs(node, model);");
+        writer.write("readFields(element, model);");
+        writer.write("readIdRefs(element, model);");
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -220,17 +223,17 @@ public class XmlReaderCreator extends AbstractReaderCreator
             validIdField = handler != null && handler.isValid(writer, fieldContext);
         }
 
-        writer.write("private %s readIds(Node node) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("private %s readIds(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("if (node != null) {");
+        writer.write("if (element != null) {");
         writer.indent();
         if (validIdField)
         {
             handler.writeComment(writer, fieldContext);
             handler.writeDeclaration(writer, fieldContext);
             handler.writeConverterCode(writer, fieldContext);
-            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), fieldContext
-                    .getValueVariable());
+            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(),
+                    fieldContext.getValueVariable());
             writer.write("if (model == null) {");
             writer.indent();
             writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
@@ -256,10 +259,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readFields(node node, %1$s model) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %1$s readFields(Element element, %1$s model) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("if (node != null) {");
+        writer.write("if (element != null) {");
         writer.indent();
 
         handleFields(writer);
@@ -274,10 +277,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readIdRefs(Node node, %1$s model) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %1$s readIdRefs(Element element, %1$s model) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("if (node != null) {");
+        writer.write("if (element != null) {");
         writer.indent();
 
         handleIdRefs(writer);
@@ -285,6 +288,26 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.outdent();
         writer.write("}");
         writer.write("return model;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void filterElements(IndentedWriter writer)
+    {
+        writer.write("private List<Element> filterElements(List<Node> nodes) {");
+        writer.indent();
+        writer.write("List<Element> elements = new ArrayList<Element>();");
+        writer.write("for (Node node : nodes) {");
+        writer.indent();
+        writer.write("if (node instanceof Element) {");
+        writer.indent();
+        writer.write("elements.add((Element) node);");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return elements;");
         writer.outdent();
         writer.write("}");
     }
@@ -303,14 +326,15 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 if (xmlId != null)
                 {
                     counter++;
-                    fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType, field
-                            .getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "node", "idValue");
+                    fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                            field.getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "element",
+                            "idValue");
                 }
             }
             if (counter > 1)
             {
-                die("There are %d @XmlId annotations in %s, but only one is allowed!", counter, modelType
-                        .getQualifiedSourceName());
+                die("There are %d @XmlId annotations in %s, but only one is allowed!", counter,
+                        modelType.getQualifiedSourceName());
             }
         }
         return fieldContext;
@@ -330,8 +354,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 {
                     String xpath = calculateXpath(field, xmlField.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING, "node",
-                            "value" + counter);
+                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
+                            "element", "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if ((handler instanceof XmlRegistryFieldHandler || handler instanceof ArrayFieldHandler || handler instanceof CollectionFieldHandler)
                             && handler.isValid(writer, fieldContext))
@@ -362,8 +386,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 {
                     String xpath = calculateXpath(field, xmlField.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING, "node",
-                            "value" + counter);
+                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
+                            "element", "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null && handler.isValid(writer, fieldContext))
                     {
@@ -393,8 +417,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 {
                     String xpath = calculateXpath(field, xmlIdRef.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, null, AssignmentType.IDREF, "node", "idRefValue"
-                                    + counter);
+                            field.getType(), field.getName(), xpath, null, AssignmentType.IDREF, "element",
+                            "idRefValue" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null && handler.isValid(writer, fieldContext))
                     {

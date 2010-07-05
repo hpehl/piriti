@@ -1,9 +1,9 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
 import name.pehl.piriti.client.xml.XmlReader;
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractRegistryFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -25,7 +25,7 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.FieldContext)
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
@@ -37,11 +37,11 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
                 .getQualifiedSourceName(), fieldContext.getValueVariable());
         writer.write("if (%sReader != null) {", fieldContext.getValueVariable());
         writer.indent();
-        writer.write("Element nestedElement = this.xpath.getElement(%s, \"%s\");", fieldContext.getInputVariable(),
+        writer.write("Node nestedNode = %s.selectNode(\"%s\");", fieldContext.getInputVariable(),
                 fieldContext.getPath());
-        writer.write("if (nestedElement != null) {");
+        writer.write("if (nestedNode != null && nestedNode instanceof Element) {");
         writer.indent();
-        writer.write("%s = %s.%s.read(nestedElement);", fieldContext.getValueVariable(), classType
+        writer.write("%s = %s.%s.read((Element) nestedNode);", fieldContext.getValueVariable(), classType
                 .getQualifiedSourceName(), xmlReaderField.getName());
         writer.outdent();
         writer.write("}");

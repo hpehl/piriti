@@ -8,8 +8,8 @@ import name.pehl.piriti.gxt.rebind.json.fieldhandler.EnumFieldHandler;
 import name.pehl.piriti.gxt.rebind.json.fieldhandler.JsonRegistryFieldHandler;
 import name.pehl.piriti.gxt.rebind.json.fieldhandler.NumberFieldHandler;
 import name.pehl.piriti.gxt.rebind.json.fieldhandler.StringFieldHandler;
-import name.pehl.piriti.rebind.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.json.JsonFieldHandlerRegistry;
 
 /**

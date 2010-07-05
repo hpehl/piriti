@@ -1,7 +1,7 @@
 package name.pehl.piriti.gxt.rebind;
 
-import name.pehl.piriti.rebind.FieldContext;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 
 /**
  * @author $Author$
