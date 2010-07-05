@@ -47,9 +47,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createImports(writer);
-        writer.write("import com.google.gwt.xml.client.Document;");
-        writer.write("import com.google.gwt.xml.client.Element;");
         writer.write("import name.pehl.piriti.client.xml.*;");
+        writer.write("import name.pehl.totoe.client.*;");
         writer.write("import static name.pehl.piriti.client.xml.XmlReader.*;");
     }
 
@@ -59,8 +58,6 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         super.createMemberVariables(writer);
         writer.write("private XmlRegistry xmlRegistry;");
-        writer.write("private XPath xpath;");
-        writer.write("private Map<String,String> namespaces;");
     }
 
 
@@ -70,8 +67,6 @@ public class XmlReaderCreator extends AbstractReaderCreator
         super.createConstructorBody(writer);
         writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
-        writer.write("this.xpath = XmlGinjector.INJECTOR.getXPath();");
-        writer.write("this.namespaces = new HashMap<String,String>();");
     }
 
 
@@ -101,9 +96,6 @@ public class XmlReaderCreator extends AbstractReaderCreator
         internalReadList(writer);
         writer.newline();
 
-        internalRead(writer);
-        writer.newline();
-
         readIds(writer);
         writer.newline();
 
@@ -111,9 +103,6 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.newline();
 
         readIdRefs(writer);
-        writer.newline();
-
-        namespaceMethods(writer);
         writer.newline();
     }
 
@@ -124,7 +113,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(this.xpath.getElements(document));");
+        writer.write("return internalReadList(document.getRoot().getChildren());");
         writer.outdent();
         writer.write("}");
     }
@@ -135,7 +124,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("public List<%s> readList(Document document, String xpath) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(this.xpath.getElements(document, xpath));");
+        writer.write("return internalReadList(document.selectNodes(xpath));");
         writer.outdent();
         writer.write("}");
     }
@@ -145,7 +134,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public List<%s> readList(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(this.xpath.getElements(element));");
+        writer.write("return internalReadList(element.getChildren());");
         writer.outdent();
         writer.write("}");
     }
@@ -156,7 +145,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("public List<%s> readList(Element element, String xpath) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return internalReadList(this.xpath.getElements(element, xpath));");
+        writer.write("return internalReadList(element.selectNodes(xpath));");
         writer.outdent();
         writer.write("}");
     }
@@ -168,7 +157,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         writer.write("public %s read(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return read(document.getDocumentElement());");
+        writer.write("return read(document.getRoot());");
         writer.outdent();
         writer.write("}");
 
@@ -192,43 +181,29 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private List<%s> internalReadList(List<Element> elements) {", modelType
+        writer.write("private List<%s> internalReadList(List<Node> nodes) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (elements != null && !elements.isEmpty()) {");
+        writer.write("if (!nodes.isEmpty()) {");
         writer.indent();
-        writer.write("for (Element element : elements) {");
+        writer.write("for (Node node : nodes) {");
         writer.indent();
-        writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
+        writer.write("%s model = readIds(node);", modelType.getParameterizedQualifiedSourceName());
         writer.write("models.add(model);");
         writer.outdent();
         writer.write("}");
         writer.write("int index = 0;");
-        writer.write("for (Element element : elements) {");
+        writer.write("for (Node node : nodes) {");
         writer.indent();
         writer.write("%s model = models.get(index++);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("readFields(element, model);");
-        writer.write("readIdRefs(element, model);");
+        writer.write("readFields(node, model);");
+        writer.write("readIdRefs(node, model);");
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.write("return models;");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("private %s internalRead(Element element) {", modelType.getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
-        writer.write("model = readIds(element);");
-        writer.write("readFields(element, model);");
-        writer.write("readIdRefs(element, model);");
-        writer.write("return model;");
         writer.outdent();
         writer.write("}");
     }
@@ -245,9 +220,9 @@ public class XmlReaderCreator extends AbstractReaderCreator
             validIdField = handler != null && handler.isValid(writer, fieldContext);
         }
 
-        writer.write("private %s readIds(Element element) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("private %s readIds(Node node) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("if (element != null) {");
+        writer.write("if (node != null) {");
         writer.indent();
         if (validIdField)
         {
@@ -281,10 +256,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readFields(Element element, %1$s model) {", modelType
+        writer.write("private %1$s readFields(node node, %1$s model) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("if (element != null) {");
+        writer.write("if (node != null) {");
         writer.indent();
 
         handleFields(writer);
@@ -299,10 +274,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
     protected void readIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readIdRefs(Element element, %1$s model) {", modelType
+        writer.write("private %1$s readIdRefs(Node node, %1$s model) {", modelType
                 .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("if (element != null) {");
+        writer.write("if (node != null) {");
         writer.indent();
 
         handleIdRefs(writer);
@@ -329,7 +304,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 {
                     counter++;
                     fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType, field
-                            .getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "element", "idValue");
+                            .getType(), field.getName(), xmlId.value(), null, AssignmentType.ID, "node", "idValue");
                 }
             }
             if (counter > 1)
@@ -355,8 +330,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 {
                     String xpath = calculateXpath(field, xmlField.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
-                            "element", "value" + counter);
+                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING, "node",
+                            "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if ((handler instanceof XmlRegistryFieldHandler || handler instanceof ArrayFieldHandler || handler instanceof CollectionFieldHandler)
                             && handler.isValid(writer, fieldContext))
@@ -387,8 +362,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 {
                     String xpath = calculateXpath(field, xmlField.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING,
-                            "element", "value" + counter);
+                            field.getType(), field.getName(), xpath, xmlField.format(), AssignmentType.MAPPING, "node",
+                            "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null && handler.isValid(writer, fieldContext))
                     {
@@ -418,8 +393,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 {
                     String xpath = calculateXpath(field, xmlIdRef.value());
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), xpath, null, AssignmentType.IDREF, "element",
-                            "idRefValue" + counter);
+                            field.getType(), field.getName(), xpath, null, AssignmentType.IDREF, "node", "idRefValue"
+                                    + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null && handler.isValid(writer, fieldContext))
                     {
@@ -449,35 +424,5 @@ public class XmlReaderCreator extends AbstractReaderCreator
             }
         }
         return xpath;
-    }
-    
-    
-    protected void namespaceMethods(IndentedWriter writer)
-    {
-        writer.write("private boolean hasDefaultNamespace() {");
-        writer.indent();
-        writer.write("return this.namespaces.containsKey(DNS);");
-        writer.outdent();
-        writer.write("}");
-        
-        writer.write("public void registerNamespace(String uri) {");
-        writer.indent();
-        writer.write("if (uri != null && uri.length() != 0) {");
-        writer.indent();
-        writer.write("this.namespaces.put(DNS, uri);");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        
-        writer.write("public void registerNamespace(String prefix, String uri) {");
-        writer.indent();
-        writer.write("if (prefix != null && prefix.length() != 0 && uri != null && uri.length() != 0) {");
-        writer.indent();
-        writer.write("this.namespaces.put(prefix, uri);");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
     }
 }

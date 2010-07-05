@@ -15,8 +15,7 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testDefaultNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketDefaultNs().getText();
-        XmlParser xmlParser = new XmlParser();
-        Document document = xmlParser.parse(xml);
+        Document document = new XmlParser().parse(xml, LotteryTicketResources.DEFAULT_NS);
         LotteryTicketDefaultNamespace lt = LotteryTicketDefaultNamespace.XML.read(document);
         assertLotteryTicket(lt);
     }
@@ -25,8 +24,7 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testNoDefaultNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketNoDefaultNs().getText();
-        XmlParser xmlParser = new XmlParser();
-        Document document = xmlParser.parse(xml);
+        Document document = new XmlParser().parse(xml, LotteryTicketResources.NO_DEFAULT_NS);
         LotteryTicket lt = LotteryTicket.XML.read(document);
         assertLotteryTicket(lt);
     }
@@ -35,8 +33,7 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testDefaultAndNestedNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketDefaultAndNestedNs().getText();
-        XmlParser xmlParser = new XmlParser();
-        Document document = xmlParser.parse(xml);
+        Document document = new XmlParser().parse(xml, LotteryTicketResources.DEFAULT_NS);
         LotteryTicketDefaultNamespace lt = LotteryTicketDefaultNamespace.XML.read(document);
         assertLotteryTicket(lt);
     }
@@ -45,8 +42,7 @@ public abstract class LotteryTicketReaderTest extends AbstractPiritiTest
     public void testNoDefaultAndNestedNs()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketNoDefaultAndNestedNs().getText();
-        XmlParser xmlParser = new XmlParser();
-        Document document = xmlParser.parse(xml);
+        Document document = new XmlParser().parse(xml, LotteryTicketResources.NO_DEFAULT_NS);
         LotteryTicket lt = LotteryTicket.XML.read(document);
         assertLotteryTicket(lt);
     }

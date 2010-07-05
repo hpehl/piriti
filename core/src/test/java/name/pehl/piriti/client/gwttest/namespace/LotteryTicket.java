@@ -19,11 +19,6 @@ public class LotteryTicket
     }
 
     public static final LotteryTicketReader XML = GWT.create(LotteryTicketReader.class);
-    static
-    {
-        XML.registerNamespace("foo", "http://code.google.com/p/piriti/foo");
-        XML.registerNamespace("bar", "http://code.google.com/p/piriti/bar");
-    }
 
     @XmlField(value = "@date", format = "dd.MM.yyyy")
     Date date;

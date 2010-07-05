@@ -13,6 +13,15 @@ import com.google.gwt.resources.client.TextResource;
 
 public interface LotteryTicketResources extends ClientBundle
 {
+    // ------------------------------------------------------------- namespaces
+
+    String DNS = "dns"; // defaul namespace prefix
+    String DEFAULT_NS = "xmlns:" + DNS + "=\"http://code.google.com/p/piriti\" "
+            + "xmlns:foo=\"http://code.google.com/p/piriti/foo\" "
+            + "xmlns:bar=\"http://code.google.com/p/piriti/bar\"";
+    String NO_DEFAULT_NS = "xmlns:foo=\"http://code.google.com/p/piriti/foo\" "
+            + "xmlns:bar=\"http://code.google.com/p/piriti/bar\"";
+
     // -------------------------------------------------------------- constants
 
     Date DATE = new Date(1286661600000l);
