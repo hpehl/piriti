@@ -103,28 +103,35 @@
                             <goal>test</goal>
                         </goals>
                     </execution>
-                    <!--
-                        <execution> <id>(******** ie6-dev ********)</id> <configuration> <testTimeOut>600</testTimeOut>
-                        <runStyle>HtmlUnit:IE6</runStyle> <productionMode>false</productionMode>
-                        <gwtVersion>${gwt.version}</gwtVersion> <module>name.pehl.piriti.PiritiTest</module>
-                        <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes> </configuration> <goals>
-                        <goal>test</goal> </goals> </execution> <execution> <id>(******** ie6-prod ********)</id>
-                        <configuration> <testTimeOut>600</testTimeOut> <userAgents>ie6</userAgents>
-                        <runStyle>HtmlUnit:IE6</runStyle> <productionMode>true</productionMode>
-                        <gwtVersion>${gwt.version}</gwtVersion> <module>name.pehl.piriti.PiritiTest</module>
-                        <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes> </configuration> <goals>
-                        <goal>test</goal> </goals> </execution> <execution> <id>(******** ie7_8-dev ********)</id>
-                        <configuration> <testTimeOut>600</testTimeOut> <runStyle>HtmlUnit:IE7</runStyle>
-                        <productionMode>false</productionMode> <gwtVersion>${gwt.version}</gwtVersion>
-                        <module>name.pehl.piriti.PiritiTest</module>
-                        <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes> </configuration> <goals>
-                        <goal>test</goal> </goals> </execution> <execution> <id>(******** ie7_8-prod ********)</id>
-                        <configuration> <testTimeOut>600</testTimeOut> <userAgents>ie8</userAgents>
-                        <runStyle>HtmlUnit:IE7</runStyle> <productionMode>true</productionMode>
-                        <gwtVersion>${gwt.version}</gwtVersion> <module>name.pehl.piriti.PiritiTest</module>
-                        <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes> </configuration> <goals>
-                        <goal>test</goal> </goals> </execution>
-                    -->
+                    <execution>
+                        <id>(******** ie7_8-dev ********)</id>
+                        <configuration>
+                            <testTimeOut>600</testTimeOut>
+                            <runStyle>HtmlUnit:IE7</runStyle>
+                            <productionMode>false</productionMode>
+                            <gwtVersion>${gwt.version}</gwtVersion>
+                            <module>name.pehl.piriti.PiritiTest</module>
+                            <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>(******** ie7_8-prod ********)</id>
+                        <configuration>
+                            <testTimeOut>600</testTimeOut>
+                            <userAgents>ie8</userAgents>
+                            <runStyle>HtmlUnit:IE7</runStyle>
+                            <productionMode>true</productionMode>
+                            <gwtVersion>${gwt.version}</gwtVersion>
+                            <module>name.pehl.piriti.PiritiTest</module>
+                            <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
         </plugins>
