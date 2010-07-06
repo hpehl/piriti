@@ -28,7 +28,7 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
     @Override
     protected void writeReadValueAsString(IndentedWriter writer, FieldContext fieldContext)
     {
-        writer.write("String %s = %s.selectValue(\"%s\");", fieldContext.getValueAsStringVariable(),
-                fieldContext.getInputVariable(), fieldContext.getPath());
+        writer.write("String %s = %s.selectValue(\"%s\", %s);", fieldContext.getValueAsStringVariable(), fieldContext
+                .getInputVariable(), fieldContext.getPath(), fieldContext.isStripWsnl());
     }
 }

@@ -317,7 +317,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
 
     // --------------------------------------------------------- helper methods
-    
+
     protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private %s internalRead(JSONObject jsonObject) {", modelType
@@ -344,8 +344,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 {
                     String jsonPath = calculateJsonPath(field, jsonField);
                     FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), jsonPath, jsonField.format(), AssignmentType.MAPPING,
-                            "jsonObject", "value" + counter);
+                            field.getType(), field.getName(), jsonPath, jsonField.format(), false,
+                            AssignmentType.MAPPING, "jsonObject", "value" + counter);
                     FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
                     if (handler != null && handler.isValid(writer, fieldContext))
                     {

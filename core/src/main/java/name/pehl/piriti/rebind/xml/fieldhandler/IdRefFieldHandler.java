@@ -78,17 +78,17 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         String fqXmlReader = fieldContext.getMetadata(FQ_XML_READER);
 
         String references = fieldContext.newVariableName("References");
-        writer.write("String[] %s = %s.selectValues(\"%s\");", references, fieldContext.getInputVariable(),
-                fieldContext.getPath());
-        writer.write("if (%1$s != null && %1$s.length != 0) {", references);
-        writer.indent();
+        writer.write("String[] %s = %s.selectValues(\"%s\", %s);", references, fieldContext.getInputVariable(),
+                fieldContext.getPath(), fieldContext.isStripWsnl());
         writer.write("if (%s.length == 1) {", references);
         writer.indent();
-        // If theres only one value it is expected that this value contains
+        // If there's only one value it is expected that this value contains
         // the references seperated with space
         writer.write("%1$s = %1$s[0].split(\" \");", references);
         writer.outdent();
         writer.write("}");
+        writer.write("if (%s.length != 0) {", references);
+        writer.indent();
         if (fieldContext.isArray() || TypeUtils.isCollection(fieldContext.getFieldType()))
         {
             String collectionVariable = null;

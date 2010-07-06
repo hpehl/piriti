@@ -29,8 +29,8 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("String %s = %s.selectValue(\"%s\");", fieldContext.getValueAsStringVariable(),
-                fieldContext.getInputVariable(), fieldContext.getPath());
+        writer.write("String %s = %s.selectValue(\"%s\", %s);", fieldContext.getValueAsStringVariable(),
+                fieldContext.getInputVariable(), fieldContext.getPath(), fieldContext.isStripWsnl());
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         writer.write("try {");

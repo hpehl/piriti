@@ -41,9 +41,9 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             nestedXpath += "/text()";
         }
 
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
-                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
-                fieldContext.getFieldName(), nestedXpath, fieldContext.getFormat(), AssignmentType.MAPPING,
+        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
+                .getHandlerRegistry(), fieldContext.getModelType(), parameterType, fieldContext.getFieldName(),
+                nestedXpath, fieldContext.getFormat(), fieldContext.isStripWsnl(), AssignmentType.MAPPING,
                 nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
@@ -51,8 +51,8 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             return;
         }
 
-        writer.write("List<Element> %s = filterElements(%s.selectNodes(\"%s\"));", nestedElementsVariable,
-                fieldContext.getInputVariable(), fieldContext.getPath());
+        writer.write("List<Element> %s = filterElements(%s.selectNodes(\"%s\"));", nestedElementsVariable, fieldContext
+                .getInputVariable(), fieldContext.getPath());
         writer.write("if (!%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
         String collectionImplementation = interfaceToImplementation.get(fieldContext.getFieldType().getErasedType()
@@ -62,8 +62,8 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             // the field type is already an implementation
             collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
         }
-        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation,
-                parameterType.getQualifiedSourceName());
+        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, parameterType
+                .getQualifiedSourceName());
         writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
         writer.indent();
         nestedHandler.writeComment(writer, nestedFieldContext);

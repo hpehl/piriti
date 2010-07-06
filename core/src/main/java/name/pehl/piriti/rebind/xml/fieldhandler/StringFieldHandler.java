@@ -42,7 +42,7 @@ public class StringFieldHandler extends AbstractFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("%s = %s.selectValue(\"%s\");", fieldContext.getValueVariable(), fieldContext.getInputVariable(),
-                fieldContext.getPath());
+        writer.write("%s = %s.selectValue(\"%s\", %s);", fieldContext.getValueVariable(), fieldContext.getInputVariable(),
+                fieldContext.getPath(), fieldContext.isStripWsnl());
     }
 }

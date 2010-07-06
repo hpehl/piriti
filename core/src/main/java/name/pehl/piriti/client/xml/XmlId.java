@@ -27,4 +27,13 @@ public @interface XmlId
      * @return
      */
     String value() default "@id";
+
+
+    /**
+     * If <code>true</code> white spaces and new lines are stripped from the
+     * selected XPath value. Defaults to <code>true</code>.
+     * 
+     * @return
+     */
+    boolean stripWsnl() default true;
 }

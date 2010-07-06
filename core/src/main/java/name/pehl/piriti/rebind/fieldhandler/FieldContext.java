@@ -34,6 +34,7 @@ public class FieldContext
     private final String fieldName;
     private final String path;
     private final String format;
+    private final boolean stripWsnl;
     private AssignmentType assignmentType;
     private final String inputVariable;
     private final String valueVariable;
@@ -66,8 +67,8 @@ public class FieldContext
      * @throws UnableToCompleteException
      */
     public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
-            JType fieldType, String fieldName, String path, String format, AssignmentType assignmentType,
-            String inputVariable, String valueVariable) throws UnableToCompleteException
+            JType fieldType, String fieldName, String path, String format, boolean stripWsnl,
+            AssignmentType assignmentType, String inputVariable, String valueVariable) throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
@@ -102,6 +103,7 @@ public class FieldContext
         {
             this.format = format;
         }
+        this.stripWsnl = stripWsnl;
         this.assignmentType = assignmentType;
 
         // Variable names
@@ -223,6 +225,12 @@ public class FieldContext
     public String getFormat()
     {
         return format;
+    }
+    
+    
+    public boolean isStripWsnl()
+    {
+        return stripWsnl;
     }
 
 

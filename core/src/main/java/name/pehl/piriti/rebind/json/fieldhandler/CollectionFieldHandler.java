@@ -36,7 +36,7 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         // handler must take care of this!
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
                 .getHandlerRegistry(), fieldContext.getModelType(), parameterType, fieldContext.getFieldName(), null,
-                fieldContext.getFormat(), AssignmentType.MAPPING, nestedJsonValueVariable, nestedValueVariable);
+                fieldContext.getFormat(), false, AssignmentType.MAPPING, nestedJsonValueVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

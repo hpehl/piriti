@@ -14,8 +14,7 @@ public class XmlEmployeeReaderTest extends AbstractEmployeeReaderTest
     public void testRead()
     {
         String xml = EmployeeResources.INSTANCE.employeesXml().getText();
-        XmlParser xmlParser = new XmlParser();
-        Document document = xmlParser.parse(xml);
+        Document document = new XmlParser().parse(xml);
         List<Employee> employees = Employee.XML.readList(document);
         assertEmployees(employees);
     }
