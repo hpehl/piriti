@@ -73,4 +73,15 @@ public @interface XmlField
      * @return
      */
     String format() default "";
+
+
+
+
+    /**
+     * If <code>true</code> white spaces and new lines are stripped from the
+     * selected XPath value. Defaults to <code>true</code>.
+     * 
+     * @return
+     */
+    boolean stripWsnl() default true;
 }
