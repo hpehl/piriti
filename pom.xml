@@ -247,6 +247,12 @@
                 <version>${easymock.version}</version>
                 <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+                <artifactId>selenium-client-drivers</artifactId>
+                <version>1.0.2</version>
+                <scope>test</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
