@@ -5,13 +5,9 @@ import java.util.List;
 import name.pehl.piriti.sample.client.event.BooksEvent;
 import name.pehl.piriti.sample.client.event.BooksHandler;
 import name.pehl.piriti.sample.client.event.EventBus;
-import name.pehl.piriti.sample.client.event.PlaygroundEvent;
-import name.pehl.piriti.sample.client.event.PlaygroundHandler;
 import name.pehl.piriti.sample.client.model.Book;
 import name.pehl.piriti.sample.client.model.BookModel;
-import name.pehl.piriti.sample.client.model.Playground;
 import name.pehl.piriti.sample.client.rest.BooksClient;
-import name.pehl.piriti.sample.client.rest.PlaygroundClient;
 import name.pehl.piriti.sample.client.util.TimeInterval;
 
 import com.google.gwt.core.client.GWT;
@@ -30,7 +26,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @version $Date: 2010-05-18 23:30:44 +0200 (Di, 18 Mai 2010) $ $Revision: 292
  *          $
  */
-public class Application extends Composite implements BooksHandler, PlaygroundHandler, SourceCodes
+public class Application extends Composite implements BooksHandler, SourceCodes
 {
     private static ApplicationUiBinder uiBinder = GWT.create(ApplicationUiBinder.class);
 
@@ -51,22 +47,17 @@ public class Application extends Composite implements BooksHandler, PlaygroundHa
     Hyperlink xmlToGxtModel;
 
     @UiField
-    Hyperlink xmlToPlayground;
-
-    @UiField
     PreElement sourceCode;
 
     @UiField
     Label status;
 
     BooksClient booksClient = null;
-    PlaygroundClient playgroundClient = null;
 
 
     public Application()
     {
         booksClient = new BooksClient();
-        playgroundClient = new PlaygroundClient();
         initWidget(uiBinder.createAndBindUi(this));
         EventBus.get().addHandler(BooksEvent.getType(), this);
     }
@@ -104,14 +95,6 @@ public class Application extends Composite implements BooksHandler, PlaygroundHa
     }
 
 
-    @UiHandler("xmlToPlayground")
-    void onFromXmlToPlayground(ClickEvent e)
-    {
-        setStatus("Reading XML representation...");
-        playgroundClient.readFromXml(Playground.XML, XML_TO_PLAYGROUND);
-    }
-
-
     @Override
     public void onBooks(BooksEvent event)
     {
@@ -129,24 +112,6 @@ public class Application extends Composite implements BooksHandler, PlaygroundHa
         {
             sourceCode.setInnerText("");
             setStatus("Error reading books.");
-        }
-    }
-
-
-    @Override
-    public void onPlayground(PlaygroundEvent event)
-    {
-        Playground playground = event.getPlayground();
-        TimeInterval timeInterval = event.getTimeInterval();
-        if (playground != null)
-        {
-            sourceCode.setInnerText(event.getSourceCode());
-            setStatus("Successfully read the playground POJO in " + timeInterval.ms() + " ms.");
-        }
-        else
-        {
-            sourceCode.setInnerText("");
-            setStatus("Error reading playground POJO.");
         }
     }
 

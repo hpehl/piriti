@@ -42,13 +42,4 @@ public interface SourceCodes
             + "            new PiritiXmlRepresentation<BookModel>(BookModel.XML, response.getEntity());\n"
             + "        try {\n" + "            List<BookModel> books = representation.getModels();\n" + "        }\n"
             + "        catch (IOException e) {}\n" + "    }\n" + "});\n" + "clientResource.get(MediaType.TEXT_XML);";
-
-    String XML_TO_PLAYGROUND = "ClientResource clientResource = new ClientResource(\"/rest/v1/playground\");\n"
-            + "clientResource.setOnResponse(new Uniform() {\n" + "    @Override\n"
-            + "    public void handle(Request request, Response response) {\n"
-            + "        // Playground.XML is a XmlReader\n"
-            + "        PiritiXmlRepresentation<Playground> representation = \n"
-            + "            new PiritiXmlRepresentation<Playground>(Playground.XML, response.getEntity());\n"
-            + "        try {\n" + "            Playground playground = representation.getModel();\n" + "        }\n"
-            + "        catch (IOException e) {}\n" + "    }\n" + "});\n" + "clientResource.get(MediaType.TEXT_XML);";
 }

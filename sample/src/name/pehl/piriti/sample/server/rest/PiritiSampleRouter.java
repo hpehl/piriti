@@ -22,6 +22,5 @@ public class PiritiSampleRouter extends GuiceRouter
     protected void attachRoutes()
     {
         attach("/books", BooksResource.class);
-        attach("/playground", PlaygroundResource.class);
     }
 }

@@ -21,7 +21,6 @@
                 <g:Hyperlink ui:field="jsonToGxtModel" targetHistoryToken="fromJsonAsGxtModel">JSON &rarr; GXT Model</g:Hyperlink>
                 <g:Hyperlink ui:field="xmlToPojo" targetHistoryToken="fromXmlAsPojo">XML &rarr; POJO</g:Hyperlink>
                 <g:Hyperlink ui:field="xmlToGxtModel" targetHistoryToken="fromXmlAsGxtModel">XML &rarr; GXT Model</g:Hyperlink>
-                <g:Hyperlink ui:field="xmlToPlayground" targetHistoryToken="fromXmlToPlayground">XML &rarr; Playground</g:Hyperlink>
             </g:VerticalPanel>
         </g:west>
         <g:north size="13">
