@@ -134,7 +134,8 @@
             <dependencies>
                 <dependency>
                     <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-                    <artifactId>selenium-client-drivers</artifactId>
+                    <artifactId>selenium-java-client-driver</artifactId>
+                    <scope>test</scope>
                 </dependency>
             </dependencies>
             <build>
