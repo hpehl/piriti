@@ -249,8 +249,8 @@
             </dependency>
             <dependency>
                 <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-                <artifactId>selenium-client-drivers</artifactId>
-                <version>1.0.2</version>
+                <artifactId>selenium-java-client-driver</artifactId>
+                <version>1.0.1</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
