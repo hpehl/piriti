@@ -13,7 +13,7 @@ import com.google.gwt.json.client.JSONValue;
  * <p>
  * <b>Please note:</b><br/>
  * The JavaScript eval() function can execute arbitrary script. DO NOT pass an
- * untrusted string into this method.
+ * untrusted string to the {@link #parse(String)} method.
  * 
  * @author $Author$
  * @version $Date$ $Revision: 531
