@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Please make sure that there are no line line breaks
+    in the elements. Otherwise the asserts will fail!
+ -->
+<bird>
+    <name>Rantanplan</name>
+    <legs>4</legs>
+    <intelligence>.15</intelligence>
+    <gender>male</gender>
+    <size>normal</size>
+</bird>

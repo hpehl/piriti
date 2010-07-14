@@ -142,8 +142,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     protected void readListFromStringUsingNamedKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(String jsonString, String arrayKey) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(String jsonString, String arrayKey) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
@@ -178,8 +178,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     protected void readListFromJsonObjectUsingFirstKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(JSONObject jsonObject) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(JSONObject jsonObject) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
@@ -210,8 +210,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     protected void readListFromJsonObjectUsingNamedKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(JSONObject jsonObject, String arrayKey) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(JSONObject jsonObject, String arrayKey) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
@@ -236,9 +236,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     protected void readListFromJsonArray(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer
-                .write("public List<%s> readList(JSONArray jsonArray) {", modelType
-                        .getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(JSONArray jsonArray) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonArray != null) {");
@@ -320,8 +318,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %s internalRead(JSONObject jsonObject) {", modelType
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %s internalRead(JSONObject jsonObject) {",
+                modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
         handleFields(writer);
@@ -333,30 +331,24 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        JField[] fields = modelType.getFields();
-        if (fields != null && fields.length != 0)
+        int counter = 0;
+        JField[] fields = getAllFields(modelType, JsonField.class);
+        for (JField field : fields)
         {
-            int counter = 0;
-            for (JField field : fields)
+            JsonField jsonField = field.getAnnotation(JsonField.class);
+            String jsonPath = calculateJsonPath(field, jsonField);
+            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    field.getType(), field.getName(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
+                    "jsonObject", "value" + counter);
+            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+            if (handler != null && handler.isValid(writer, fieldContext))
             {
-                JsonField jsonField = field.getAnnotation(JsonField.class);
-                if (jsonField != null)
-                {
-                    String jsonPath = calculateJsonPath(field, jsonField);
-                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            field.getType(), field.getName(), jsonPath, jsonField.format(), false,
-                            AssignmentType.MAPPING, "jsonObject", "value" + counter);
-                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-                    if (handler != null && handler.isValid(writer, fieldContext))
-                    {
-                        writer.newline();
-                        handler.writeComment(writer, fieldContext);
-                        handler.writeDeclaration(writer, fieldContext);
-                        handler.writeConverterCode(writer, fieldContext);
-                        handler.writeAssignment(writer, fieldContext);
-                        counter++;
-                    }
-                }
+                writer.newline();
+                handler.writeComment(writer, fieldContext);
+                handler.writeDeclaration(writer, fieldContext);
+                handler.writeConverterCode(writer, fieldContext);
+                handler.writeAssignment(writer, fieldContext);
+                counter++;
             }
         }
     }

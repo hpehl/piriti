@@ -1,5 +1,9 @@
 package name.pehl.piriti.gxt.rebind.xml;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import name.pehl.piriti.gxt.client.xml.XmlField;
 import name.pehl.piriti.gxt.client.xml.XmlModel;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
@@ -49,35 +53,57 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     @Override
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        XmlModel xmlModel = modelType.getAnnotation(XmlModel.class);
-        if (xmlModel != null)
+        int counter = 0;
+        XmlField[] fields = getAllFields(modelType);
+        for (XmlField xmlField : fields)
         {
-            XmlField[] fields = xmlModel.value();
-            if (fields != null && fields.length != 0)
+            writer.newline();
+            JClassType fieldType = getFieldType(xmlField);
+            String xpath = calculateXpath(fieldType, xmlField);
+            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
+                    AssignmentType.MAPPING, "element", "value" + counter);
+            fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
+            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+            if (handler != null)
             {
-                int counter = 0;
-                for (XmlField xmlField : fields)
+                if (handler.isValid(writer, fieldContext))
                 {
-                    writer.newline();
-                    JClassType fieldType = getFieldType(xmlField);
-                    String xpath = calculateXpath(fieldType, xmlField);
-                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
-                            AssignmentType.MAPPING, "element", "value" + counter);
-                    fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
-                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-                    if (handler != null)
-                    {
-                        if (handler.isValid(writer, fieldContext))
-                        {
-                            handler.writeComment(writer, fieldContext);
-                            handler.writeDeclaration(writer, fieldContext);
-                            handler.writeConverterCode(writer, fieldContext);
-                            handler.writeAssignment(writer, fieldContext);
-                            counter++;
-                        }
-                    }
+                    handler.writeComment(writer, fieldContext);
+                    handler.writeDeclaration(writer, fieldContext);
+                    handler.writeConverterCode(writer, fieldContext);
+                    handler.writeAssignment(writer, fieldContext);
+                    counter++;
                 }
+            }
+        }
+    }
+
+
+    private XmlField[] getAllFields(JClassType type)
+    {
+        List<XmlField> fields = new ArrayList<XmlField>();
+        collectFields(type, fields);
+        return fields.toArray(new XmlField[] {});
+    }
+
+
+    private void collectFields(JClassType type, List<XmlField> fields)
+    {
+        // Superclass first please!
+        if (type == null)
+        {
+            return;
+        }
+        collectFields(type.getSuperclass(), fields);
+
+        XmlModel model = type.getAnnotation(XmlModel.class);
+        if (model != null)
+        {
+            XmlField[] modelFields = model.value();
+            if (modelFields != null)
+            {
+                fields.addAll(Arrays.asList(modelFields));
             }
         }
     }

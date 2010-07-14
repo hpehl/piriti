@@ -1,5 +1,9 @@
 package name.pehl.piriti.gxt.rebind.json;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import name.pehl.piriti.gxt.client.json.JsonField;
 import name.pehl.piriti.gxt.client.json.JsonModel;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
@@ -48,35 +52,57 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     @Override
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
-        JsonModel jsonModel = modelType.getAnnotation(JsonModel.class);
-        if (jsonModel != null)
+        int counter = 0;
+        JsonField[] fields = getAllFields(modelType);
+        for (JsonField jsonField : fields)
         {
-            JsonField[] fields = jsonModel.value();
-            if (fields != null && fields.length != 0)
+            writer.newline();
+            JClassType fieldType = getFieldType(jsonField);
+            String jsonPath = calculateJsonPath(jsonField);
+            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    fieldType, jsonField.property(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
+                    "jsonObject", "value" + counter);
+            fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
+            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
+            if (handler != null)
             {
-                int counter = 0;
-                for (JsonField jsonField : fields)
+                if (handler.isValid(writer, fieldContext))
                 {
-                    writer.newline();
-                    JClassType fieldType = getFieldType(jsonField);
-                    String jsonPath = calculateJsonPath(jsonField);
-                    FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                            fieldType, jsonField.property(), jsonPath, jsonField.format(), false,
-                            AssignmentType.MAPPING, "jsonObject", "value" + counter);
-                    fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
-                    FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-                    if (handler != null)
-                    {
-                        if (handler.isValid(writer, fieldContext))
-                        {
-                            handler.writeComment(writer, fieldContext);
-                            handler.writeDeclaration(writer, fieldContext);
-                            handler.writeConverterCode(writer, fieldContext);
-                            handler.writeAssignment(writer, fieldContext);
-                            counter++;
-                        }
-                    }
+                    handler.writeComment(writer, fieldContext);
+                    handler.writeDeclaration(writer, fieldContext);
+                    handler.writeConverterCode(writer, fieldContext);
+                    handler.writeAssignment(writer, fieldContext);
+                    counter++;
                 }
+            }
+        }
+    }
+
+
+    private JsonField[] getAllFields(JClassType type)
+    {
+        List<JsonField> fields = new ArrayList<JsonField>();
+        collectFields(type, fields);
+        return fields.toArray(new JsonField[] {});
+    }
+
+
+    private void collectFields(JClassType type, List<JsonField> fields)
+    {
+        // Superclass first please!
+        if (type == null)
+        {
+            return;
+        }
+        collectFields(type.getSuperclass(), fields);
+
+        JsonModel model = type.getAnnotation(JsonModel.class);
+        if (model != null)
+        {
+            JsonField[] modelFields = model.value();
+            if (modelFields != null)
+            {
+                fields.addAll(Arrays.asList(modelFields));
             }
         }
     }

@@ -1,6 +1,8 @@
 package name.pehl.piriti.rebind;
 
 import java.io.PrintWriter;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.List;
 
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
@@ -11,6 +13,7 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
  * Base class for creating reader implementations. This class contains some
@@ -269,6 +272,47 @@ public abstract class AbstractReaderCreator
 
 
     // --------------------------------------------------------- helper methods
+
+    /**
+     * Returns all fields from the specified type <b>and</b> all of its
+     * supertypes that are marked with the specified annotation. Returns an
+     * empty array if no fields were found
+     * 
+     * @param <T>
+     * @param type
+     * @param annotationClass
+     * @return
+     */
+    protected <T extends Annotation> JField[] getAllFields(JClassType type, Class<T> annotationClass)
+    {
+        List<JField> fields = new ArrayList<JField>();
+        collectFields(type, fields, annotationClass);
+        return fields.toArray(new JField[] {});
+    }
+
+
+    private <T extends Annotation> void collectFields(JClassType type, List<JField> fields, Class<T> annotationClass)
+    {
+        // Superclass first please!
+        if (type == null)
+        {
+            return;
+        }
+        collectFields(type.getSuperclass(), fields, annotationClass);
+
+        JField[] allFields = type.getFields();
+        if (allFields != null)
+        {
+            for (JField field : allFields)
+            {
+                if (field.isAnnotationPresent(annotationClass))
+                {
+                    fields.add(field);
+                }
+            }
+        }
+    }
+
 
     /**
      * Reads a configuration property from the module definition. Throws a

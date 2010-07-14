@@ -2,6 +2,8 @@ package name.pehl.piriti.gxt;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import name.pehl.piriti.gxt.client.gwttest.animal.JsonAnimalReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.animal.XmlAnimalReaderTest;
 import name.pehl.piriti.gxt.client.gwttest.book.JsonBookReaderTest;
 import name.pehl.piriti.gxt.client.gwttest.book.XmlBookReaderTest;
 import name.pehl.piriti.gxt.client.gwttest.fat.JsonFatGlobalItemReaderTest;
@@ -19,6 +21,9 @@ public class PiritiGxtGwtTestSuite extends GWTTestSuite
     public static Test suite()
     {
         TestSuite suite = new TestSuite("GWT tests for piriti-gxt");
+
+        suite.addTestSuite(JsonAnimalReaderTest.class);
+        suite.addTestSuite(XmlAnimalReaderTest.class);
 
         suite.addTestSuite(JsonBookReaderTest.class);
         suite.addTestSuite(XmlBookReaderTest.class);
