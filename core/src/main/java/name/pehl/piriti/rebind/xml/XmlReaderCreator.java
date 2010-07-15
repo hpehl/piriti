@@ -343,7 +343,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
     {
         FieldContext fieldContext = null;
 
-        // First look
+        // First look for an XmlId annotation in the modelType
         JField[] fields = findAnnotatedFields(modelType, XmlId.class);
         if (fields.length != 0)
         {
@@ -363,6 +363,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         }
         else
         {
+            // Fall back to the interfaceType
             XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
             if (xmlFields != null)
             {
@@ -388,23 +389,17 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
-    /**
-     * TODO Documentation!
-     * 
-     * @param writer
-     * @throws UnableToCompleteException
-     */
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        JField[] fields = findAnnotatedFields(modelType, XmlField.class);
-        for (JField field : fields)
+        Map<String, FieldAnnotation<XmlField>> fields = findFieldAnnotations();
+        for (FieldAnnotation<XmlField> fieldAnnotation : fields.values())
         {
-            XmlField xmlField = field.getAnnotation(XmlField.class);
-            String xpath = calculateXpath(field, xmlField.value());
+            String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    field.getType(), field.getName(), xpath, xmlField.format(), xmlField.stripWsnl(),
-                    AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, "element", "nestedValue" + counter);
+                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
+                    fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
+                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "nestedValue" + counter);
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if ((handler instanceof XmlRegistryFieldHandler || handler instanceof ArrayFieldHandler || handler instanceof CollectionFieldHandler)
                     && handler.isValid(writer, fieldContext))
@@ -423,43 +418,14 @@ public class XmlReaderCreator extends AbstractReaderCreator
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, FieldAnnotation<XmlField>> fields = new HashMap<String, FieldAnnotation<XmlField>>();
-
-        // Step 1: Add all XmlField annotations in the XmlFields annotation
-        // from the interfaceType
-        XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
-        if (xmlFields != null)
-        {
-            XmlField[] annotations = xmlFields.value();
-            for (XmlField annotation : annotations)
-            {
-                JField field = modelType.getField(annotation.name());
-                if (field != null)
-                {
-                    fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation));
-                }
-                // TODO Is it an error if field == null?
-            }
-        }
-
-        // Step 2: Add all XmlField annotations of the modelType fields. If
-        // there's already an entry for the field from step 1, it will be
-        // overwritten!
-        JField[] modelTypeFields = findAnnotatedFields(modelType, XmlField.class);
-        for (JField field : modelTypeFields)
-        {
-            XmlField annotation = field.getAnnotation(XmlField.class);
-            fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation));
-        }
-
-        // Now iterate over the result
+        Map<String, FieldAnnotation<XmlField>> fields = findFieldAnnotations();
         for (FieldAnnotation<XmlField> fieldAnnotation : fields.values())
         {
             String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
                     fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
-                    AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, "element", "value" + counter);
+                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "value" + counter);
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null && handler.isValid(writer, fieldContext))
             {
@@ -477,14 +443,14 @@ public class XmlReaderCreator extends AbstractReaderCreator
     protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        JField[] fields = findAnnotatedFields(modelType, XmlIdRef.class);
-        for (JField field : fields)
+        Map<String, FieldAnnotation<XmlIdRef>> fields = findReferenceAnnotations();
+        for (FieldAnnotation<XmlIdRef> fieldAnnotation : fields.values())
         {
-            XmlIdRef xmlIdRef = field.getAnnotation(XmlIdRef.class);
-            String xpath = calculateXpath(field, xmlIdRef.value());
+            String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    field.getType(), field.getName(), xpath, null, xmlIdRef.stripWsnl(), AssignmentType.IDREF,
-                    AssignmentPolicy.FIELD_ONLY, "element", "idRefValue" + counter);
+                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath, null,
+                    fieldAnnotation.annotation.stripWsnl(), AssignmentType.IDREF, fieldAnnotation.assignmentPolicy,
+                    "element", "idRefValue" + counter);
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null && handler.isValid(writer, fieldContext))
             {
@@ -496,6 +462,86 @@ public class XmlReaderCreator extends AbstractReaderCreator
                 counter++;
             }
         }
+    }
+
+
+    /**
+     * TODO Documentation
+     * 
+     * @return
+     */
+    protected Map<String, FieldAnnotation<XmlField>> findFieldAnnotations()
+    {
+        Map<String, FieldAnnotation<XmlField>> fields = new HashMap<String, FieldAnnotation<XmlField>>();
+
+        // Step 1: Add all XmlField annotations in the XmlFields annotation
+        // from the interfaceType
+        XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
+        if (xmlFields != null)
+        {
+            XmlField[] annotations = xmlFields.value();
+            for (XmlField annotation : annotations)
+            {
+                JField field = modelType.getField(annotation.name());
+                if (field != null)
+                {
+                    fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation,
+                            AssignmentPolicy.SETTER_FIRST));
+                }
+                // TODO Is it an error if field == null?
+            }
+        }
+
+        // Step 2: Add all XmlField annotations of the modelType fields. If
+        // there's already an entry for the field from step 1, it will be
+        // overwritten!
+        JField[] modelTypeFields = findAnnotatedFields(modelType, XmlField.class);
+        for (JField field : modelTypeFields)
+        {
+            XmlField annotation = field.getAnnotation(XmlField.class);
+            fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
+        }
+        return fields;
+    }
+
+
+    /**
+     * TODO Documentation
+     * 
+     * @return
+     */
+    protected Map<String, FieldAnnotation<XmlIdRef>> findReferenceAnnotations()
+    {
+        Map<String, FieldAnnotation<XmlIdRef>> fields = new HashMap<String, FieldAnnotation<XmlIdRef>>();
+
+        // Step 1: Add all XmlField annotations in the XmlFields annotation
+        // from the interfaceType
+        XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
+        if (xmlFields != null)
+        {
+            XmlIdRef[] annotations = xmlFields.references();
+            for (XmlIdRef annotation : annotations)
+            {
+                JField field = modelType.getField(annotation.name());
+                if (field != null)
+                {
+                    fields.put(field.getName(), new FieldAnnotation<XmlIdRef>(field, annotation,
+                            AssignmentPolicy.SETTER_FIRST));
+                }
+                // TODO Is it an error if field == null?
+            }
+        }
+
+        // Step 2: Add all XmlField annotations of the modelType fields. If
+        // there's already an entry for the field from step 1, it will be
+        // overwritten!
+        JField[] modelTypeFields = findAnnotatedFields(modelType, XmlIdRef.class);
+        for (JField field : modelTypeFields)
+        {
+            XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
+            fields.put(field.getName(), new FieldAnnotation<XmlIdRef>(field, annotation, AssignmentPolicy.FIELD_ONLY));
+        }
+        return fields;
     }
 
 
