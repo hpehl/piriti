@@ -22,7 +22,7 @@ public abstract class AbstractAnimalReaderTest extends GWTTestCase
     @Override
     protected void gwtSetUp() throws Exception
     {
-        System.out.println("Running " + getClass().getName());
+        System.out.println(getClass().getName() + "." + getName() + "()");
     }
 
 

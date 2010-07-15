@@ -37,6 +37,8 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
 
         suite.addTestSuite(LotteryTicketReaderTest.class);
 
+        // suite.addTestSuite(XmlShopReaderTest.class);
+
         return suite;
     }
 }

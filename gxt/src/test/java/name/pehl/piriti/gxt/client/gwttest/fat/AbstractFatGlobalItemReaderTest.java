@@ -34,7 +34,7 @@ public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
     @Override
     protected void gwtSetUp() throws Exception
     {
-        System.out.println("Running " + getClass().getName());
+        System.out.println(getClass().getName() + "." + getName() + "()");
 
         // Setup collection fixtures
         setOfIntegerObjectsFixture = new HashSet<Integer>();
