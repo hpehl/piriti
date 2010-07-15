@@ -1,7 +1,6 @@
 package name.pehl.piriti.gxt.client.xml;
 
 import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -22,7 +21,7 @@ import com.extjs.gxt.ui.client.data.ModelData;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.ANNOTATION_TYPE)
+@Target({})
 public @interface XmlField
 {
     /**
