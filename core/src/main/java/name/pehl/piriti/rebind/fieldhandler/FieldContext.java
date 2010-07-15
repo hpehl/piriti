@@ -3,7 +3,6 @@ package name.pehl.piriti.rebind.fieldhandler;
 import java.util.HashMap;
 import java.util.Map;
 
-import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -36,6 +35,7 @@ public class FieldContext
     private final String format;
     private final boolean stripWsnl;
     private AssignmentType assignmentType;
+    private AssignmentPolicy assignmentPolicy;
     private final String inputVariable;
     private final String valueVariable;
     private final Map<String, Object> metadata;
@@ -55,11 +55,13 @@ public class FieldContext
      * @param fieldName
      *            The name of the field
      * @param path
-     *            The path information which was specified in the annotation
+     *            The path information for the mapping
      * @param format
-     *            The format which was specified in the annotation
+     *            The format
      * @param assignmentType
      *            Kind of assignment.
+     * @param assignmentPolicy
+     *            How to do the assignement.
      * @param inputVariable
      *            The name of the input variable
      * @param valueVariable
@@ -68,7 +70,8 @@ public class FieldContext
      */
     public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
             JType fieldType, String fieldName, String path, String format, boolean stripWsnl,
-            AssignmentType assignmentType, String inputVariable, String valueVariable) throws UnableToCompleteException
+            AssignmentType assignmentType, AssignmentPolicy assignmentPolicy, String inputVariable, String valueVariable)
+            throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
@@ -105,6 +108,7 @@ public class FieldContext
         }
         this.stripWsnl = stripWsnl;
         this.assignmentType = assignmentType;
+        this.assignmentPolicy = assignmentPolicy;
 
         // Variable names
         this.inputVariable = inputVariable;
@@ -226,8 +230,8 @@ public class FieldContext
     {
         return format;
     }
-    
-    
+
+
     public boolean isStripWsnl()
     {
         return stripWsnl;
@@ -237,6 +241,12 @@ public class FieldContext
     public AssignmentType getAssignmentType()
     {
         return assignmentType;
+    }
+
+
+    public AssignmentPolicy getAssignmentPolicy()
+    {
+        return assignmentPolicy;
     }
 
 

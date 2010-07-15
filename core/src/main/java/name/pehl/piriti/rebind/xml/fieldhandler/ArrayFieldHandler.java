@@ -1,9 +1,10 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
-import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AbstractArrayFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
@@ -59,17 +60,17 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
             nestedXpath += "/text()";
         }
 
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(),
-                nestedXpath, fieldContext.getFormat(), fieldContext.isStripWsnl(), AssignmentType.MAPPING,
-                nestedElementVariable, nestedValueVariable);
+        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
+                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
+                fieldContext.getFieldName(), nestedXpath, fieldContext.getFormat(), fieldContext.isStripWsnl(),
+                AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, nestedElementVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
         }
-        writer.write("List<Element> %s = filterElements(%s.selectNodes(\"%s\"));", nestedElementsVariable, fieldContext
-                .getInputVariable(), fieldContext.getPath());
+        writer.write("List<Element> %s = filterElements(%s.selectNodes(\"%s\"));", nestedElementsVariable,
+                fieldContext.getInputVariable(), fieldContext.getPath());
         writer.write("if (!%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
         writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", componentType.getParameterizedQualifiedSourceName(),
@@ -91,13 +92,13 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         writer.write("int index = 0;");
         if (primitiveComponentType != null)
         {
-            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), primitiveComponentType
-                    .getQualifiedSourceName(), valueVariableAsList);
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                    primitiveComponentType.getQualifiedSourceName(), valueVariableAsList);
         }
         else
         {
-            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), componentType
-                    .getQualifiedSourceName(), valueVariableAsList);
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                    componentType.getQualifiedSourceName(), valueVariableAsList);
         }
         writer.write("for(%s currentValue : %s) {", componentType.getQualifiedSourceName(), valueVariableAsList);
         writer.indent();

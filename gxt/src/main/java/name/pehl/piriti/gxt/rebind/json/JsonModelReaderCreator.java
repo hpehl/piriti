@@ -7,8 +7,9 @@ import java.util.List;
 import name.pehl.piriti.gxt.client.json.JsonField;
 import name.pehl.piriti.gxt.client.json.JsonModel;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
-import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
@@ -61,7 +62,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             String jsonPath = calculateJsonPath(jsonField);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldType, jsonField.property(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
-                    "jsonObject", "value" + counter);
+                    AssignmentPolicy.GXT, "jsonObject", "value" + counter);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null)

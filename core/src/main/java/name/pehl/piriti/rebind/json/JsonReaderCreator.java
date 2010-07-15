@@ -2,8 +2,9 @@ package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
-import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
@@ -332,14 +333,14 @@ public class JsonReaderCreator extends AbstractReaderCreator
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        JField[] fields = getAllFields(modelType, JsonField.class);
+        JField[] fields = findAnnotatedFields(modelType, JsonField.class);
         for (JField field : fields)
         {
             JsonField jsonField = field.getAnnotation(JsonField.class);
             String jsonPath = calculateJsonPath(field, jsonField);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     field.getType(), field.getName(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
-                    "jsonObject", "value" + counter);
+                    AssignmentPolicy.FIELD_ONLY, "jsonObject", "value" + counter);
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null && handler.isValid(writer, fieldContext))
             {

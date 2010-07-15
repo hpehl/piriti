@@ -1,8 +1,9 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
-import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractCollectionFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
@@ -34,9 +35,10 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), parameterType, fieldContext.getFieldName(), null,
-                fieldContext.getFormat(), false, AssignmentType.MAPPING, nestedJsonValueVariable, nestedValueVariable);
+        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
+                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
+                fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
+                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -50,8 +52,8 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
-                    .getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
+                    fieldContext.getPath());
         }
         else
         {
@@ -70,8 +72,8 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             // the field type is already an implementation
             collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
         }
-        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation, parameterType
-                .getQualifiedSourceName());
+        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation,
+                parameterType.getQualifiedSourceName());
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
         writer.write("JSONValue %s = jsonArray.get(i);", nestedJsonValueVariable);

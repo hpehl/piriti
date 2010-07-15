@@ -1,8 +1,9 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
-import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractArrayFieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
@@ -52,9 +53,10 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(), fieldContext
-                .getHandlerRegistry(), fieldContext.getModelType(), componentType, fieldContext.getFieldName(), null,
-                fieldContext.getFormat(), false, AssignmentType.MAPPING, nestedJsonValueVariable, nestedValueVariable);
+        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
+                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
+                fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
+                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable);
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -68,8 +70,8 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
-                    .getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
+                    fieldContext.getPath());
         }
         else
         {
@@ -105,13 +107,13 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         writer.write("int index = 0;");
         if (primitiveComponentType != null)
         {
-            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), primitiveComponentType
-                    .getQualifiedSourceName(), valueVariableAsList);
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                    primitiveComponentType.getQualifiedSourceName(), valueVariableAsList);
         }
         else
         {
-            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), componentType
-                    .getQualifiedSourceName(), valueVariableAsList);
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                    componentType.getQualifiedSourceName(), valueVariableAsList);
         }
         writer.write("for(%s currentValue : %s) {", componentType.getQualifiedSourceName(), valueVariableAsList);
         writer.indent();

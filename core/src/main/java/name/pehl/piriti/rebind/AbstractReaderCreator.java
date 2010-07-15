@@ -283,7 +283,7 @@ public abstract class AbstractReaderCreator
      * @param annotationClass
      * @return
      */
-    protected <T extends Annotation> JField[] getAllFields(JClassType type, Class<T> annotationClass)
+    protected <T extends Annotation> JField[] findAnnotatedFields(JClassType type, Class<T> annotationClass)
     {
         List<JField> fields = new ArrayList<JField>();
         collectFields(type, fields, annotationClass);

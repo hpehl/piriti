@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.AssignmentType;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
@@ -117,7 +117,11 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      * Looks up a field handler based on the information provided in the field
      * context. The lookup logic is implemented like this:
      * <ol>
-     * <li>If the fields type is a primitive return the
+     * <li>If the assignment type is {@link AssignmentType#ID} return
+     * {@link IdFieldHandler}
+     * <li>if the assignment type is {@link AssignmentType#IDREF} return
+     * {@link IdRefFieldHandler}
+     * <li>if the fields type is a primitive return the
      * {@link ConverterFieldHandler}
      * <li>if the fields type is an enum return {@link EnumFieldHandler}
      * <li>If the fields type is an array return {@link ArrayFieldHandler}

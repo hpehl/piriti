@@ -7,9 +7,10 @@ import java.util.List;
 import name.pehl.piriti.gxt.client.xml.XmlField;
 import name.pehl.piriti.gxt.client.xml.XmlModel;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
-import name.pehl.piriti.rebind.AssignmentType;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
@@ -62,7 +63,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             String xpath = calculateXpath(fieldType, xmlField);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
-                    AssignmentType.MAPPING, "element", "value" + counter);
+                    AssignmentType.MAPPING, AssignmentPolicy.GXT, "element", "value" + counter);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null)
