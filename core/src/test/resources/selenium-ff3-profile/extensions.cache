@@ -1,6 +1,0 @@
-app-global	{972ce4c6-7e08-4474-a285-3208198ce6fd}	rel%{972ce4c6-7e08-4474-a285-3208198ce6fd}	1277881526	
-app-global	langpack-de@firefox-3.6.ubuntu.com	rel%langpack-de@firefox-3.6.ubuntu.com	1273221827	
-app-global	langpack-en-GB@firefox-3.6.ubuntu.com	rel%langpack-en-GB@firefox-3.6.ubuntu.com	1273221842	
-app-system-share	ubufox@ubuntu.com	rel%ubufox@ubuntu.com	1271677667	
-app-profile	gwt-dev-plugin@google.com	rel%gwt-dev-plugin@google.com	1278410889	
-app-profile	firebug@software.joehewitt.com	rel%firebug@software.joehewitt.com	1278410889	

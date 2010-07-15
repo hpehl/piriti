@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Please make sure that there are no line line breaks in the elements. Otherwise the asserts will fail! -->
+<shop>
+    <customers>
+        <customer>
+            <id>gg</id>
+            <firstname>Garry</firstname>
+            <surnamne>Gourmet</surnamne>
+        </customer>
+    </customers>
+
+    <products>
+        <product id="lft">
+            <name>Lamb Fillet</name>
+            <price>10</price>
+        </product>
+        <product id="crt">
+            <name>Carrots</name>
+            <price>2</price>
+        </product>
+        <product id="pts">
+            <name>Potatoes</name>
+            <price>3</price>
+        </product>
+        <product id="ons">
+            <name>Onions</name>
+            <price>1.5</price>
+        </product>
+        <product id="grl">
+            <name>Garlic</name>
+            <price>2</price>
+        </product>
+        <product id="tym">
+            <name>Tyhmian</name>
+            <price>0.5</price>
+        </product>
+        <product id="ros">
+            <name>Rosemary</name>
+            <price>0.75</price>
+        </product>
+    </products>
+
+    <order date="22.11.2010">
+        <customer ref="gg" />
+        <items>
+            <item ref="lft" amount="2" />
+            <item ref="crt" amount="4" />
+            <item ref="pts" amount="3" />
+            <item ref="ons" amount="2" />
+            <item ref="grl" amount="5" />
+            <item ref="tym" amount="1" />
+            <item ref="ros" amount="2" />
+        </items>
+    </order>
+</shop>

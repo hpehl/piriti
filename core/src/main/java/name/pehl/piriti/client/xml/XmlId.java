@@ -22,6 +22,13 @@ import java.lang.annotation.Target;
 public @interface XmlId
 {
     /**
+     * The fields name. Only needed if the field cannot be annotated direclty
+     * and this annotation is used inside {@link XmlFields}.
+     */
+    String name() default "";
+
+
+    /**
      * An XPath expression to select the XML Id. Defaults to "@id".
      * 
      * @return
