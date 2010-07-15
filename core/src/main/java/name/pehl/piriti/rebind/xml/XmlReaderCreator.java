@@ -1,5 +1,8 @@
 package name.pehl.piriti.rebind.xml;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlFields;
 import name.pehl.piriti.client.xml.XmlId;
@@ -10,6 +13,7 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
+import name.pehl.piriti.rebind.fieldhandler.FieldAnnotation;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
@@ -384,6 +388,12 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
+    /**
+     * TODO Documentation!
+     * 
+     * @param writer
+     * @throws UnableToCompleteException
+     */
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
@@ -413,13 +423,42 @@ public class XmlReaderCreator extends AbstractReaderCreator
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        JField[] fields = findAnnotatedFields(modelType, XmlField.class);
-        for (JField field : fields)
+        Map<String, FieldAnnotation<XmlField>> fields = new HashMap<String, FieldAnnotation<XmlField>>();
+
+        // Step 1: Add all XmlField annotations in the XmlFields annotation
+        // from the interfaceType
+        XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
+        if (xmlFields != null)
         {
-            XmlField xmlField = field.getAnnotation(XmlField.class);
-            String xpath = calculateXpath(field, xmlField.value());
+            XmlField[] annotations = xmlFields.value();
+            for (XmlField annotation : annotations)
+            {
+                JField field = modelType.getField(annotation.name());
+                if (field != null)
+                {
+                    fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation));
+                }
+                // TODO Is it an error if field == null?
+            }
+        }
+
+        // Step 2: Add all XmlField annotations of the modelType fields. If
+        // there's already an entry for the field from step 1, it will be
+        // overwritten!
+        JField[] modelTypeFields = findAnnotatedFields(modelType, XmlField.class);
+        for (JField field : modelTypeFields)
+        {
+            XmlField annotation = field.getAnnotation(XmlField.class);
+            fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation));
+        }
+
+        // Now iterate over the result
+        for (FieldAnnotation<XmlField> fieldAnnotation : fields.values())
+        {
+            String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    field.getType(), field.getName(), xpath, xmlField.format(), xmlField.stripWsnl(),
+                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
+                    fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
                     AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, "element", "value" + counter);
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null && handler.isValid(writer, fieldContext))
