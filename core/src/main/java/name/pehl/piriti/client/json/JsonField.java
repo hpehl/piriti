@@ -137,6 +137,13 @@ import com.google.gwt.json.client.JSONString;
 public @interface JsonField
 {
     /**
+     * The fields name. Only needed if the field cannot be annotated direclty
+     * and this annotation is used inside {@link JsonFields}.
+     */
+    String name() default "";
+
+
+    /**
      * A "path" expression (the key of the JSON data) to select the JSON data.
      * Defaults to "" which means that the fields name is taken as a default.
      * 
