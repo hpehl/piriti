@@ -1,10 +1,15 @@
 package name.pehl.piriti.rebind.json;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.JsonFields;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
+import name.pehl.piriti.rebind.fieldhandler.FieldAnnotation;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
@@ -333,14 +338,14 @@ public class JsonReaderCreator extends AbstractReaderCreator
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        JField[] fields = findAnnotatedFields(modelType, JsonField.class);
-        for (JField field : fields)
+        Map<String, FieldAnnotation<JsonField>> fields = findFieldAnnotations();
+        for (FieldAnnotation<JsonField> fieldAnnotation : fields.values())
         {
-            JsonField jsonField = field.getAnnotation(JsonField.class);
-            String jsonPath = calculateJsonPath(field, jsonField);
+            String jsonPath = calculateJsonPath(fieldAnnotation.field, fieldAnnotation.annotation);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    field.getType(), field.getName(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
-                    AssignmentPolicy.FIELD_ONLY, "jsonObject", "value" + counter);
+                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), jsonPath,
+                    fieldAnnotation.annotation.format(), false, AssignmentType.MAPPING,
+                    fieldAnnotation.assignmentPolicy, "jsonObject", "value" + counter);
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null && handler.isValid(writer, fieldContext))
             {
@@ -352,6 +357,46 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 counter++;
             }
         }
+    }
+
+
+    /**
+     * TODO Documentation
+     * 
+     * @return
+     */
+    protected Map<String, FieldAnnotation<JsonField>> findFieldAnnotations()
+    {
+        Map<String, FieldAnnotation<JsonField>> fields = new HashMap<String, FieldAnnotation<JsonField>>();
+
+        // Step 1: Add all JsonField annotations in the JsonFields annotation
+        // from the interfaceType
+        JsonFields xmlFields = interfaceType.getAnnotation(JsonFields.class);
+        if (xmlFields != null)
+        {
+            JsonField[] annotations = xmlFields.value();
+            for (JsonField annotation : annotations)
+            {
+                JField field = modelType.getField(annotation.name());
+                if (field != null)
+                {
+                    fields.put(field.getName(), new FieldAnnotation<JsonField>(field, annotation,
+                            AssignmentPolicy.SETTER_FIRST));
+                }
+                // TODO Is it an error if field == null?
+            }
+        }
+
+        // Step 2: Add all JsonField annotations of the modelType fields. If
+        // there's already an entry for the field from step 1, it will be
+        // overwritten!
+        JField[] modelTypeFields = findAnnotatedFields(modelType, JsonField.class);
+        for (JField field : modelTypeFields)
+        {
+            JsonField annotation = field.getAnnotation(JsonField.class);
+            fields.put(field.getName(), new FieldAnnotation<JsonField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
+        }
+        return fields;
     }
 
 

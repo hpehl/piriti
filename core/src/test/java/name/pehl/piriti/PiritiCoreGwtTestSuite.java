@@ -10,6 +10,8 @@ import name.pehl.piriti.client.gwttest.employee.XmlEmployeeReaderTest;
 import name.pehl.piriti.client.gwttest.fat.JsonFatGlobalItemReaderTest;
 import name.pehl.piriti.client.gwttest.fat.XmlFatGlobalItemReaderTest;
 import name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketReaderTest;
+import name.pehl.piriti.client.gwttest.shop.JsonShopReaderTest;
+import name.pehl.piriti.client.gwttest.shop.XmlShopReaderTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -37,7 +39,8 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
 
         suite.addTestSuite(LotteryTicketReaderTest.class);
 
-        // suite.addTestSuite(XmlShopReaderTest.class);
+        suite.addTestSuite(JsonShopReaderTest.class);
+        suite.addTestSuite(XmlShopReaderTest.class);
 
         return suite;
     }

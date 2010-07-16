@@ -27,7 +27,7 @@ public class ShopReader
 
     public static final ShopJsonReader SHOP_JSON = GWT.create(ShopJsonReader.class);
 
-    @JsonFields({@JsonField(name = "firstname"), @JsonField(name = "surname")})
+    @JsonFields({@JsonField(name = "id"), @JsonField(name = "firstname"), @JsonField(name = "surname")})
     public interface CustomerJsonReader extends JsonReader<Customer>
     {
     }
