@@ -8,6 +8,8 @@ import name.pehl.piriti.gxt.client.gwttest.book.JsonBookReaderTest;
 import name.pehl.piriti.gxt.client.gwttest.book.XmlBookReaderTest;
 import name.pehl.piriti.gxt.client.gwttest.fat.JsonFatGlobalItemReaderTest;
 import name.pehl.piriti.gxt.client.gwttest.fat.XmlFatGlobalItemReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.shop.JsonShopReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.shop.XmlShopReaderTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -30,6 +32,9 @@ public class PiritiGxtGwtTestSuite extends GWTTestSuite
 
         suite.addTestSuite(JsonFatGlobalItemReaderTest.class);
         suite.addTestSuite(XmlFatGlobalItemReaderTest.class);
+
+        suite.addTestSuite(JsonShopReaderTest.class);
+        suite.addTestSuite(XmlShopReaderTest.class);
 
         return suite;
     }

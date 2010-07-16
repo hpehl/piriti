@@ -1,11 +1,10 @@
 package name.pehl.piriti.gxt.rebind.json;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonModel;
+import name.pehl.piriti.gxt.client.json.JsonFields;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
@@ -54,14 +53,14 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        JsonField[] fields = getAllFields(modelType);
+        JsonField[] fields = findFieldAnnotations();
         for (JsonField jsonField : fields)
         {
             writer.newline();
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, jsonField.property(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
+                    fieldType, jsonField.name(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
                     AssignmentPolicy.GXT, "jsonObject", "value" + counter);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
@@ -80,30 +79,48 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     }
 
 
-    private JsonField[] getAllFields(JClassType type)
+    private JsonField[] findFieldAnnotations()
     {
-        List<JsonField> fields = new ArrayList<JsonField>();
-        collectFields(type, fields);
-        return fields.toArray(new JsonField[] {});
+        Map<String, JsonField> fields = new HashMap<String, JsonField>();
+
+        // Step 1: Add all JsonField annotations from the interfaceType
+        JsonFields interfaceTypeFields = interfaceType.getAnnotation(JsonFields.class);
+        if (interfaceTypeFields != null)
+        {
+            JsonField[] annotations = interfaceTypeFields.value();
+            for (JsonField annotation : annotations)
+            {
+                fields.put(annotation.name(), annotation);
+            }
+        }
+
+        // Step 2: Add all JsonField annotations from the modelType. If
+        // there's already an entry from step 1, it will be overwritten!
+        collectModelTypeFields(modelType, fields);
+
+        return fields.values().toArray(new JsonField[] {});
     }
 
 
-    private void collectFields(JClassType type, List<JsonField> fields)
+    private void collectModelTypeFields(JClassType type, Map<String, JsonField> fields)
     {
         // Superclass first please!
         if (type == null)
         {
             return;
         }
-        collectFields(type.getSuperclass(), fields);
+        collectModelTypeFields(type.getSuperclass(), fields);
 
-        JsonModel model = type.getAnnotation(JsonModel.class);
-        if (model != null)
+        JsonFields modelTypeFields = type.getAnnotation(JsonFields.class);
+        if (modelTypeFields != null)
         {
-            JsonField[] modelFields = model.value();
-            if (modelFields != null)
+            JsonField[] modelTypeFieldsValue = modelTypeFields.value();
+            if (modelTypeFieldsValue != null)
             {
-                fields.addAll(Arrays.asList(modelFields));
+                for (JsonField annotation : modelTypeFieldsValue)
+                {
+                    fields.put(annotation.name(), annotation);
+                }
             }
         }
     }
@@ -134,7 +151,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
         String jsonPath = jsonField.path();
         if (jsonPath == null || jsonPath.length() == 0)
         {
-            jsonPath = jsonField.property();
+            jsonPath = jsonField.name();
         }
         return jsonPath;
     }

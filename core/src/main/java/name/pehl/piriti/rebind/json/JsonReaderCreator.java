@@ -360,21 +360,32 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
+    protected String calculateJsonPath(JField field, JsonField jsonField)
+    {
+        String jsonPath = jsonField.value();
+        if (jsonPath == null || jsonPath.length() == 0)
+        {
+            jsonPath = field.getName();
+        }
+        return jsonPath;
+    }
+
+
     /**
      * TODO Documentation
      * 
      * @return
      */
-    protected Map<String, FieldAnnotation<JsonField>> findFieldAnnotations()
+    private Map<String, FieldAnnotation<JsonField>> findFieldAnnotations()
     {
         Map<String, FieldAnnotation<JsonField>> fields = new HashMap<String, FieldAnnotation<JsonField>>();
 
         // Step 1: Add all JsonField annotations in the JsonFields annotation
         // from the interfaceType
-        JsonFields xmlFields = interfaceType.getAnnotation(JsonFields.class);
-        if (xmlFields != null)
+        JsonFields interfaceTypeFields = interfaceType.getAnnotation(JsonFields.class);
+        if (interfaceTypeFields != null)
         {
-            JsonField[] annotations = xmlFields.value();
+            JsonField[] annotations = interfaceTypeFields.value();
             for (JsonField annotation : annotations)
             {
                 JField field = modelType.getField(annotation.name());
@@ -397,16 +408,5 @@ public class JsonReaderCreator extends AbstractReaderCreator
             fields.put(field.getName(), new FieldAnnotation<JsonField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
         }
         return fields;
-    }
-
-
-    protected String calculateJsonPath(JField field, JsonField jsonField)
-    {
-        String jsonPath = jsonField.value();
-        if (jsonPath == null || jsonPath.length() == 0)
-        {
-            jsonPath = field.getName();
-        }
-        return jsonPath;
     }
 }

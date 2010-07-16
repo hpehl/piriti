@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
- * Annotation used in {@link XmlModel} to map one property of a
+ * Annotation used in {@link XmlFields} to map one property of a
  * {@linkplain com.extjs.gxt.ui.client.data.ModelData GXT model}. When the
  * mapping was successful the data is set using
  * {@link com.extjs.gxt.ui.client.data.ModelData#set(String, Object)}.
@@ -25,20 +25,20 @@ import com.extjs.gxt.ui.client.data.ModelData;
 public @interface XmlField
 {
     /**
+     * The name of the property in the {@link ModelData GXT model}.
+     * 
+     * @return
+     */
+    String name();
+
+
+    /**
      * An XPath expression to select the XML data. If not specified the property
      * is taken as a base for the XPath expression.
      * 
      * @return
      */
     String path() default "";
-
-
-    /**
-     * The name of the property in the {@link ModelData GXT model}.
-     * 
-     * @return
-     */
-    String property();
 
 
     /**

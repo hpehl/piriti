@@ -2,16 +2,16 @@ package name.pehl.piriti.gxt.client.gwttest.animal;
 
 import name.pehl.piriti.client.gwttest.animal.Gender;
 import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonModel;
+import name.pehl.piriti.gxt.client.json.JsonFields;
 import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlModel;
+import name.pehl.piriti.gxt.client.xml.XmlFields;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
-@JsonModel(@JsonField(property = "gender", type = Gender.class))
-@XmlModel(@XmlField(property = "gender", type = Gender.class))
+@JsonFields(@JsonField(name = "gender", type = Gender.class))
+@XmlFields(@XmlField(name = "gender", type = Gender.class))
 public abstract class Mammal extends Animal
 {
 }

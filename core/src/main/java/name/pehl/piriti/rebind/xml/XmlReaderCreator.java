@@ -465,12 +465,28 @@ public class XmlReaderCreator extends AbstractReaderCreator
     }
 
 
+    protected String calculateXpath(JField field, String defaultValue)
+    {
+        String xpath = defaultValue;
+        if (xpath == null || xpath.length() == 0)
+        {
+            xpath = field.getName();
+            JType fieldType = field.getType();
+            if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
+            {
+                xpath += "/text()";
+            }
+        }
+        return xpath;
+    }
+
+
     /**
      * TODO Documentation
      * 
      * @return
      */
-    protected Map<String, FieldAnnotation<XmlField>> findFieldAnnotations()
+    private Map<String, FieldAnnotation<XmlField>> findFieldAnnotations()
     {
         Map<String, FieldAnnotation<XmlField>> fields = new HashMap<String, FieldAnnotation<XmlField>>();
 
@@ -510,16 +526,16 @@ public class XmlReaderCreator extends AbstractReaderCreator
      * 
      * @return
      */
-    protected Map<String, FieldAnnotation<XmlIdRef>> findReferenceAnnotations()
+    private Map<String, FieldAnnotation<XmlIdRef>> findReferenceAnnotations()
     {
         Map<String, FieldAnnotation<XmlIdRef>> fields = new HashMap<String, FieldAnnotation<XmlIdRef>>();
 
         // Step 1: Add all XmlField annotations in the XmlFields annotation
         // from the interfaceType
-        XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
-        if (xmlFields != null)
+        XmlFields interfaceTypeFields = interfaceType.getAnnotation(XmlFields.class);
+        if (interfaceTypeFields != null)
         {
-            XmlIdRef[] annotations = xmlFields.references();
+            XmlIdRef[] annotations = interfaceTypeFields.references();
             for (XmlIdRef annotation : annotations)
             {
                 JField field = modelType.getField(annotation.name());
@@ -542,21 +558,5 @@ public class XmlReaderCreator extends AbstractReaderCreator
             fields.put(field.getName(), new FieldAnnotation<XmlIdRef>(field, annotation, AssignmentPolicy.FIELD_ONLY));
         }
         return fields;
-    }
-
-
-    protected String calculateXpath(JField field, String defaultValue)
-    {
-        String xpath = defaultValue;
-        if (xpath == null || xpath.length() == 0)
-        {
-            xpath = field.getName();
-            JType fieldType = field.getType();
-            if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
-            {
-                xpath += "/text()";
-            }
-        }
-        return xpath;
     }
 }

@@ -1,11 +1,10 @@
 package name.pehl.piriti.gxt.rebind.xml;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlModel;
+import name.pehl.piriti.gxt.client.xml.XmlFields;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -55,15 +54,15 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        XmlField[] fields = getAllFields(modelType);
+        XmlField[] fields = findFieldAnnotations();
         for (XmlField xmlField : fields)
         {
             writer.newline();
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
-                    AssignmentType.MAPPING, AssignmentPolicy.GXT, "element", "value" + counter);
+                    fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), AssignmentType.MAPPING,
+                    AssignmentPolicy.GXT, "element", "value" + counter);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
             if (handler != null)
@@ -81,30 +80,48 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     }
 
 
-    private XmlField[] getAllFields(JClassType type)
+    private XmlField[] findFieldAnnotations()
     {
-        List<XmlField> fields = new ArrayList<XmlField>();
-        collectFields(type, fields);
-        return fields.toArray(new XmlField[] {});
+        Map<String, XmlField> fields = new HashMap<String, XmlField>();
+
+        // Step 1: Add all XmlField annotations from the interfaceType
+        XmlFields interfaceTypeFields = interfaceType.getAnnotation(XmlFields.class);
+        if (interfaceTypeFields != null)
+        {
+            XmlField[] annotations = interfaceTypeFields.value();
+            for (XmlField annotation : annotations)
+            {
+                fields.put(annotation.name(), annotation);
+            }
+        }
+
+        // Step 2: Add all XmlField annotations from the modelType. If
+        // there's already an entry from step 1, it will be overwritten!
+        collectModelTypeFields(modelType, fields);
+
+        return fields.values().toArray(new XmlField[] {});
     }
 
 
-    private void collectFields(JClassType type, List<XmlField> fields)
+    private void collectModelTypeFields(JClassType type, Map<String, XmlField> fields)
     {
         // Superclass first please!
         if (type == null)
         {
             return;
         }
-        collectFields(type.getSuperclass(), fields);
+        collectModelTypeFields(type.getSuperclass(), fields);
 
-        XmlModel model = type.getAnnotation(XmlModel.class);
-        if (model != null)
+        XmlFields modelTypeFields = type.getAnnotation(XmlFields.class);
+        if (modelTypeFields != null)
         {
-            XmlField[] modelFields = model.value();
-            if (modelFields != null)
+            XmlField[] modelTypeFieldsValue = modelTypeFields.value();
+            if (modelTypeFieldsValue != null)
             {
-                fields.addAll(Arrays.asList(modelFields));
+                for (XmlField annotation : modelTypeFieldsValue)
+                {
+                    fields.put(annotation.name(), annotation);
+                }
             }
         }
     }
@@ -135,7 +152,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
         String xpath = xmlField.path();
         if (xpath == null || xpath.length() == 0)
         {
-            xpath = xmlField.property();
+            xpath = xmlField.name();
             if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
             {
                 xpath += "/text()";
