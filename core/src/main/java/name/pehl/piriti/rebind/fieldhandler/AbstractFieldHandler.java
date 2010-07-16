@@ -1,8 +1,8 @@
 package name.pehl.piriti.rebind.fieldhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -31,8 +31,8 @@ public abstract class AbstractFieldHandler implements FieldHandler
     @Override
     public void writeDeclaration(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("%s %s = null;", fieldContext.getFieldType().getParameterizedQualifiedSourceName(), fieldContext
-                .getValueVariable());
+        writer.write("%s %s = null;", fieldContext.getFieldType().getParameterizedQualifiedSourceName(),
+                fieldContext.getValueVariable());
     }
 
 
@@ -45,27 +45,6 @@ public abstract class AbstractFieldHandler implements FieldHandler
     @Override
     public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("if (%s != null) {", fieldContext.getValueVariable());
-        writer.indent();
-        writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    /**
-     * Generates code comments if a field was skipped (contains the reason why
-     * the field was skipped)
-     * 
-     * @param writer
-     * @param fieldContext
-     * @param reason
-     */
-    protected void skipField(IndentedWriter writer, FieldContext fieldContext, String reason)
-    {
-        writer.write("// Skipping field %s", fieldContext);
-        writer.write("// " + reason);
-        GWT.log("Skipping field " + fieldContext, null);
-        GWT.log(reason, null);
+        CodeGeneration.writeAssignement(writer, fieldContext);
     }
 }

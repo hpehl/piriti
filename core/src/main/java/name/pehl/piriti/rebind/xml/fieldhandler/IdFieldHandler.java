@@ -7,17 +7,18 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 638
+ *          $
  */
 public class IdFieldHandler extends StringFieldHandler
 {
     @Override
     public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
+        super.writeAssignment(writer, fieldContext);
         writer.write("if (%s != null) {", fieldContext.getValueVariable());
         writer.indent();
-        writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
-        writer.write("this.idMap.put(model.%s, model);", fieldContext.getFieldName());
+        writer.write("this.idMap.put(%s, model);", fieldContext.getValueVariable());
         writer.outdent();
         writer.write("}");
     }

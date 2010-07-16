@@ -15,9 +15,12 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 
 /**
  * Utility methods for {@linkplain JType}s.
@@ -270,6 +273,32 @@ public final class TypeUtils
 
 
     /**
+     * Return true if the map is
+     * <ul>
+     * <li>Map
+     * <li>HashMap
+     * <li>SortedMap
+     * <li>TreeMap
+     * </ul>
+     * false otherwise.
+     * 
+     * @param type
+     * @return
+     */
+    public static boolean isMap(JType type)
+    {
+        if (Map.class.getName().equals(type.getQualifiedSourceName())
+                || HashMap.class.getName().equals(type.getQualifiedSourceName())
+                || SortedMap.class.getName().equals(type.getQualifiedSourceName())
+                || TreeMap.class.getName().equals(type.getQualifiedSourceName()))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * Returns the first type variable of the specified parameterized type or
      * null if {@code type} is <code>null</code> or does not have any type
      * variables.
@@ -293,28 +322,55 @@ public final class TypeUtils
     }
 
 
-    /**
-     * Return true if the map is
-     * <ul>
-     * <li>Map
-     * <li>HashMap
-     * <li>SortedMap
-     * <li>TreeMap
-     * </ul>
-     * false otherwise.
-     * 
-     * @param type
-     * @return
-     */
-    public static boolean isMap(JType type)
+    public static boolean isFieldAccessible(JClassType type, String name)
     {
-        if (Map.class.getName().equals(type.getQualifiedSourceName())
-                || HashMap.class.getName().equals(type.getQualifiedSourceName())
-                || SortedMap.class.getName().equals(type.getQualifiedSourceName())
-                || TreeMap.class.getName().equals(type.getQualifiedSourceName()))
+        boolean accessible = false;
+        if (type != null)
         {
-            return true;
+            JField field = type.getField(name);
+            if (field != null)
+            {
+                accessible = !(field.isPrivate() || field.isFinal());
+                if (!accessible)
+                {
+                    accessible = isFieldAccessible(type.getSuperclass(), name);
+                }
+            }
+            else
+            {
+                accessible = isFieldAccessible(type.getSuperclass(), name);
+            }
         }
-        return false;
+        return accessible;
+    }
+
+
+    public static boolean isMethodAccessible(JClassType type, String name, JType parameter)
+    {
+        boolean accessible = false;
+        if (type != null)
+        {
+            try
+            {
+                JMethod method = type.getMethod(name, new JType[] {parameter});
+                if (method != null)
+                {
+                    accessible = !method.isPrivate();
+                    if (!accessible)
+                    {
+                        accessible = isMethodAccessible(type.getSuperclass(), name, parameter);
+                    }
+                }
+                else
+                {
+                    accessible = isMethodAccessible(type.getSuperclass(), name, parameter);
+                }
+            }
+            catch (NotFoundException e)
+            {
+                accessible = isMethodAccessible(type.getSuperclass(), name, parameter);
+            }
+        }
+        return accessible;
     }
 }

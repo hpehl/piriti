@@ -13,7 +13,9 @@ import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
  */
 public abstract class AbstractShopReaderTest extends AbstractPiritiTest
 {
-    @SuppressWarnings("deprecation")
+    public final static Date _22_11_2010 = new Date(1290380400000l);
+
+
     protected void assertShop(Shop shop)
     {
         assertNotNull(shop);
@@ -35,11 +37,7 @@ public abstract class AbstractShopReaderTest extends AbstractPiritiTest
         // Order
         Order order = shop.getOrder();
         assertNotNull(order);
-        Date date = order.getDate();
-        assertNotNull(date);
-        assertEquals(110, date.getYear());
-        assertEquals(10, date.getMonth());
-        assertEquals(22, date.getDay());
+        assertEquals(_22_11_2010, order.getDate());
         customer = order.getCustomer();
         assertGarryGourmet(customer);
         SortedSet<OrderItem> items = order.getItems();

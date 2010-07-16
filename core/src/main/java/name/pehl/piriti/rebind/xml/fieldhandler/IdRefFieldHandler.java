@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AbstractCollectionFieldHandler;
@@ -9,7 +10,6 @@ import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
@@ -19,7 +19,6 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class IdRefFieldHandler extends AbstractRegistryFieldHandler
 {
-    private static final String FQ_XML_READER = "fqXmlReader";
     private static final String NESTED_TYPE = "nestedType";
 
 
@@ -54,19 +53,10 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         JClassType classOrInterface = type.isClassOrInterface();
         if (classOrInterface == null)
         {
-            skipField(writer, fieldContext, "Type is no class or interface");
-            return false;
-        }
-        JField xmlReaderField = findReaderMember(classOrInterface);
-        if (xmlReaderField == null)
-        {
-            skipField(writer, fieldContext, String.format("No public static field of type %1$s<%2$s> found in %2$s",
-                    getReaderClassname(), type.getQualifiedSourceName()));
+            CodeGeneration.skipField(writer, fieldContext, "Type is no class or interface");
             return false;
         }
         fieldContext.addMetadata(NESTED_TYPE, classOrInterface);
-        fieldContext.addMetadata(FQ_XML_READER, classOrInterface.getQualifiedSourceName() + "."
-                + xmlReaderField.getName());
         return true;
     }
 
@@ -74,9 +64,14 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
+        // Cast because subclasses might use a subtype of getReaderClassname()
         JClassType nestedType = fieldContext.getMetadata(NESTED_TYPE);
-        String fqXmlReader = fieldContext.getMetadata(FQ_XML_READER);
-
+        String readerVariable = fieldContext.newVariableName("Reader");
+        writer.write("%1$s<%2$s> %3$s = (%1$s)this.xmlRegistry.get(%2$s.class);", getReaderClassname(),
+                nestedType.getQualifiedSourceName(), readerVariable);
+        writer.write("if (%s != null) {", readerVariable);
+        writer.indent();
+        
         String references = fieldContext.newVariableName("References");
         writer.write("String[] %s = %s.selectValues(\"%s\", %s);", references, fieldContext.getInputVariable(),
                 fieldContext.getPath(), fieldContext.isStripWsnl());
@@ -95,8 +90,8 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
             if (fieldContext.isArray())
             {
                 collectionVariable = fieldContext.newVariableName("AsList");
-                writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", nestedType
-                        .getParameterizedQualifiedSourceName(), collectionVariable);
+                writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();",
+                        nestedType.getParameterizedQualifiedSourceName(), collectionVariable);
             }
             else
             {
@@ -113,8 +108,8 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
             }
             writer.write("for (String reference : %s) {", references);
             writer.indent();
-            writer.write("%s referenceInstance = %s.idRef(reference);", nestedType
-                    .getParameterizedQualifiedSourceName(), fqXmlReader);
+            writer.write("%s referenceInstance = %s.idRef(reference);",
+                    nestedType.getParameterizedQualifiedSourceName(), readerVariable);
             writer.write("if (referenceInstance != null) {");
             writer.indent();
             writer.write("%s.add(referenceInstance);", collectionVariable);
@@ -124,8 +119,8 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
             writer.write("}");
             if (fieldContext.isArray())
             {
-                writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(), nestedType
-                        .getQualifiedSourceName(), collectionVariable);
+                writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                        nestedType.getQualifiedSourceName(), collectionVariable);
                 writer.write("int index = 0;");
                 writer.write("for(%s currentValue : %s) {", nestedType.getQualifiedSourceName(), collectionVariable);
                 writer.indent();
@@ -137,8 +132,10 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         }
         else
         {
-            writer.write("%s = %s.idRef(%s[0]);", fieldContext.getValueVariable(), fqXmlReader, references);
+            writer.write("%s = %s.idRef(%s[0]);", fieldContext.getValueVariable(), readerVariable, references);
         }
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
     }

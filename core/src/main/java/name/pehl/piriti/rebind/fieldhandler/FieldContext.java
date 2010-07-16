@@ -30,6 +30,7 @@ public class FieldContext
     private final FieldHandlerRegistry handlerRegistry;
     private final JClassType modelType;
     private final JType fieldType;
+    private final JPrimitiveType primitiveType;
     private final String fieldName;
     private final String path;
     private final String format;
@@ -84,6 +85,7 @@ public class FieldContext
             {
                 // Use the boxed type for primitives
                 this.fieldType = typeOracle.getType(primitiveType.getQualifiedBoxedSourceName());
+                this.primitiveType = primitiveType;
             }
             catch (NotFoundException e)
             {
@@ -93,6 +95,7 @@ public class FieldContext
         else
         {
             this.fieldType = fieldType;
+            this.primitiveType = null;
         }
 
         // Field properties
@@ -138,13 +141,13 @@ public class FieldContext
 
     public JPrimitiveType getPrimitiveType()
     {
-        return fieldType.isPrimitive();
+        return primitiveType;
     }
 
 
     public boolean isBasicType()
     {
-        return TypeUtils.isBasicType(fieldType);
+        return isPrimitive() || TypeUtils.isBasicType(fieldType);
     }
 
 

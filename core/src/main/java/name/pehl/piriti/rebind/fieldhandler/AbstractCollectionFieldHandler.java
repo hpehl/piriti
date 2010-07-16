@@ -50,7 +50,7 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
     {
         if (!fieldContext.isCollection())
         {
-            skipField(writer, fieldContext, "Type is no collection");
+            CodeGeneration.skipField(writer, fieldContext, "Type is no collection");
             return false;
         }
         JClassType parameterType = getTypeVariable(fieldContext);
@@ -59,7 +59,7 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
             if (parameterType.isArray() != null || TypeUtils.isCollection(parameterType)
                     || TypeUtils.isMap(parameterType))
             {
-                skipField(writer, fieldContext, "Nested arrays / collections / maps are not supported");
+                CodeGeneration.skipField(writer, fieldContext, "Nested arrays / collections / maps are not supported");
                 return false;
             }
         }
@@ -67,7 +67,7 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
         {
             // collections and maps without type arguments are not
             // supported!
-            skipField(writer, fieldContext, "Collection has no type argument");
+            CodeGeneration.skipField(writer, fieldContext, "Collection has no / invalid type argument");
             return false;
         }
         // Initialize the parameter type to make sure the relevant reader

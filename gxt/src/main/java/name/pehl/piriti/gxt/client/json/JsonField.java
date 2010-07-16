@@ -62,7 +62,7 @@ public @interface JsonField
      * 
      * @return
      */
-    Class<?> typeVariable() default Object.class;
+    Class<?> typeVariable() default Void.class;
 
 
     /**

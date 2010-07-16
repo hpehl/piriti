@@ -5,7 +5,7 @@
         <customer>
             <id>gg</id>
             <firstname>Garry</firstname>
-            <surnamne>Gourmet</surnamne>
+            <surname>Gourmet</surname>
         </customer>
     </customers>
 
@@ -28,7 +28,7 @@
         </product>
         <product id="grl">
             <name>Garlic</name>
-            <price>2</price>
+            <price>2.5</price>
         </product>
         <product id="tym">
             <name>Tyhmian</name>
@@ -44,12 +44,12 @@
         <customer ref="gg" />
         <items>
             <item ref="lft" amount="2" />
-            <item ref="crt" amount="4" />
-            <item ref="pts" amount="3" />
-            <item ref="ons" amount="2" />
-            <item ref="grl" amount="5" />
+            <item ref="crt" amount="7" />
+            <item ref="pts" amount="6" />
+            <item ref="ons" amount="3" />
+            <item ref="grl" amount="4" />
             <item ref="tym" amount="1" />
-            <item ref="ros" amount="2" />
+            <item ref="ros" amount="5" />
         </items>
     </order>
 </shop>

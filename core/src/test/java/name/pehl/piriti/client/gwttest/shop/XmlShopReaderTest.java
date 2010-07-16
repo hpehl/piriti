@@ -15,5 +15,11 @@ public class XmlShopReaderTest extends AbstractShopReaderTest
         Document document = new XmlParser().parse(xml);
         Shop shop = ShopReader.SHOP_XML.read(document);
         assertShop(shop);
+        assertIdsAndReferences(shop);
+    }
+
+
+    private void assertIdsAndReferences(Shop shop)
+    {
     }
 }

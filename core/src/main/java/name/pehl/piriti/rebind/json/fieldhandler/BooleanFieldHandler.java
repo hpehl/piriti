@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
@@ -30,7 +31,7 @@ public class BooleanFieldHandler extends AbstractFieldHandler
     {
         if (!TypeUtils.isBoolean(fieldContext.getFieldType()))
         {
-            skipField(writer, fieldContext, "Type is neither boolean nor Boolean");
+            CodeGeneration.skipField(writer, fieldContext, "Type is neither boolean nor Boolean");
         }
         return true;
     }

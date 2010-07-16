@@ -4,8 +4,6 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
  * Abstract {@link FieldHandler} implementation for types with an own reader.
@@ -30,51 +28,11 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
     {
         if (!fieldContext.isClassOrInterface())
         {
-            skipField(writer, fieldContext, "Type is no class or interface");
+            CodeGeneration.skipField(writer, fieldContext, "Type is no class or interface");
             return false;
         }
-        JField registryField = findReaderMember(fieldContext.getClassOrInterfaceType());
-        if (registryField == null)
-        {
-            skipField(writer, fieldContext, String.format("No public static field of type %1$s<%2$s> found in %2$s",
-                    getReaderClassname(), fieldContext.getFieldType().getQualifiedSourceName()));
-            return false;
-        }
-        // Initialize the parameter type to make sure the relevant reader
-        // is in the registry (ugly - but it works)
         CodeGeneration.writeReaderInitialization(writer, fieldContext.getClassOrInterfaceType());
         return true;
-    }
-
-
-    protected JField findReaderMember(JClassType type)
-    {
-        JField[] fields = type.getFields();
-        if (fields != null)
-        {
-            for (JField field : fields)
-            {
-                if (field.isStatic() && field.isPublic())
-                {
-                    JClassType fieldType = field.getType().isClassOrInterface();
-                    if (fieldType != null)
-                    {
-                        JClassType[] interfazes = fieldType.getImplementedInterfaces();
-                        if (interfazes != null)
-                        {
-                            for (JClassType interfaze : interfazes)
-                            {
-                                if (getReaderClassname().equals(interfaze.getQualifiedSourceName()))
-                                {
-                                    return field;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
 

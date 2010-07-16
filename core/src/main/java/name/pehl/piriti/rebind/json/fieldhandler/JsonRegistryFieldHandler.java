@@ -8,7 +8,6 @@ import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
  * {@link FieldHandler} implementation for types with an own {@link JsonReader}.
@@ -30,6 +29,14 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
     @Override
     public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
+        // Cast because subclasses might use a subtype of getReaderClassname()
+        JClassType classType = fieldContext.getClassOrInterfaceType();
+        String readerVariable = fieldContext.newVariableName("Reader");
+        writer.write("%1$s<%2$s> %3$s = (%1$s)this.jsonRegistry.get(%2$s.class);", getReaderClassname(),
+                classType.getQualifiedSourceName(), readerVariable);
+        writer.write("if (%s != null) {", readerVariable);
+        writer.indent();
+
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
@@ -37,8 +44,8 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
-                    .getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
+                    fieldContext.getPath());
         }
         else
         {
@@ -48,15 +55,7 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        JClassType classType = fieldContext.getClassOrInterfaceType();
-        JField jsonRegistryField = findReaderMember(classType);
-        // Cast because subclasses might use a subtype of getReaderClassname()
-        writer.write("%1$s<%2$s> %3$sReader = (%1$s)jsonRegistry.get(%2$s.class);", getReaderClassname(), classType
-                .getQualifiedSourceName(), fieldContext.getValueVariable());
-        writer.write("if (%sReader != null) {", fieldContext.getValueVariable());
-        writer.indent();
-        writer.write("%s = %s.%s.read(%s.toString());", fieldContext.getValueVariable(), classType
-                .getQualifiedSourceName(), jsonRegistryField.getName(), jsonValue);
+        writer.write("%s = %s.read(%s.toString());", fieldContext.getValueVariable(), readerVariable, jsonValue);
         writer.outdent();
         writer.write("}");
         writer.outdent();

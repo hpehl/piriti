@@ -11,9 +11,11 @@ import com.google.gwt.resources.client.TextResource;
 
 public interface ShopResources extends ClientBundle
 {
-    // ------------------------------------------------------- deferred binding
-
     ShopResources INSTANCE = GWT.create(ShopResources.class);
+
+
+    @Source("shop.json")
+    public TextResource shopJson();
 
 
     @Source("shop.xml")

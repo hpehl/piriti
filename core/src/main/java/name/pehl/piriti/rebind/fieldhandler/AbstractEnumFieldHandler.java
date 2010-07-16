@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.fieldhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -26,7 +27,7 @@ public abstract class AbstractEnumFieldHandler extends AbstractFieldHandler
     {
         if (!fieldContext.isEnum())
         {
-            skipField(writer, fieldContext, "Type is no enum");
+            CodeGeneration.skipField(writer, fieldContext, "Type is no enum");
             return false;
         }
         return true;

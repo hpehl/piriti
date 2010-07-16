@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.fieldhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 
@@ -29,18 +30,18 @@ public abstract class AbstractArrayFieldHandler extends AbstractFieldHandler
     {
         if (!fieldContext.isArray())
         {
-            skipField(writer, fieldContext, "Type is no array");
+            CodeGeneration.skipField(writer, fieldContext, "Type is no array");
             return false;
         }
         JType componentType = fieldContext.getArrayType().getComponentType();
         if (componentType.isArray() != null)
         {
-            skipField(writer, fieldContext, "Multi-dimensional arrays are not supported");
+            CodeGeneration.skipField(writer, fieldContext, "Multi-dimensional arrays are not supported");
             return false;
         }
         if (TypeUtils.isCollection(componentType) || TypeUtils.isMap(componentType))
         {
-            skipField(writer, fieldContext, "Arrays of collections / maps are not supported");
+            CodeGeneration.skipField(writer, fieldContext, "Arrays of collections / maps are not supported");
             return false;
         }
         return true;
