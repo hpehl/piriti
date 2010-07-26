@@ -328,7 +328,9 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
+        
         handleFields(writer);
+        
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
