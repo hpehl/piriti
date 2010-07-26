@@ -75,7 +75,7 @@ public class ShopReader
 
     public static final ShopXmlReader SHOP_XML = GWT.create(ShopXmlReader.class);
 
-    @XmlFields({@XmlField(name = "id", path = "id/text()", type = String.class),
+    @XmlFields({@XmlField(name = "id", type = String.class),
             @XmlField(name = "firstname", type = String.class), @XmlField(name = "surname", type = String.class)})
     public interface CustomerXmlReader extends XmlModelReader<Customer>
     {

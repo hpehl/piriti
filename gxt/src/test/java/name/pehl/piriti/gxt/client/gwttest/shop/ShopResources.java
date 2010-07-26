@@ -14,6 +14,10 @@ public interface ShopResources extends ClientBundle
     ShopResources INSTANCE = GWT.create(ShopResources.class);
 
 
+    @Source("name/pehl/piriti/client/gwttest/shop/shop.json")
+    public TextResource shopJson();
+
+
     @Source("shop.xml")
     public TextResource shopXml();
 }
