@@ -62,4 +62,29 @@ public class LongConverter extends AbstractConverter<Long>
         NumberFormat numberFormat = NumberFormat.getFormat(format);
         return new Long((long) numberFormat.parse(value));
     }
+
+
+    @Override
+    public String serialize(Long value, String format)
+    {
+        if (value != null && format != null)
+        {
+            return serializeLong(value, format);
+        }
+        return super.serialize(value, format);
+    }
+
+
+    /**
+     * Serialization happens in an extra method so it can be overwritten in unit
+     * tests.
+     * 
+     * @param value
+     * @param format
+     */
+    protected String serializeLong(Long value, String format)
+    {
+        NumberFormat numberFormat = NumberFormat.getFormat(format);
+        return numberFormat.format(value);
+    }
 }

@@ -62,4 +62,29 @@ public class IntegerConverter extends AbstractConverter<Integer>
         NumberFormat numberFormat = NumberFormat.getFormat(format);
         return new Integer((int) numberFormat.parse(value));
     }
+
+
+    @Override
+    public String serialize(Integer value, String format)
+    {
+        if (value != null && format != null)
+        {
+            return serializeInteger(value, format);
+        }
+        return super.serialize(value, format);
+    }
+
+
+    /**
+     * Serialization happens in an extra method so it can be overwritten in unit
+     * tests.
+     * 
+     * @param value
+     * @param format
+     */
+    protected String serializeInteger(Integer value, String format)
+    {
+        NumberFormat numberFormat = NumberFormat.getFormat(format);
+        return numberFormat.format(value);
+    }
 }

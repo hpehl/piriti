@@ -45,7 +45,7 @@ import com.google.inject.internal.Nullable;
  */
 public interface XmlReader<T>
 {
-    // ------------------------------------------------------...----- read list
+    // -------------------------------------------------------------- read list
 
     /**
      * Convert the direct children of the documents root element to a list of Ts

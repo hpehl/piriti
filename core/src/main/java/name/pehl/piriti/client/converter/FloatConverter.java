@@ -62,4 +62,29 @@ public class FloatConverter extends AbstractConverter<Float>
         NumberFormat numberFormat = NumberFormat.getFormat(format);
         return new Float((float) numberFormat.parse(value));
     }
+
+
+    @Override
+    public String serialize(Float value, String format)
+    {
+        if (value != null && format != null)
+        {
+            return serializeFloat(value, format);
+        }
+        return super.serialize(value, format);
+    }
+
+
+    /**
+     * Serialization happens in an extra method so it can be overwritten in unit
+     * tests.
+     * 
+     * @param value
+     * @param format
+     */
+    protected String serializeFloat(Float value, String format)
+    {
+        NumberFormat numberFormat = NumberFormat.getFormat(format);
+        return numberFormat.format(value);
+    }
 }

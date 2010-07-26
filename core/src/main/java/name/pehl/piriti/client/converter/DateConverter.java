@@ -64,4 +64,29 @@ public class DateConverter extends AbstractConverter<Date>
             return null;
         }
     }
+
+
+    @Override
+    public String serialize(Date value, String format)
+    {
+        if (value != null)
+        {
+            return serializeDate(value, format == null ? DEFAULT_FORMAT : format);
+        }
+        return null;
+    }
+
+
+    /**
+     * Serialization happens in an extra method so it can be overwritten in unit
+     * tests.
+     * 
+     * @param value
+     * @param format
+     */
+    protected String serializeDate(Date value, String format)
+    {
+        DateTimeFormat dtFormat = DateTimeFormat.getFormat(format);
+        return dtFormat.format(value);
+    }
 }
