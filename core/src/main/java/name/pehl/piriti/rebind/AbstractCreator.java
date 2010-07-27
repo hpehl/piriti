@@ -14,32 +14,14 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
- * Base class for creating reader implementations. This class contains some
- * common code and behaviour.
+ * Base class for creating deferred binding implementations. This class contains
+ * some common code and behaviour.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 136 $
  */
 public abstract class AbstractCreator
 {
-    // -------------------------------------------------------------- constants
-
-    // Constants for the GinJectors NYI
-    /**
-     * The configuration property for the Converter GinJector
-     */
-    public static final String CONVERTER_GINJECTOR = "converter.ginjector";
-
-    /**
-     * The configuration property for the JSON GinJector
-     */
-    public static final String JSON_GINJECTOR = "json.ginjector";
-
-    /**
-     * The configuration property for the XML GinJector
-     */
-    public static final String XML_GINJECTOR = "xml.ginjector";
-
     // -------------------------------------------------------- private members
 
     protected final GeneratorContext context;

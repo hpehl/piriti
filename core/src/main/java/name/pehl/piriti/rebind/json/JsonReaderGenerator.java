@@ -10,7 +10,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
- * GWT Generator for JsonReaders. The generator delegates to
+ * GWT Generator for {@linkplain JsonReader}s. The generator delegates to
  * {@link JsonReaderCreator} which is responsible for generating the code.
  * 
  * @author $LastChangedBy: harald.pehl $

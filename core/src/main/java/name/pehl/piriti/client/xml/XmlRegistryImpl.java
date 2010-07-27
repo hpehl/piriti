@@ -11,36 +11,43 @@ import java.util.Map;
  */
 public class XmlRegistryImpl implements XmlRegistry
 {
-    private Map<Class<?>, XmlReader<?>> registry;
+    private Map<Class<?>, XmlReader<?>> readers;
+    private Map<Class<?>, XmlWriter<?>> writers;
 
 
     public XmlRegistryImpl()
     {
-        registry = new HashMap<Class<?>, XmlReader<?>>();
+        readers = new HashMap<Class<?>, XmlReader<?>>();
+        writers = new HashMap<Class<?>, XmlWriter<?>>();
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T> void register(Class<T> clazz, XmlReader<T> reader)
     {
-        registry.put(clazz, reader);
+        readers.put(clazz, reader);
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public <T> void register(Class<T> clazz, XmlWriter<T> writer)
+    {
+        writers.put(clazz, writer);
+    }
+
+    
     @Override
     @SuppressWarnings("unchecked")
-    public <T> XmlReader<T> get(Class<T> clazz)
+    public <T> XmlReader<T> getReader(Class<T> clazz)
     {
-        if (clazz != null)
-        {
-            return (XmlReader<T>) registry.get(clazz);
-        }
-        return null;
+        return (XmlReader<T>) readers.get(clazz);
+    }
+
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> XmlWriter<T> getWriter(Class<T> clazz)
+    {
+        return (XmlWriter<T>) writers.get(clazz);
     }
 }

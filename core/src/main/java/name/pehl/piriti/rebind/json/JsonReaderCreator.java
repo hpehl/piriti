@@ -362,17 +362,6 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    protected String calculateJsonPath(JField field, JsonField jsonField)
-    {
-        String jsonPath = jsonField.value();
-        if (jsonPath == null || jsonPath.length() == 0)
-        {
-            jsonPath = field.getName();
-        }
-        return jsonPath;
-    }
-
-
     /**
      * TODO Documentation
      * 
@@ -410,5 +399,16 @@ public class JsonReaderCreator extends AbstractReaderCreator
             fields.put(field.getName(), new FieldAnnotation<JsonField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
         }
         return fields;
+    }
+
+
+    protected String calculateJsonPath(JField field, JsonField jsonField)
+    {
+        String jsonPath = jsonField.value();
+        if (jsonPath == null || jsonPath.length() == 0)
+        {
+            jsonPath = field.getName();
+        }
+        return jsonPath;
     }
 }

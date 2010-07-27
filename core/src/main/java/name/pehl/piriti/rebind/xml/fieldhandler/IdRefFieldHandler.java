@@ -67,7 +67,7 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         // Cast because subclasses might use a subtype of getReaderClassname()
         JClassType nestedType = fieldContext.getMetadata(NESTED_TYPE);
         String readerVariable = fieldContext.newVariableName("Reader");
-        writer.write("%1$s<%2$s> %3$s = (%1$s)this.xmlRegistry.get(%2$s.class);", getReaderClassname(),
+        writer.write("%1$s<%2$s> %3$s = (%1$s)this.xmlRegistry.getReader(%2$s.class);", getReaderClassname(),
                 nestedType.getQualifiedSourceName(), readerVariable);
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();

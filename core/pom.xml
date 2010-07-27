@@ -8,7 +8,7 @@
     <parent>
         <groupId>name.pehl.piriti</groupId>
         <artifactId>piriti-parent</artifactId>
-        <version>0.4.2</version>
+        <version>0.5</version>
     </parent>
 
 

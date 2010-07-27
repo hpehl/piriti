@@ -11,32 +11,43 @@ import java.util.Map;
  */
 public class JsonRegistryImpl implements JsonRegistry
 {
-    private Map<Class<?>, JsonReader<?>> registry;
+    private Map<Class<?>, JsonReader<?>> readers;
+    private Map<Class<?>, JsonWriter<?>> writers;
 
 
     public JsonRegistryImpl()
     {
-        registry = new HashMap<Class<?>, JsonReader<?>>();
+        readers = new HashMap<Class<?>, JsonReader<?>>();
+        writers = new HashMap<Class<?>, JsonWriter<?>>();
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T> void register(Class<T> clazz, JsonReader<T> reader)
     {
-        registry.put(clazz, reader);
+        readers.put(clazz, reader);
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public <T> void register(Class<T> clazz, JsonWriter<T> writer)
+    {
+        writers.put(clazz, writer);
+    }
+
+
     @Override
     @SuppressWarnings("unchecked")
-    public <T> JsonReader<T> get(Class<T> clazz)
+    public <T> JsonReader<T> getReader(Class<T> clazz)
     {
-        return (JsonReader<T>) registry.get(clazz);
+        return (JsonReader<T>) readers.get(clazz);
+    }
+
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> JsonWriter<T> getWriter(Class<T> clazz)
+    {
+        return (JsonWriter<T>) writers.get(clazz);
     }
 }

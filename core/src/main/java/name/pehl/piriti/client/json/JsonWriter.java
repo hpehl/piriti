@@ -18,5 +18,5 @@ public interface JsonWriter<T>
     String toJson(@Nullable List<T> values, String arrayKey);
 
 
-    String read(@Nullable T value);
+    String toJson(@Nullable T value);
 }

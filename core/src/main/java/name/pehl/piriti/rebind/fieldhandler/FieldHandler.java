@@ -5,7 +5,7 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * Interface for generating code for one field assignment.
+ * Interface for generating code for one field.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
