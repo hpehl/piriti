@@ -13,10 +13,10 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  * {@link AbstractWriterCreator} instance which is responsible for generating
  * the code.
  * 
- * @author $LastChangedBy$
- * @version $LastChangedRevision$
+ * @author $LastChangedBy: harald.pehl $
+ * @version $LastChangedRevision: 745 $
  */
-public abstract class AbstractWriterGenerator extends Generator
+public abstract class AbstractGenerator extends Generator
 {
     @Override
     public String generate(TreeLogger logger, GeneratorContext context, String typeName)
@@ -36,13 +36,13 @@ public abstract class AbstractWriterGenerator extends Generator
         String implName = interfaceType.getName().replace('.', '_') + "Impl";
         String packageName = interfaceType.getPackage().getName();
 
-        AbstractWriterCreator creator = createCreator(context, interfaceType, implName, logger);
+        AbstractCreator creator = createCreator(context, interfaceType, implName, logger);
         creator.create();
 
         return packageName + "." + implName;
     }
 
 
-    protected abstract AbstractWriterCreator createCreator(GeneratorContext context, JClassType interfaceType,
+    protected abstract AbstractCreator createCreator(GeneratorContext context, JClassType interfaceType,
             String implName, TreeLogger logger) throws UnableToCompleteException;
 }

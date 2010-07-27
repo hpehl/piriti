@@ -8,15 +8,12 @@ import name.pehl.piriti.client.xml.XmlFields;
 import name.pehl.piriti.client.xml.XmlId;
 import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.client.xml.XmlReader;
-import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldAnnotation;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
 import name.pehl.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
@@ -26,7 +23,6 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Class which generates the code necessary to map the annotated fields.
@@ -34,8 +30,10 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlReaderCreator extends AbstractReaderCreator
+public class XmlReaderCreator extends AbstractXmlCreator
 {
+    // ----------------------------------------------------------- constructors
+
     public XmlReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
@@ -44,27 +42,10 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
 
     @Override
-    protected FieldHandlerRegistry setupFieldHandlerRegistry()
-    {
-        return new XmlFieldHandlerRegistry();
-    }
-
-
-    @Override
-    protected void createImports(IndentedWriter writer) throws UnableToCompleteException
-    {
-        super.createImports(writer);
-        writer.write("import name.pehl.piriti.client.xml.*;");
-        writer.write("import name.pehl.totoe.client.*;");
-        writer.write("import static name.pehl.piriti.client.xml.XmlReader.*;");
-    }
-
-
-    @Override
     protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createMemberVariables(writer);
-        writer.write("private XmlRegistry xmlRegistry;");
+        writer.write("private Map<String,%s> idMap;", modelType.getQualifiedSourceName());
     }
 
 
@@ -72,16 +53,13 @@ public class XmlReaderCreator extends AbstractReaderCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         super.createConstructorBody(writer);
-        writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
-        writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
+        writer.write("this.idMap = new HashMap<String,%s>();", modelType.getQualifiedSourceName());
     }
 
 
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
-        super.createMethods(writer);
-
         readListFromDocument(writer);
         writer.newline();
 
@@ -400,43 +378,26 @@ public class XmlReaderCreator extends AbstractReaderCreator
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
                     fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
                     AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "nestedValue" + counter);
-            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-            if ((handler instanceof XmlRegistryFieldHandler || handler instanceof ArrayFieldHandler || handler instanceof CollectionFieldHandler)
-                    && handler.isValid(writer, fieldContext))
+            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            if ((fieldHandler instanceof XmlRegistryFieldHandler || fieldHandler instanceof ArrayFieldHandler || fieldHandler instanceof CollectionFieldHandler)
+                    && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handler.writeComment(writer, fieldContext);
-                handler.writeDeclaration(writer, fieldContext);
-                handler.writeConverterCode(writer, fieldContext);
-                handler.writeAssignment(writer, fieldContext);
+                handleField(writer, fieldHandler, fieldContext);
                 counter++;
             }
         }
     }
 
 
-    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
+    @Override
+    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
+            throws UnableToCompleteException
     {
-        int counter = 0;
-        Map<String, FieldAnnotation<XmlField>> fields = findFieldAnnotations();
-        for (FieldAnnotation<XmlField> fieldAnnotation : fields.values())
-        {
-            String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
-            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
-                    fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
-                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "value" + counter);
-            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-            if (handler != null && handler.isValid(writer, fieldContext))
-            {
-                writer.newline();
-                handler.writeComment(writer, fieldContext);
-                handler.writeDeclaration(writer, fieldContext);
-                handler.writeConverterCode(writer, fieldContext);
-                handler.writeAssignment(writer, fieldContext);
-                counter++;
-            }
-        }
+        fieldHandler.writeComment(writer, fieldContext);
+        fieldHandler.writeDeclaration(writer, fieldContext);
+        fieldHandler.writeConverterCode(writer, fieldContext);
+        fieldHandler.writeAssignment(writer, fieldContext);
     }
 
 
@@ -451,73 +412,14 @@ public class XmlReaderCreator extends AbstractReaderCreator
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath, null,
                     fieldAnnotation.annotation.stripWsnl(), AssignmentType.IDREF, fieldAnnotation.assignmentPolicy,
                     "element", "idRefValue" + counter);
-            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-            if (handler != null && handler.isValid(writer, fieldContext))
+            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handler.writeComment(writer, fieldContext);
-                handler.writeDeclaration(writer, fieldContext);
-                handler.writeConverterCode(writer, fieldContext);
-                handler.writeAssignment(writer, fieldContext);
+                handleField(writer, fieldHandler, fieldContext);
                 counter++;
             }
         }
-    }
-
-
-    protected String calculateXpath(JField field, String defaultValue)
-    {
-        String xpath = defaultValue;
-        if (xpath == null || xpath.length() == 0)
-        {
-            xpath = field.getName();
-            JType fieldType = field.getType();
-            if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
-            {
-                xpath += "/text()";
-            }
-        }
-        return xpath;
-    }
-
-
-    /**
-     * TODO Documentation
-     * 
-     * @return
-     */
-    private Map<String, FieldAnnotation<XmlField>> findFieldAnnotations()
-    {
-        Map<String, FieldAnnotation<XmlField>> fields = new HashMap<String, FieldAnnotation<XmlField>>();
-
-        // Step 1: Add all XmlField annotations in the XmlFields annotation
-        // from the interfaceType
-        XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
-        if (xmlFields != null)
-        {
-            XmlField[] annotations = xmlFields.value();
-            for (XmlField annotation : annotations)
-            {
-                JField field = modelType.getField(annotation.name());
-                if (field != null)
-                {
-                    fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation,
-                            AssignmentPolicy.SETTER_FIRST));
-                }
-                // TODO Is it an error if field == null?
-            }
-        }
-
-        // Step 2: Add all XmlField annotations of the modelType fields. If
-        // there's already an entry for the field from step 1, it will be
-        // overwritten!
-        JField[] modelTypeFields = findAnnotatedFields(modelType, XmlField.class);
-        for (JField field : modelTypeFields)
-        {
-            XmlField annotation = field.getAnnotation(XmlField.class);
-            fields.put(field.getName(), new FieldAnnotation<XmlField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
-        }
-        return fields;
     }
 
 

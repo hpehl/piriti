@@ -5,6 +5,10 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import name.pehl.piriti.rebind.fieldhandler.FieldContext;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
+
 import com.google.gwt.core.ext.BadPropertyValueException;
 import com.google.gwt.core.ext.ConfigurationProperty;
 import com.google.gwt.core.ext.GeneratorContext;
@@ -29,6 +33,7 @@ public abstract class AbstractCreator
     protected final String implName;
     protected final TreeLogger logger;
     protected final JClassType modelType;
+    protected final FieldHandlerRegistry handlerRegistry;
 
 
     // ----------------------------------------------------------- constructors
@@ -40,6 +45,7 @@ public abstract class AbstractCreator
         this.interfaceType = interfaceType;
         this.implName = implName;
         this.logger = logger;
+        this.handlerRegistry = setupFieldHandlerRegistry();
 
         // Check for possible misuse 'GWT.create(XmlReader.class)'
         JClassType xmlReaderItself = context.getTypeOracle().findType(readerClassname);
@@ -64,6 +70,12 @@ public abstract class AbstractCreator
         }
         this.modelType = typeArgs[0];
     }
+
+
+    /**
+     * Method to setup the field handler registry used in this creator.
+     */
+    protected abstract FieldHandlerRegistry setupFieldHandlerRegistry();
 
 
     // --------------------------------------------------------- create methods
@@ -132,9 +144,11 @@ public abstract class AbstractCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("import java.util.ArrayList;");
+        writer.write("import java.util.Iterator;");
+        writer.write("import java.util.HashMap;");
         writer.write("import java.util.List;");
         writer.write("import java.util.Map;");
-        writer.write("import java.util.HashMap;");
+        writer.write("import java.util.Set;");
         writer.write("import name.pehl.piriti.client.converter.*;");
     }
 
@@ -219,12 +233,11 @@ public abstract class AbstractCreator
     }
 
 
-    /**
-     * @param writer
-     */
-    protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
-    {
-    }
+    protected abstract void createMethods(IndentedWriter writer) throws UnableToCompleteException;
+
+
+    protected abstract void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
+            throws UnableToCompleteException;
 
 
     // --------------------------------------------------------- helper methods

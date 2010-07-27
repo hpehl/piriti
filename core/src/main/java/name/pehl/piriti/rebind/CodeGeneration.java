@@ -20,6 +20,16 @@ public final class CodeGeneration
     }
 
 
+    public static void idRef(IndentedWriter writer, JClassType type)
+    {
+        writer.write("public %s idRef(String id) {", type.getQualifiedSourceName());
+        writer.indent();
+        writer.write("return this.idMap.get(id);");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     /**
      * To ensure all necessary readers are registered, this little helper method
      * genereates a new instance of the specified type (only if the type

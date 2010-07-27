@@ -1,24 +1,14 @@
 package name.pehl.piriti.rebind.json;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import name.pehl.piriti.client.json.JsonField;
-import name.pehl.piriti.client.json.JsonFields;
-import name.pehl.piriti.rebind.AbstractReaderCreator;
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
-import name.pehl.piriti.rebind.fieldhandler.FieldAnnotation;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
  * Class which generates the code necessary to map the annotated fields.
@@ -26,8 +16,10 @@ import com.google.gwt.core.ext.typeinfo.JField;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $
  */
-public class JsonReaderCreator extends AbstractReaderCreator
+public class JsonReaderCreator extends AbstractJsonCreator
 {
+    // ----------------------------------------------------------- constructors
+    
     public JsonReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
@@ -35,30 +27,13 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    @Override
-    protected FieldHandlerRegistry setupFieldHandlerRegistry()
-    {
-        return new JsonFieldHandlerRegistry();
-    }
-
-
-    @Override
-    protected void createImports(IndentedWriter writer) throws UnableToCompleteException
-    {
-        super.createImports(writer);
-        writer.write("import java.util.Iterator;");
-        writer.write("import java.util.Set;");
-        writer.write("import com.google.gwt.json.client.*;");
-        writer.write("import name.pehl.piriti.client.json.*;");
-    }
-
+    // --------------------------------------------------------- create methods
 
     @Override
     protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createMemberVariables(writer);
-        writer.write("private JsonRegistry jsonRegistry;");
-        writer.write("private JsonParser jsonParser;");
+        writer.write("private Map<String,%s> idMap;", modelType.getQualifiedSourceName());
     }
 
 
@@ -66,17 +41,13 @@ public class JsonReaderCreator extends AbstractReaderCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         super.createConstructorBody(writer);
-        writer.write("this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();");
-        writer.write("this.jsonRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
-        writer.write("this.jsonParser = JsonGinjector.INJECTOR.getJsonParser();");
+        writer.write("this.idMap = new HashMap<String,%s>();", modelType.getQualifiedSourceName());
     }
 
 
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
-        super.createMethods(writer);
-
         readListFromStringUsingFirstKey(writer);
         writer.newline();
 
@@ -100,6 +71,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
         internalRead(writer);
         writer.newline();
+        
+        CodeGeneration.idRef(writer, modelType);
     }
 
 
@@ -328,87 +301,24 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
-        
+
         handleFields(writer);
-        
+
         writer.write("return model;");
         writer.outdent();
         writer.write("}");
     }
 
 
-    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
+    // ---------------------------------------------------- overwritten methods
+
+    @Override
+    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
+            throws UnableToCompleteException
     {
-        int counter = 0;
-        Map<String, FieldAnnotation<JsonField>> fields = findFieldAnnotations();
-        for (FieldAnnotation<JsonField> fieldAnnotation : fields.values())
-        {
-            String jsonPath = calculateJsonPath(fieldAnnotation.field, fieldAnnotation.annotation);
-            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), jsonPath,
-                    fieldAnnotation.annotation.format(), false, AssignmentType.MAPPING,
-                    fieldAnnotation.assignmentPolicy, "jsonObject", "value" + counter);
-            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-            if (handler != null && handler.isValid(writer, fieldContext))
-            {
-                writer.newline();
-                handler.writeComment(writer, fieldContext);
-                handler.writeDeclaration(writer, fieldContext);
-                handler.writeConverterCode(writer, fieldContext);
-                handler.writeAssignment(writer, fieldContext);
-                counter++;
-            }
-        }
-    }
-
-
-    /**
-     * TODO Documentation
-     * 
-     * @return
-     */
-    private Map<String, FieldAnnotation<JsonField>> findFieldAnnotations()
-    {
-        Map<String, FieldAnnotation<JsonField>> fields = new HashMap<String, FieldAnnotation<JsonField>>();
-
-        // Step 1: Add all JsonField annotations in the JsonFields annotation
-        // from the interfaceType
-        JsonFields interfaceTypeFields = interfaceType.getAnnotation(JsonFields.class);
-        if (interfaceTypeFields != null)
-        {
-            JsonField[] annotations = interfaceTypeFields.value();
-            for (JsonField annotation : annotations)
-            {
-                JField field = modelType.getField(annotation.name());
-                if (field != null)
-                {
-                    fields.put(field.getName(), new FieldAnnotation<JsonField>(field, annotation,
-                            AssignmentPolicy.SETTER_FIRST));
-                }
-                // TODO Is it an error if field == null?
-            }
-        }
-
-        // Step 2: Add all JsonField annotations of the modelType fields. If
-        // there's already an entry for the field from step 1, it will be
-        // overwritten!
-        JField[] modelTypeFields = findAnnotatedFields(modelType, JsonField.class);
-        for (JField field : modelTypeFields)
-        {
-            JsonField annotation = field.getAnnotation(JsonField.class);
-            fields.put(field.getName(), new FieldAnnotation<JsonField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
-        }
-        return fields;
-    }
-
-
-    protected String calculateJsonPath(JField field, JsonField jsonField)
-    {
-        String jsonPath = jsonField.value();
-        if (jsonPath == null || jsonPath.length() == 0)
-        {
-            jsonPath = field.getName();
-        }
-        return jsonPath;
+        fieldHandler.writeComment(writer, fieldContext);
+        fieldHandler.writeDeclaration(writer, fieldContext);
+        fieldHandler.writeConverterCode(writer, fieldContext);
+        fieldHandler.writeAssignment(writer, fieldContext);
     }
 }

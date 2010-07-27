@@ -54,7 +54,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        XmlField[] fields = findFieldAnnotations();
+        XmlField[] fields = findModelFieldAnnotations();
         for (XmlField xmlField : fields)
         {
             writer.newline();
@@ -80,7 +80,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     }
 
 
-    private XmlField[] findFieldAnnotations()
+    private XmlField[] findModelFieldAnnotations()
     {
         Map<String, XmlField> fields = new HashMap<String, XmlField>();
 
