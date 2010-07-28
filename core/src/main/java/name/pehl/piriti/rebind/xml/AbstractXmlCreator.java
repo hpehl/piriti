@@ -5,6 +5,8 @@ import java.util.Map;
 
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlFields;
+import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -23,7 +25,7 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * Class which generates the code necessary to map the annotated fields.
+ * Common creator for {@linkplain XmlReader}s and {@linkplain XmlWriter}s.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
@@ -100,7 +102,8 @@ public abstract class AbstractXmlCreator extends AbstractCreator
 
 
     /**
-     * TODO Documentation
+     * Returns a map with the fields name as key and the {@link FieldAnnotation}
+     * for {@link XmlField} as value.
      * 
      * @return
      */

@@ -5,6 +5,8 @@ import java.util.Map;
 
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.client.json.JsonFields;
+import name.pehl.piriti.client.json.JsonReader;
+import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
@@ -21,7 +23,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
- * Class which generates the code necessary to map the annotated fields.
+ * Common creator for {@linkplain JsonReader}s and {@linkplain JsonWriter}s.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $
@@ -101,7 +103,8 @@ public abstract class AbstractJsonCreator extends AbstractCreator
 
 
     /**
-     * TODO Documentation
+     * Returns a map with the fields name as key and the {@link FieldAnnotation}
+     * for {@link JsonField} as value.
      * 
      * @return
      */

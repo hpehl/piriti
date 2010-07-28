@@ -8,6 +8,7 @@ import name.pehl.piriti.client.xml.XmlFields;
 import name.pehl.piriti.client.xml.XmlId;
 import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
@@ -25,7 +26,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
- * Class which generates the code necessary to map the annotated fields.
+ * Creator for {@linkplain XmlReader}s.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
@@ -40,6 +41,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
         super(context, interfaceType, implName, readerClassname, logger);
     }
 
+
+    // --------------------------------------------------------- create methods
 
     @Override
     protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
@@ -90,8 +93,10 @@ public class XmlReaderCreator extends AbstractXmlCreator
         readIdRefs(writer);
         writer.newline();
 
-        helperMethods(writer);
+        CodeGeneration.idRef(writer, modelType);
         writer.newline();
+
+        helperMethods(writer);
     }
 
 
@@ -423,11 +428,6 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    /**
-     * TODO Documentation
-     * 
-     * @return
-     */
     private Map<String, FieldAnnotation<XmlIdRef>> findReferenceAnnotations()
     {
         Map<String, FieldAnnotation<XmlIdRef>> fields = new HashMap<String, FieldAnnotation<XmlIdRef>>();

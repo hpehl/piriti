@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.json;
 
+import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
@@ -11,7 +12,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
- * Class which generates the code necessary to map the annotated fields.
+ * Creator for {@linkplain JsonReader}s.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $
@@ -19,7 +20,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 public class JsonReaderCreator extends AbstractJsonCreator
 {
     // ----------------------------------------------------------- constructors
-    
+
     public JsonReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
@@ -71,7 +72,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
         internalRead(writer);
         writer.newline();
-        
+
         CodeGeneration.idRef(writer, modelType);
     }
 

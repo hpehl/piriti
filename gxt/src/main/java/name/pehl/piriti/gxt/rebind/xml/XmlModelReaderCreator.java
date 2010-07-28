@@ -64,17 +64,12 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
                     fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), AssignmentType.MAPPING,
                     AssignmentPolicy.GXT, "element", "value" + counter);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
-            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-            if (handler != null)
+            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
-                if (handler.isValid(writer, fieldContext))
-                {
-                    handler.writeComment(writer, fieldContext);
-                    handler.writeDeclaration(writer, fieldContext);
-                    handler.writeConverterCode(writer, fieldContext);
-                    handler.writeAssignment(writer, fieldContext);
-                    counter++;
-                }
+                writer.newline();
+                handleField(writer, fieldHandler, fieldContext);
+                counter++;
             }
         }
     }

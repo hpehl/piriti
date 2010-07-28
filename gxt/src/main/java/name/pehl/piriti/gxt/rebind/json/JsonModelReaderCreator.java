@@ -5,6 +5,7 @@ import java.util.Map;
 
 import name.pehl.piriti.gxt.client.json.JsonField;
 import name.pehl.piriti.gxt.client.json.JsonFields;
+import name.pehl.piriti.gxt.client.json.JsonModelReader;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
@@ -20,13 +21,15 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
- * Class which generates the code necessary to map the annotated fields.
+ * Creator for GXT {@linkplain JsonModelReader}s.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $
  */
 public class JsonModelReaderCreator extends JsonReaderCreator implements ModelReaderConstants
 {
+    // ----------------------------------------------------------- constructors
+
     public JsonModelReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
@@ -40,6 +43,8 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
         return new JsonModelFieldHandlerRegistry();
     }
 
+
+    // --------------------------------------------------------- create methods
 
     @Override
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
@@ -63,17 +68,12 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
                     fieldType, jsonField.name(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
                     AssignmentPolicy.GXT, "jsonObject", "value" + counter);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
-            FieldHandler handler = handlerRegistry.findFieldHandler(fieldContext);
-            if (handler != null)
+            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
-                if (handler.isValid(writer, fieldContext))
-                {
-                    handler.writeComment(writer, fieldContext);
-                    handler.writeDeclaration(writer, fieldContext);
-                    handler.writeConverterCode(writer, fieldContext);
-                    handler.writeAssignment(writer, fieldContext);
-                    counter++;
-                }
+                writer.newline();
+                handleField(writer, fieldHandler, fieldContext);
+                counter++;
             }
         }
     }

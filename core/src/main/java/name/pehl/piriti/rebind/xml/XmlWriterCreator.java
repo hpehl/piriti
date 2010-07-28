@@ -1,5 +1,6 @@
-package name.pehl.piriti.rebind.json;
+package name.pehl.piriti.rebind.xml;
 
+import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
@@ -10,16 +11,16 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
- * Class which generates the code necessary to serialize a POJO to JSON.
+ * Creator for {@linkplain XmlWriter}s.
  * 
- * @author $LastChangedBy$
- * @version $LastChangedRevision$
+ * @author $LastChangedBy: harald.pehl $
+ * @version $LastChangedRevision: 139 $
  */
-public class JsonWriterCreator extends AbstractJsonCreator
+public class XmlWriterCreator extends AbstractXmlCreator
 {
     // ----------------------------------------------------------- constructors
 
-    public JsonWriterCreator(GeneratorContext context, JClassType interfaceType, String implName,
+    public XmlWriterCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
@@ -43,59 +44,54 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
     protected void writeList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toJson(List<%s> values, String arrayKey) {",
+        writer.write("public String toXml(List<%s> values, String rootElement) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("String json = null;");
-        writer.write("if (values != null && arrayKey != null) {");
+        writer.write("String xml = null;");
+        writer.write("if (values != null && rootElement != null) {");
         writer.indent();
-        writer.write("StringBuilder jsonBuilder = new StringBuilder();");
-        writer.write("jsonBuilder.append(\"{\");");
-        writer.write("jsonBuilder.append(arrayKey);");
-        writer.write("jsonBuilder.append(\":[\"");
-        writer.write("for (Iterator<%s> iter = values.iterator(); iter.hasNext(); ) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("StringBuilder xmlBuilder = new StringBuilder();");
+        writer.write("xmlBuilder.append(\"<\");");
+        writer.write("xmlBuilder.append(rootElement);");
+        writer.write("xmlBuilder.append(\">\"");
+        writer.write("for (%s value : values) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s value = iter.next();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("String jsonValue = toJson(value);");
-        writer.write("if (jsonValue != null) {");
+        writer.write("String xmlValue = toxml(value);");
+        writer.write("if (xmlValue != null) {");
         writer.indent();
-        writer.write("jsonBuilder.append(jsonValue);");
-        writer.outdent();
-        writer.write("}");
-        writer.write("if (iter.hasNext()) {");
-        writer.indent();
-        writer.write("jsonBuilder.append(\",\");");
+        writer.write("xmlBuilder.append(xmlValue);");
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        writer.write("jsonBuilder.append(\"]}\");");
-        writer.write("json = jsonBuilder.toString();");
+        writer.write("xmlBuilder.append(\"</\");");
+        writer.write("xmlBuilder.append(rootElement);");
+        writer.write("xmlBuilder.append(\">\"");
+        writer.write("xml = xmlBuilder.toString();");
         writer.outdent();
         writer.write("}");
         writer.outdent();
-        writer.write("return json;");
+        writer.write("return xml;");
         writer.write("}");
     }
 
 
     protected void writeSingle(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toJson(%s value) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public String toXml(%s value) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("String json = null;");
+        writer.write("String xml = null;");
         writer.write("if (value != null) {");
         writer.indent();
-        writer.write("StringBuilder jsonBuilder = new StringBuilder();");
+        writer.write("StringBuilder xmlBuilder = new StringBuilder();");
 
         handleFields(writer);
 
-        writer.write("json = jsonBuilder.toString();");
+        writer.write("xml = xmlBuilder.toString();");
         writer.outdent();
         writer.write("}");
         writer.outdent();
-        writer.write("return json;");
+        writer.write("return xml;");
         writer.write("}");
     }
 

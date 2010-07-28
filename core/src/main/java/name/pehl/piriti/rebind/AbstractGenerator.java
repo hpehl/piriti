@@ -9,9 +9,8 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
- * Abstract Generator for writer implementations. The generator delegates to an
- * {@link AbstractWriterCreator} instance which is responsible for generating
- * the code.
+ * Abstract Generator which delegates to an {@link AbstractCreator}. The
+ * {@link AbstractCreator} is responsible for generating the code.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 745 $
