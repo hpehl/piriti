@@ -15,6 +15,10 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
  */
 public final class CodeGeneration
 {
+    /**
+     * Private constructor to ensure that the class acts as a true utility class
+     * i.e. it isn't instantiable and extensible.
+     */
     private CodeGeneration()
     {
     }
