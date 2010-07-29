@@ -119,6 +119,7 @@ public class JsonWriterCreator extends AbstractJsonCreator
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.writeComment(writer, fieldContext);
+        fieldHandler.writeDeclaration(writer, fieldContext);
         fieldHandler.writeSerialization(writer, fieldContext);
         if (hasNext)
         {

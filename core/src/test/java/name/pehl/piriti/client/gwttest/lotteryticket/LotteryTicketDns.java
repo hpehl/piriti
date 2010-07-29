@@ -1,12 +1,13 @@
 package name.pehl.piriti.client.gwttest.lotteryticket;
 
-import static name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketResources.*;
+import static name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketResources.DNS_PREFIX;
 
 import java.util.Date;
 import java.util.List;
 
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.client.xml.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -16,11 +17,21 @@ import com.google.gwt.core.client.GWT;
  */
 public class LotteryTicketDns
 {
+    // ---------------------------------------------------- xml reader / writer
+
     public interface LotteryTicketReader extends XmlReader<LotteryTicketDns>
     {
     }
 
-    public static final LotteryTicketReader XML = GWT.create(LotteryTicketReader.class);
+    public static final LotteryTicketReader XML_READER = GWT.create(LotteryTicketReader.class);
+
+    public interface LotteryTicketWriter extends XmlWriter<LotteryTicketDns>
+    {
+    }
+
+    public static final LotteryTicketWriter XML_WRITER = GWT.create(LotteryTicketWriter.class);
+
+    // ------------------------------------------------------------------- data
 
     @XmlField(value = "@date", format = "dd.MM.yyyy")
     Date date;

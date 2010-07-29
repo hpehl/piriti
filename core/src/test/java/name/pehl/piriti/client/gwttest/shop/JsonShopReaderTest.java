@@ -9,7 +9,7 @@ public class JsonShopReaderTest extends AbstractShopReaderTest
     public void testRead()
     {
         String json = ShopResources.INSTANCE.shopJson().getText();
-        Shop shop = ShopReader.SHOP_JSON.read(json);
+        Shop shop = ShopReader.SHOP_JSON_READER.read(json);
         assertShop(shop);
     }
 }

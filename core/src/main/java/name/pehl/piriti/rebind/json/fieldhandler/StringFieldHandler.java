@@ -88,8 +88,7 @@ public class StringFieldHandler extends AbstractFieldHandler
     public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.appendJsonKey(writer, fieldContext);
-        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
-        writer.write("%s.append(model.%s);", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
-        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
+        CodeGeneration.readValue(writer, fieldContext);
+        CodeGeneration.appendJsonValue(writer, fieldContext, true);
     }
 }

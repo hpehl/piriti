@@ -8,8 +8,10 @@ import java.util.Set;
 
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.client.json.JsonReader;
+import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.client.xml.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -25,7 +27,13 @@ public class FatGlobalItem
     {
     }
 
-    public static final FatGlobalItemJsonReader JSON = GWT.create(FatGlobalItemJsonReader.class);
+    public static final FatGlobalItemJsonReader JSON_READER = GWT.create(FatGlobalItemJsonReader.class);
+
+    public interface FatGlobalItemJsonWriter extends JsonWriter<FatGlobalItem>
+    {
+    }
+
+    public static final FatGlobalItemJsonWriter JSON_WRITER = GWT.create(FatGlobalItemJsonWriter.class);
 
     // ------------------------------------------------------------- xml reader
 
@@ -33,7 +41,13 @@ public class FatGlobalItem
     {
     }
 
-    public static final FatGlobalItemXmlReader XML = GWT.create(FatGlobalItemXmlReader.class);
+    public static final FatGlobalItemXmlReader XML_READER = GWT.create(FatGlobalItemXmlReader.class);
+
+    public interface FatGlobalItemXmlWriter extends XmlWriter<FatGlobalItem>
+    {
+    }
+
+    public static final FatGlobalItemXmlWriter XML_WRITER = GWT.create(FatGlobalItemXmlWriter.class);
 
     // ------------------------------------------ primitives and simple objects
 

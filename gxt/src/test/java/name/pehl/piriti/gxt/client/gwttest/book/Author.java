@@ -15,22 +15,25 @@ import com.google.gwt.core.client.GWT;
  * @version $Date$ $Revision: 131
  *          $
  */
-@JsonFields( {@JsonField(name = "firstname", type = String.class),
-        @JsonField(name = "surname", type = String.class), @JsonField(name = "bestseller", type = Book.class)})
-@XmlFields( {@XmlField(name = "firstname", type = String.class),
-        @XmlField(name = "surname", type = String.class),
+@JsonFields({@JsonField(name = "firstname", type = String.class), @JsonField(name = "surname", type = String.class),
+        @JsonField(name = "bestseller", type = Book.class)})
+@XmlFields({@XmlField(name = "firstname", type = String.class), @XmlField(name = "surname", type = String.class),
         @XmlField(name = "bestseller", path = "bestseller/book", type = Book.class)})
 public class Author extends BaseModel
 {
+    // --------------------------------------------------- json reader / writer
+
     public interface AuthorJsonReader extends JsonModelReader<Author>
     {
     }
 
-    public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
+    public static final AuthorJsonReader JSON_READER = GWT.create(AuthorJsonReader.class);
+
+    // ---------------------------------------------------- xml reader / writer
 
     public interface AuthorXmlReader extends XmlModelReader<Author>
     {
     }
 
-    public static final AuthorXmlReader XML = GWT.create(AuthorXmlReader.class);
+    public static final AuthorXmlReader XML_READER = GWT.create(AuthorXmlReader.class);
 }

@@ -107,19 +107,19 @@ import com.google.gwt.core.client.GWT;
         @XmlField(name = "setOfMaps", type = Set.class, typeVariable = Map.class)})
 public class FatGlobalItem extends BaseModel
 {
-    // ------------------------------------------------------------ json reader
-
+    // --------------------------------------------------- json reader / writer
+    
     public interface FatGlobalItemJsonReader extends JsonModelReader<FatGlobalItem>
     {
     }
 
-    public static final FatGlobalItemJsonReader JSON = GWT.create(FatGlobalItemJsonReader.class);
+    public static final FatGlobalItemJsonReader JSON_READER = GWT.create(FatGlobalItemJsonReader.class);
 
-    // ------------------------------------------------------------- xml reader
-
+    // ---------------------------------------------------- xml reader / writer
+    
     public interface FatGlobalItemXmlReader extends XmlModelReader<FatGlobalItem>
     {
     }
 
-    public static final FatGlobalItemXmlReader XML = GWT.create(FatGlobalItemXmlReader.class);
+    public static final FatGlobalItemXmlReader XML_READER = GWT.create(FatGlobalItemXmlReader.class);
 }

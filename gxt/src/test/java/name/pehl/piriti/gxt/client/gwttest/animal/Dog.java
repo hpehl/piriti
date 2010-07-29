@@ -18,15 +18,19 @@ import com.google.gwt.core.client.GWT;
 @XmlFields(@XmlField(name = "size", type = Size.class))
 public class Dog extends Mammal
 {
+    // --------------------------------------------------- json reader / writer
+    
     public interface DogJsonReader extends JsonModelReader<Dog>
     {
     }
 
-    public static final DogJsonReader JSON = GWT.create(DogJsonReader.class);
+    public static final DogJsonReader JSON_READER = GWT.create(DogJsonReader.class);
 
+    // ---------------------------------------------------- xml reader / writer
+    
     public interface DogXmlReader extends XmlModelReader<Dog>
     {
     }
 
-    public static final DogXmlReader XML = GWT.create(DogXmlReader.class);
+    public static final DogXmlReader XML_READER = GWT.create(DogXmlReader.class);
 }

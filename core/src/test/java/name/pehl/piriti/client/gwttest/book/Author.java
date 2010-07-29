@@ -16,6 +16,8 @@ import com.google.gwt.core.client.GWT;
  */
 public class Author
 {
+    // --------------------------------------------------- json reader / writer
+
     public interface AuthorJsonWriter extends JsonWriter<Author>
     {
     }
@@ -32,6 +34,8 @@ public class Author
     {
     }
 
+    // ---------------------------------------------------- xml reader / writer
+
     public static final AuthorXmlReader XML_READER = GWT.create(AuthorXmlReader.class);
 
     public interface AuthorXmlWriter extends XmlWriter<Author>
@@ -39,6 +43,8 @@ public class Author
     }
 
     public static final AuthorXmlWriter XML_WRITER = GWT.create(AuthorXmlWriter.class);
+
+    // ------------------------------------------------------------------- data
 
     @JsonField
     @XmlField

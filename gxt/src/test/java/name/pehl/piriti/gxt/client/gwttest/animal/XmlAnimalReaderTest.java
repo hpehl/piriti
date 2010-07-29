@@ -14,7 +14,7 @@ public class XmlAnimalReaderTest extends AbstractAnimalReaderTest
     {
         String xml = AnimalResources.INSTANCE.birdXml().getText();
         Document document = new XmlParser().parse(xml);
-        Bird kea = Bird.XML.read(document);
+        Bird kea = Bird.XML_READER.read(document);
         assertBird(kea);
     }
 
@@ -23,7 +23,7 @@ public class XmlAnimalReaderTest extends AbstractAnimalReaderTest
     {
         String xml = AnimalResources.INSTANCE.insectXml().getText();
         Document document = new XmlParser().parse(xml);
-        Insect fruitFly = Insect.XML.read(document);
+        Insect fruitFly = Insect.XML_READER.read(document);
         assertInsect(fruitFly);
     }
 
@@ -32,7 +32,7 @@ public class XmlAnimalReaderTest extends AbstractAnimalReaderTest
     {
         String xml = AnimalResources.INSTANCE.catXml().getText();
         Document document = new XmlParser().parse(xml);
-        Cat snowball = Cat.XML.read(document);
+        Cat snowball = Cat.XML_READER.read(document);
         assertCat(snowball);
     }
 
@@ -41,7 +41,7 @@ public class XmlAnimalReaderTest extends AbstractAnimalReaderTest
     {
         String xml = AnimalResources.INSTANCE.dogXml().getText();
         Document document = new XmlParser().parse(xml);
-        Dog rantanplan = Dog.XML.read(document);
+        Dog rantanplan = Dog.XML_READER.read(document);
         assertDog(rantanplan);
     }
 }

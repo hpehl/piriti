@@ -3,8 +3,6 @@ package name.pehl.piriti.rebind.fieldhandler;
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -41,19 +39,20 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
         writeReadValueAsString(writer, fieldContext);
         writer.write("if (%s != null) {", fieldContext.newVariableName("AsString"));
         writer.indent();
-        writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
-                .getQualifiedSourceName());
-        writer.write("if (converter != null) {");
+        String converterVariable = fieldContext.newVariableName("ReadConverter");
+        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
+                .getQualifiedSourceName(), converterVariable);
+        writer.write("if (%s != null) {", converterVariable);
         writer.indent();
         if (fieldContext.getFormat() != null)
         {
-            writer.write("%s = converter.convert(%s, \"%s\");", fieldContext.getValueVariable(), fieldContext
-                    .getValueAsStringVariable(), fieldContext.getFormat());
+            writer.write("%s = %s.convert(%s, \"%s\");", fieldContext.getValueVariable(), converterVariable,
+                    fieldContext.getValueAsStringVariable(), fieldContext.getFormat());
         }
         else
         {
-            writer.write("%s = converter.convert(%s, null);", fieldContext.getValueVariable(), fieldContext
-                    .getValueAsStringVariable());
+            writer.write("%s = %s.convert(%s, null);", fieldContext.getValueVariable(), converterVariable,
+                    fieldContext.getValueAsStringVariable());
         }
         writer.outdent();
         writer.write("}");

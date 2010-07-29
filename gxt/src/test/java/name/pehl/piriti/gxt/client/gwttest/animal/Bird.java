@@ -17,15 +17,19 @@ import com.google.gwt.core.client.GWT;
 @XmlFields(@XmlField(name = "wingspan", type = Double.class))
 public class Bird extends Animal
 {
+    // --------------------------------------------------- json reader / writer
+    
     public interface BirdJsonReader extends JsonModelReader<Bird>
     {
     }
 
-    public static final BirdJsonReader JSON = GWT.create(BirdJsonReader.class);
+    public static final BirdJsonReader JSON_READER = GWT.create(BirdJsonReader.class);
 
+    // ---------------------------------------------------- xml reader / writer
+    
     public interface BirdXmlReader extends XmlModelReader<Bird>
     {
     }
 
-    public static final BirdXmlReader XML = GWT.create(BirdXmlReader.class);
+    public static final BirdXmlReader XML_READER = GWT.create(BirdXmlReader.class);
 }

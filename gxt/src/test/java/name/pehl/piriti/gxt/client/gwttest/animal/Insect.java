@@ -11,21 +11,26 @@ import com.google.gwt.core.client.GWT;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision: 740
+ *          $
  */
 @JsonFields(@JsonField(name = "flies", type = Boolean.class))
 @XmlFields(@XmlField(name = "flies", type = Boolean.class))
 public class Insect extends Animal
 {
+    // --------------------------------------------------- json reader / writer
+
     public interface InsectJsonReader extends JsonModelReader<Insect>
     {
     }
 
-    public static final InsectJsonReader JSON = GWT.create(InsectJsonReader.class);
+    public static final InsectJsonReader JSON_READER = GWT.create(InsectJsonReader.class);
+
+    // ---------------------------------------------------- xml reader / writer
 
     public interface InsectXmlReader extends XmlModelReader<Insect>
     {
     }
 
-    public static final InsectXmlReader XML = GWT.create(InsectXmlReader.class);
+    public static final InsectXmlReader XML_READER = GWT.create(InsectXmlReader.class);
 }

@@ -11,7 +11,7 @@ public class JsonAnimalReaderTest extends AbstractAnimalReaderTest
     public void testReadBird()
     {
         String json = AnimalResources.INSTANCE.birdJson().getText();
-        Bird kea = Bird.JSON.read(json);
+        Bird kea = Bird.JSON_READER.read(json);
         assertBird(kea);
     }
 
@@ -19,7 +19,7 @@ public class JsonAnimalReaderTest extends AbstractAnimalReaderTest
     public void testReadInsect()
     {
         String json = AnimalResources.INSTANCE.insectJson().getText();
-        Insect fruitFly = Insect.JSON.read(json);
+        Insect fruitFly = Insect.JSON_READER.read(json);
         assertInsect(fruitFly);
     }
 
@@ -27,7 +27,7 @@ public class JsonAnimalReaderTest extends AbstractAnimalReaderTest
     public void testReadCat()
     {
         String json = AnimalResources.INSTANCE.catJson().getText();
-        Cat snowball = Cat.JSON.read(json);
+        Cat snowball = Cat.JSON_READER.read(json);
         assertCat(snowball);
     }
 
@@ -35,7 +35,7 @@ public class JsonAnimalReaderTest extends AbstractAnimalReaderTest
     public void testReadDog()
     {
         String json = AnimalResources.INSTANCE.dogJson().getText();
-        Dog rantanplan = Dog.JSON.read(json);
+        Dog rantanplan = Dog.JSON_READER.read(json);
         assertDog(rantanplan);
     }
 }

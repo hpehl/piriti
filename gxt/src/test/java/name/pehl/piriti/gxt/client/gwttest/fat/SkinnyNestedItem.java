@@ -39,16 +39,16 @@ import com.google.gwt.core.client.GWT;
         @XmlField(name = "stringAttribute", path = "string/@attribute", type = String.class)})
 public class SkinnyNestedItem extends BaseModel
 {
-    // ------------------------------------------------------------ json reader
-
+    // --------------------------------------------------- json reader / writer
+    
     interface SkinnyNestedItemJsonReader extends JsonModelReader<SkinnyNestedItem>
     {
     }
 
     public static final SkinnyNestedItemJsonReader SOME_FANCY_JSON_NAME = GWT.create(SkinnyNestedItemJsonReader.class);
 
-    // ------------------------------------------------------------- xml reader
-
+    // ---------------------------------------------------- xml reader / writer
+    
     interface SkinnyNestedItemXmlReader extends XmlModelReader<SkinnyNestedItem>
     {
     }

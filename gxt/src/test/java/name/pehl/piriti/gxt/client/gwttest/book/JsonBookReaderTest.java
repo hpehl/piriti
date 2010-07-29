@@ -15,7 +15,7 @@ public class JsonBookReaderTest extends AbstractBookReaderTest
     public void testRead()
     {
         String json = BookResources.INSTANCE.bookJson().getText();
-        Book book = Book.JSON.read(json);
+        Book book = Book.JSON_READER.read(json);
         assertBook(book, true, true);
     }
 
@@ -23,7 +23,7 @@ public class JsonBookReaderTest extends AbstractBookReaderTest
     public void testReadList()
     {
         String json = BookResources.INSTANCE.booksJson().getText();
-        List<Book> books = Book.JSON.readList(json);
+        List<Book> books = Book.JSON_READER.readList(json);
         assertBooks(books, true, true);
     }
 
@@ -31,7 +31,7 @@ public class JsonBookReaderTest extends AbstractBookReaderTest
     public void testReadListWithKey()
     {
         String json = BookResources.INSTANCE.booksJson().getText();
-        List<Book> books = Book.JSON.readList(json, BOOKS);
+        List<Book> books = Book.JSON_READER.readList(json, BOOKS);
         assertBooks(books, true, true);
     }
 
@@ -39,7 +39,7 @@ public class JsonBookReaderTest extends AbstractBookReaderTest
     public void testReadListWithWrongKey()
     {
         String json = BookResources.INSTANCE.booksJson().getText();
-        List<Book> books = Book.JSON.readList(json, "moo");
+        List<Book> books = Book.JSON_READER.readList(json, "moo");
         assertNotNull(books);
         assertTrue(books.isEmpty());
     }

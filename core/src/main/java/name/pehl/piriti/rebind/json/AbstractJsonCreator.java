@@ -116,7 +116,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
                 if (field != null)
                 {
                     fields.put(field.getName(), new FieldAnnotation<JsonField>(field, annotation,
-                            AssignmentPolicy.SETTER_FIRST));
+                            AssignmentPolicy.PROPERTY_FIRST));
                 }
                 // TODO Is it an error if field == null?
             }

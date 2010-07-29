@@ -16,11 +16,15 @@ import com.google.gwt.core.client.GWT;
  */
 public class Employee
 {
+    // ---------------------------------------------------- xml reader / writer
+
     public interface EmployeeXmlReader extends XmlReader<Employee>
     {
     }
 
     public static final EmployeeXmlReader XML = GWT.create(EmployeeXmlReader.class);
+
+    // ------------------------------------------------------------------- data
 
     @XmlId
     String id;
@@ -38,6 +42,8 @@ public class Employee
     @XmlIdRef("department/@ref")
     Department department;
 
+
+    // --------------------------------------------------------- public methods
 
     @Override
     public String toString()

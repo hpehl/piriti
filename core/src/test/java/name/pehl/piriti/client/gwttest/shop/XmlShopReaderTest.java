@@ -15,7 +15,7 @@ public class XmlShopReaderTest extends AbstractShopReaderTest
     {
         String xml = ShopResources.INSTANCE.shopXml().getText();
         Document document = new XmlParser().parse(xml);
-        Shop shop = ShopReader.SHOP_XML.read(document);
+        Shop shop = ShopReader.SHOP_XML_READER.read(document);
         assertShop(shop);
         assertIdsAndReferences(shop);
     }

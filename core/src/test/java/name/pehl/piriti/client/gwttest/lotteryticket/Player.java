@@ -2,6 +2,7 @@ package name.pehl.piriti.client.gwttest.lotteryticket;
 
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.client.xml.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -12,11 +13,21 @@ import com.google.gwt.core.client.GWT;
 
 public class Player
 {
+    // ---------------------------------------------------- xml reader / writer
+
     public interface PlayerXmlReader extends XmlReader<Player>
     {
     }
 
-    public static final PlayerXmlReader XML = GWT.create(PlayerXmlReader.class);
+    public static final PlayerXmlReader XML_READER = GWT.create(PlayerXmlReader.class);
+
+    public interface PlayerXmlWriter extends XmlWriter<Player>
+    {
+    }
+
+    public static final PlayerXmlWriter XML_WRITER = GWT.create(PlayerXmlWriter.class);
+
+    // ------------------------------------------------------------------- data
 
     @XmlField("@foo:gender")
     Gender gender;

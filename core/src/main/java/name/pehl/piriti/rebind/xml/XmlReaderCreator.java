@@ -363,7 +363,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                     {
                         fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                                 field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
-                                AssignmentType.ID, AssignmentPolicy.SETTER_FIRST, "element", "idValue", "xmlBuilder");
+                                AssignmentType.ID, AssignmentPolicy.PROPERTY_FIRST, "element", "idValue", "xmlBuilder");
                     }
                     else
                     {
@@ -441,7 +441,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 if (field != null)
                 {
                     fields.put(field.getName(), new FieldAnnotation<XmlIdRef>(field, annotation,
-                            AssignmentPolicy.SETTER_FIRST));
+                            AssignmentPolicy.PROPERTY_FIRST));
                 }
                 // TODO Is it an error if field == null?
             }

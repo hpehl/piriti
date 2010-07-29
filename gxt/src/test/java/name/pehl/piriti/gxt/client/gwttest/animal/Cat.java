@@ -17,15 +17,19 @@ import com.google.gwt.core.client.GWT;
 @XmlFields(@XmlField(name = "color", type = String.class))
 public class Cat extends Mammal
 {
+    // --------------------------------------------------- json reader / writer
+    
     public interface CatJsonReader extends JsonModelReader<Cat>
     {
     }
 
-    public static final CatJsonReader JSON = GWT.create(CatJsonReader.class);
+    public static final CatJsonReader JSON_READER = GWT.create(CatJsonReader.class);
 
+    // ---------------------------------------------------- xml reader / writer
+    
     public interface CatXmlReader extends XmlModelReader<Cat>
     {
     }
 
-    public static final CatXmlReader XML = GWT.create(CatXmlReader.class);
+    public static final CatXmlReader XML_READER = GWT.create(CatXmlReader.class);
 }

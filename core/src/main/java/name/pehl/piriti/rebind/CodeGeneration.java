@@ -111,7 +111,11 @@ public final class CodeGeneration
         switch (assignmentPolicy)
         {
             case FIELD_ONLY:
-                if (!assignField(writer, fieldContext))
+                if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
+                {
+                    writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
+                }
+                else
                 {
                     String reason = String.format("Cannot assign %s to model.%s: Field is not accessible.",
                             fieldContext.getValueVariable(), fieldContext.getFieldName());
@@ -119,37 +123,51 @@ public final class CodeGeneration
                 }
                 break;
             case FIELD_FIRST:
-                if (!assignField(writer, fieldContext))
+                if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
                 {
-                    if (!assignSetter(writer, fieldContext))
-                    {
-                        String reason = String
-                                .format("Can neither assign %1$s to model.%s, nor call model.%s(%1$s): Field is not accessible and setter is not available / accessible.",
-                                        fieldContext.getValueVariable(), fieldContext.getFieldName(),
-                                        setter(fieldContext.getFieldName()));
-                        skipField(writer, fieldContext, reason);
-                    }
+                    writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
+                }
+                else if (isSetterAvailable(fieldContext))
+                {
+                    writer.write("model.%s(%s);", setter(fieldContext.getFieldName()), fieldContext.getValueVariable());
+                }
+                else
+                {
+                    String reason = String
+                            .format("Can neither assign %1$s to model.%s, nor call model.%s(%1$s): Field and / or setter is not available / accessible.",
+                                    fieldContext.getValueVariable(), fieldContext.getFieldName(),
+                                    setter(fieldContext.getFieldName()));
+                    skipField(writer, fieldContext, reason);
                 }
                 break;
-            case SETTER_ONLY:
-                if (!assignSetter(writer, fieldContext))
+            case PROPERTY_ONLY:
+                if (isSetterAvailable(fieldContext))
+                {
+                    writer.write("model.%s(%s);", setter(fieldContext.getFieldName()), fieldContext.getValueVariable());
+                }
+                else
                 {
                     String reason = String.format("Setter is not available / not accessible.",
                             setter(fieldContext.getFieldName()), fieldContext.getValueVariable());
                     skipField(writer, fieldContext, reason);
                 }
                 break;
-            case SETTER_FIRST:
-                if (!assignSetter(writer, fieldContext))
+            case PROPERTY_FIRST:
+                if (isSetterAvailable(fieldContext))
                 {
-                    if (!assignField(writer, fieldContext))
-                    {
-                        String reason = String
-                                .format("Can neither call model.%s(%2$s) nor assign %2$s to model.%s: Setter is not available / accessible and field is not accessible",
-                                        setter(fieldContext.getFieldName()), fieldContext.getValueVariable(),
-                                        fieldContext.getFieldName());
-                        skipField(writer, fieldContext, reason);
-                    }
+                    writer.write("model.%s(%s);", setter(fieldContext.getFieldName()), fieldContext.getValueVariable());
+                }
+                else if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
+                {
+                    writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
+                }
+                else
+                {
+                    String reason = String
+                            .format("Can neither call model.%s(%2$s) nor assign %2$s to model.%s: Setter and / or field is not available / accessible",
+                                    setter(fieldContext.getFieldName()), fieldContext.getValueVariable(),
+                                    fieldContext.getFieldName());
+                    skipField(writer, fieldContext, reason);
                 }
                 break;
             case GXT:
@@ -163,18 +181,7 @@ public final class CodeGeneration
     }
 
 
-    private static boolean assignField(IndentedWriter writer, FieldContext fieldContext)
-    {
-        if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
-        {
-            writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
-            return true;
-        }
-        return false;
-    }
-
-
-    private static boolean assignSetter(IndentedWriter writer, FieldContext fieldContext)
+    private static boolean isSetterAvailable(FieldContext fieldContext)
     {
         String setter = setter(fieldContext.getFieldName());
         boolean accessible = TypeUtils.isMethodAccessible(fieldContext.getModelType(), setter,
@@ -185,12 +192,7 @@ public final class CodeGeneration
             accessible = TypeUtils.isMethodAccessible(fieldContext.getModelType(), setter,
                     fieldContext.getPrimitiveType());
         }
-        if (accessible)
-        {
-            writer.write("model.%s(%s);", setter, fieldContext.getValueVariable());
-            return true;
-        }
-        return false;
+        return accessible;
     }
 
 
@@ -216,5 +218,120 @@ public final class CodeGeneration
     public static void appendJsonKey(IndentedWriter writer, FieldContext fieldContext)
     {
         writer.write("%s.append(\"\\\"%s\\\":\");", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
+    }
+
+
+    public static void appendJsonValue(IndentedWriter writer, FieldContext fieldContext, boolean quote)
+    {
+        if (quote)
+        {
+            writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
+        }
+        writer.write("%s.append(%s);", fieldContext.getBuilderVariable(), fieldContext.getValueVariable());
+        if (quote)
+        {
+            writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
+        }
+    }
+
+
+    public static void readValue(IndentedWriter writer, FieldContext fieldContext)
+    {
+        AssignmentPolicy assignmentPolicy = fieldContext.getAssignmentPolicy();
+        switch (assignmentPolicy)
+        {
+            case FIELD_ONLY:
+                if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
+                {
+                    writer.write("%s = model.%s;", fieldContext.getValueVariable(), fieldContext.getFieldName());
+                }
+                else
+                {
+                    String reason = String.format("Cannot read model.%s: Field is not accessible.",
+                            fieldContext.getValueVariable(), fieldContext.getFieldName());
+                    skipField(writer, fieldContext, reason);
+                }
+                break;
+            case FIELD_FIRST:
+                if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
+                {
+                    writer.write("%s = model.%s;", fieldContext.getValueVariable(), fieldContext.getFieldName());
+                }
+                else if (isGetterAvailable(fieldContext))
+                {
+                    writer.write("%s = model.%s();", fieldContext.getValueVariable(),
+                            getter(fieldContext.getFieldName()));
+                }
+                else
+                {
+                    String reason = String
+                            .format("Can neither read model.%s, nor call model.%s(): Field and / or getter is not available / accessible.",
+                                    fieldContext.getFieldName(), getter(fieldContext.getFieldName()));
+                    skipField(writer, fieldContext, reason);
+                }
+                break;
+            case PROPERTY_ONLY:
+                if (isGetterAvailable(fieldContext))
+                {
+                    writer.write("%s = model.%s();", fieldContext.getValueVariable(),
+                            getter(fieldContext.getFieldName()));
+                }
+                else
+                {
+                    String reason = String.format("Cannot call model.%s(): Getter is not available / accessible.",
+                            getter(fieldContext.getFieldName()));
+                    skipField(writer, fieldContext, reason);
+                }
+                break;
+            case PROPERTY_FIRST:
+                if (isGetterAvailable(fieldContext))
+                {
+                    writer.write("%s = model.%s();", fieldContext.getValueVariable(),
+                            getter(fieldContext.getFieldName()));
+                }
+                else if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
+                {
+                    writer.write("%s = model.%s;", fieldContext.getValueVariable(), fieldContext.getFieldName());
+                }
+                else
+                {
+                    String reason = String
+                            .format("Can neither call model.%s() nor read model.%s: Getter Field and / or field is not available / accessible.",
+                                    fieldContext.getFieldName(), getter(fieldContext.getFieldName()));
+                    skipField(writer, fieldContext, reason);
+                }
+                break;
+            case GXT:
+                writer.write("%s = model.get(\"%s\");", fieldContext.getValueVariable(), fieldContext.getFieldName());
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    private static boolean isGetterAvailable(FieldContext fieldContext)
+    {
+        String getter = getter(fieldContext.getFieldName());
+        boolean accessible = TypeUtils.isMethodAccessible(fieldContext.getModelType(), getter,
+                fieldContext.getFieldType());
+        if (!accessible && fieldContext.isPrimitive())
+        {
+            // Try with primitive parameter...
+            accessible = TypeUtils.isMethodAccessible(fieldContext.getModelType(), getter,
+                    fieldContext.getPrimitiveType());
+        }
+        return accessible;
+    }
+
+
+    private static String getter(String fieldName)
+    {
+        String getter = fieldName;
+        if (fieldName != null && fieldName.length() > 0)
+        {
+            getter = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+        }
+        return getter;
     }
 }

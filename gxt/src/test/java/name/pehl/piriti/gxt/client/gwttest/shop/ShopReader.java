@@ -29,7 +29,7 @@ public class ShopReader
     {
     }
 
-    public static final ShopJsonReader SHOP_JSON = GWT.create(ShopJsonReader.class);
+    public static final ShopJsonReader SHOP_JSON_READER = GWT.create(ShopJsonReader.class);
 
     @JsonFields({@JsonField(name = "id", type = String.class), @JsonField(name = "firstname", type = String.class),
             @JsonField(name = "surname", type = String.class)})
@@ -37,7 +37,7 @@ public class ShopReader
     {
     }
 
-    public static final CustomerJsonReader CUSTOMER_JSON = GWT.create(CustomerJsonReader.class);
+    public static final CustomerJsonReader CUSTOMER_JSON_READER = GWT.create(CustomerJsonReader.class);
 
     @JsonFields({@JsonField(name = "id", type = String.class), @JsonField(name = "name", type = String.class),
             @JsonField(name = "price", type = Double.class)})
@@ -45,7 +45,7 @@ public class ShopReader
     {
     }
 
-    public static final ProductJsonReader PRODUCT_JSON = GWT.create(ProductJsonReader.class);
+    public static final ProductJsonReader PRODUCT_JSON_READER = GWT.create(ProductJsonReader.class);
 
     @JsonFields({@JsonField(name = "date", type = Date.class, format = "dd.MM.yyyy"),
             @JsonField(name = "customer", type = Customer.class),
@@ -54,14 +54,14 @@ public class ShopReader
     {
     }
 
-    public static final OrderJsonReader ORDER_JSON = GWT.create(OrderJsonReader.class);
+    public static final OrderJsonReader ORDER_JSON_READER = GWT.create(OrderJsonReader.class);
 
     @JsonFields({@JsonField(name = "product", type = Product.class), @JsonField(name = "amount", type = Integer.class)})
     public interface OrderItemJsonReader extends JsonModelReader<OrderItem>
     {
     }
 
-    public static final OrderItemJsonReader ORDER_ITEM_JSON = GWT.create(OrderItemJsonReader.class);
+    public static final OrderItemJsonReader ORDER_ITEM_JSON_READER = GWT.create(OrderItemJsonReader.class);
 
     // ------------------------------------------------------------ xml readers
 
@@ -73,23 +73,23 @@ public class ShopReader
     {
     }
 
-    public static final ShopXmlReader SHOP_XML = GWT.create(ShopXmlReader.class);
+    public static final ShopXmlReader SHOP_XML_READER = GWT.create(ShopXmlReader.class);
 
-    @XmlFields({@XmlField(name = "id", type = String.class),
-            @XmlField(name = "firstname", type = String.class), @XmlField(name = "surname", type = String.class)})
+    @XmlFields({@XmlField(name = "id", type = String.class), @XmlField(name = "firstname", type = String.class),
+            @XmlField(name = "surname", type = String.class)})
     public interface CustomerXmlReader extends XmlModelReader<Customer>
     {
     }
 
-    public static final CustomerXmlReader CUSTOMER_XML = GWT.create(CustomerXmlReader.class);
+    public static final CustomerXmlReader CUSTOMER_XML_READER = GWT.create(CustomerXmlReader.class);
 
-    @XmlFields({@XmlField(name = "id", path = "@id", type = String.class), @XmlField(name = "name", type = String.class),
-            @XmlField(name = "price", type = Double.class)})
+    @XmlFields({@XmlField(name = "id", path = "@id", type = String.class),
+            @XmlField(name = "name", type = String.class), @XmlField(name = "price", type = Double.class)})
     public interface ProductXmlReader extends XmlModelReader<Product>
     {
     }
 
-    public static final ProductXmlReader PRODUCT_XML = GWT.create(ProductXmlReader.class);
+    public static final ProductXmlReader PRODUCT_XML_READER = GWT.create(ProductXmlReader.class);
 
     @XmlFields({@XmlField(name = "date", path = "@date", type = Date.class, format = "dd.MM.yyyy"),
             @XmlField(name = "items", path = "items/item", type = SortedSet.class, typeVariable = OrderItem.class),
@@ -98,7 +98,7 @@ public class ShopReader
     {
     }
 
-    public static final OrderXmlReader ORDER_XML = GWT.create(OrderXmlReader.class);
+    public static final OrderXmlReader ORDER_XML_READER = GWT.create(OrderXmlReader.class);
 
     @XmlFields({@XmlField(name = "amount", path = "@amount", type = Integer.class),
             @XmlField(name = "product", type = Product.class)})
@@ -106,5 +106,5 @@ public class ShopReader
     {
     }
 
-    public static final OrderItemXmlReader ORDER_ITEM_XML = GWT.create(OrderItemXmlReader.class);
+    public static final OrderItemXmlReader ORDER_ITEM_XML_READER = GWT.create(OrderItemXmlReader.class);
 }

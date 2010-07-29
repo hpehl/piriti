@@ -14,7 +14,7 @@ public class LotteryTicketReaderTest extends AbstractLotteryTicketReaderTest
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketNs().getText();
         Document document = new XmlParser().parse(xml, LotteryTicketResources.NS);
-        LotteryTicket lt = LotteryTicket.XML.read(document);
+        LotteryTicket lt = LotteryTicket.XML_READER.read(document);
         assertLotteryTicket(lt);
     }
 
@@ -23,7 +23,7 @@ public class LotteryTicketReaderTest extends AbstractLotteryTicketReaderTest
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketNns().getText();
         Document document = new XmlParser().parse(xml, LotteryTicketResources.NS);
-        LotteryTicket lt = LotteryTicket.XML.read(document);
+        LotteryTicket lt = LotteryTicket.XML_READER.read(document);
         assertLotteryTicket(lt);
     }
 }

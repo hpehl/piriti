@@ -14,11 +14,15 @@ import com.google.gwt.core.client.GWT;
  */
 public class Department
 {
+    // ---------------------------------------------------- xml reader / writer
+
     public interface DepartmentXmlReader extends XmlReader<Department>
     {
     }
 
     public static final DepartmentXmlReader XML = GWT.create(DepartmentXmlReader.class);
+
+    // ------------------------------------------------------------------- data
 
     @XmlId
     String id;
@@ -29,6 +33,8 @@ public class Department
     @XmlIdRef("employees/@members")
     Employee[] employees;
 
+
+    // --------------------------------------------------------- public methods
 
     @Override
     public String toString()

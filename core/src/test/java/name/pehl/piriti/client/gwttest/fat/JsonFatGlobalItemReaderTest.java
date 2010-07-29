@@ -13,7 +13,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
     public void testRead()
     {
         String json = FatGlobalItemResources.INSTANCE.fatGlobalItemJson().getText();
-        FatGlobalItem fgi = FatGlobalItem.JSON.read(json);
+        FatGlobalItem fgi = FatGlobalItem.JSON_READER.read(json);
         assertFatGlobalItem(fgi, true);
     }
 
@@ -21,7 +21,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
     public void testReadList()
     {
         String json = FatGlobalItemResources.INSTANCE.fatGlobalItemsJson().getText();
-        List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json);
+        List<FatGlobalItem> items = FatGlobalItem.JSON_READER.readList(json);
         assertFatGlobalItems(items, true);
     }
 
@@ -29,7 +29,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
     public void testReadListWithKey()
     {
         String json = FatGlobalItemResources.INSTANCE.fatGlobalItemsJson().getText();
-        List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json, ITEMS);
+        List<FatGlobalItem> items = FatGlobalItem.JSON_READER.readList(json, ITEMS);
         assertFatGlobalItems(items, true);
     }
 
@@ -37,7 +37,7 @@ public class JsonFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
     public void testReadListWithWrongKey()
     {
         String json = FatGlobalItemResources.INSTANCE.fatGlobalItemsJson().getText();
-        List<FatGlobalItem> items = FatGlobalItem.JSON.readList(json, "moo");
+        List<FatGlobalItem> items = FatGlobalItem.JSON_READER.readList(json, "moo");
         assertNotNull(items);
         assertTrue(items.isEmpty());
     }

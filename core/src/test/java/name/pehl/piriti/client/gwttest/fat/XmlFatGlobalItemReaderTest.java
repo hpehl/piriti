@@ -13,7 +13,7 @@ public class XmlFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
     {
         String xml = FatGlobalItemResources.INSTANCE.fatGlobalItemXml().getText();
         Document document = new XmlParser().parse(xml);
-        FatGlobalItem model = FatGlobalItem.XML.read(document);
+        FatGlobalItem model = FatGlobalItem.XML_READER.read(document);
         assertFatGlobalItem(model, true);
     }
 }

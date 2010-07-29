@@ -89,20 +89,22 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
     @Override
     public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
+        CodeGeneration.readValue(writer, fieldContext);
         writer.write("String %s = null;", fieldContext.getValueAsStringVariable());
-        writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
-                .getQualifiedSourceName());
-        writer.write("if (converter != null) {");
+        String converterVariable = fieldContext.newVariableName("WriteConverter");
+        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
+                .getQualifiedSourceName(), converterVariable);
+        writer.write("if (%s != null) {", converterVariable);
         writer.indent();
         if (fieldContext.getFormat() != null)
         {
-            writer.write("%s = converter.serialize(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
-                    fieldContext.getValueVariable(), fieldContext.getFormat());
+            writer.write("%s = %s.serialize(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
+                    converterVariable, fieldContext.getValueVariable(), fieldContext.getFormat());
         }
         else
         {
-            writer.write("%s = converter.serialize(%s, null);", fieldContext.getValueAsStringVariable(),
-                    fieldContext.getValueVariable());
+            writer.write("%s = %s.serialize(%s, null);", fieldContext.getValueAsStringVariable(),
+                    converterVariable, fieldContext.getValueVariable());
         }
         writer.outdent();
         writer.write("}");
