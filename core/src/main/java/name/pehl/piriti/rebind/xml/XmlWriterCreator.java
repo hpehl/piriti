@@ -85,6 +85,8 @@ public class XmlWriterCreator extends AbstractXmlCreator
         writer.indent();
         writer.write("StringBuilder xmlBuilder = new StringBuilder();");
 
+        // This creates all FieldHandler / FieldContexts and calls handleField()
+        // in a loop
         handleFields(writer);
 
         writer.write("xml = xmlBuilder.toString();");
@@ -103,5 +105,6 @@ public class XmlWriterCreator extends AbstractXmlCreator
             throws UnableToCompleteException
     {
         fieldHandler.writeComment(writer, fieldContext);
+        fieldHandler.writeSerialization(writer, fieldContext);
     }
 }

@@ -15,8 +15,8 @@ import com.google.inject.internal.Nullable;
  */
 public interface XmlWriter<T>
 {
-    String toXml(@Nullable List<T> values, String rootElement);
+    String toXml(@Nullable List<T> models, String rootElement);
 
 
-    String toXml(@Nullable T value);
+    String toXml(@Nullable T model);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.client.json.JsonReader;
+import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
 
@@ -16,6 +17,13 @@ import com.google.gwt.core.client.GWT;
  */
 public class Book
 {
+    public interface BookJsonWriter extends JsonWriter<Book>
+    {
+    }
+    
+    public static final BookJsonWriter JSON_WRITER = GWT.create(BookJsonWriter.class);
+
+    
     public interface BookJsonReader extends JsonReader<Book>
     {
     }

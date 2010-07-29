@@ -303,6 +303,8 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.indent();
         writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
 
+        // This creates all FieldHandler / FieldContexts and calls handleField()
+        // in a loop
         handleFields(writer);
 
         writer.write("return model;");

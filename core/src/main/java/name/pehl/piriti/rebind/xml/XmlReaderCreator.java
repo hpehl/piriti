@@ -255,6 +255,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.write("if (element != null) {");
         writer.indent();
 
+        // This creates all FieldHandler / FieldContexts and calls handleField()
+        // in a loop
         handleFields(writer);
 
         writer.outdent();
@@ -273,6 +275,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.write("if (element != null) {");
         writer.indent();
 
+        // This creates all FieldHandler / FieldContexts and calls handleField()
+        // in a loop
         handleIdRefs(writer);
 
         writer.outdent();
@@ -336,7 +340,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 XmlId xmlId = field.getAnnotation(XmlId.class);
                 fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType, field.getType(),
                         field.getName(), xmlId.value(), null, xmlId.stripWsnl(), AssignmentType.ID,
-                        AssignmentPolicy.FIELD_ONLY, "element", "idValue");
+                        AssignmentPolicy.FIELD_ONLY, "element", "idValue", "xmlBuilder");
             }
             else
             {
@@ -358,7 +362,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                     {
                         fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                                 field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
-                                AssignmentType.ID, AssignmentPolicy.SETTER_FIRST, "element", "idValue");
+                                AssignmentType.ID, AssignmentPolicy.SETTER_FIRST, "element", "idValue", "xmlBuilder");
                     }
                     else
                     {
@@ -382,7 +386,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
                     fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
-                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "nestedValue" + counter);
+                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "nestedValue" + counter,
+                    "xmlBuilder");
             FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if ((fieldHandler instanceof XmlRegistryFieldHandler || fieldHandler instanceof ArrayFieldHandler || fieldHandler instanceof CollectionFieldHandler)
                     && fieldHandler.isValid(writer, fieldContext))
@@ -392,17 +397,6 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 counter++;
             }
         }
-    }
-
-
-    @Override
-    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
-            throws UnableToCompleteException
-    {
-        fieldHandler.writeComment(writer, fieldContext);
-        fieldHandler.writeDeclaration(writer, fieldContext);
-        fieldHandler.writeConverterCode(writer, fieldContext);
-        fieldHandler.writeAssignment(writer, fieldContext);
     }
 
 
@@ -416,7 +410,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath, null,
                     fieldAnnotation.annotation.stripWsnl(), AssignmentType.IDREF, fieldAnnotation.assignmentPolicy,
-                    "element", "idRefValue" + counter);
+                    "element", "idRefValue" + counter, "xmlBuilder");
             FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
@@ -460,5 +454,16 @@ public class XmlReaderCreator extends AbstractXmlCreator
             fields.put(field.getName(), new FieldAnnotation<XmlIdRef>(field, annotation, AssignmentPolicy.FIELD_ONLY));
         }
         return fields;
+    }
+
+
+    @Override
+    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
+            throws UnableToCompleteException
+    {
+        fieldHandler.writeComment(writer, fieldContext);
+        fieldHandler.writeDeclaration(writer, fieldContext);
+        fieldHandler.writeConverterCode(writer, fieldContext);
+        fieldHandler.writeAssignment(writer, fieldContext);
     }
 }

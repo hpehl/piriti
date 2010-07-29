@@ -45,6 +45,22 @@ public abstract class AbstractFieldHandler implements FieldHandler
     @Override
     public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        CodeGeneration.writeAssignement(writer, fieldContext);
+        CodeGeneration.assign(writer, fieldContext);
+    }
+
+
+    /**
+     * NYI
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     */
+    @Override
+    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// Not yet implemented!");
     }
 }

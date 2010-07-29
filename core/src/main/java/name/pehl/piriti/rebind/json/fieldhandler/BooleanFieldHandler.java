@@ -54,8 +54,8 @@ public class BooleanFieldHandler extends AbstractFieldHandler
         String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
-                    .getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
+                    fieldContext.getPath());
         }
         else
         {
@@ -76,5 +76,23 @@ public class BooleanFieldHandler extends AbstractFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     */
+    @Override
+    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        // TODO Add support for getter
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+        CodeGeneration.append(writer, fieldContext, String.format("model.%s", fieldContext.getFieldName()));
     }
 }

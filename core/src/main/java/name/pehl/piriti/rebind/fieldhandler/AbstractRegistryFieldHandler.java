@@ -31,7 +31,7 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
             CodeGeneration.skipField(writer, fieldContext, "Type is no class or interface");
             return false;
         }
-        CodeGeneration.writeReaderInitialization(writer, fieldContext.getClassOrInterfaceType());
+        CodeGeneration.readerInitialization(writer, fieldContext.getClassOrInterfaceType());
         return true;
     }
 

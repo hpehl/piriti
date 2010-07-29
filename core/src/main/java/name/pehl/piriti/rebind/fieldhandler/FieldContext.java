@@ -39,6 +39,7 @@ public class FieldContext
     private AssignmentPolicy assignmentPolicy;
     private final String inputVariable;
     private final String valueVariable;
+    private final String builderVariable;
     private final Map<String, Object> metadata;
 
 
@@ -67,12 +68,15 @@ public class FieldContext
      *            The name of the input variable
      * @param valueVariable
      *            The name of the value variable
+     * @param builderVariable
+     *            The name of the variable for the {@link StringBuilder} which
+     *            is used for serialization
      * @throws UnableToCompleteException
      */
     public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
             JType fieldType, String fieldName, String path, String format, boolean stripWsnl,
-            AssignmentType assignmentType, AssignmentPolicy assignmentPolicy, String inputVariable, String valueVariable)
-            throws UnableToCompleteException
+            AssignmentType assignmentType, AssignmentPolicy assignmentPolicy, String inputVariable,
+            String valueVariable, String builderVariable) throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
@@ -116,6 +120,8 @@ public class FieldContext
         // Variable names
         this.inputVariable = inputVariable;
         this.valueVariable = valueVariable;
+        this.builderVariable = builderVariable;
+
         this.metadata = new HashMap<String, Object>();
     }
 
@@ -274,6 +280,12 @@ public class FieldContext
     public String newVariableName(String suffix)
     {
         return getValueVariable() + suffix;
+    }
+
+
+    public String getBuilderVariable()
+    {
+        return builderVariable;
     }
 
 

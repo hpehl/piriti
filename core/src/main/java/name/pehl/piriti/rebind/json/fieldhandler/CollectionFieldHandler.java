@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractCollectionFieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
@@ -38,7 +39,7 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
                 fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
                 fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
-                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable);
+                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable, "jsonBuilder");
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -95,5 +96,22 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     */
+    @Override
+    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+        writer.write("%s.append(\"[]\");", fieldContext.getBuilderVariable());
     }
 }

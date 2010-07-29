@@ -60,4 +60,14 @@ public interface FieldHandler
      * @param fieldContext
      */
     void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates the code for converting the model to JSON / XML.
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     */
+    void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 }

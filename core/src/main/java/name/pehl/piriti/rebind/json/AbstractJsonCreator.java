@@ -90,7 +90,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), jsonPath,
                     fieldAnnotation.annotation.format(), false, AssignmentType.MAPPING,
-                    fieldAnnotation.assignmentPolicy, "jsonObject", "value" + counter);
+                    fieldAnnotation.assignmentPolicy, "jsonObject", "value" + counter, "jsonBuilder");
             FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {

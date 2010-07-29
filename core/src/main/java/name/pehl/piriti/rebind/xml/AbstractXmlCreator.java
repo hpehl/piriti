@@ -89,7 +89,8 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
                     fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
-                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "value" + counter);
+                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "value" + counter,
+                    "xmlBuilder");
             FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {

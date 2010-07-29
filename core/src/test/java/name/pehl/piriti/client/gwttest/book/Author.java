@@ -2,6 +2,7 @@ package name.pehl.piriti.client.gwttest.book;
 
 import name.pehl.piriti.client.json.JsonField;
 import name.pehl.piriti.client.json.JsonReader;
+import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
 
@@ -14,12 +15,18 @@ import com.google.gwt.core.client.GWT;
  */
 public class Author
 {
+    public interface AuthorJsonWriter extends JsonWriter<Author>
+    {
+    }
+
+    public static final AuthorJsonWriter JSON_WRITER = GWT.create(AuthorJsonWriter.class);
+
     public interface AuthorJsonReader extends JsonReader<Author>
     {
     }
-    
+
     public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
-    
+
     public interface AuthorXmlReader extends XmlReader<Author>
     {
     }
@@ -33,7 +40,7 @@ public class Author
     @JsonField
     @XmlField
     String surname;
-    
+
     @JsonField
     @XmlField("bestseller/book")
     Book bestseller;

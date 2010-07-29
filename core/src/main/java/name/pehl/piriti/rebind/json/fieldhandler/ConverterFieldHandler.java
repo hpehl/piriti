@@ -2,6 +2,7 @@ package name.pehl.piriti.rebind.json.fieldhandler;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
@@ -57,8 +58,8 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
         String jsonValue = fieldContext.newVariableName("AsJsonValue");
         if (fieldContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(), fieldContext
-                    .getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
+                    fieldContext.getPath());
         }
         else
         {
@@ -73,5 +74,54 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
         writer.write("String %s = %s.stringValue();", fieldContext.getValueAsStringVariable(), jsonString);
+    }
+
+
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     */
+    @Override
+    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("String %s = null;", fieldContext.getValueAsStringVariable());
+        writer.write("Converter<%1$s> converter = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
+                .getQualifiedSourceName());
+        writer.write("if (converter != null) {");
+        writer.indent();
+        if (fieldContext.getFormat() != null)
+        {
+            writer.write("%s = converter.serialize(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
+                    fieldContext.getValueVariable(), fieldContext.getFormat());
+        }
+        else
+        {
+            writer.write("%s = converter.serialize(%s, null);", fieldContext.getValueAsStringVariable(),
+                    fieldContext.getValueVariable());
+        }
+        writer.outdent();
+        writer.write("}");
+
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+        writer.write("if (%s == null) {", fieldContext.getValueAsStringVariable());
+        writer.indent();
+        CodeGeneration.append(writer, fieldContext, "null");
+        writer.outdent();
+        writer.write("}");
+        writer.write("else {");
+        writer.indent();
+        CodeGeneration.append(writer, fieldContext, String.format("%s", fieldContext.getValueAsStringVariable()));
+        writer.outdent();
+        writer.write("}");
+
+        writer.write("// NYI");
+        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
+        writer.write("%s.append(%s);", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
+        writer.write("%s.append(\"\\\":[]\");", fieldContext.getBuilderVariable());
     }
 }

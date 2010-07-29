@@ -72,7 +72,7 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
         }
         // Initialize the parameter type to make sure the relevant reader
         // is in the registry (ugly - but it works)
-        CodeGeneration.writeReaderInitialization(writer, parameterType);
+        CodeGeneration.readerInitialization(writer, parameterType);
         return true;
     }
 

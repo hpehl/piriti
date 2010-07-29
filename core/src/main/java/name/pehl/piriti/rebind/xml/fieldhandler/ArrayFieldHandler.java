@@ -63,7 +63,8 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
                 fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
                 fieldContext.getFieldName(), nestedXpath, fieldContext.getFormat(), fieldContext.isStripWsnl(),
-                AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, nestedElementVariable, nestedValueVariable);
+                AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, nestedElementVariable, nestedValueVariable,
+                "xmlBuilder");
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

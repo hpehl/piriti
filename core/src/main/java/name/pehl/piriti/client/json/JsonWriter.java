@@ -15,8 +15,8 @@ import com.google.inject.internal.Nullable;
  */
 public interface JsonWriter<T>
 {
-    String toJson(@Nullable List<T> values, String arrayKey);
+    String toJson(@Nullable List<T> models, String arrayKey);
 
 
-    String toJson(@Nullable T value);
+    String toJson(@Nullable T model);
 }

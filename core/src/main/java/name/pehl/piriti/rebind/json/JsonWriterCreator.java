@@ -43,21 +43,21 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
     protected void writeList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toJson(List<%s> values, String arrayKey) {",
+        writer.write("public String toJson(List<%s> models, String arrayKey) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String json = null;");
-        writer.write("if (values != null && arrayKey != null) {");
+        writer.write("if (models != null && arrayKey != null) {");
         writer.indent();
         writer.write("StringBuilder jsonBuilder = new StringBuilder();");
-        writer.write("jsonBuilder.append(\"{\");");
+        writer.write("jsonBuilder.append(\"{\\\"\");");
         writer.write("jsonBuilder.append(arrayKey);");
-        writer.write("jsonBuilder.append(\":[\"");
-        writer.write("for (Iterator<%s> iter = values.iterator(); iter.hasNext(); ) {",
+        writer.write("jsonBuilder.append(\"\\\":[\");");
+        writer.write("for (Iterator<%s> iter = models.iterator(); iter.hasNext(); ) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s value = iter.next();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("String jsonValue = toJson(value);");
+        writer.write("%s model = iter.next();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("String jsonValue = toJson(model);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("jsonBuilder.append(jsonValue);");
@@ -82,13 +82,15 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
     protected void writeSingle(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toJson(%s value) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public String toJson(%s model) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String json = null;");
-        writer.write("if (value != null) {");
+        writer.write("if (model != null) {");
         writer.indent();
         writer.write("StringBuilder jsonBuilder = new StringBuilder();");
 
+        // This creates all FieldHandler / FieldContexts and calls handleField()
+        // in a loop
         handleFields(writer);
 
         writer.write("json = jsonBuilder.toString();");
@@ -107,5 +109,6 @@ public class JsonWriterCreator extends AbstractJsonCreator
             throws UnableToCompleteException
     {
         fieldHandler.writeComment(writer, fieldContext);
+        fieldHandler.writeSerialization(writer, fieldContext);
     }
 }

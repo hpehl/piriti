@@ -24,6 +24,8 @@ public final class CodeGeneration
     }
 
 
+    // ----------------------------------------------------------- misc methods
+
     public static void idRef(IndentedWriter writer, JClassType type)
     {
         writer.write("public %s idRef(String id) {", type.getQualifiedSourceName());
@@ -46,7 +48,7 @@ public final class CodeGeneration
      * @param writer
      * @param type
      */
-    public static void writeReaderInitialization(IndentedWriter writer, JClassType type)
+    public static void readerInitialization(IndentedWriter writer, JClassType type)
     {
         boolean noargConstructor = false;
         JConstructor[] constructors = type.getConstructors();
@@ -76,13 +78,32 @@ public final class CodeGeneration
 
 
     /**
+     * Generates code comments if a field was skipped (contains the reason why
+     * the field was skipped)
+     * 
+     * @param writer
+     * @param fieldContext
+     * @param reason
+     */
+    public static void skipField(IndentedWriter writer, FieldContext fieldContext, String reason)
+    {
+        writer.write("// Skipping field %s", fieldContext);
+        writer.write("// " + reason);
+        GWT.log("Skipping field " + fieldContext, null);
+        GWT.log(reason, null);
+    }
+
+
+    // ----------------------------------------------------- assignment methods
+
+    /**
      * Writes the assignment based on the {@link AssignmentPolicy} in the
      * {@code fieldContext}.
      * 
      * @param writer
      * @param fieldContext
      */
-    public static void writeAssignement(IndentedWriter writer, FieldContext fieldContext)
+    public static void assign(IndentedWriter writer, FieldContext fieldContext)
     {
         writer.write("if (%s != null) {", fieldContext.getValueVariable());
         writer.indent();
@@ -142,25 +163,6 @@ public final class CodeGeneration
     }
 
 
-    /**
-     * Generates code comments if a field was skipped (contains the reason why
-     * the field was skipped)
-     * 
-     * @param writer
-     * @param fieldContext
-     * @param reason
-     */
-    public static void skipField(IndentedWriter writer, FieldContext fieldContext, String reason)
-    {
-        writer.write("// Skipping field %s", fieldContext);
-        writer.write("// " + reason);
-        GWT.log("Skipping field " + fieldContext, null);
-        GWT.log(reason, null);
-    }
-
-
-    // ------------------------------------------------------ internal methods
-
     private static boolean assignField(IndentedWriter writer, FieldContext fieldContext)
     {
         if (TypeUtils.isFieldAccessible(fieldContext.getModelType(), fieldContext.getFieldName()))
@@ -206,5 +208,34 @@ public final class CodeGeneration
             setter = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
         }
         return setter;
+    }
+
+
+    // -------------------------------------------------- serialization methods
+
+    public static void appendJsonKey(IndentedWriter writer, FieldContext fieldContext)
+    {
+        append(writer, fieldContext, fieldContext.getFieldName(), true);
+        append(writer, fieldContext, ":", false);
+    }
+
+
+    public static void append(IndentedWriter writer, FieldContext fieldContext, String value)
+    {
+        append(writer, fieldContext, value, false);
+    }
+
+
+    public static void append(IndentedWriter writer, FieldContext fieldContext, String value, boolean quote)
+    {
+        if (quote)
+        {
+            writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
+        }
+        writer.write("%s.append(\"%s\");", fieldContext.getBuilderVariable(), value);
+        if (quote)
+        {
+            writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
+        }
     }
 }

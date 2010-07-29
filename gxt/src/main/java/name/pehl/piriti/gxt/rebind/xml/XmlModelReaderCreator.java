@@ -62,7 +62,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             String xpath = calculateXpath(fieldType, xmlField);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), AssignmentType.MAPPING,
-                    AssignmentPolicy.GXT, "element", "value" + counter);
+                    AssignmentPolicy.GXT, "element", "value" + counter, "xmlBuilder");
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
