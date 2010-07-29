@@ -110,18 +110,15 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
         CodeGeneration.appendJsonKey(writer, fieldContext);
         writer.write("if (%s == null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
-        CodeGeneration.append(writer, fieldContext, "null");
+        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.write("else {");
         writer.indent();
-        CodeGeneration.append(writer, fieldContext, String.format("%s", fieldContext.getValueAsStringVariable()));
+        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
+        writer.write("%s.append(%s);", fieldContext.getBuilderVariable(), fieldContext.getValueAsStringVariable());
+        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
         writer.outdent();
         writer.write("}");
-
-        writer.write("// NYI");
-        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
-        writer.write("%s.append(%s);", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
-        writer.write("%s.append(\"\\\":[]\");", fieldContext.getBuilderVariable());
     }
 }

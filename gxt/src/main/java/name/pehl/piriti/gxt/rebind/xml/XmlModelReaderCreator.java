@@ -55,8 +55,9 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     {
         int counter = 0;
         XmlField[] fields = findModelFieldAnnotations();
-        for (XmlField xmlField : fields)
+        for (int i = 0; i < fields.length; i++)
         {
+            XmlField xmlField = fields[i];
             writer.newline();
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
@@ -68,7 +69,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext);
+                handleField(writer, fieldHandler, fieldContext, (i < fields.length - 1));
                 counter++;
             }
         }

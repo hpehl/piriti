@@ -234,8 +234,8 @@ public abstract class AbstractCreator
     protected abstract void createMethods(IndentedWriter writer) throws UnableToCompleteException;
 
 
-    protected abstract void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
-            throws UnableToCompleteException;
+    protected abstract void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+            boolean hasNext) throws UnableToCompleteException;
 
 
     // --------------------------------------------------------- helper methods

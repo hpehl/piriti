@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.xml;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import name.pehl.piriti.client.xml.XmlField;
@@ -83,8 +84,9 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     {
         int counter = 0;
         Map<String, FieldAnnotation<XmlField>> fields = findFieldAnnotations();
-        for (FieldAnnotation<XmlField> fieldAnnotation : fields.values())
+        for (Iterator<FieldAnnotation<XmlField>> iter = fields.values().iterator(); iter.hasNext();)
         {
+            FieldAnnotation<XmlField> fieldAnnotation = iter.next();
             String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
@@ -95,7 +97,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext);
+                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
                 counter++;
             }
         }

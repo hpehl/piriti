@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.json;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import name.pehl.piriti.client.json.JsonField;
@@ -14,7 +15,6 @@ import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
 import name.pehl.piriti.rebind.fieldhandler.FieldAnnotation;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -36,15 +36,6 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
-    }
-
-
-    // ---------------------------------------------------- overwritten methods
-
-    @Override
-    protected FieldHandlerRegistry setupFieldHandlerRegistry()
-    {
-        return new JsonFieldHandlerRegistry();
     }
 
 
@@ -84,8 +75,9 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     {
         int counter = 0;
         Map<String, FieldAnnotation<JsonField>> fields = findFieldAnnotations();
-        for (FieldAnnotation<JsonField> fieldAnnotation : fields.values())
+        for (Iterator<FieldAnnotation<JsonField>> iter = fields.values().iterator(); iter.hasNext(); )
         {
+            FieldAnnotation<JsonField> fieldAnnotation = iter.next();
             String jsonPath = calculateJsonPath(fieldAnnotation.field, fieldAnnotation.annotation);
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), jsonPath,
@@ -95,7 +87,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext);
+                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
                 counter++;
             }
         }

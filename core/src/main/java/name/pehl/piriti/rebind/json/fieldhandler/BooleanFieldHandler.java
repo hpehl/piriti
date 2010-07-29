@@ -91,8 +91,7 @@ public class BooleanFieldHandler extends AbstractFieldHandler
     @Override
     public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        // TODO Add support for getter
         CodeGeneration.appendJsonKey(writer, fieldContext);
-        CodeGeneration.append(writer, fieldContext, String.format("model.%s", fieldContext.getFieldName()));
+        writer.write("%s.append(model.%s);", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
     }
 }

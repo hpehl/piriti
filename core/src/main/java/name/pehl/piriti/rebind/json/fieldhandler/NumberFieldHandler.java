@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
@@ -116,5 +117,22 @@ public class NumberFieldHandler extends AbstractFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     */
+    @Override
+    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+        writer.write("%s.append(model.%s);", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
     }
 }

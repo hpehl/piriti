@@ -144,6 +144,6 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
     public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.appendJsonKey(writer, fieldContext);
-        CodeGeneration.append(writer, fieldContext, "[]");
+        writer.write("%s.append(\"[]\");", fieldContext.getBuilderVariable());
     }
 }

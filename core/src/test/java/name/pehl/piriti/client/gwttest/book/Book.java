@@ -7,6 +7,7 @@ import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.client.xml.XmlField;
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.client.xml.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -20,21 +21,26 @@ public class Book
     public interface BookJsonWriter extends JsonWriter<Book>
     {
     }
-    
+
     public static final BookJsonWriter JSON_WRITER = GWT.create(BookJsonWriter.class);
 
-    
     public interface BookJsonReader extends JsonReader<Book>
     {
     }
-    
-    public static final BookJsonReader JSON = GWT.create(BookJsonReader.class);
-    
+
+    public static final BookJsonReader JSON_READER = GWT.create(BookJsonReader.class);
+
     public interface BookXmlReader extends XmlReader<Book>
     {
     }
 
-    public static final BookXmlReader XML = GWT.create(BookXmlReader.class);
+    public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
+
+    public interface BookXmlWriter extends XmlWriter<Book>
+    {
+    }
+
+    public static final BookXmlWriter XML_WRITER = GWT.create(BookXmlWriter.class);
 
     @JsonField
     @XmlField
@@ -55,7 +61,7 @@ public class Book
     @JsonField
     @XmlField("reviews/review")
     List<String> reviews;
-    
+
     @JsonField
     @XmlField("related/book")
     List<Book> related;

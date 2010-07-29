@@ -53,10 +53,10 @@ public class XmlWriterCreator extends AbstractXmlCreator
         writer.write("StringBuilder xmlBuilder = new StringBuilder();");
         writer.write("xmlBuilder.append(\"<\");");
         writer.write("xmlBuilder.append(rootElement);");
-        writer.write("xmlBuilder.append(\">\"");
+        writer.write("xmlBuilder.append(\">\");");
         writer.write("for (%s value : values) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("String xmlValue = toxml(value);");
+        writer.write("String xmlValue = toXml(value);");
         writer.write("if (xmlValue != null) {");
         writer.indent();
         writer.write("xmlBuilder.append(xmlValue);");
@@ -66,7 +66,7 @@ public class XmlWriterCreator extends AbstractXmlCreator
         writer.write("}");
         writer.write("xmlBuilder.append(\"</\");");
         writer.write("xmlBuilder.append(rootElement);");
-        writer.write("xmlBuilder.append(\">\"");
+        writer.write("xmlBuilder.append(\">\");");
         writer.write("xml = xmlBuilder.toString();");
         writer.outdent();
         writer.write("}");
@@ -101,8 +101,8 @@ public class XmlWriterCreator extends AbstractXmlCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
-            throws UnableToCompleteException
+    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+            boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.writeComment(writer, fieldContext);
         fieldHandler.writeSerialization(writer, fieldContext);

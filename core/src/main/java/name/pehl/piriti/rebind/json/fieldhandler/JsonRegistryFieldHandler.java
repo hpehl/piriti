@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
 import name.pehl.piriti.client.json.JsonReader;
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractRegistryFieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
@@ -62,6 +63,23 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    /**
+     * TODO Javadoc
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     */
+    @Override
+    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
     }
 
 

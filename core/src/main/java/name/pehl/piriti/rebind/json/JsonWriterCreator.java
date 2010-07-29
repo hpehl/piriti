@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind.json;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -17,12 +18,19 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public class JsonWriterCreator extends AbstractJsonCreator
 {
-    // ----------------------------------------------------------- constructors
+    // --------------------------------------------------------- initialization
 
     public JsonWriterCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
+    }
+
+
+    @Override
+    protected FieldHandlerRegistry setupFieldHandlerRegistry()
+    {
+        return new JsonWriterFieldHandlerRegistry();
     }
 
 
@@ -88,11 +96,13 @@ public class JsonWriterCreator extends AbstractJsonCreator
         writer.write("if (model != null) {");
         writer.indent();
         writer.write("StringBuilder jsonBuilder = new StringBuilder();");
+        writer.write("jsonBuilder.append(\"{\");");
 
         // This creates all FieldHandler / FieldContexts and calls handleField()
         // in a loop
         handleFields(writer);
 
+        writer.write("jsonBuilder.append(\"}\");");
         writer.write("json = jsonBuilder.toString();");
         writer.outdent();
         writer.write("}");
@@ -105,10 +115,14 @@ public class JsonWriterCreator extends AbstractJsonCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
-            throws UnableToCompleteException
+    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+            boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.writeComment(writer, fieldContext);
         fieldHandler.writeSerialization(writer, fieldContext);
+        if (hasNext)
+        {
+            writer.write("%s.append(\",\");", fieldContext.getBuilderVariable());
+        }
     }
 }

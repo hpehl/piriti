@@ -5,6 +5,7 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -19,12 +20,19 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public class JsonReaderCreator extends AbstractJsonCreator
 {
-    // ----------------------------------------------------------- constructors
+    // --------------------------------------------------------- initialization
 
     public JsonReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
+    }
+
+
+    @Override
+    protected FieldHandlerRegistry setupFieldHandlerRegistry()
+    {
+        return new JsonReaderFieldHandlerRegistry();
     }
 
 
@@ -316,8 +324,8 @@ public class JsonReaderCreator extends AbstractJsonCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
-            throws UnableToCompleteException
+    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+            boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.writeComment(writer, fieldContext);
         fieldHandler.writeDeclaration(writer, fieldContext);

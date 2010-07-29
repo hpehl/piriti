@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.xml;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import name.pehl.piriti.client.xml.XmlField;
@@ -380,8 +381,9 @@ public class XmlReaderCreator extends AbstractXmlCreator
     {
         int counter = 0;
         Map<String, FieldAnnotation<XmlField>> fields = findFieldAnnotations();
-        for (FieldAnnotation<XmlField> fieldAnnotation : fields.values())
+        for (Iterator<FieldAnnotation<XmlField>> iter = fields.values().iterator(); iter.hasNext();)
         {
+            FieldAnnotation<XmlField> fieldAnnotation = iter.next();
             String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
@@ -393,7 +395,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                     && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext);
+                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
                 counter++;
             }
         }
@@ -404,8 +406,9 @@ public class XmlReaderCreator extends AbstractXmlCreator
     {
         int counter = 0;
         Map<String, FieldAnnotation<XmlIdRef>> fields = findReferenceAnnotations();
-        for (FieldAnnotation<XmlIdRef> fieldAnnotation : fields.values())
+        for (Iterator<FieldAnnotation<XmlIdRef>> iter = fields.values().iterator(); iter.hasNext();)
         {
+            FieldAnnotation<XmlIdRef> fieldAnnotation = iter.next();
             String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
             FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath, null,
@@ -415,7 +418,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext);
+                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
                 counter++;
             }
         }
@@ -458,8 +461,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
 
     @Override
-    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext)
-            throws UnableToCompleteException
+    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+            boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.writeComment(writer, fieldContext);
         fieldHandler.writeDeclaration(writer, fieldContext);

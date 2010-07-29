@@ -215,27 +215,6 @@ public final class CodeGeneration
 
     public static void appendJsonKey(IndentedWriter writer, FieldContext fieldContext)
     {
-        append(writer, fieldContext, fieldContext.getFieldName(), true);
-        append(writer, fieldContext, ":", false);
-    }
-
-
-    public static void append(IndentedWriter writer, FieldContext fieldContext, String value)
-    {
-        append(writer, fieldContext, value, false);
-    }
-
-
-    public static void append(IndentedWriter writer, FieldContext fieldContext, String value, boolean quote)
-    {
-        if (quote)
-        {
-            writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
-        }
-        writer.write("%s.append(\"%s\");", fieldContext.getBuilderVariable(), value);
-        if (quote)
-        {
-            writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
-        }
+        writer.write("%s.append(\"\\\"%s\\\":\");", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
     }
 }

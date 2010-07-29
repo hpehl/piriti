@@ -15,7 +15,7 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     {
         String xml = BookResources.INSTANCE.bookXml().getText();
         Document document = new XmlParser().parse(xml);
-        Book book = Book.XML.read(document);
+        Book book = Book.XML_READER.read(document);
         assertBook(book, true, true);
     }
 
@@ -24,7 +24,7 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     {
         String xml = BookResources.INSTANCE.booksXml().getText();
         Document document = new XmlParser().parse(xml);
-        List<Book> books = Book.XML.readList(document);
+        List<Book> books = Book.XML_READER.readList(document);
         assertBooks(books, true, true);
     }
 
@@ -33,7 +33,7 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     {
         String xml = BookResources.INSTANCE.booksXml().getText();
         Document document = new XmlParser().parse(xml);
-        List<Book> books = Book.XML.readList(document, "/books/book");
+        List<Book> books = Book.XML_READER.readList(document, "/books/book");
         assertBooks(books, true, true);
     }
 
@@ -42,7 +42,7 @@ public class XmlBookReaderTest extends AbstractBookReaderTest
     {
         String xml = BookResources.INSTANCE.booksXml().getText();
         Document document = new XmlParser().parse(xml);
-        List<Book> books = Book.XML.readList(document, "//moo");
+        List<Book> books = Book.XML_READER.readList(document, "//moo");
         assertNotNull(books);
         assertTrue(books.isEmpty());
     }

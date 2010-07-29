@@ -28,7 +28,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public class JsonModelReaderCreator extends JsonReaderCreator implements ModelReaderConstants
 {
-    // ----------------------------------------------------------- constructors
+    // --------------------------------------------------------- initialization
 
     public JsonModelReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
@@ -40,7 +40,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     @Override
     protected FieldHandlerRegistry setupFieldHandlerRegistry()
     {
-        return new JsonModelFieldHandlerRegistry();
+        return new JsonModelReaderFieldHandlerRegistry();
     }
 
 
@@ -59,8 +59,9 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     {
         int counter = 0;
         JsonField[] fields = findFieldAnnotations();
-        for (JsonField jsonField : fields)
+        for (int i = 0; i < fields.length; i++)
         {
+            JsonField jsonField = fields[i];
             writer.newline();
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
@@ -72,7 +73,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext);
+                handleField(writer, fieldHandler, fieldContext, (i < fields.length - 1));
                 counter++;
             }
         }
