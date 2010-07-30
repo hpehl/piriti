@@ -87,6 +87,7 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
     @Override
     public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
+        writeValueAsString(writer, fieldContext);
         writer.write("if (%s == null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
