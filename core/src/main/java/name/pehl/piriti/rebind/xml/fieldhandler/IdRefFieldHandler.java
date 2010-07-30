@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.xml.fieldhandler;
 
 import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -62,16 +63,11 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
 
 
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        // Cast because subclasses might use a subtype of getReaderClassname()
         JClassType nestedType = fieldContext.getMetadata(NESTED_TYPE);
-        String readerVariable = fieldContext.newVariableName("Reader");
-        writer.write("%1$s<%2$s> %3$s = (%1$s)this.xmlRegistry.getReader(%2$s.class);", getReaderClassname(),
-                nestedType.getQualifiedSourceName(), readerVariable);
-        writer.write("if (%s != null) {", readerVariable);
-        writer.indent();
-        
+        String readerVariable = startReader(writer, fieldContext, "xmlRegistry", nestedType);
+
         String references = fieldContext.newVariableName("References");
         writer.write("String[] %s = %s.selectValues(\"%s\", %s);", references, fieldContext.getInputVariable(),
                 fieldContext.getPath(), fieldContext.isStripWsnl());
@@ -136,8 +132,29 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
         }
         writer.outdent();
         writer.write("}");
-        writer.outdent();
-        writer.write("}");
+
+        endReader(writer);
+    }
+
+
+    @Override
+    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// markupStart() NYI");
+    }
+
+
+    @Override
+    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// writeValue() NYI");
+    }
+
+
+    @Override
+    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// markupEnd() NYI");
     }
 
 
@@ -145,5 +162,12 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
     protected String getReaderClassname()
     {
         return XmlReader.class.getName();
+    }
+
+
+    @Override
+    protected String getWriterClassname()
+    {
+        return XmlWriter.class.getName();
     }
 }

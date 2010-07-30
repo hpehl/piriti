@@ -25,11 +25,11 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         JClassType parameterType = getTypeVariable(fieldContext);
         String nestedElementVariable = fieldContext.newVariableName("NestedElement");
@@ -46,7 +46,7 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
                 fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
                 fieldContext.getFieldName(), nestedXpath, fieldContext.getFormat(), fieldContext.isStripWsnl(),
                 AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, nestedElementVariable, nestedValueVariable,
-                "xmlBuilder");
+                fieldContext.getBuilderVariable());
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -68,9 +68,9 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
                 parameterType.getQualifiedSourceName());
         writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
         writer.indent();
-        nestedHandler.writeComment(writer, nestedFieldContext);
-        nestedHandler.writeDeclaration(writer, nestedFieldContext);
-        nestedHandler.writeConverterCode(writer, nestedFieldContext);
+        nestedHandler.comment(writer, nestedFieldContext);
+        nestedHandler.declare(writer, nestedFieldContext);
+        nestedHandler.readInput(writer, nestedFieldContext);
         writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
         writer.indent();
         writer.write("%s.add(%s);", fieldContext.getValueVariable(), nestedFieldContext.getValueVariable());
@@ -80,5 +80,26 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    @Override
+    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// markupStart() NYI");
+    }
+
+
+    @Override
+    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// writeValue() NYI");
+    }
+
+
+    @Override
+    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// markupEnd() NYI");
     }
 }

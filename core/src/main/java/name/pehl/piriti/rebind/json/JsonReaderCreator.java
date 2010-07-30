@@ -327,9 +327,9 @@ public class JsonReaderCreator extends AbstractJsonCreator
     protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.writeComment(writer, fieldContext);
-        fieldHandler.writeDeclaration(writer, fieldContext);
-        fieldHandler.writeConverterCode(writer, fieldContext);
-        fieldHandler.writeAssignment(writer, fieldContext);
+        fieldHandler.comment(writer, fieldContext);
+        fieldHandler.declare(writer, fieldContext);
+        fieldHandler.readInput(writer, fieldContext);
+        fieldHandler.assign(writer, fieldContext);
     }
 }

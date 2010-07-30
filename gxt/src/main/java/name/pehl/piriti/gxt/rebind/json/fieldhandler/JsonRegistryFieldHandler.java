@@ -17,4 +17,11 @@ public class JsonRegistryFieldHandler extends name.pehl.piriti.rebind.json.field
     {
         return JsonModelReader.class.getName();
     }
+
+    // TODO:
+    // @Override
+    // protected String getWriterClassname()
+    // {
+    // return JsonModelWriter.class.getName();
+    // }
 }

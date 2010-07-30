@@ -25,49 +25,88 @@ public interface FieldHandler
 
 
     /**
-     * Generated a comment for the field assignement containing the fields name,
-     * type and the relevant path
+     * Generated a comment containing the fields name, type and the relevant
+     * path
      * 
      * @param writer
      * @param fieldContext
      */
-    void writeComment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void comment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
 
     /**
-     * Generates the variable decleration for field assignment.
+     * Generates the variable declaration of
+     * {@link FieldContext#getValueVariable()}. The variable is used in the
+     * remaining methods. The type of the variable will be
+     * <code>fieldContext.getFieldType().getParameterizedQualifiedSourceName()</code>
+     * .
      * 
      * @param writer
      * @param fieldContext
      */
-    void writeDeclaration(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void declare(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
 
     /**
-     * Generates the code for converting the input to the fields type.
+     * Generates the code for reading the input (JSON / XML), convert if and
+     * assign it to {@link FieldContext#getValueVariable()}.
      * 
      * @param writer
      * @param fieldContext
      */
-    void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
 
     /**
-     * Generates the assignment for the field. The assignment should only done
-     * when the conversion returns valid data (!= null).
+     * Generates the assignment of {@link FieldContext#getValueVariable()} to
+     * the the field. The assignment should only be done when the
+     * {@link FieldContext#getValueVariable()} <code>!= null</code>.
      * 
      * @param writer
      * @param fieldContext
      */
-    void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void assign(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 
 
     /**
-     * Generates the code for converting the model to JSON / XML.
+     * Generates code to read the fields value and assign it to
+     * {@link FieldContext#getValueVariable()}.
      * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
      */
-    void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void readField(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates code which is neccessary <i>before</i> the {@code toXyz()}
+     * method is called.
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     */
+    void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates code for the {@code toXyz()} method.
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     */
+    void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates code which is neccessary <i>after</i> the {@code toXyz()}
+     * method was called.
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     */
+    void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
 }

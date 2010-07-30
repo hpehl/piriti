@@ -23,11 +23,11 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writer.write("String %s = %s.selectValue(\"%s\", %s);", fieldContext.getValueAsStringVariable(),
                 fieldContext.getInputVariable(), fieldContext.getPath(), fieldContext.isStripWsnl());
@@ -52,5 +52,26 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    @Override
+    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// markupStart() NYI");
+    }
+
+
+    @Override
+    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// writeValue() NYI");
+    }
+
+
+    @Override
+    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("// markupEnd() NYI");
     }
 }

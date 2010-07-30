@@ -118,9 +118,12 @@ public class JsonWriterCreator extends AbstractJsonCreator
     protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.writeComment(writer, fieldContext);
-        fieldHandler.writeDeclaration(writer, fieldContext);
-        fieldHandler.writeSerialization(writer, fieldContext);
+        fieldHandler.comment(writer, fieldContext);
+        fieldHandler.declare(writer, fieldContext);
+        fieldHandler.readField(writer, fieldContext);
+        fieldHandler.markupStart(writer, fieldContext);
+        fieldHandler.writeValue(writer, fieldContext);
+        fieldHandler.markupEnd(writer, fieldContext);
         if (hasNext)
         {
             writer.write("%s.append(\",\");", fieldContext.getBuilderVariable());

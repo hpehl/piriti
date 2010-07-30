@@ -24,13 +24,13 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        super.writeConverterCode(writer, fieldContext);
+        super.readInput(writer, fieldContext);
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -45,11 +45,11 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * 
      * @param writer
      * @param fieldContext
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#writeReadValueAsString(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    protected void writeReadValueAsString(IndentedWriter writer, FieldContext fieldContext)
+    protected void readInputAsString(IndentedWriter writer, FieldContext fieldContext)
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
@@ -77,39 +77,16 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
     }
 
 
-    /**
-     * TODO Javadoc
-     * 
-     * @param writer
-     * @param fieldContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
-     */
     @Override
-    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        CodeGeneration.readValue(writer, fieldContext);
-        writer.write("String %s = null;", fieldContext.getValueAsStringVariable());
-        String converterVariable = fieldContext.newVariableName("WriteConverter");
-        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
-                .getQualifiedSourceName(), converterVariable);
-        writer.write("if (%s != null) {", converterVariable);
-        writer.indent();
-        if (fieldContext.getFormat() != null)
-        {
-            writer.write("%s = %s.serialize(%s, \"%s\");", fieldContext.getValueAsStringVariable(),
-                    converterVariable, fieldContext.getValueVariable(), fieldContext.getFormat());
-        }
-        else
-        {
-            writer.write("%s = %s.serialize(%s, null);", fieldContext.getValueAsStringVariable(),
-                    converterVariable, fieldContext.getValueVariable());
-        }
-        writer.outdent();
-        writer.write("}");
-
         CodeGeneration.appendJsonKey(writer, fieldContext);
+    }
+
+
+    @Override
+    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
         writer.write("if (%s == null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
@@ -119,8 +96,23 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
         writer.indent();
         writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
         writer.write("%s.append(%s);", fieldContext.getBuilderVariable(), fieldContext.getValueAsStringVariable());
-        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
+        writer.write("%s.append(\"\\\"\");", fieldContext.getBuilderVariable());
         writer.outdent();
         writer.write("}");
+    }
+
+
+    /**
+     * Empty!
+     * 
+     * @param writer
+     * @param fieldContext
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     */
+    @Override
+    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
     }
 }

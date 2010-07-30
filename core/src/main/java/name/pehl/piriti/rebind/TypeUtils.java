@@ -31,6 +31,10 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  */
 public final class TypeUtils
 {
+    /**
+     * Private constructor to ensure that the class acts as a true utility class
+     * i.e. it isn't instantiable and extensible.
+     */
     private TypeUtils()
     {
     }
@@ -322,43 +326,142 @@ public final class TypeUtils
     }
 
 
-    public static boolean isFieldAccessible(JClassType type, String name)
+    /**
+     * Checks whether the given field is accessible in the given type or in the
+     * supertypes of the given type. If {@code readOnly} is <code>true</code>,
+     * the field is accesible if it isn't private. If {@code readOnly} is
+     * <code>false</code>, the field is accesible if it isn't private or final.
+     * 
+     * @param type
+     * @param name
+     * @param readOnly
+     * @return
+     */
+    public static boolean isFieldAccessible(JClassType type, String name, boolean readOnly)
     {
         boolean accessible = false;
-        if (type != null)
+        if (type != null && name != null && name.length() != 0)
         {
             JField field = type.getField(name);
             if (field != null)
             {
-                accessible = !(field.isPrivate() || field.isFinal());
+                accessible = readOnly ? !field.isPrivate() : !(field.isPrivate() || field.isFinal());
                 if (!accessible)
                 {
-                    accessible = isFieldAccessible(type.getSuperclass(), name);
+                    accessible = isFieldAccessible(type.getSuperclass(), name, readOnly);
                 }
             }
             else
             {
-                accessible = isFieldAccessible(type.getSuperclass(), name);
+                accessible = isFieldAccessible(type.getSuperclass(), name, readOnly);
             }
         }
         return accessible;
     }
 
 
+    /**
+     * Checks if the setter for the given field is accessible in the given type
+     * or in the supertypes of the given type.
+     * 
+     * @param type
+     * @param name
+     * @param parameter
+     * @return
+     */
+    public static boolean isSetterAccessible(JClassType type, String name, JType parameter)
+    {
+        return isMethodAccessible(type, buildSetter(name), parameter);
+    }
+
+
+    /**
+     * Returns the setter method name for the given field.
+     * 
+     * @param name
+     * @return
+     */
+    public static String buildSetter(String name)
+    {
+        String setter = name;
+        if (name != null && name.length() > 0)
+        {
+            setter = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+        }
+        return setter;
+    }
+
+
+    /**
+     * Checks if the getter for the given field is accessible in the given type
+     * or in the supertypes of the given type.
+     * 
+     * @param type
+     * @param name
+     * @param parameter
+     * @return
+     */
+    public static boolean isGetterAccessible(JClassType type, String name)
+    {
+        return isMethodAccessible(type, buildGetter(name), null);
+    }
+
+
+    /**
+     * Returns the setter method name for the given field.
+     * 
+     * @param name
+     * @return
+     */
+    public static String buildGetter(String name)
+    {
+        String getter = name;
+        if (name != null && name.length() > 0)
+        {
+            getter = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
+        }
+        return getter;
+    }
+
+
+    /**
+     * Checks whether the given method with the given parameters is accessible
+     * in the given type or in the supertypes of the given type. If the method
+     * you're looking for takes no arguments, use <code>null</code> for
+     * {@code parameter}.
+     * 
+     * @param type
+     * @param name
+     * @param parameter
+     *            The parameter of the method or <code>null</code> if the method
+     *            takes no parameter.
+     * @return
+     */
     public static boolean isMethodAccessible(JClassType type, String name, JType parameter)
     {
         boolean accessible = false;
-        if (type != null)
+        if (type != null && name != null && name.length() != 0)
         {
             try
             {
-                JMethod method = type.getMethod(name, new JType[] {parameter});
+                JType[] params = parameter == null ? new JType[0] : new JType[] {parameter};
+                JMethod method = type.getMethod(name, params);
                 if (method != null)
                 {
                     accessible = !method.isPrivate();
                     if (!accessible)
                     {
-                        accessible = isMethodAccessible(type.getSuperclass(), name, parameter);
+                        // Autoboxiong: Try with primitive
+                        if (parameter != null && parameter.isPrimitive() != null)
+                        {
+                            params = new JType[] {parameter.isPrimitive()};
+                            method = type.getMethod(name, params);
+                            accessible = method != null && !method.isPrivate();
+                        }
+                        if (!accessible)
+                        {
+                            accessible = isMethodAccessible(type.getSuperclass(), name, parameter);
+                        }
                     }
                 }
                 else

@@ -25,11 +25,11 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         JClassType parameterType = getTypeVariable(fieldContext);
         String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
@@ -39,7 +39,8 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
                 fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
                 fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
-                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable, "jsonBuilder");
+                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable,
+                fieldContext.getBuilderVariable());
         FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -80,9 +81,9 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         writer.write("JSONValue %s = jsonArray.get(i);", nestedJsonValueVariable);
         writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedJsonValueVariable);
         writer.indent();
-        nestedHandler.writeComment(writer, nestedFieldContext);
-        nestedHandler.writeDeclaration(writer, nestedFieldContext);
-        nestedHandler.writeConverterCode(writer, nestedFieldContext);
+        nestedHandler.comment(writer, nestedFieldContext);
+        nestedHandler.declare(writer, nestedFieldContext);
+        nestedHandler.readInput(writer, nestedFieldContext);
         writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
         writer.indent();
         writer.write("%s.add(%s);", fieldContext.getValueVariable(), nestedFieldContext.getValueVariable());
@@ -99,19 +100,79 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
     }
 
 
+    @Override
+    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+    }
+
+
+    @Override
+    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        JClassType parameterType = getTypeVariable(fieldContext);
+        String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
+        String nestedValueVariable = fieldContext.newVariableName("NestedValue");
+        // The field context is created *without* a path. The nested field
+        // handler must take care of this!
+        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
+                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
+                fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
+                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable,
+                fieldContext.getBuilderVariable());
+        FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        if (!nestedHandler.isValid(writer, nestedFieldContext))
+        {
+            return;
+        }
+
+        writer.write("if (%s == null) {", fieldContext.getValueVariable());
+        writer.indent();
+        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.write("else {");
+        writer.indent();
+        // Iterate over values
+        writer.write("%s.append(\"[\");", fieldContext.getBuilderVariable());
+        writer.write("for (Iterator<%s> iter = %s.iterator(); iter.hasNext(); ) {",
+                parameterType.getQualifiedSourceName(), fieldContext.getValueVariable());
+        writer.indent();
+
+        nestedHandler.comment(writer, nestedFieldContext);
+        nestedHandler.declare(writer, nestedFieldContext);
+        // Replace nestedHandler.readField(writer, nestedFieldContext) with
+        writer.write("%s = iter.next();", nestedFieldContext.getValueVariable());
+        // No nestedHandler.markupStart(writer, nestedFieldContext); since we're
+        // in an JSON array
+        nestedHandler.writeValue(writer, nestedFieldContext);
+        // No nestedHandler.markupEnd(writer, nestedFieldContext); since we're
+        // in an JSON array
+
+        writer.write("if (iter.hasNext()) {", fieldContext.getValueVariable());
+        writer.indent();
+        writer.write("%s.append(\",\");", fieldContext.getBuilderVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.write("%s.append(\"]\");", fieldContext.getBuilderVariable());
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     /**
-     * TODO Javadoc
+     * Empty!
      * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
-        writer.write("%s.append(\"[]\");", fieldContext.getBuilderVariable());
     }
 }

@@ -37,11 +37,11 @@ public class StringFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
@@ -75,20 +75,39 @@ public class StringFieldHandler extends AbstractFieldHandler
     }
 
 
+    @Override
+    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+    }
+
+
+    @Override
+    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("if (%s == null) {", fieldContext.getValueVariable());
+        writer.indent();
+        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.write("else {");
+        writer.indent();
+        CodeGeneration.appendJsonValue(writer, fieldContext, true);
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     /**
-     * TODO Javadoc
+     * Empty!
      * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter, name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
-        CodeGeneration.readValue(writer, fieldContext);
-        CodeGeneration.appendJsonValue(writer, fieldContext, true);
     }
 }

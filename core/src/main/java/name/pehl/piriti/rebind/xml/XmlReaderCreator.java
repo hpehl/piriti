@@ -220,15 +220,15 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.indent();
         if (validIdField)
         {
-            handler.writeComment(writer, fieldContext);
-            handler.writeDeclaration(writer, fieldContext);
-            handler.writeConverterCode(writer, fieldContext);
+            handler.comment(writer, fieldContext);
+            handler.declare(writer, fieldContext);
+            handler.readInput(writer, fieldContext);
             writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(),
                     fieldContext.getValueVariable());
             writer.write("if (model == null) {");
             writer.indent();
             writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
-            handler.writeAssignment(writer, fieldContext);
+            handler.assign(writer, fieldContext);
             writer.outdent();
             writer.write("}");
             handleIdsInNestedModels(writer);
@@ -464,9 +464,9 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.writeComment(writer, fieldContext);
-        fieldHandler.writeDeclaration(writer, fieldContext);
-        fieldHandler.writeConverterCode(writer, fieldContext);
-        fieldHandler.writeAssignment(writer, fieldContext);
+        fieldHandler.comment(writer, fieldContext);
+        fieldHandler.declare(writer, fieldContext);
+        fieldHandler.readInput(writer, fieldContext);
+        fieldHandler.assign(writer, fieldContext);
     }
 }

@@ -18,7 +18,7 @@ public class CollectionFieldHandler extends name.pehl.piriti.rebind.xml.fieldhan
         ModelReaderConstants
 {
     @Override
-    public void writeDeclaration(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void declare(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writer.write("%s<%s> %s = null;", fieldContext.getFieldType().getQualifiedSourceName(),
                 getTypeVariable(fieldContext).getParameterizedQualifiedSourceName(), fieldContext.getValueVariable());

@@ -8,7 +8,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 /**
  * Abstract base class for {@linkplain FieldHandler}s which contains common
  * code. Contains default implementations for all methods but
- * {@link #writeConverterCode(IndentedWriter, FieldContext)}.
+ * {@link #readInput(IndentedWriter, FieldContext)}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
@@ -19,9 +19,9 @@ public abstract class AbstractFieldHandler implements FieldHandler
      * {@inheritDoc}
      */
     @Override
-    public void writeComment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void comment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("// Handle %s", fieldContext);
+        writer.write("// %s: %s", getClass().getSimpleName(), fieldContext);
     }
 
 
@@ -29,7 +29,7 @@ public abstract class AbstractFieldHandler implements FieldHandler
      * {@inheritDoc}
      */
     @Override
-    public void writeDeclaration(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void declare(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         writer.write("%s %s = null;", fieldContext.getFieldType().getParameterizedQualifiedSourceName(),
                 fieldContext.getValueVariable());
@@ -39,28 +39,26 @@ public abstract class AbstractFieldHandler implements FieldHandler
     /**
      * {@inheritDoc}
      * <p>
+     * Delegates to {@link CodeGeneration#assign(IndentedWriter, FieldContext)}.
      * The assignement is only done if {@link FieldContext#getValueVariable()}
      * is not null.
      */
     @Override
-    public void writeAssignment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void assign(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.assign(writer, fieldContext);
     }
 
 
     /**
-     * NYI
-     * 
-     * @param writer
-     * @param fieldContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * {@inheritDoc}
+     * <p>
+     * Delegates to
+     * {@link CodeGeneration#readField(IndentedWriter, FieldContext)}.
      */
     @Override
-    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readField(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("// Not yet implemented!");
+        CodeGeneration.readField(writer, fieldContext);
     }
 }

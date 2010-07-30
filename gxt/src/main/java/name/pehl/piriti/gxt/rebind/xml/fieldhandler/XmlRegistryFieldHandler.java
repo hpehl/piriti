@@ -17,4 +17,11 @@ public class XmlRegistryFieldHandler extends name.pehl.piriti.rebind.xml.fieldha
     {
         return XmlModelReader.class.getName();
     }
+
+    // TODO
+    // @Override
+    // protected String getWriterClassname()
+    // {
+    // return XmlModelWriter.class.getName();
+    // }
 }

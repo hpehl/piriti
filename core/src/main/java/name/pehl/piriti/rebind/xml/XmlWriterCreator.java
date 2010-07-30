@@ -44,19 +44,19 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
     protected void writeList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toXml(List<%s> values, String rootElement) {",
+        writer.write("public String toXml(List<%s> models, String rootElement) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String xml = null;");
-        writer.write("if (values != null && rootElement != null) {");
+        writer.write("if (models != null && rootElement != null) {");
         writer.indent();
         writer.write("StringBuilder xmlBuilder = new StringBuilder();");
         writer.write("xmlBuilder.append(\"<\");");
         writer.write("xmlBuilder.append(rootElement);");
         writer.write("xmlBuilder.append(\">\");");
-        writer.write("for (%s value : values) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("for (%s model : models) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("String xmlValue = toXml(value);");
+        writer.write("String xmlValue = toXml(model);");
         writer.write("if (xmlValue != null) {");
         writer.indent();
         writer.write("xmlBuilder.append(xmlValue);");
@@ -78,10 +78,10 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
     protected void writeSingle(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toXml(%s value) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public String toXml(%s model) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String xml = null;");
-        writer.write("if (value != null) {");
+        writer.write("if (model != null) {");
         writer.indent();
         writer.write("StringBuilder xmlBuilder = new StringBuilder();");
 
@@ -104,7 +104,11 @@ public class XmlWriterCreator extends AbstractXmlCreator
     protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.writeComment(writer, fieldContext);
-        fieldHandler.writeSerialization(writer, fieldContext);
+        fieldHandler.comment(writer, fieldContext);
+        fieldHandler.declare(writer, fieldContext);
+        fieldHandler.readField(writer, fieldContext);
+        fieldHandler.markupStart(writer, fieldContext);
+        fieldHandler.writeValue(writer, fieldContext);
+        fieldHandler.markupEnd(writer, fieldContext);
     }
 }

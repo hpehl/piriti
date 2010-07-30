@@ -34,10 +34,10 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
      * {@inheritDoc}
      */
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        writeReadValueAsString(writer, fieldContext);
-        writer.write("if (%s != null) {", fieldContext.newVariableName("AsString"));
+        readInputAsString(writer, fieldContext);
+        writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
         writer.indent();
         String converterVariable = fieldContext.newVariableName("ReadConverter");
         writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
@@ -68,5 +68,46 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      */
-    protected abstract void writeReadValueAsString(IndentedWriter writer, FieldContext fieldContext);
+    protected abstract void readInputAsString(IndentedWriter writer, FieldContext fieldContext);
+
+
+    /**
+     * Converts the {@link FieldContext#getValueVariable()} to a String
+     * represented by {@link FieldContext#getValueAsStringVariable()} using a
+     * registered converter. If no converter for
+     * {@link FieldContext#getFieldType()} was found, {@code toString()} will be
+     * used.
+     * 
+     * @param writer
+     * @param fieldContext
+     */
+    protected void writeValueAsString(IndentedWriter writer, FieldContext fieldContext)
+    {
+        writer.write("String %s = null;", fieldContext.getValueAsStringVariable());
+        String converterVariable = fieldContext.newVariableName("WriteConverter");
+        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
+                .getQualifiedSourceName(), converterVariable);
+        writer.write("if (%s != null) {", converterVariable);
+        // Use the registered converter
+        writer.indent();
+        if (fieldContext.getFormat() != null)
+        {
+            writer.write("%s = %s.serialize(%s, \"%s\");", fieldContext.getValueAsStringVariable(), converterVariable,
+                    fieldContext.getValueVariable(), fieldContext.getFormat());
+        }
+        else
+        {
+            writer.write("%s = %s.serialize(%s, null);", fieldContext.getValueAsStringVariable(), converterVariable,
+                    fieldContext.getValueVariable());
+        }
+        writer.outdent();
+        writer.write("}");
+        writer.write("else {");
+        // Fall back to toString()
+        writer.indent();
+        writer.write("%s = String.valueOf(%s);", fieldContext.getValueAsStringVariable(),
+                fieldContext.getValueVariable());
+        writer.outdent();
+        writer.write("}");
+    }
 }

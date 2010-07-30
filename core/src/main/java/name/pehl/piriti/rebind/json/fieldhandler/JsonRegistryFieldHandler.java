@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.json.fieldhandler;
 
 import name.pehl.piriti.client.json.JsonReader;
+import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.fieldhandler.AbstractRegistryFieldHandler;
@@ -8,7 +9,6 @@ import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
  * {@link FieldHandler} implementation for types with an own {@link JsonReader}.
@@ -24,19 +24,14 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#writeConverterCode(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeConverterCode(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        // Cast because subclasses might use a subtype of getReaderClassname()
-        JClassType classType = fieldContext.getClassOrInterfaceType();
-        String readerVariable = fieldContext.newVariableName("Reader");
-        writer.write("%1$s<%2$s> %3$s = (%1$s)this.jsonRegistry.getReader(%2$s.class);", getReaderClassname(),
-                classType.getQualifiedSourceName(), readerVariable);
-        writer.write("if (%s != null) {", readerVariable);
-        writer.indent();
+        String readerVariable = startReader(writer, fieldContext, "jsonRegistry",
+                fieldContext.getClassOrInterfaceType());
 
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
@@ -61,25 +56,50 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+
+        endReader(writer);
+    }
+
+
+    @Override
+    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        CodeGeneration.appendJsonKey(writer, fieldContext);
+    }
+
+
+    @Override
+    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    {
+        writer.write("if (%s == null) {", fieldContext.getValueVariable());
+        writer.indent();
+        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.write("else {");
+        writer.indent();
+        String writerVariable = startWriter(writer, fieldContext, "jsonRegistry",
+                fieldContext.getClassOrInterfaceType());
+        writer.write("%s.append(%s.toJson(%s));", fieldContext.getBuilderVariable(), writerVariable,
+                fieldContext.getValueVariable());
+        endReader(writer);
         writer.outdent();
         writer.write("}");
     }
 
 
     /**
-     * TODO Javadoc
+     * Empty!
      * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#writeSerialization(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
      */
     @Override
-    public void writeSerialization(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
-        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
     }
 
 
@@ -87,5 +107,12 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
     protected String getReaderClassname()
     {
         return JsonReader.class.getName();
+    }
+
+
+    @Override
+    protected String getWriterClassname()
+    {
+        return JsonWriter.class.getName();
     }
 }
