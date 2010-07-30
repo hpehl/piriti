@@ -3,6 +3,7 @@ package name.pehl.piriti.client.json;
 import java.util.List;
 
 import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.inject.internal.Nullable;
 
@@ -47,29 +48,126 @@ public interface JsonReader<T>
     /**
      * Convert the specified JSON string to a list of Ts according to the
      * annotated fields in T. The JSON string must be a valid JSON object with
-     * <i>one</i> key/value pair. The value must be a JSON array which is
+     * <i>one</i> key / value pair. The value must be a JSON array which is
      * converted to the list of Ts.
+     * <p>
+     * Depending on {@code jsonString} the following value is returned by this
+     * method:
+     * <table border="1" cellpadding="2" cellspacing="2">
+     * <tr>
+     * <th>jsonString</th>
+     * <th>Result</th>
+     * </tr>
+     * <tr>
+     * <td><code>null</code></td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>empty / blank string</td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>empty JSON object<br/>
+     * {}</td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>JSON with one key / value, which is null or no array<br/>
+     * {"foo": null}<br/>
+     * {"foo": 123}</td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>JSON with one key / value, which is an empty array<br/>
+     * {"foo": []}</td>
+     * <td>empty array</td>
+     * </tr>
+     * <tr>
+     * <td>JSON with one key and a non-empty array<br/>
+     * {"foo": [...]}</td>
+     * <td>a list of Ts according to the annotated fields in T</td>
+     * </tr>
+     * </table>
      * 
      * @param jsonString
      *            The JSON string used as input. May be <code>null</code>.
-     * @return A list of T instances with the mapped JSON data or {@code null}
-     *         if the JSON string was {@code null}.
+     * @return A list of Ts with the mapped JSON data, an empty list or
+     *         {@code null} (see above).
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable String jsonString);
+    List<T> readList(@Nullable String jsonString) throws JSONException;
 
 
     /**
      * Convert the specified JSON string to a list of Ts according to the
      * annotated fields in T. The JSON string must be a valid JSON object with
-     * key/value pairs. The array is taken from the specified key and is
+     * key / value pairs. The array is taken from the specified key and is
      * converted to the list of Ts.
+     * <p>
+     * Depending on {@code jsonString} and {@code arrayKey} the following value
+     * is returned by this method:
+     * <table border="1" cellpadding="2" cellspacing="2">
+     * <tr>
+     * <th>jsonString</th>
+     * <th>arrayKey</th>
+     * <th>Result</th>
+     * </tr>
+     * <tr>
+     * <td><code>null</code></td>
+     * <td><code>any value</code></td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>empty / blank string</td>
+     * <td><code>any value</code></td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>empty JSON object<br/>
+     * {}</td>
+     * <td><code>any value</code></td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>JSON with a non-existing key<br/>
+     * {"foo": null}<br/>
+     * {"foo": 123}<br/>
+     * {"foo": [...]}</td>
+     * <td><code>"bar"</code></td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>JSON with the specified key and a value which is null or no array<br/>
+     * {"foo": null}<br/>
+     * {"foo": 123}</td>
+     * <td><code>"foo"</code></td>
+     * <td><code>null</code></td>
+     * </tr>
+     * <tr>
+     * <td>JSON with the specified key and a avlue which is an empty array<br/>
+     * {"foo": []}</td>
+     * <td><code>"foo"</code></td>
+     * <td>empty array</td>
+     * </tr>
+     * <tr>
+     * <td>JSON with the specified key and a non-empty array<br/>
+     * {"foo": [...]}</td>
+     * <td><code>"foo"</code></td>
+     * <td>a list of Ts according to the annotated fields in T</td>
+     * </tr>
+     * </table>
      * 
      * @param jsonString
      *            The JSON string used as input. May be <code>null</code>.
-     * @return A list of T instances with the mapped JSON data or {@code null}
-     *         if the JSON string was {@code null}.
+     * @param arrayKey
+     *            The key containing the JSON array.
+     * @return A list of T instances with the mapped JSON data, an empty list or
+     *         {@code null} (see above).
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable String jsonString, String arrayKey);
+    List<T> readList(@Nullable String jsonString, String arrayKey) throws JSONException;
 
 
     /**
@@ -79,10 +177,12 @@ public interface JsonReader<T>
      * 
      * @param jsonObject
      *            The JSON object used as input. May be <code>null</code>.
-     * @return A list of T instances with the mapped JSON data or {@code null}
-     *         if the JSON object was {@code null}.
+     * @return A list of T instances with the mapped JSON data, an empty list or
+     *         {@code null} (see above).
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable JSONObject jsonObject);
+    List<T> readList(@Nullable JSONObject jsonObject) throws JSONException;
 
 
     /**
@@ -94,8 +194,10 @@ public interface JsonReader<T>
      *            The JSON object used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped JSON data or {@code null}
      *         if the JSON object was {@code null}.
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable JSONObject jsonObject, String arrayKey);
+    List<T> readList(@Nullable JSONObject jsonObject, String arrayKey) throws JSONException;
 
 
     /**
@@ -106,8 +208,10 @@ public interface JsonReader<T>
      *            The JSON array used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped JSON data or {@code null}
      *         if the JSON array was {@code null}.
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable JSONArray jsonArray);
+    List<T> readList(@Nullable JSONArray jsonArray) throws JSONException;
 
 
     /**
@@ -119,8 +223,10 @@ public interface JsonReader<T>
      *            The JSON string used as input. May be <code>null</code>.
      * @return An instance of T with the mapped JSON data or {@code null} if the
      *         JSON string was {@code null}.
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
-    T read(@Nullable String jsonString);
+    T read(@Nullable String jsonString) throws JSONException;
 
 
     /**
@@ -131,6 +237,8 @@ public interface JsonReader<T>
      *            The JSON object used as input. May be <code>null</code>.
      * @return An instance of T with the mapped JSON data or {@code null} if the
      *         JSON object was {@code null}.
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
-    T read(@Nullable JSONObject jsonObject);
+    T read(@Nullable JSONObject jsonObject) throws JSONException;
 }

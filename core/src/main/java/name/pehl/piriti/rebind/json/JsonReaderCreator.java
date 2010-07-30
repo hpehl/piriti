@@ -91,13 +91,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
     {
         writer.write("public List<%s> readList(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONValue jsonValue = this.jsonParser.parse(jsonString);");
-        writer.write("if (jsonValue != null) {");
-        writer.indent();
-        writer.write("JSONObject jsonObject = jsonValue.isObject();");
+        writer.write("JSONObject jsonObject = this.jsonParser.parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("Set<String> keys = jsonObject.keySet();");
@@ -110,9 +107,8 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
-        writer.write("}");
-        writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
@@ -133,13 +129,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("public List<%s> readList(String jsonString, String arrayKey) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONValue jsonValue = this.jsonParser.parse(jsonString);");
-        writer.write("if (jsonValue != null) {");
-        writer.indent();
-        writer.write("JSONObject jsonObject = jsonValue.isObject();");
+        writer.write("JSONObject jsonObject = this.jsonParser.parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("jsonValue = jsonObject.get(arrayKey);");
@@ -148,9 +141,8 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
-        writer.write("}");
-        writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
@@ -169,9 +161,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("public List<%s> readList(JSONObject jsonObject) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("Set<String> keys = jsonObject.keySet();");
         writer.write("if (keys != null && !keys.isEmpty()) {");
         writer.indent();
@@ -201,9 +194,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("public List<%s> readList(JSONObject jsonObject, String arrayKey) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("JSONValue jsonValue = jsonObject.get(arrayKey);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
@@ -226,9 +220,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
     {
         writer.write("public List<%s> readList(JSONArray jsonArray) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = new null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonArray != null) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("int size = jsonArray.size();");
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();

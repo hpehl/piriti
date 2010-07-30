@@ -18,6 +18,8 @@ public interface JsonParser
      * 
      * @param text
      * @return
+     * @throws JSONException
+     *             if the specified string represents no valid JSON data
      */
     public JSONObject parse(@Nullable String text) throws JSONException;
 }

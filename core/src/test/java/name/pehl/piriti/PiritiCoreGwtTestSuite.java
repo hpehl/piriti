@@ -2,10 +2,10 @@ package name.pehl.piriti;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.client.gwttest.animal.JsonAnimalReaderTest;
-import name.pehl.piriti.client.gwttest.animal.XmlAnimalReaderTest;
+import name.pehl.piriti.client.gwttest.animal.JsonAnimalTest;
+import name.pehl.piriti.client.gwttest.animal.XmlAnimalTest;
 import name.pehl.piriti.client.gwttest.book.JsonBookTest;
-import name.pehl.piriti.client.gwttest.book.XmlBookReaderTest;
+import name.pehl.piriti.client.gwttest.book.XmlBookTest;
 import name.pehl.piriti.client.gwttest.employee.XmlEmployeeReaderTest;
 import name.pehl.piriti.client.gwttest.fat.JsonFatGlobalItemReaderTest;
 import name.pehl.piriti.client.gwttest.fat.XmlFatGlobalItemReaderTest;
@@ -26,11 +26,11 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
     {
         TestSuite suite = new TestSuite("GWT tests for piriti-core");
 
-        suite.addTestSuite(JsonAnimalReaderTest.class);
-        suite.addTestSuite(XmlAnimalReaderTest.class);
+        suite.addTestSuite(JsonAnimalTest.class);
+        suite.addTestSuite(XmlAnimalTest.class);
 
         suite.addTestSuite(JsonBookTest.class);
-        suite.addTestSuite(XmlBookReaderTest.class);
+        suite.addTestSuite(XmlBookTest.class);
 
         suite.addTestSuite(XmlEmployeeReaderTest.class);
 

@@ -10,12 +10,36 @@ import name.pehl.piriti.client.json.JsonParser;
 import com.google.gwt.json.client.JSONObject;
 
 /**
+ * This class contains methods to test reading and writing <code>null</code> and
+ * empty values. All other tests omit these tests as they're tested here.
+ * 
  * @author $Author: harald.pehl $
  * @version $Revision: 131 $
  */
 public class JsonBookTest extends AbstractBookReaderTest
 {
+    private static final String SPACES = "          ";
+
+
     // ------------------------------------------------------------- read tests
+
+    // public void testReadNull()
+    // {
+    // Book book = Book.JSON_READER.read((String)null);
+    // assertNull(book);
+    // book = Book.JSON_READER.read((JSONObject) null);
+    // assertNull(book);
+    // }
+
+    // public void testReadEmpty()
+    // {
+    // Book book = Book.JSON_READER.read("");
+    // assertNull(book);
+    // book = Book.JSON_READER.read(SPACES);
+    // assertNull(book);
+    // book = Book.JSON_READER.read(new JSONObject());
+    // assertNotNull(book);
+    // }
 
     public void testRead()
     {
@@ -24,6 +48,50 @@ public class JsonBookTest extends AbstractBookReaderTest
         assertBook(book, true, true);
     }
 
+
+    // public void testReadListNull()
+    // {
+    // List<Book> books = Book.JSON_READER.readList((JSONArray)null);
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((JSONObject)null);
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((JSONObject)null, null);
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((JSONObject)null, "");
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((JSONObject)null, SPACES);
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((String)null);
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((String)null, null);
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((String)null, "");
+    // assertNull(books);
+    // books = Book.JSON_READER.readList((String)null, SPACES);
+    // assertNull(books);
+    // }
+
+    // public void testReadListEmpty()
+    // {
+    // List<Book> books = Book.JSON_READER.readList(new JSONArray());
+    // assertTrue(books.isEmpty());
+    // books = Book.JSON_READER.readList(new JSONObject());
+    // assertTrue(books.isEmpty());
+    // books = Book.JSON_READER.readList(new JSONObject(), null);
+    // assertTrue(books.isEmpty());
+    // books = Book.JSON_READER.readList(new JSONObject(), "");
+    // assertTrue(books.isEmpty());
+    // books = Book.JSON_READER.readList(new JSONObject(), SPACES);
+    // assertTrue(books.isEmpty());
+    // books = Book.JSON_READER.readList("");
+    // assertNull(books);
+    // books = Book.JSON_READER.readList("", null);
+    // assertNull(books);
+    // books = Book.JSON_READER.readList("", "");
+    // assertNull(books);
+    // books = Book.JSON_READER.readList("", SPACES);
+    // assertNull(books);
+    // }
 
     public void testReadList()
     {

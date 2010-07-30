@@ -9,7 +9,7 @@ import name.pehl.totoe.client.XmlParser;
  * @author $Author: harald.pehl $
  * @version $Revision: 133 $
  */
-public class XmlBookReaderTest extends AbstractBookReaderTest
+public class XmlBookTest extends AbstractBookReaderTest
 {
     public void testRead()
     {
