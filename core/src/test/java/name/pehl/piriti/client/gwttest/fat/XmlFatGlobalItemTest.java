@@ -7,7 +7,7 @@ import name.pehl.totoe.client.XmlParser;
  * @author $Author: harald.pehl $
  * @version $Revision: 133 $
  */
-public class XmlFatGlobalItemReaderTest extends AbstractFatGlobalItemTest
+public class XmlFatGlobalItemTest extends AbstractFatGlobalItemTest
 {
     // ------------------------------------------------------------- read tests
 
