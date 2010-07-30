@@ -11,7 +11,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * @version $Date$ $Revision: 161
  *          $
  */
-public abstract class AbstractBookReaderTest extends GWTTestCase
+public abstract class AbstractBookTest extends GWTTestCase
 {
     @Override
     public String getModuleName()
@@ -24,17 +24,6 @@ public abstract class AbstractBookReaderTest extends GWTTestCase
     protected void gwtSetUp() throws Exception
     {
         System.out.println(getClass().getName() + "." + getName() + "()");
-    }
-
-
-    protected void assertBooks(List<Book> books, boolean withAuthor, boolean withRelated)
-    {
-        assertNotNull(books);
-        assertEquals(BOOKS_COUNT, books.size());
-        for (Book book : books)
-        {
-            assertBook(book, withAuthor, withRelated);
-        }
     }
 
 
@@ -60,7 +49,7 @@ public abstract class AbstractBookReaderTest extends GWTTestCase
         if (withRelated)
         {
             List<Book> related = book.get("related");
-            assertEquals(BOOKS_COUNT, related.size());
+            assertEquals(RELATED_SIZE, related.size());
             for (Book relatedEntry : related)
             {
                 assertBook(relatedEntry, true, false);

@@ -8,8 +8,10 @@ import name.pehl.totoe.client.XmlParser;
  * @author $Author$
  * @version $Revision$
  */
-public class XmlAnimalReaderTest extends AbstractAnimalReaderTest
+public class XmlAnimalTest extends AbstractAnimalTest
 {
+    // ------------------------------------------------------------- read tests
+
     public void testReadBird()
     {
         String xml = AnimalResources.INSTANCE.birdXml().getText();
@@ -44,4 +46,8 @@ public class XmlAnimalReaderTest extends AbstractAnimalReaderTest
         Dog rantanplan = Dog.XML_READER.read(document);
         assertDog(rantanplan);
     }
+
+    // ------------------------------------------------------------ write tests
+
+    // NYI
 }

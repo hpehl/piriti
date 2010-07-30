@@ -101,7 +101,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("if (keys != null && !keys.isEmpty()) {");
         writer.indent();
         writer.write("String arrayKey = keys.iterator().next();");
-        writer.write("jsonValue = jsonObject.get(arrayKey);");
+        writer.write("JSONValue jsonValue = jsonObject.get(arrayKey);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
@@ -135,7 +135,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONObject jsonObject = this.jsonParser.parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
-        writer.write("jsonValue = jsonObject.get(arrayKey);");
+        writer.write("JSONValue jsonValue = jsonObject.get(arrayKey);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
@@ -164,7 +164,6 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
         writer.indent();
-        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("Set<String> keys = jsonObject.keySet();");
         writer.write("if (keys != null && !keys.isEmpty()) {");
         writer.indent();
@@ -175,6 +174,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
         writer.write("}");
         writer.outdent();
@@ -197,13 +197,13 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
         writer.indent();
-        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("JSONValue jsonValue = jsonObject.get(arrayKey);");
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
         writer.write("}");
         writer.outdent();
@@ -220,7 +220,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
     {
         writer.write("public List<%s> readList(JSONArray jsonArray) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%s> models = new null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonArray != null) {");
         writer.indent();
         writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
@@ -262,15 +262,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONValue jsonValue = this.jsonParser.parse(jsonString);");
-        writer.write("if (jsonValue != null) {");
-        writer.indent();
-        writer.write("JSONObject jsonObject = jsonValue.isObject();");
+        writer.write("JSONObject jsonObject = this.jsonParser.parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("model = internalRead(jsonObject);");
-        writer.outdent();
-        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();

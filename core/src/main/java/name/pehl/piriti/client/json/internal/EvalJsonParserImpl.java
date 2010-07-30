@@ -24,7 +24,14 @@ public class EvalJsonParserImpl implements JsonParser
     @Override
     public JSONObject parse(String text) throws JSONException
     {
-        JSONValue value = JSONParser.parse(text);
-        return value != null ? value.isObject() : null;
+        try
+        {
+            JSONValue value = JSONParser.parse(text);
+            return value != null ? value.isObject() : null;
+        }
+        catch (Throwable t)
+        {
+            throw new JSONException(t);
+        }
     }
 }

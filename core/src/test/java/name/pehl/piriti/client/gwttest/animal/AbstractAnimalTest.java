@@ -7,7 +7,7 @@ import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractAnimalReaderTest extends AbstractPiritiTest
+public abstract class AbstractAnimalTest extends AbstractPiritiTest
 {
     protected void assertBird(Bird bird)
     {

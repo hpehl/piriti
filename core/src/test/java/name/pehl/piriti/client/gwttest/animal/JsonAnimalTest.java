@@ -9,7 +9,7 @@ import com.google.gwt.json.client.JSONObject;
  * @author $Author$
  * @version $Revision$
  */
-public class JsonAnimalTest extends AbstractAnimalReaderTest
+public class JsonAnimalTest extends AbstractAnimalTest
 {
     // ------------------------------------------------------------- read tests
 

@@ -1,6 +1,7 @@
 package name.pehl.piriti.client.gwttest.fat;
 
-import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.*;
+import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.MY_BIRTHDAY;
+import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.SIZE;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,7 +15,7 @@ import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractFatGlobalItemReaderTest extends AbstractPiritiTest
+public abstract class AbstractFatGlobalItemTest extends AbstractPiritiTest
 {
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;

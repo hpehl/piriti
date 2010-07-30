@@ -1,11 +1,12 @@
-package name.pehl.piriti.client.gwttest.book;
+package name.pehl.piriti.gxt.client.gwttest.book;
 
+import name.pehl.piriti.client.gwttest.book.BookResources;
 import name.pehl.totoe.client.Document;
 import name.pehl.totoe.client.XmlParser;
 
 /**
- * @author $Author: harald.pehl $
- * @version $Revision: 133 $
+ * @author $Author$
+ * @version $Revision$
  */
 public class XmlBookTest extends AbstractBookTest
 {

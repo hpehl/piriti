@@ -7,8 +7,10 @@ import name.pehl.totoe.client.XmlParser;
  * @author $Author: harald.pehl $
  * @version $Revision: 133 $
  */
-public class XmlFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
+public class XmlFatGlobalItemReaderTest extends AbstractFatGlobalItemTest
 {
+    // ------------------------------------------------------------- read tests
+
     public void testRead()
     {
         String xml = FatGlobalItemResources.INSTANCE.fatGlobalItemXml().getText();
@@ -16,4 +18,8 @@ public class XmlFatGlobalItemReaderTest extends AbstractFatGlobalItemReaderTest
         FatGlobalItem model = FatGlobalItem.XML_READER.read(document);
         assertFatGlobalItem(model, true);
     }
+
+    // ------------------------------------------------------------ writer tests
+
+    // NYI
 }

@@ -8,8 +8,13 @@ import name.pehl.totoe.client.XmlParser;
  * @version $Date$ $Revision: 295
  *          $
  */
-public class LotteryTicketDnsReaderTest extends AbstractLotteryTicketReaderTest
+public class LotteryTicketDnsReaderTest extends AbstractLotteryTicketTest
 {
+    // ------------------------------------------------------------- read tests
+
+    /**
+     * Test default namespace
+     */
     public void testDns()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketDns().getText();
@@ -19,6 +24,9 @@ public class LotteryTicketDnsReaderTest extends AbstractLotteryTicketReaderTest
     }
 
 
+    /**
+     * Test nested namespace
+     */
     public void testDnsNns()
     {
         String xml = LotteryTicketResources.INSTANCE.lotteryTicketDnsNns().getText();
@@ -26,4 +34,8 @@ public class LotteryTicketDnsReaderTest extends AbstractLotteryTicketReaderTest
         LotteryTicketDns lt = LotteryTicketDns.XML_READER.read(document);
         assertLotteryTicket(lt);
     }
+
+    // ------------------------------------------------------------ writer tests
+
+    // NYI
 }

@@ -1,9 +1,6 @@
 package name.pehl.piriti.client.gwttest.book;
 
 import static name.pehl.piriti.client.gwttest.book.BookResources.*;
-
-import java.util.List;
-
 import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
 
 /**
@@ -11,19 +8,8 @@ import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractBookReaderTest extends AbstractPiritiTest
+public abstract class AbstractBookTest extends AbstractPiritiTest
 {
-    protected void assertBooks(List<Book> books, boolean withAuthor, boolean withRelated)
-    {
-        assertNotNull(books);
-        assertEquals(BOOKS_COUNT, books.size());
-        for (Book book : books)
-        {
-            assertBook(book, withAuthor, withRelated);
-        }
-    }
-
-
     protected void assertBook(Book book, boolean withAuthor, boolean withRelated)
     {
         assertNotNull(book);
@@ -43,7 +29,7 @@ public abstract class AbstractBookReaderTest extends AbstractPiritiTest
         }
         if (withRelated)
         {
-            assertEquals(BOOKS_COUNT, book.related.size());
+            assertEquals(RELATED_SIZE, book.related.size());
             for (Book related : book.related)
             {
                 assertBook(related, true, false);

@@ -6,12 +6,12 @@ import name.pehl.piriti.client.gwttest.animal.JsonAnimalTest;
 import name.pehl.piriti.client.gwttest.animal.XmlAnimalTest;
 import name.pehl.piriti.client.gwttest.book.JsonBookTest;
 import name.pehl.piriti.client.gwttest.book.XmlBookTest;
-import name.pehl.piriti.client.gwttest.employee.XmlEmployeeReaderTest;
-import name.pehl.piriti.client.gwttest.fat.JsonFatGlobalItemReaderTest;
+import name.pehl.piriti.client.gwttest.employee.XmlEmployeeTest;
+import name.pehl.piriti.client.gwttest.fat.JsonFatGlobalItemTest;
 import name.pehl.piriti.client.gwttest.fat.XmlFatGlobalItemReaderTest;
 import name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketReaderTest;
-import name.pehl.piriti.client.gwttest.shop.JsonShopReaderTest;
-import name.pehl.piriti.client.gwttest.shop.XmlShopReaderTest;
+import name.pehl.piriti.client.gwttest.shop.JsonShopTest;
+import name.pehl.piriti.client.gwttest.shop.XmlShopTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -32,15 +32,15 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonBookTest.class);
         suite.addTestSuite(XmlBookTest.class);
 
-        suite.addTestSuite(XmlEmployeeReaderTest.class);
+        suite.addTestSuite(XmlEmployeeTest.class);
 
-        suite.addTestSuite(JsonFatGlobalItemReaderTest.class);
+        suite.addTestSuite(JsonFatGlobalItemTest.class);
         suite.addTestSuite(XmlFatGlobalItemReaderTest.class);
 
         suite.addTestSuite(LotteryTicketReaderTest.class);
 
-        suite.addTestSuite(JsonShopReaderTest.class);
-        suite.addTestSuite(XmlShopReaderTest.class);
+        suite.addTestSuite(JsonShopTest.class);
+        suite.addTestSuite(XmlShopTest.class);
 
         return suite;
     }

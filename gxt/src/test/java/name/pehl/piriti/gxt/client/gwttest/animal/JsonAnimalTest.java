@@ -6,8 +6,10 @@ import name.pehl.piriti.client.gwttest.animal.AnimalResources;
  * @author $Author$
  * @version $Revision$
  */
-public class JsonAnimalReaderTest extends AbstractAnimalReaderTest
+public class JsonAnimalTest extends AbstractAnimalTest
 {
+    // ------------------------------------------------------------- read tests
+
     public void testReadBird()
     {
         String json = AnimalResources.INSTANCE.birdJson().getText();
@@ -38,4 +40,8 @@ public class JsonAnimalReaderTest extends AbstractAnimalReaderTest
         Dog rantanplan = Dog.JSON_READER.read(json);
         assertDog(rantanplan);
     }
+
+    // ------------------------------------------------------------ write tests
+
+    // NYI
 }

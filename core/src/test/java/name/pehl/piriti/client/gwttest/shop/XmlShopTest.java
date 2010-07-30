@@ -9,8 +9,10 @@ import name.pehl.totoe.client.XmlParser;
  * @author $Author$
  * @version $Revision$
  */
-public class XmlShopReaderTest extends AbstractShopReaderTest
+public class XmlShopTest extends AbstractShopTest
 {
+    // ------------------------------------------------------------- read tests
+
     public void testRead()
     {
         String xml = ShopResources.INSTANCE.shopXml().getText();
@@ -46,4 +48,8 @@ public class XmlShopReaderTest extends AbstractShopReaderTest
         }
         return null;
     }
+
+    // ------------------------------------------------------------ write tests
+
+    // NYI
 }

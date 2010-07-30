@@ -13,9 +13,7 @@ public interface BookResources extends ClientBundle
 {
     // -------------------------------------------------------------- constants
 
-    String BOOKS = "books";
-    int BOOKS_COUNT = 3;
-
+    int RELATED_SIZE = 3;
     String ISBN = "978-0345417954";
     int PAGES = 432;
     String TITLE = "The Hotel New Hampshire";
@@ -34,14 +32,6 @@ public interface BookResources extends ClientBundle
     public TextResource bookJson();
 
 
-    @Source("books.json")
-    public TextResource booksJson();
-
-
     @Source("book.xml")
     public TextResource bookXml();
-
-
-    @Source("books.xml")
-    public TextResource booksXml();
 }

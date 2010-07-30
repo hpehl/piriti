@@ -9,8 +9,10 @@ import name.pehl.totoe.client.XmlParser;
  * @author $Author$
  * @version $Revision$
  */
-public class XmlEmployeeReaderTest extends AbstractEmployeeReaderTest
+public class XmlEmployeeTest extends AbstractEmployeeTest
 {
+    // ------------------------------------------------------------- read tests
+
     public void testRead()
     {
         String xml = EmployeeResources.INSTANCE.employeesXml().getText();
@@ -18,4 +20,8 @@ public class XmlEmployeeReaderTest extends AbstractEmployeeReaderTest
         List<Employee> employees = Employee.XML.readList(document);
         assertEmployees(employees);
     }
+
+    // ------------------------------------------------------------ write tests
+
+    // NYI
 }

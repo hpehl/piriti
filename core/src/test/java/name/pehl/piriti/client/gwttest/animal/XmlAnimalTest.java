@@ -7,7 +7,7 @@ import name.pehl.totoe.client.XmlParser;
  * @author $Author$
  * @version $Revision$
  */
-public class XmlAnimalTest extends AbstractAnimalReaderTest
+public class XmlAnimalTest extends AbstractAnimalTest
 {
     // ------------------------------------------------------------- read tests
 

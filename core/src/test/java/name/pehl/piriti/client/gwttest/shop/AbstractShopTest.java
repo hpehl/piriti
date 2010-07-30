@@ -11,7 +11,7 @@ import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractShopReaderTest extends AbstractPiritiTest
+public abstract class AbstractShopTest extends AbstractPiritiTest
 {
     public final static Date _22_11_2010 = new Date(1290380400000l);
 

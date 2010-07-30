@@ -2,14 +2,14 @@ package name.pehl.piriti.gxt;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.gxt.client.gwttest.animal.JsonAnimalReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.animal.XmlAnimalReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.book.JsonBookReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.book.XmlBookReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.fat.JsonFatGlobalItemReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.fat.XmlFatGlobalItemReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.shop.JsonShopReaderTest;
-import name.pehl.piriti.gxt.client.gwttest.shop.XmlShopReaderTest;
+import name.pehl.piriti.gxt.client.gwttest.animal.JsonAnimalTest;
+import name.pehl.piriti.gxt.client.gwttest.animal.XmlAnimalTest;
+import name.pehl.piriti.gxt.client.gwttest.book.JsonBookTest;
+import name.pehl.piriti.gxt.client.gwttest.book.XmlBookTest;
+import name.pehl.piriti.gxt.client.gwttest.fat.JsonFatGlobalItemTest;
+import name.pehl.piriti.gxt.client.gwttest.fat.XmlFatGlobalItemTest;
+import name.pehl.piriti.gxt.client.gwttest.shop.JsonShopTest;
+import name.pehl.piriti.gxt.client.gwttest.shop.XmlShopTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -24,17 +24,17 @@ public class PiritiGxtGwtTestSuite extends GWTTestSuite
     {
         TestSuite suite = new TestSuite("GWT tests for piriti-gxt");
 
-        suite.addTestSuite(JsonAnimalReaderTest.class);
-        suite.addTestSuite(XmlAnimalReaderTest.class);
+        suite.addTestSuite(JsonAnimalTest.class);
+        suite.addTestSuite(XmlAnimalTest.class);
 
-        suite.addTestSuite(JsonBookReaderTest.class);
-        suite.addTestSuite(XmlBookReaderTest.class);
+        suite.addTestSuite(JsonBookTest.class);
+        suite.addTestSuite(XmlBookTest.class);
 
-        suite.addTestSuite(JsonFatGlobalItemReaderTest.class);
-        suite.addTestSuite(XmlFatGlobalItemReaderTest.class);
+        suite.addTestSuite(JsonFatGlobalItemTest.class);
+        suite.addTestSuite(XmlFatGlobalItemTest.class);
 
-        suite.addTestSuite(JsonShopReaderTest.class);
-        suite.addTestSuite(XmlShopReaderTest.class);
+        suite.addTestSuite(JsonShopTest.class);
+        suite.addTestSuite(XmlShopTest.class);
 
         return suite;
     }

@@ -11,7 +11,7 @@ import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractEmployeeReaderTest extends AbstractPiritiTest
+public abstract class AbstractEmployeeTest extends AbstractPiritiTest
 {
     protected void assertEmployees(List<Employee> employees)
     {

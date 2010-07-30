@@ -8,7 +8,7 @@ import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractLotteryTicketReaderTest extends AbstractPiritiTest
+public abstract class AbstractLotteryTicketTest extends AbstractPiritiTest
 {
     protected void assertLotteryTicket(LotteryTicketDns lt)
     {

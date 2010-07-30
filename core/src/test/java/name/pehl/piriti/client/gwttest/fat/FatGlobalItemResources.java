@@ -28,10 +28,6 @@ public interface FatGlobalItemResources extends ClientBundle
     public TextResource fatGlobalItemJson();
 
 
-    @Source("fatGlobalItems.json")
-    public TextResource fatGlobalItemsJson();
-
-
     @Source("fatGlobalItem.xml")
     public TextResource fatGlobalItemXml();
 }

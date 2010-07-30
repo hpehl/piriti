@@ -2,6 +2,7 @@ package name.pehl.piriti.client.json.internal;
 
 import name.pehl.piriti.client.json.JsonParser;
 
+import com.google.gwt.core.client.JavaScriptException;
 import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONObject;
 
@@ -19,10 +20,30 @@ import com.google.gwt.json.client.JSONObject;
 public class NativeJsonParserImpl implements JsonParser
 {
     @Override
-    public native JSONObject parse(String text) throws JSONException
+    public JSONObject parse(String text) throws JSONException
+    {
+        try
+        {
+            return parseImpl(text);
+        }
+        catch (JavaScriptException e)
+        {
+            throw new JSONException(e);
+        }
+    }
+
+
+    private native JSONObject parseImpl(String text)
     /*-{
-        var v = $wnd.JSON.parse(text);
-        var jsonObject = @com.google.gwt.json.client.JSONObject::new(Lcom/google/gwt/core/client/JavaScriptObject;)(v);
-        return jsonObject;
+        try
+        {
+            var v = $wnd.JSON.parse(text);
+            var jsonObject = @com.google.gwt.json.client.JSONObject::new(Lcom/google/gwt/core/client/JavaScriptObject;)(v);
+            return jsonObject;
+        }
+        catch (e)
+        {
+            throw new Error(e);
+        }
     }-*/;
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<amoebas>
+    <amoeba>
+        <name>Alpha</name>
+    </amoeba>
+    <amoeba>
+        <name>Bravo</name>
+    </amoeba>
+    <amoeba>
+        <name>Charlie</name>
+    </amoeba>
+</amoebas>

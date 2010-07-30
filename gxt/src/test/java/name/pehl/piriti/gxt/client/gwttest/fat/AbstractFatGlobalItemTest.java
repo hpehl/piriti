@@ -18,7 +18,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * @version $Date$ $Revision: 237
  *          $
  */
-public abstract class AbstractFatGlobalItemReaderTest extends GWTTestCase
+public abstract class AbstractFatGlobalItemTest extends GWTTestCase
 {
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;

@@ -11,7 +11,7 @@ import com.google.gwt.junit.client.GWTTestCase;
  * @version $Date: 2010-07-16 16:19:21 +0200 (Fr, 16. Jul 2010) $ $Revision: 295
  *          $
  */
-public abstract class AbstractShopReaderTest extends GWTTestCase
+public abstract class AbstractShopTest extends GWTTestCase
 {
     public final static Date _22_11_2010 = new Date(1290380400000l);
 
