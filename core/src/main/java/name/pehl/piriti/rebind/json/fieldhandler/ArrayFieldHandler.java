@@ -188,7 +188,7 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
         nestedHandler.comment(writer, nestedFieldContext);
         nestedHandler.declare(writer, nestedFieldContext);
         // Replace nestedHandler.readField(writer, nestedFieldContext) with
-        writer.write("%s = %s[i];", nestedFieldContext.getValueVariable());
+        writer.write("%s = %s[i];", nestedFieldContext.getValueVariable(), fieldContext.getValueVariable());
         // No nestedHandler.markupStart(writer, nestedFieldContext); since we're
         // in an JSON array
         nestedHandler.writeValue(writer, nestedFieldContext);
