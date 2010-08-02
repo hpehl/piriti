@@ -24,7 +24,7 @@ import com.google.inject.internal.Nullable;
  * pubilc ModalGirlfriendMediator
  * {
  *     interface Reader extends JsonReader&lt;ModalGirlfriendMediator&gt; {}
- *     public static final Reader JSON = GWT.create(Reader.class);
+ *     public static final Reader JSON_READER = GWT.create(Reader.class);
  *     
  *     // The fields of this POJO annotated with JsonField.
  * }
@@ -34,8 +34,8 @@ import com.google.inject.internal.Nullable;
  * calling
  * 
  * <pre>
- * String jsonString = ...;
- * ModalGirlfriendMediator mgm = ModalGirlfriendMediator.JSON.read(jsonString);
+ * String json = "...";
+ * ModalGirlfriendMediator mgm = ModalGirlfriendMediator.JSON_READER.read(jsonString);
  * </pre>
  * 
  * @param <T>
