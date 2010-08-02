@@ -2,9 +2,6 @@ package name.pehl.piriti.client.gwttest.employee;
 
 import java.util.List;
 
-import name.pehl.totoe.client.Document;
-import name.pehl.totoe.client.XmlParser;
-
 /**
  * @author $Author$
  * @version $Revision$
@@ -16,8 +13,7 @@ public class XmlEmployeeTest extends AbstractEmployeeTest
     public void testRead()
     {
         String xml = EmployeeResources.INSTANCE.employeesXml().getText();
-        Document document = new XmlParser().parse(xml);
-        List<Employee> employees = Employee.XML.readList(document);
+        List<Employee> employees = Employee.XML.readList(xml);
         assertEmployees(employees);
     }
 

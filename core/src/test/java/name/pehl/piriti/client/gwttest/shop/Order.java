@@ -1,17 +1,18 @@
 package name.pehl.piriti.client.gwttest.shop;
 
 import java.util.Date;
-import java.util.SortedSet;
+import java.util.List;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 725
+ *          $
  */
 public class Order
 {
     private Date date;
     private Customer customer;
-    private SortedSet<OrderItem> items;
+    private List<OrderItem> items;
 
 
     public Date getDate()
@@ -38,13 +39,13 @@ public class Order
     }
 
 
-    public SortedSet<OrderItem> getItems()
+    public List<OrderItem> getItems()
     {
         return items;
     }
 
 
-    public void setItems(SortedSet<OrderItem> items)
+    public void setItems(List<OrderItem> items)
     {
         this.items = items;
     }

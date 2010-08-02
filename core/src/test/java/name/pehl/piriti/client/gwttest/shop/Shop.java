@@ -1,38 +1,38 @@
 package name.pehl.piriti.client.gwttest.shop;
 
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.List;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 725
+ *          $
  */
 public class Shop
 {
-    private Set<Customer> customers;
-    private SortedSet<Product> products;
+    private List<Customer> customers;
+    private List<Product> products;
     private Order order;
 
 
-    public Set<Customer> getCustomers()
+    public List<Customer> getCustomers()
     {
         return customers;
     }
 
 
-    public void setCustomers(Set<Customer> customers)
+    public void setCustomers(List<Customer> customers)
     {
         this.customers = customers;
     }
 
 
-    public SortedSet<Product> getProducts()
+    public List<Product> getProducts()
     {
         return products;
     }
 
 
-    public void setProducts(SortedSet<Product> products)
+    public void setProducts(List<Product> products)
     {
         this.products = products;
     }

@@ -8,7 +8,7 @@ import name.pehl.totoe.client.XmlParser;
  * @version $Date$ $Revision: 295
  *          $
  */
-public class LotteryTicketDnsReaderTest extends AbstractLotteryTicketTest
+public class LotteryTicketDnsTest extends AbstractLotteryTicketTest
 {
     // ------------------------------------------------------------- read tests
 

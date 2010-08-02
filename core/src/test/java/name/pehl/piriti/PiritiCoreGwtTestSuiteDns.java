@@ -2,7 +2,7 @@ package name.pehl.piriti;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketDnsReaderTest;
+import name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketDnsTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -17,7 +17,7 @@ public class PiritiCoreGwtTestSuiteDns extends GWTTestSuite
     {
         TestSuite suite = new TestSuite("GWT tests for piriti-core (default namespace)");
 
-        suite.addTestSuite(LotteryTicketDnsReaderTest.class);
+        suite.addTestSuite(LotteryTicketDnsTest.class);
 
         return suite;
     }

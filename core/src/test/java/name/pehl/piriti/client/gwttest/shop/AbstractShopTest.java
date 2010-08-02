@@ -1,8 +1,7 @@
 package name.pehl.piriti.client.gwttest.shop;
 
 import java.util.Date;
-import java.util.Set;
-import java.util.SortedSet;
+import java.util.List;
 
 import name.pehl.piriti.client.gwttest.AbstractPiritiTest;
 
@@ -21,17 +20,17 @@ public abstract class AbstractShopTest extends AbstractPiritiTest
         assertNotNull(shop);
 
         // Customer
-        Set<Customer> customers = shop.getCustomers();
+        List<Customer> customers = shop.getCustomers();
         assertNotNull(customers);
         assertEquals(1, customers.size());
         Customer customer = customers.iterator().next();
         assertGarryGourmet(customer);
 
         // Products
-        SortedSet<Product> products = shop.getProducts();
+        List<Product> products = shop.getProducts();
         assertNotNull(products);
         assertEquals(7, products.size());
-        Product product = products.iterator().next();
+        Product product = products.get(0);
         assertTyhmian(product);
 
         // Order
@@ -40,12 +39,12 @@ public abstract class AbstractShopTest extends AbstractPiritiTest
         assertEquals(_22_11_2010, order.getDate());
         customer = order.getCustomer();
         assertGarryGourmet(customer);
-        SortedSet<OrderItem> items = order.getItems();
+        List<OrderItem> items = order.getItems();
         assertNotNull(items);
         assertEquals(7, items.size());
 
         // OrderItems
-        OrderItem item = items.iterator().next();
+        OrderItem item = items.get(0);
         assertNotNull(item);
         assertEquals(1, item.getAmount());
         product = item.getProduct();

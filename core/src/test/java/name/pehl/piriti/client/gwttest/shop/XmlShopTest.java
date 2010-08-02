@@ -1,9 +1,6 @@
 package name.pehl.piriti.client.gwttest.shop;
 
-import java.util.SortedSet;
-
-import name.pehl.totoe.client.Document;
-import name.pehl.totoe.client.XmlParser;
+import java.util.List;
 
 /**
  * @author $Author$
@@ -16,8 +13,7 @@ public class XmlShopTest extends AbstractShopTest
     public void testRead()
     {
         String xml = ShopResources.INSTANCE.shopXml().getText();
-        Document document = new XmlParser().parse(xml);
-        Shop shop = ShopReader.SHOP_XML_READER.read(document);
+        Shop shop = ShopReader.SHOP_XML_READER.read(xml);
         assertShop(shop);
         assertIdsAndReferences(shop);
     }
@@ -29,7 +25,7 @@ public class XmlShopTest extends AbstractShopTest
 
         int index = 0;
         String[] productIds = new String[] {"tym", "lft", "ons", "grl", "ros", "pts", "crt"};
-        SortedSet<OrderItem> items = shop.getOrder().getItems();
+        List<OrderItem> items = shop.getOrder().getItems();
         for (OrderItem item : items)
         {
             assertSame(findProduct(shop, productIds[index++]), item.getProduct());

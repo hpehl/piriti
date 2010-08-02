@@ -64,6 +64,9 @@ public class XmlReaderCreator extends AbstractXmlCreator
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
+        readListFromString(writer);
+        writer.newline();
+
         readListFromDocument(writer);
         writer.newline();
 
@@ -74,6 +77,9 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.newline();
 
         readListFromElementUsingXpath(writer);
+        writer.newline();
+
+        readFromString(writer);
         writer.newline();
 
         readFromDocument(writer);
@@ -103,10 +109,25 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     // ------------------------------------------------------ read list methods
 
+    protected void readListFromString(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public List<%s> readList(String xml) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("return readList(new XmlParser().parse(xml));");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     protected void readListFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public List<%s> readList(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (document == null || document.getRoot() == null) {");
+        writer.indent();
+        writer.write("return null;");
+        writer.outdent();
+        writer.write("}");
         writer.write("return internalReadList(filterElements(document.getRoot().getChildren()));");
         writer.outdent();
         writer.write("}");
@@ -118,6 +139,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.write("public List<%s> readList(Document document, String xpath) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (document == null) {");
+        writer.indent();
+        writer.write("return null;");
+        writer.outdent();
+        writer.write("}");
         writer.write("return internalReadList(filterElements(document.selectNodes(xpath)));");
         writer.outdent();
         writer.write("}");
@@ -128,6 +154,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
     {
         writer.write("public List<%s> readList(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (element == null) {");
+        writer.indent();
+        writer.write("return null;");
+        writer.outdent();
+        writer.write("}");
         writer.write("return internalReadList(filterElements(element.getChildren()));");
         writer.outdent();
         writer.write("}");
@@ -139,6 +170,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.write("public List<%s> readList(Element element, String xpath) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (element == null) {");
+        writer.indent();
+        writer.write("return null;");
+        writer.outdent();
+        writer.write("}");
         writer.write("return internalReadList(filterElements(element.selectNodes(xpath)));");
         writer.outdent();
         writer.write("}");
@@ -147,10 +183,25 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     // ---------------------------------------------------- read single methods
 
+    protected void readFromString(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public %s read(String xml) {", modelType.getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("return read(new XmlParser().parse(xml));");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     protected void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public %s read(Document document) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (document == null) {");
+        writer.indent();
+        writer.write("return null;");
+        writer.outdent();
+        writer.write("}");
         writer.write("return read(document.getRoot());");
         writer.outdent();
         writer.write("}");
@@ -162,6 +213,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
     {
         writer.write("public %s read(Element element) {", modelType.getParameterizedQualifiedSourceName());
         writer.indent();
+        writer.write("if (element == null) {");
+        writer.indent();
+        writer.write("return null;");
+        writer.outdent();
+        writer.write("}");
         writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
         writer.write("readFields(element, model);");
         writer.write("readIdRefs(element, model);");
