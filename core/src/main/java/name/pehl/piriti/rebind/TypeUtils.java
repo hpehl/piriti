@@ -451,17 +451,7 @@ public final class TypeUtils
                     accessible = !method.isPrivate();
                     if (!accessible)
                     {
-                        // Autoboxiong: Try with primitive
-                        if (parameter != null && parameter.isPrimitive() != null)
-                        {
-                            params = new JType[] {parameter.isPrimitive()};
-                            method = type.getMethod(name, params);
-                            accessible = method != null && !method.isPrivate();
-                        }
-                        if (!accessible)
-                        {
-                            accessible = isMethodAccessible(type.getSuperclass(), name, parameter);
-                        }
+                        accessible = isMethodAccessible(type.getSuperclass(), name, parameter);
                     }
                 }
                 else

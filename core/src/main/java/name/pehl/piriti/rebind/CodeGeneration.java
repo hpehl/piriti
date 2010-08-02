@@ -58,8 +58,7 @@ public final class CodeGeneration
                 {
                     writer.write("model.%s = %s;", fieldContext.getFieldName(), fieldContext.getValueVariable());
                 }
-                else if (TypeUtils.isSetterAccessible(fieldContext.getModelType(), fieldContext.getFieldName(),
-                        fieldContext.getFieldType()))
+                else if (isSetterAccessible(fieldContext))
                 {
                     writer.write("model.%s(%s);", TypeUtils.buildSetter(fieldContext.getFieldName()),
                             fieldContext.getValueVariable());
@@ -74,8 +73,7 @@ public final class CodeGeneration
                 }
                 break;
             case PROPERTY_ONLY:
-                if (TypeUtils.isSetterAccessible(fieldContext.getModelType(), fieldContext.getFieldName(),
-                        fieldContext.getFieldType()))
+                if (isSetterAccessible(fieldContext))
                 {
                     writer.write("model.%s(%s);", TypeUtils.buildSetter(fieldContext.getFieldName()),
                             fieldContext.getValueVariable());
@@ -88,8 +86,7 @@ public final class CodeGeneration
                 }
                 break;
             case PROPERTY_FIRST:
-                if (TypeUtils.isSetterAccessible(fieldContext.getModelType(), fieldContext.getFieldName(),
-                        fieldContext.getFieldType()))
+                if (isSetterAccessible(fieldContext))
                 {
                     writer.write("model.%s(%s);", TypeUtils.buildSetter(fieldContext.getFieldName()),
                             fieldContext.getValueVariable());
@@ -121,6 +118,25 @@ public final class CodeGeneration
     private static void assignGxt(IndentedWriter writer, FieldContext fieldContext)
     {
         writer.write("model.set(\"%s\", %s);", fieldContext.getFieldName(), fieldContext.getValueVariable());
+    }
+
+
+    private static boolean isSetterAccessible(FieldContext fieldContext)
+    {
+        boolean accessible = false;
+        if (fieldContext.getPrimitiveType() != null)
+        {
+            // Autoboxing: First try with primitive type
+            accessible = TypeUtils.isSetterAccessible(fieldContext.getModelType(), fieldContext.getFieldName(),
+                    fieldContext.getPrimitiveType());
+        }
+        if (!accessible)
+        {
+            // Fall back to fieldContext.getFieldType()
+            accessible = TypeUtils.isSetterAccessible(fieldContext.getModelType(), fieldContext.getFieldName(),
+                    fieldContext.getFieldType());
+        }
+        return accessible;
     }
 
 
