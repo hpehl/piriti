@@ -62,7 +62,7 @@
                     <execution>
                         <id>(******** ff3-dev ********)</id>
                         <configuration>
-                            <testTimeOut>300</testTimeOut>
+                            <testTimeOut>600</testTimeOut>
                             <runStyle>HtmlUnit:FF3</runStyle>
                             <productionMode>false</productionMode>
                             <gwtVersion>${gwt.version}</gwtVersion>
@@ -76,7 +76,7 @@
                     <execution>
                         <id>(******** ff3-prod ********)</id>
                         <configuration>
-                            <testTimeOut>300</testTimeOut>
+                            <testTimeOut>600</testTimeOut>
                             <userAgents>gecko1_8</userAgents>
                             <runStyle>HtmlUnit:FF3</runStyle>
                             <productionMode>true</productionMode>
