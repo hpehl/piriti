@@ -234,9 +234,10 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.write("private List<%s> internalReadList(List<Element> elements) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%1$s> models = new ArrayList<%1$s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (!elements.isEmpty()) {");
         writer.indent();
+        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("for (Element element : elements) {");
         writer.indent();
         writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
