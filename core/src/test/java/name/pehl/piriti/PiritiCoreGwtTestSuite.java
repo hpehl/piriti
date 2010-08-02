@@ -13,6 +13,8 @@ import name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketTest;
 import name.pehl.piriti.client.gwttest.shop.JsonShopTest;
 import name.pehl.piriti.client.gwttest.shop.XmlShopTest;
 import name.pehl.piriti.client.gwttest.simple.JsonAmoebaReaderTest;
+import name.pehl.piriti.client.gwttest.simple.JsonAmoebaWriterTest;
+import name.pehl.piriti.client.gwttest.simple.XmlAmoebaReaderTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -44,6 +46,8 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(XmlShopTest.class);
 
         suite.addTestSuite(JsonAmoebaReaderTest.class);
+        suite.addTestSuite(JsonAmoebaWriterTest.class);
+        suite.addTestSuite(XmlAmoebaReaderTest.class);
 
         return suite;
     }
