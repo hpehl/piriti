@@ -20,7 +20,7 @@ import com.google.gwt.json.client.JSONString;
  * Please note that the annotated fields must not be private!
  * <p>
  * The following types are supported:
- * <table>
+ * <table border="1" cellspacing="2" cellpadding="2">
  * <tr>
  * <th>Type</th>
  * <th>Default path expression</th>
