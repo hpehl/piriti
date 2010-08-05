@@ -22,7 +22,7 @@ import com.google.inject.internal.Nullable;
  * <pre>
  * pubilc RunnableMessageContext
  * {
- *     interface Writer extends JsonReader&lt;RunnableMessageContext&gt; {}
+ *     interface Writer extends JsonWriter&lt;RunnableMessageContext&gt; {}
  *     public static final Writer JSON_WRITER = GWT.create(Writer.class);
  *     
  *     // The fields of this POJO annotated with JsonField.
