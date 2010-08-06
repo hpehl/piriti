@@ -4,6 +4,7 @@ import java.util.List;
 
 import name.pehl.totoe.client.Document;
 import name.pehl.totoe.client.Element;
+import name.pehl.totoe.client.XmlParseException;
 
 import com.google.inject.internal.Nullable;
 
@@ -65,8 +66,10 @@ public interface XmlReader<T>
      *            The XML used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped XML data or
      *         <code>null</code> if the {@code xml} is {@code null} or empty.
+     * @throws XmlParseException
+     *             if there's an error parsing the xml
      */
-    List<T> readList(@Nullable String xml);
+    List<T> readList(@Nullable String xml) throws XmlParseException;
 
 
     /**
@@ -144,8 +147,10 @@ public interface XmlReader<T>
      *            The XML used as input. May be <code>null</code>.
      * @return An instance of T with the mapped XML data or {@code null} if the
      *         {@code xml} is {@code null} or empty.
+     * @throws XmlParseException
+     *             if there's an error parsing the xml
      */
-    T read(@Nullable String xml);
+    T read(@Nullable String xml) throws XmlParseException;
 
 
     /**
