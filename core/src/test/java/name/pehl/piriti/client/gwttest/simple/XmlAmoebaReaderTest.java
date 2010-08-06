@@ -4,6 +4,8 @@ import java.util.List;
 
 import name.pehl.totoe.client.Document;
 import name.pehl.totoe.client.Element;
+import name.pehl.totoe.client.XmlParseException;
+import name.pehl.totoe.client.XmlParser;
 
 /**
  * Among normal {@link Amoeba} JSON tests, this class contains methods to test
@@ -46,13 +48,19 @@ public class XmlAmoebaReaderTest extends AbstractAmoebaTest
     }
 
 
-    /*
-     * FIXME Causes test failure in production mode public void
-     * testReadSingleFromInvalidString() { try {
-     * Amoeba.XML_READER.read(INVALID_XML_STRING);
-     * fail(XmlParseException.class.getName() + " expected!"); } catch
-     * (XmlParseException e) { } }
-     */
+    // FIXME Causes test failure in production mode
+    public void _testReadSingleFromInvalidString()
+    {
+        try
+        {
+            Amoeba.XML_READER.read(INVALID_XML_STRING);
+            fail(XmlParseException.class.getName() + " expected!");
+        }
+        catch (XmlParseException e)
+        {
+        }
+    }
+
 
     public void testReadSingleFromEmptyXmlString()
     {
@@ -79,7 +87,20 @@ public class XmlAmoebaReaderTest extends AbstractAmoebaTest
     }
 
 
-    // TODO Read from empty and valid document
+    public void testReadSingleFromEmptyDocument()
+    {
+        // TODO Implement me!
+    }
+
+
+    public void testReadSingleFromDocument()
+    {
+        String xml = AmoebaResources.INSTANCE.amoebaXml().getText();
+        Document document = new XmlParser().parse(xml);
+        Amoeba amoeba = Amoeba.XML_READER.read(document);
+        assertAmoeba(amoeba, AmoebaResources.ALPHA);
+    }
+
 
     // ----------------------------------------------- read single from element
 
@@ -90,7 +111,20 @@ public class XmlAmoebaReaderTest extends AbstractAmoebaTest
     }
 
 
-    // TODO Read from empty and valid element
+    public void testReadSingleFromEmptyElement()
+    {
+        // TODO Implement me!
+    }
+
+
+    public void testReadSingleFromElement()
+    {
+        String xml = AmoebaResources.INSTANCE.amoebaXml().getText();
+        Element element = new XmlParser().parse(xml).getRoot();
+        Amoeba amoeba = Amoeba.XML_READER.read(element);
+        assertAmoeba(amoeba, AmoebaResources.ALPHA);
+    }
+
 
     // -------------------------------------------------- read list from string
 
@@ -115,13 +149,19 @@ public class XmlAmoebaReaderTest extends AbstractAmoebaTest
     }
 
 
-    /*
-     * FIXME Causes test failure in production mode public void
-     * testReadListFromInvalidString() { try {
-     * Amoeba.XML_READER.readList(INVALID_XML_STRING);
-     * fail(XmlParseException.class.getName() + " expected!"); } catch
-     * (XmlParseException e) { } }
-     */
+    // FIXME Causes test failure in production mode
+    public void _testReadListFromInvalidString()
+    {
+        try
+        {
+            Amoeba.XML_READER.readList(INVALID_XML_STRING);
+            fail(XmlParseException.class.getName() + " expected!");
+        }
+        catch (XmlParseException e)
+        {
+        }
+    }
+
 
     public void testReadListFromEmptyXmlString()
     {
@@ -137,11 +177,51 @@ public class XmlAmoebaReaderTest extends AbstractAmoebaTest
         assertAmoebas(amoebas);
     }
 
+
     // ------------------------------------------------ read list from document
 
-    // NYI
+    public void testReadListFromNullDocument()
+    {
+        List<Amoeba> amoebas = Amoeba.XML_READER.readList((Document) null);
+        assertNull(amoebas);
+    }
+
+
+    public void testReadListFromEmptyDocument()
+    {
+        // TODO Implement me!
+    }
+
+
+    public void testReadListFromDocument()
+    {
+        String xml = AmoebaResources.INSTANCE.amoebasXml().getText();
+        Document document = new XmlParser().parse(xml);
+        List<Amoeba> amoebas = Amoeba.XML_READER.readList(document);
+        assertAmoebas(amoebas);
+    }
+
 
     // ------------------------------------------------- read list from element
 
-    // NYI
+    public void testReadListFromNullElement()
+    {
+        List<Amoeba> amoebas = Amoeba.XML_READER.readList((Element) null);
+        assertNull(amoebas);
+    }
+
+
+    public void testReadListFromEmptyElement()
+    {
+        // TODO Implement me!
+    }
+
+
+    public void testReadListFromElement()
+    {
+        String xml = AmoebaResources.INSTANCE.amoebasXml().getText();
+        Element element = new XmlParser().parse(xml).getRoot();
+        List<Amoeba> amoebas = Amoeba.XML_READER.readList(element);
+        assertAmoebas(amoebas);
+    }
 }
