@@ -1,0 +1,122 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!--
+        $LastChangedBy: harald.pehl 
+        $LastChangedRevision: 137 $
+    -->
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>name.pehl.piriti</groupId>
+        <artifactId>piriti-parent</artifactId>
+        <version>0.5</version>
+    </parent>
+
+
+    <artifactId>piriti-playground</artifactId>
+    <name>Piriti Playground</name>
+    <description>Playground to test and fix bugs reported in the Piriti Group</description>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>name.pehl.piriti</groupId>
+            <artifactId>piriti-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.extjs</groupId>
+            <artifactId>gxt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+        </dependency>
+    </dependencies>
+    
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>name/pehl/piriti/PlaygroundTestSuite.java</exclude>
+                        <exclude>name/pehl/piriti/client/gwttest/**/*Test.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>(******** ff3-dev ********)</id>
+                        <configuration>
+                            <testTimeOut>600</testTimeOut>
+                            <runStyle>HtmlUnit:FF3</runStyle>
+                            <productionMode>false</productionMode>
+                            <gwtVersion>${gwt.version}</gwtVersion>
+                            <module>name.pehl.piriti.PlaygroundTest</module>
+                            <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>(******** ff3-prod ********)</id>
+                        <configuration>
+                            <testTimeOut>600</testTimeOut>
+                            <userAgents>gecko1_8</userAgents>
+                            <runStyle>HtmlUnit:FF3</runStyle>
+                            <productionMode>true</productionMode>
+                            <gwtVersion>${gwt.version}</gwtVersion>
+                            <module>name.pehl.piriti.PlaygroundTest</module>
+                            <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>(******** ie7_8-dev ********)</id>
+                        <configuration>
+                            <testTimeOut>600</testTimeOut>
+                            <runStyle>HtmlUnit:IE7</runStyle>
+                            <productionMode>false</productionMode>
+                            <gwtVersion>${gwt.version}</gwtVersion>
+                            <module>name.pehl.piriti.PlaygroundTest</module>
+                            <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>(******** ie7_8-prod ********)</id>
+                        <configuration>
+                            <testTimeOut>600</testTimeOut>
+                            <userAgents>ie8</userAgents>
+                            <runStyle>HtmlUnit:IE7</runStyle>
+                            <productionMode>true</productionMode>
+                            <gwtVersion>${gwt.version}</gwtVersion>
+                            <module>name.pehl.piriti.PlaygroundTest</module>
+                            <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
