@@ -8,8 +8,9 @@ import name.pehl.piriti.client.xml.XmlReader;
 import com.google.gwt.core.client.GWT;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision: 855
+ *          $
  */
 public class StationDetails
 {
@@ -19,6 +20,6 @@ public class StationDetails
 
     public static final StationDetailsReader XML = GWT.create(StationDetailsReader.class);
 
-    @XmlField(value = "//Station")
+    @XmlField("//Station")
     List<Station> listOfStations;
 }
