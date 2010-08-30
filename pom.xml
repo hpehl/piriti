@@ -122,7 +122,7 @@
         <gwt.version>2.0.4</gwt.version>
         <gxt.version>2.1.1</gxt.version>
         <restlet.version>2.0-RC4</restlet.version>
-        <junit.version>4.8.2</junit.version>
+        <junit.version>4.8.1</junit.version>
         <easymock.version>3.0</easymock.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
