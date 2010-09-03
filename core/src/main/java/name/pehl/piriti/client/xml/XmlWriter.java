@@ -6,7 +6,7 @@ import com.google.inject.internal.Nullable;
 
 /**
  * Interface for serializing an instance of T or a list of Ts to an XML
- * document.
+ * document. Not yet implemented!
  * 
  * @param <T>
  *            The type
