@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <book>
+        <isbn>978-0345417954</isbn>
+        <title>The Hotel New Hampshire</title>
+        <pages>432</pages>
+        <author>
+            <firstname>John</firstname>
+            <surname>Irving</surname>
+        </author>
+        <reviews>
+            <review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review>
+            <review>Rejoice! John Irving has written another book according to your world. You must read this book.
+            </review>
+            <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
+        </reviews>
+    </book>
+    <book>
+        <isbn>978-1400052929</isbn>
+        <title>The Hitchhikers Guide to the Galaxy</title>
+        <pages>224</pages>
+        <author>
+            <firstname>Douglas</firstname>
+            <surname>Adams</surname>
+        </author>
+        <reviews>
+            <review>Don't panic! Here are words of praise for The Hitchhiker's Guide to the Galaxy!</review>
+            <review>It's science fiction and it's extremely funny...inspired lunacy that leaves hardly a science fiction
+                cliche alive.</review>
+            <review>Very simply, the book is one of the funniest SF spoofs ever written, with hyperbolic ideas folding
+                in on themselves.</review>
+            <review>As parody, it's marvelous: It contains just about every science fiction cliche you can think of. As
+                humor, it's, well, hysterical.</review>
+        </reviews>
+    </book>
+    <book>
+        <isbn>978-0307277763</isbn>
+        <title>Perfume</title>
+        <pages>225</pages>
+        <author>
+            <firstname>Patrick</firstname>
+            <surname>Süsskind</surname>
+        </author>
+        <reviews>
+            <review>A fable of crimial genius.... Remarkable.</review>
+            <review>Mesmerizing from first page to last.... A highly sophisticated horror tale.</review>
+            <review>A supremely accomplished work of art, marvelously crafted and enjoyable and rich in historical
+                detail.</review>
+            <review>An ingenious story...about a most exotic monster.... Suspense build up steadily.</review>
+        </reviews>
+    </book>
+</books>
