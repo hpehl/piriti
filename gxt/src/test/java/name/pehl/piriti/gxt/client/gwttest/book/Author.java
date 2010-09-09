@@ -15,10 +15,16 @@ import com.google.gwt.core.client.GWT;
  * @version $Date$ $Revision: 131
  *          $
  */
-@JsonFields({@JsonField(name = "firstname", type = String.class), @JsonField(name = "surname", type = String.class),
-        @JsonField(name = "bestseller", type = Book.class)})
-@XmlFields({@XmlField(name = "firstname", type = String.class), @XmlField(name = "surname", type = String.class),
-        @XmlField(name = "bestseller", path = "bestseller/book", type = Book.class)})
+//@formatter:off
+@JsonFields({
+    @JsonField(name = "firstname", type = String.class), 
+    @JsonField(name = "surname", type = String.class),
+    @JsonField(name = "bestseller", type = Book.class)})
+@XmlFields({
+    @XmlField(name = "firstname", type = String.class), 
+    @XmlField(name = "surname", type = String.class),
+    @XmlField(name = "bestseller", path = "bestseller/book", type = Book.class)})
+// @formatter:on
 public class Author extends BaseModel
 {
     // --------------------------------------------------- json reader / writer

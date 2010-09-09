@@ -17,14 +17,22 @@ import com.google.gwt.core.client.GWT;
  * @version $Date$ $Revision: 131
  *          $
  */
-@JsonFields({@JsonField(name = "isbn", type = String.class), @JsonField(name = "pages", type = Integer.class),
-        @JsonField(name = "title", type = String.class), @JsonField(name = "author", type = Author.class),
-        @JsonField(name = "reviews", type = List.class, typeVariable = String.class),
-        @JsonField(name = "related", type = List.class, typeVariable = Book.class)})
-@XmlFields({@XmlField(name = "isbn", type = String.class), @XmlField(name = "pages", type = Integer.class),
-        @XmlField(name = "title", type = String.class), @XmlField(name = "author", type = Author.class),
-        @XmlField(name = "reviews", path = "reviews/review", type = List.class, typeVariable = String.class),
-        @XmlField(name = "related", path = "related/book", type = List.class, typeVariable = Book.class)})
+//@formatter:off
+@JsonFields({
+    @JsonField(name = "isbn", type = String.class), 
+    @JsonField(name = "pages", type = Integer.class),
+    @JsonField(name = "title", type = String.class), 
+    @JsonField(name = "author", type = Author.class),
+    @JsonField(name = "reviews", type = List.class, typeVariable = String.class),
+    @JsonField(name = "related", type = List.class, typeVariable = Book.class)})
+@XmlFields({
+    @XmlField(name = "isbn", type = String.class), 
+    @XmlField(name = "pages", type = Integer.class),
+    @XmlField(name = "title", type = String.class), 
+    @XmlField(name = "author", type = Author.class),
+    @XmlField(name = "reviews", path = "reviews/review", type = List.class, typeVariable = String.class),
+    @XmlField(name = "related", path = "related/book", type = List.class, typeVariable = Book.class)})
+// @formatter:on
 public class Book extends BaseModel
 {
     // --------------------------------------------------- json reader / writer

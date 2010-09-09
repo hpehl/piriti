@@ -38,7 +38,7 @@
         <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-servlet</artifactId>
-        </dependency>            
+        </dependency>
         <dependency>
             <groupId>aopalliance</groupId>
             <artifactId>aopalliance</artifactId>
@@ -142,9 +142,7 @@
                 <configuration>
                     <logLevel>INFO</logLevel>
                     <port>8888</port>
-                    <compileTargets>
-                        <value>name.pehl.piriti.sample.PiritiSample</value>
-                    </compileTargets>
+                    <module>name.pehl.piriti.sample.PiritiSample</module>
                     <extraJvmArgs>-Xmx512m</extraJvmArgs>
                     <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
                     <runTarget>/index.html</runTarget>
@@ -153,7 +151,6 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
                         </goals>

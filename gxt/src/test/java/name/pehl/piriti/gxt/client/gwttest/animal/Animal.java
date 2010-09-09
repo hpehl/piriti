@@ -11,10 +11,16 @@ import com.extjs.gxt.ui.client.data.BaseModel;
  * @author $Author$
  * @version $Date$ $Revision$
  */
-@JsonFields({@JsonField(name = "name", type = String.class), @JsonField(name = "legs", type = Integer.class),
-        @JsonField(name = "intelligence", type = Double.class)})
-@XmlFields({@XmlField(name = "name", type = String.class), @XmlField(name = "legs", type = Integer.class),
-        @XmlField(name = "intelligence", type = Double.class)})
+//@formatter:off
+@JsonFields({
+    @JsonField(name = "name", type = String.class), 
+    @JsonField(name = "legs", type = Integer.class),
+    @JsonField(name = "intelligence", type = Double.class)})
+@XmlFields({
+    @XmlField(name = "name", type = String.class), 
+    @XmlField(name = "legs", type = Integer.class),
+    @XmlField(name = "intelligence", type = Double.class)})
+// @formatter:on
 public abstract class Animal extends BaseModel
 {
 }

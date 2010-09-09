@@ -22,36 +22,59 @@ public class ShopReader
 {
     // ----------------------------------------------------------- json readers
 
-    @JsonFields({@JsonField(name = "customers"), @JsonField(name = "products"), @JsonField(name = "order")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "customers"), 
+        @JsonField(name = "products"), 
+        @JsonField(name = "order")})
+    // @formatter:on
     public interface ShopJsonReader extends JsonReader<Shop>
     {
     }
 
     public static final ShopJsonReader SHOP_JSON_READER = GWT.create(ShopJsonReader.class);
 
-    @JsonFields({@JsonField(name = "id"), @JsonField(name = "firstname"), @JsonField(name = "surname")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "id"), 
+        @JsonField(name = "firstname"), 
+        @JsonField(name = "surname")})
+    // @formatter:on
     public interface CustomerJsonReader extends JsonReader<Customer>
     {
     }
 
     public static final CustomerJsonReader CUSTOMER_JSON_READER = GWT.create(CustomerJsonReader.class);
 
-    @JsonFields({@JsonField(name = "id"), @JsonField(name = "name"), @JsonField(name = "price")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "id"), 
+        @JsonField(name = "name"), 
+        @JsonField(name = "price")})
+    // @formatter:on
     public interface ProductJsonReader extends JsonReader<Product>
     {
     }
 
     public static final ProductJsonReader PRODUCT_JSON_READER = GWT.create(ProductJsonReader.class);
 
-    @JsonFields({@JsonField(name = "date", format = "dd.MM.yyyy"), @JsonField(name = "customer"),
-            @JsonField(name = "items")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "date", format = "dd.MM.yyyy"), 
+        @JsonField(name = "customer"),
+        @JsonField(name = "items")})
+    // @formatter:on
     public interface OrderJsonReader extends JsonReader<Order>
     {
     }
 
     public static final OrderJsonReader ORDER_JSON_READER = GWT.create(OrderJsonReader.class);
 
-    @JsonFields({@JsonField(name = "product"), @JsonField(name = "amount")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "product"), 
+        @JsonField(name = "amount")})
+    // @formatter:on
     public interface OrderItemJsonReader extends JsonReader<OrderItem>
     {
     }
@@ -60,36 +83,59 @@ public class ShopReader
 
     // ----------------------------------------------------------- json writers
 
-    @JsonFields({@JsonField(name = "customers"), @JsonField(name = "products"), @JsonField(name = "order")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "customers"), 
+        @JsonField(name = "products"), 
+        @JsonField(name = "order")})
+    // @formatter:on
     public interface ShopJsonWriter extends JsonWriter<Shop>
     {
     }
 
     public static final ShopJsonWriter SHOP_JSON_WRITER = GWT.create(ShopJsonWriter.class);
 
-    @JsonFields({@JsonField(name = "id"), @JsonField(name = "firstname"), @JsonField(name = "surname")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "id"), 
+        @JsonField(name = "firstname"), 
+        @JsonField(name = "surname")})
+    // @formatter:on
     public interface CustomerJsonWriter extends JsonWriter<Customer>
     {
     }
 
     public static final CustomerJsonWriter CUSTOMER_JSON_WRITER = GWT.create(CustomerJsonWriter.class);
 
-    @JsonFields({@JsonField(name = "id"), @JsonField(name = "name"), @JsonField(name = "price")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "id"), 
+        @JsonField(name = "name"), 
+        @JsonField(name = "price")})
+    // @formatter:on
     public interface ProductJsonWriter extends JsonWriter<Product>
     {
     }
 
     public static final ProductJsonWriter PRODUCT_JSON_WRITER = GWT.create(ProductJsonWriter.class);
 
-    @JsonFields({@JsonField(name = "date", format = "dd.MM.yyyy"), @JsonField(name = "customer"),
-            @JsonField(name = "items")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "date", format = "dd.MM.yyyy"), 
+        @JsonField(name = "customer"),
+        @JsonField(name = "items")})
+    // @formatter:on
     public interface OrderJsonWriter extends JsonWriter<Order>
     {
     }
 
     public static final OrderJsonWriter ORDER_JSON_WRITER = GWT.create(OrderJsonWriter.class);
 
-    @JsonFields({@JsonField(name = "product"), @JsonField(name = "amount")})
+    // @formatter:off
+    @JsonFields({
+        @JsonField(name = "product"), 
+        @JsonField(name = "amount")})
+    // @formatter:on
     public interface OrderItemJsonWriter extends JsonWriter<OrderItem>
     {
     }
@@ -98,78 +144,126 @@ public class ShopReader
 
     // ------------------------------------------------------------ xml readers
 
-    @XmlFields({@XmlField(name = "customers", value = "customers/customer"),
-            @XmlField(name = "products", value = "products/product"), @XmlField(name = "order")})
+    // @formatter:off
+    @XmlFields({
+        @XmlField(name = "customers", value = "customers/customer"),
+        @XmlField(name = "products", value = "products/product"), 
+        @XmlField(name = "order")})
+    // @formatter:on
     public interface ShopXmlReader extends XmlReader<Shop>
     {
     }
 
     public static final ShopXmlReader SHOP_XML_READER = GWT.create(ShopXmlReader.class);
 
-    @XmlFields(id = @XmlId(name = "id", value = "id/text()"), value = {@XmlField(name = "firstname"),
+    // @formatter:off
+    @XmlFields(
+        id = @XmlId(name = "id", value = "id/text()"), 
+        value = {
+            @XmlField(name = "firstname"),
             @XmlField(name = "surname")})
+    // @formatter:on
     public interface CustomerXmlReader extends XmlReader<Customer>
     {
     }
 
     public static final CustomerXmlReader CUSTOMER_XML_READER = GWT.create(CustomerXmlReader.class);
 
-    @XmlFields(id = @XmlId(name = "id"), value = {@XmlField(name = "name"), @XmlField(name = "price")})
+    // @formatter:off
+    @XmlFields(
+        id = @XmlId(name = "id"), 
+        value = {
+            @XmlField(name = "name"), 
+            @XmlField(name = "price")})
+    // @formatter:on
     public interface ProductXmlReader extends XmlReader<Product>
     {
     }
 
     public static final ProductXmlReader PRODUCT_XML_READER = GWT.create(ProductXmlReader.class);
 
-    @XmlFields(value = {@XmlField(name = "date", value = "@date", format = "dd.MM.yyyy"),
-            @XmlField(name = "items", value = "items/item")}, references = @XmlIdRef(name = "customer", value = "customer/@ref"))
+    // @formatter:off
+    @XmlFields(
+        value = {
+            @XmlField(name = "date", value = "@date", format = "dd.MM.yyyy"),
+            @XmlField(name = "items", value = "items/item")}, 
+        references = @XmlIdRef(name = "customer", value = "customer/@ref"))
+    // @formatter:on
     public interface OrderXmlReader extends XmlReader<Order>
     {
     }
 
     public static final OrderXmlReader ORDER_XML_READER = GWT.create(OrderXmlReader.class);
 
-    @XmlFields(value = @XmlField(name = "amount", value = "@amount"), references = @XmlIdRef(name = "product", value = "@ref"))
+    // @formatter:off
+    @XmlFields(
+        value = @XmlField(name = "amount", value = "@amount"), 
+        references = @XmlIdRef(name = "product", value = "@ref"))
+    // @formatter:on
     public interface OrderItemXmlReader extends XmlReader<OrderItem>
     {
     }
 
     public static final OrderItemXmlReader ORDER_ITEM_XML_READER = GWT.create(OrderItemXmlReader.class);
 
-    // ------------------------------------------------------------ xml readers
+    // ------------------------------------------------------------ xml writers
 
-    @XmlFields({@XmlField(name = "customers", value = "customers/customer"),
-            @XmlField(name = "products", value = "products/product"), @XmlField(name = "order")})
+    // @formatter:off
+    @XmlFields({
+        @XmlField(name = "customers", value = "customers/customer"),
+        @XmlField(name = "products", value = "products/product"), 
+        @XmlField(name = "order")})
+    // @formatter:on
     public interface ShopXmlWriter extends XmlWriter<Shop>
     {
     }
 
     public static final ShopXmlWriter SHOP_XML_WRITER = GWT.create(ShopXmlWriter.class);
 
-    @XmlFields(id = @XmlId(name = "id", value = "id/text()"), value = {@XmlField(name = "firstname"),
+    // @formatter:off
+    @XmlFields(
+        id = @XmlId(name = "id", value = "id/text()"), 
+        value = {
+            @XmlField(name = "firstname"),
             @XmlField(name = "surname")})
+    // @formatter:on
     public interface CustomerXmlWriter extends XmlWriter<Customer>
     {
     }
 
     public static final CustomerXmlWriter CUSTOMER_XML_WRITER = GWT.create(CustomerXmlWriter.class);
 
-    @XmlFields(id = @XmlId(name = "id"), value = {@XmlField(name = "name"), @XmlField(name = "price")})
+    // @formatter:off
+    @XmlFields(
+        id = @XmlId(name = "id"), 
+        value = {
+            @XmlField(name = "name"), 
+            @XmlField(name = "price")})
+    // @formatter:on
     public interface ProductXmlWriter extends XmlWriter<Product>
     {
     }
 
     public static final ProductXmlWriter PRODUCT_XML_WRITER = GWT.create(ProductXmlWriter.class);
 
-    @XmlFields(value = {@XmlField(name = "date", value = "@date", format = "dd.MM.yyyy"),
-            @XmlField(name = "items", value = "items/item")}, references = @XmlIdRef(name = "customer", value = "customer/@ref"))
+    // @formatter:off
+    @XmlFields(
+        value = {
+            @XmlField(name = "date", value = "@date", format = "dd.MM.yyyy"),
+            @XmlField(name = "items", value = "items/item")}, 
+        references = @XmlIdRef(name = "customer", value = "customer/@ref"))
+    // @formatter:on
     public interface OrderXmlWriter extends XmlWriter<Order>
     {
     }
 
     public static final OrderXmlWriter ORDER_XML_WRITER = GWT.create(OrderXmlWriter.class);
 
-    @XmlFields(value = @XmlField(name = "amount", value = "@amount"), references = @XmlIdRef(name = "product", value = "@ref"))
+    // @formatter:off
+    @XmlFields(
+        value = @XmlField(name = "amount", value = "@amount"), 
+        references = @XmlIdRef(name = "product", value = "@ref"))
+    // @formatter:on
     public interface OrderItemXmlWriter extends XmlWriter<OrderItem>
     {
     }
