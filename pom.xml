@@ -111,6 +111,12 @@
     </repositories>
     <pluginRepositories>
         <pluginRepository>
+            <!-- For the patched GWT-Maven Plugin -->
+            <id>piriti-plugin-repo</id>
+            <name>Piriti Plugin Repository</name>
+            <url>http://piriti.googlecode.com/svn/repository</url>
+        </pluginRepository>
+        <pluginRepository>
             <id>maven-gae-plugin-repo</id>
             <name>Maven Google App Engine Repository</name>
             <url>http://maven-gae-plugin.googlecode.com/svn/repository/</url>
