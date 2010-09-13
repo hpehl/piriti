@@ -1,8 +1,8 @@
 package name.pehl.piriti.sample.server.servlet;
 
 import name.pehl.piriti.sample.server.rest.PiritiSampleRouter;
-import name.pehl.taoki.rest.GuiceRouter;
-import name.pehl.taoki.rest.RestletServlet;
+import name.pehl.taoki.GuiceRouter;
+import name.pehl.taoki.RestletServlet;
 
 import org.restlet.Context;
 

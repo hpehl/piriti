@@ -1,6 +1,6 @@
 package name.pehl.piriti.sample.server.rest;
 
-import name.pehl.taoki.rest.GuiceRouter;
+import name.pehl.taoki.GuiceRouter;
 
 import org.restlet.Context;
 
