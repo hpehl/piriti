@@ -32,11 +32,11 @@ public class Book
 
     public static final BookJsonReader JSON_READER = GWT.create(BookJsonReader.class);
 
+    // ---------------------------------------------------- xml reader / writer
+
     public interface BookXmlReader extends XmlReader<Book>
     {
     }
-
-    // ---------------------------------------------------- xml reader / writer
 
     public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
 
