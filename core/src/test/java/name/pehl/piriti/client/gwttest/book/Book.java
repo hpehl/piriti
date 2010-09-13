@@ -20,31 +20,23 @@ public class Book
 {
     // --------------------------------------------------- json reader / writer
 
-    public interface BookJsonWriter extends JsonWriter<Book>
-    {
-    }
-
+    // @formatter:off
+    public interface BookJsonWriter extends JsonWriter<Book> {}
     public static final BookJsonWriter JSON_WRITER = GWT.create(BookJsonWriter.class);
 
-    public interface BookJsonReader extends JsonReader<Book>
-    {
-    }
-
+    public interface BookJsonReader extends JsonReader<Book> {}
     public static final BookJsonReader JSON_READER = GWT.create(BookJsonReader.class);
+    // @formatter:on
 
     // ---------------------------------------------------- xml reader / writer
 
-    public interface BookXmlReader extends XmlReader<Book>
-    {
-    }
-
+    // @formatter:off
+    public interface BookXmlReader extends XmlReader<Book> {}
     public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
 
-    public interface BookXmlWriter extends XmlWriter<Book>
-    {
-    }
-
+    public interface BookXmlWriter extends XmlWriter<Book> {}
     public static final BookXmlWriter XML_WRITER = GWT.create(BookXmlWriter.class);
+    // @formatter:on
 
     // ------------------------------------------------------------------- data
 
