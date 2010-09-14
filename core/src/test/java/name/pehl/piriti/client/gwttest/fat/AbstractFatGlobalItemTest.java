@@ -197,7 +197,7 @@ public abstract class AbstractFatGlobalItemTest extends AbstractPiritiTest
         assertEquals(2, sni.byteObject.byteValue());
         assertEquals('a', sni.characterPrimitive);
         assertEquals('b', sni.characterObject.charValue());
-        assertEquals(MY_BIRTHDAY, sni.date);
+        assertDate(MY_BIRTHDAY, sni.date);
         assertEquals(Amount.THREE, sni.amount);
         assertEquals(4.5, sni.doublePrimitive, .05);
         assertEquals(6.7, sni.doubleObject.doubleValue(), .05);
