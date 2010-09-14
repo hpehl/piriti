@@ -10,7 +10,7 @@
     <byteObject>2</byteObject>
     <characterPrimitive>a</characterPrimitive>
     <characterObject>b</characterObject>
-    <date>02.09.1973 11:22:33.000</date>
+    <date>02.09.1973</date>
     <amount>THREE</amount>
     <doublePrimitive>4.5</doublePrimitive>
     <doubleObject>6.7</doubleObject>
@@ -30,7 +30,7 @@
         <byteObject>2</byteObject>
         <characterPrimitive>a</characterPrimitive>
         <characterObject>b</characterObject>
-        <date>02.09.1973 11:22:33.000</date>
+        <date>02.09.1973</date>
         <amount>THREE</amount>
         <doublePrimitive>4.5</doublePrimitive>
         <doubleObject>6.7</doubleObject>
@@ -50,7 +50,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -81,7 +81,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -102,7 +102,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -123,7 +123,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -152,7 +152,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -173,7 +173,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -194,7 +194,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -223,7 +223,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -244,7 +244,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -265,7 +265,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -294,7 +294,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -315,7 +315,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -336,7 +336,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -359,7 +359,7 @@
         <byteObject>2</byteObject>
         <characterPrimitive>a</characterPrimitive>
         <characterObject>b</characterObject>
-        <date>02.09.1973 11:22:33.000</date>
+        <date>02.09.1973</date>
         <amount>THREE</amount>
         <doublePrimitive>4.5</doublePrimitive>
         <doubleObject>6.7</doubleObject>
@@ -390,7 +390,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -410,7 +410,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -441,7 +441,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -462,7 +462,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -483,7 +483,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -512,7 +512,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -533,7 +533,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -554,7 +554,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -583,7 +583,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -604,7 +604,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -625,7 +625,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -654,7 +654,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -675,7 +675,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -696,7 +696,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -719,7 +719,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -739,7 +739,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -770,7 +770,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -791,7 +791,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -812,7 +812,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -841,7 +841,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -862,7 +862,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -883,7 +883,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -912,7 +912,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -933,7 +933,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -954,7 +954,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -983,7 +983,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1004,7 +1004,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1025,7 +1025,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1048,7 +1048,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -1068,7 +1068,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -1099,7 +1099,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1120,7 +1120,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1141,7 +1141,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1170,7 +1170,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1191,7 +1191,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1212,7 +1212,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1241,7 +1241,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1262,7 +1262,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1283,7 +1283,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1312,7 +1312,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1333,7 +1333,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1354,7 +1354,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1379,7 +1379,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -1400,7 +1400,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -1421,7 +1421,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -1450,7 +1450,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -1470,7 +1470,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -1501,7 +1501,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1522,7 +1522,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1543,7 +1543,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1572,7 +1572,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1593,7 +1593,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1614,7 +1614,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1643,7 +1643,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1664,7 +1664,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1685,7 +1685,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1714,7 +1714,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1735,7 +1735,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1756,7 +1756,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1779,7 +1779,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -1799,7 +1799,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -1830,7 +1830,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1851,7 +1851,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1872,7 +1872,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1901,7 +1901,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1922,7 +1922,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1943,7 +1943,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1972,7 +1972,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -1993,7 +1993,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2014,7 +2014,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2043,7 +2043,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2064,7 +2064,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2085,7 +2085,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2108,7 +2108,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -2128,7 +2128,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -2159,7 +2159,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2180,7 +2180,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2201,7 +2201,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2230,7 +2230,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2251,7 +2251,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2272,7 +2272,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2301,7 +2301,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2322,7 +2322,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2343,7 +2343,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2372,7 +2372,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2393,7 +2393,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2414,7 +2414,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2439,7 +2439,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -2460,7 +2460,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -2481,7 +2481,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -2510,7 +2510,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -2530,7 +2530,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -2561,7 +2561,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2582,7 +2582,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2603,7 +2603,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2632,7 +2632,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2653,7 +2653,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2674,7 +2674,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2703,7 +2703,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2724,7 +2724,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2745,7 +2745,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2774,7 +2774,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2795,7 +2795,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2816,7 +2816,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2839,7 +2839,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -2859,7 +2859,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -2890,7 +2890,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2911,7 +2911,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2932,7 +2932,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2961,7 +2961,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -2982,7 +2982,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3003,7 +3003,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3032,7 +3032,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3053,7 +3053,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3074,7 +3074,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3103,7 +3103,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3124,7 +3124,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3145,7 +3145,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3168,7 +3168,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -3188,7 +3188,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -3219,7 +3219,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3240,7 +3240,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3261,7 +3261,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3290,7 +3290,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3311,7 +3311,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3332,7 +3332,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3361,7 +3361,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3382,7 +3382,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3403,7 +3403,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3432,7 +3432,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3453,7 +3453,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3474,7 +3474,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3499,7 +3499,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -3520,7 +3520,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -3541,7 +3541,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -3570,7 +3570,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -3590,7 +3590,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -3621,7 +3621,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3642,7 +3642,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3663,7 +3663,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3692,7 +3692,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3713,7 +3713,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3734,7 +3734,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3763,7 +3763,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3784,7 +3784,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3805,7 +3805,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3834,7 +3834,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3855,7 +3855,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3876,7 +3876,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3899,7 +3899,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -3919,7 +3919,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -3950,7 +3950,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3971,7 +3971,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -3992,7 +3992,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4021,7 +4021,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4042,7 +4042,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4063,7 +4063,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4092,7 +4092,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4113,7 +4113,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4134,7 +4134,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4163,7 +4163,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4184,7 +4184,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4205,7 +4205,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4228,7 +4228,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -4248,7 +4248,7 @@
                 <byteObject>2</byteObject>
                 <characterPrimitive>a</characterPrimitive>
                 <characterObject>b</characterObject>
-                <date>02.09.1973 11:22:33.000</date>
+                <date>02.09.1973</date>
                 <amount>THREE</amount>
                 <doublePrimitive>4.5</doublePrimitive>
                 <doubleObject>6.7</doubleObject>
@@ -4279,7 +4279,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4300,7 +4300,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4321,7 +4321,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4350,7 +4350,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4371,7 +4371,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4392,7 +4392,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4421,7 +4421,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4442,7 +4442,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4463,7 +4463,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4492,7 +4492,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4513,7 +4513,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4534,7 +4534,7 @@
                     <byteObject>2</byteObject>
                     <characterPrimitive>a</characterPrimitive>
                     <characterObject>b</characterObject>
-                    <date>02.09.1973 11:22:33.000</date>
+                    <date>02.09.1973</date>
                     <amount>THREE</amount>
                     <doublePrimitive>4.5</doublePrimitive>
                     <doubleObject>6.7</doubleObject>
@@ -4559,7 +4559,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -4580,7 +4580,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>
@@ -4601,7 +4601,7 @@
             <byteObject>2</byteObject>
             <characterPrimitive>a</characterPrimitive>
             <characterObject>b</characterObject>
-            <date>02.09.1973 11:22:33.000</date>
+            <date>02.09.1973</date>
             <amount>THREE</amount>
             <doublePrimitive>4.5</doublePrimitive>
             <doubleObject>6.7</doubleObject>

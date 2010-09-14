@@ -36,7 +36,7 @@ public abstract class AbstractShopTest extends AbstractPiritiTest
         // Order
         Order order = shop.getOrder();
         assertNotNull(order);
-        assertEquals(_22_11_2010, order.getDate());
+        assertDate(_22_11_2010, order.getDate());
         customer = order.getCustomer();
         assertGarryGourmet(customer);
         List<OrderItem> items = order.getItems();

@@ -4,29 +4,15 @@ import static name.pehl.piriti.client.gwttest.book.BookResources.*;
 
 import java.util.List;
 
-import com.google.gwt.junit.client.GWTTestCase;
+import name.pehl.piriti.gxt.client.gwttest.AbstractPiritiGxtTest;
 
 /**
  * @author $Author$
  * @version $Date$ $Revision: 161
  *          $
  */
-public abstract class AbstractBookTest extends GWTTestCase
+public abstract class AbstractBookTest extends AbstractPiritiGxtTest
 {
-    @Override
-    public String getModuleName()
-    {
-        return "name.pehl.piriti.gxt.PiritiGxtTest";
-    }
-
-
-    @Override
-    protected void gwtSetUp() throws Exception
-    {
-        System.out.println(getClass().getName() + "." + getName() + "()");
-    }
-
-
     protected void assertBook(Book book, boolean withAuthor, boolean withRelated)
     {
         assertNotNull(book);

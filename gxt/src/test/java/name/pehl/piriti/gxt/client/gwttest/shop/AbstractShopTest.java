@@ -4,30 +4,16 @@ import java.util.Date;
 import java.util.Set;
 import java.util.SortedSet;
 
-import com.google.gwt.junit.client.GWTTestCase;
+import name.pehl.piriti.gxt.client.gwttest.AbstractPiritiGxtTest;
 
 /**
  * @author $Author: harald.pehl $
  * @version $Date: 2010-07-16 16:19:21 +0200 (Fr, 16. Jul 2010) $ $Revision: 295
  *          $
  */
-public abstract class AbstractShopTest extends GWTTestCase
+public abstract class AbstractShopTest extends AbstractPiritiGxtTest
 {
     public final static Date _22_11_2010 = new Date(1290380400000l);
-
-
-    @Override
-    public String getModuleName()
-    {
-        return "name.pehl.piriti.gxt.PiritiGxtTest";
-    }
-
-
-    @Override
-    protected void gwtSetUp() throws Exception
-    {
-        System.out.println(getClass().getName() + "." + getName() + "()");
-    }
 
 
     protected void assertShop(Shop shop)
@@ -51,7 +37,7 @@ public abstract class AbstractShopTest extends GWTTestCase
         // Order
         Order order = shop.get("order");
         assertNotNull(order);
-        assertEquals(_22_11_2010, order.get("date"));
+        assertDate(_22_11_2010, (Date) order.get("date"));
         customer = order.get("customer");
         assertGarryGourmet(customer);
         SortedSet<OrderItem> items = order.get("items");

@@ -1,20 +1,20 @@
-package name.pehl.piriti.client.gwttest;
+package name.pehl.piriti.gxt.client.gwttest;
 
 import java.util.Date;
 
 import com.google.gwt.junit.client.GWTTestCase;
 
 /**
- * @author $Author$
- * @version $Date$ $Revision: 629
+ * @author $Author: harald.pehl $
+ * @version $Date: 2010-07-15 15:31:16 +0200 (Do, 15 Jul 2010) $ $Revision: 629
  *          $
  */
-public abstract class AbstractPiritiTest extends GWTTestCase
+public abstract class AbstractPiritiGxtTest extends GWTTestCase
 {
     @Override
     public String getModuleName()
     {
-        return "name.pehl.piriti.PiritiTest";
+        return "name.pehl.piriti.gxt.PiritiGxtTest";
     }
 
 

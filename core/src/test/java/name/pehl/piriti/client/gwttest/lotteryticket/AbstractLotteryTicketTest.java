@@ -37,7 +37,7 @@ public abstract class AbstractLotteryTicketTest extends AbstractPiritiTest
     protected void assertLotteryTicket(LotteryTicket lt)
     {
         assertNotNull(lt);
-        assertEquals(DATE, lt.date);
+        assertDate(DATE, lt.date);
         assertNotNull(lt.player);
         assertEquals(Gender.MALE, lt.player.gender);
         assertEquals(AGE, lt.player.age);

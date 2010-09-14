@@ -2,30 +2,15 @@ package name.pehl.piriti.gxt.client.gwttest.animal;
 
 import name.pehl.piriti.client.gwttest.animal.Gender;
 import name.pehl.piriti.client.gwttest.animal.Size;
-
-import com.google.gwt.junit.client.GWTTestCase;
+import name.pehl.piriti.gxt.client.gwttest.AbstractPiritiGxtTest;
 
 /**
  * @author $Author$
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractAnimalTest extends GWTTestCase
+public abstract class AbstractAnimalTest extends AbstractPiritiGxtTest
 {
-    @Override
-    public String getModuleName()
-    {
-        return "name.pehl.piriti.gxt.PiritiGxtTest";
-    }
-
-
-    @Override
-    protected void gwtSetUp() throws Exception
-    {
-        System.out.println(getClass().getName() + "." + getName() + "()");
-    }
-
-
     protected void assertBird(Bird bird)
     {
         assertNotNull(bird);

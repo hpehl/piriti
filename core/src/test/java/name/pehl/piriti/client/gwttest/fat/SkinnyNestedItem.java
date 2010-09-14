@@ -72,8 +72,8 @@ public class SkinnyNestedItem
     @XmlField
     public Character characterObject;
 
-    @JsonField
-    @XmlField
+    @JsonField(format = "dd.MM.yyyy")
+    @XmlField(format = "dd.MM.yyyy")
     public Date date;
 
     @JsonField

@@ -1,7 +1,6 @@
 package name.pehl.piriti.client.gwttest.fat;
 
-import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.MY_BIRTHDAY;
-import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.SIZE;
+import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,7 +58,7 @@ public abstract class AbstractFatGlobalItemTest extends AbstractPiritiTest
         assertEquals(2, fgi.byteObject.byteValue());
         assertEquals('a', fgi.characterPrimitive);
         assertEquals('b', fgi.characterObject.charValue());
-        assertEquals(MY_BIRTHDAY, fgi.date);
+        assertDate(MY_BIRTHDAY, fgi.date);
         assertEquals(Amount.THREE, fgi.amount);
         assertEquals(4.5, fgi.doublePrimitive, .05);
         assertEquals(6.7, fgi.doubleObject.doubleValue(), .05);

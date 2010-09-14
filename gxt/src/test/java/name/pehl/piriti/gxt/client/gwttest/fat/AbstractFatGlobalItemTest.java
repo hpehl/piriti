@@ -4,31 +4,25 @@ import static name.pehl.piriti.client.gwttest.fat.FatGlobalItemResources.*;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import name.pehl.piriti.client.gwttest.fat.Amount;
+import name.pehl.piriti.gxt.client.gwttest.AbstractPiritiGxtTest;
 
 import com.extjs.gxt.ui.client.data.ModelData;
-import com.google.gwt.junit.client.GWTTestCase;
 
 /**
  * @author $Author$
  * @version $Date$ $Revision: 237
  *          $
  */
-public abstract class AbstractFatGlobalItemTest extends GWTTestCase
+public abstract class AbstractFatGlobalItemTest extends AbstractPiritiGxtTest
 {
     protected Set<Integer> setOfIntegerObjectsFixture;
     protected Set<String> setOfStringsFixture;
-
-
-    @Override
-    public String getModuleName()
-    {
-        return "name.pehl.piriti.gxt.PiritiGxtTest";
-    }
 
 
     @Override
@@ -174,7 +168,7 @@ public abstract class AbstractFatGlobalItemTest extends GWTTestCase
         assertTrue(((Boolean) model.get("booleanObject")).booleanValue());
         assertEquals(2, ((Byte) model.get("byteObject")).byteValue());
         assertEquals('b', ((Character) model.get("characterObject")).charValue());
-        assertEquals(MY_BIRTHDAY, model.get("date"));
+        assertDate(MY_BIRTHDAY, (Date) model.get("date"));
         assertEquals(Amount.THREE, model.get("amount"));
         assertEquals(6.7, ((Double) model.get("doubleObject")).doubleValue(), .05);
         assertEquals(10.11f, ((Float) model.get("floatObject")).floatValue(), .05f);

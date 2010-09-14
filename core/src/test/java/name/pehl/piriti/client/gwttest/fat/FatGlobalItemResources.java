@@ -17,7 +17,7 @@ public interface FatGlobalItemResources extends ClientBundle
 
     int SIZE = 3;
     String ITEMS = "items";
-    Date MY_BIRTHDAY = new Date(115813353000l);
+    Date MY_BIRTHDAY = new Date(115772400000l);
 
     // ------------------------------------------------------- deferred binding
 
