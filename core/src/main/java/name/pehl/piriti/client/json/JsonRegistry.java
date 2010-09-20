@@ -1,5 +1,10 @@
 package name.pehl.piriti.client.json;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.inject.Singleton;
+
 /**
  * A registry for {@linkplain JsonReader}s and {@linkplain JsonWriter}s. All
  * readers and writers are registered against this registry. Thereby references
@@ -8,8 +13,20 @@ package name.pehl.piriti.client.json;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 8 $
  */
-public interface JsonRegistry
+@Singleton
+public final class JsonRegistry
 {
+    private final Map<Class<?>, JsonReader<?>> readers;
+    private final Map<Class<?>, JsonWriter<?>> writers;
+
+
+    public JsonRegistry()
+    {
+        readers = new HashMap<Class<?>, JsonReader<?>>();
+        writers = new HashMap<Class<?>, JsonWriter<?>>();
+    }
+
+
     /**
      * Registers the {@link JsonReader} for the specified type
      * 
@@ -20,7 +37,10 @@ public interface JsonRegistry
      * @param reader
      *            The {@link JsonReader}
      */
-    <T> void register(Class<T> clazz, JsonReader<T> reader);
+    public <T> void register(Class<T> clazz, JsonReader<T> reader)
+    {
+        readers.put(clazz, reader);
+    }
 
 
     /**
@@ -33,7 +53,10 @@ public interface JsonRegistry
      * @param writer
      *            The {@link JsonWriter}
      */
-    <T> void register(Class<T> clazz, JsonWriter<T> writer);
+    public <T> void register(Class<T> clazz, JsonWriter<T> writer)
+    {
+        writers.put(clazz, writer);
+    }
 
 
     /**
@@ -44,7 +67,11 @@ public interface JsonRegistry
      * @return The {@link JsonReader} or {@code null} if no {@link JsonReader}
      *         is found
      */
-    <T> JsonReader<T> getReader(Class<T> clazz);
+    @SuppressWarnings("unchecked")
+    public <T> JsonReader<T> getReader(Class<T> clazz)
+    {
+        return (JsonReader<T>) readers.get(clazz);
+    }
 
 
     /**
@@ -55,5 +82,9 @@ public interface JsonRegistry
      * @return The {@link JsonWriter} or {@code null} if no {@link JsonWriter}
      *         is found
      */
-    <T> JsonWriter<T> getWriter(Class<T> clazz);
+    @SuppressWarnings("unchecked")
+    public <T> JsonWriter<T> getWriter(Class<T> clazz)
+    {
+        return (JsonWriter<T>) writers.get(clazz);
+    }
 }

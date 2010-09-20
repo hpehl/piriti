@@ -1,7 +1,6 @@
 package name.pehl.piriti.client.converter;
 
 import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
 
 /**
  * Gin module to bind the default implementation for {@link ConverterRegistry}.
@@ -12,14 +11,13 @@ import com.google.inject.Singleton;
 public class ConverterModule extends AbstractGinModule
 {
     /**
-     * Binds {@link ConverterRegistry} to {@link ConverterRegistryImpl} in
-     * {@link Singleton} scope.
+     * Binds the {@link ConverterRegistry}.
      * 
      * @see com.google.gwt.inject.client.AbstractGinModule#configure()
      */
     @Override
     protected void configure()
     {
-        bind(ConverterRegistry.class).to(ConverterRegistryImpl.class).in(Singleton.class);
+        bind(ConverterRegistry.class);
     }
 }

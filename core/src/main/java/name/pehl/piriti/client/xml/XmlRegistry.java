@@ -1,5 +1,10 @@
 package name.pehl.piriti.client.xml;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.inject.Singleton;
+
 /**
  * A registry for {@linkplain XmlReader}s and {@linkplain XmlWriter}s. All
  * readers and writers are registered against this registry. Thereby references
@@ -8,8 +13,20 @@ package name.pehl.piriti.client.xml;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 8 $
  */
-public interface XmlRegistry
+@Singleton
+public final class XmlRegistry
 {
+    private final Map<Class<?>, XmlReader<?>> readers;
+    private final Map<Class<?>, XmlWriter<?>> writers;
+
+
+    public XmlRegistry()
+    {
+        readers = new HashMap<Class<?>, XmlReader<?>>();
+        writers = new HashMap<Class<?>, XmlWriter<?>>();
+    }
+
+
     /**
      * Registers the {@link XmlReader} for the specified type
      * 
@@ -20,7 +37,10 @@ public interface XmlRegistry
      * @param reader
      *            The {@link XmlReader}
      */
-    <T> void register(Class<T> clazz, XmlReader<T> reader);
+    public <T> void register(Class<T> clazz, XmlReader<T> reader)
+    {
+        readers.put(clazz, reader);
+    }
 
 
     /**
@@ -33,7 +53,10 @@ public interface XmlRegistry
      * @param writer
      *            The {@link XmlWriter}
      */
-    <T> void register(Class<T> clazz, XmlWriter<T> writer);
+    public <T> void register(Class<T> clazz, XmlWriter<T> writer)
+    {
+        writers.put(clazz, writer);
+    }
 
 
     /**
@@ -44,7 +67,11 @@ public interface XmlRegistry
      * @return The {@link XmlReader} or {@code null} if no {@link XmlReader} is
      *         found
      */
-    <T> XmlReader<T> getReader(Class<T> clazz);
+    @SuppressWarnings("unchecked")
+    public <T> XmlReader<T> getReader(Class<T> clazz)
+    {
+        return (XmlReader<T>) readers.get(clazz);
+    }
 
 
     /**
@@ -55,5 +82,9 @@ public interface XmlRegistry
      * @return The {@link XmlWriter} or {@code null} if no {@link XmlWriter} is
      *         found
      */
-    <T> XmlWriter<T> getWriter(Class<T> clazz);
+    @SuppressWarnings("unchecked")
+    public <T> XmlWriter<T> getWriter(Class<T> clazz)
+    {
+        return (XmlWriter<T>) writers.get(clazz);
+    }
 }

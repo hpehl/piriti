@@ -14,15 +14,15 @@ import com.google.inject.Singleton;
 public class JsonModule extends AbstractGinModule
 {
     /**
-     * Binds {@link JsonRegistry} to {@link JsonRegistryImpl} in
-     * {@link Singleton} scope.
+     * Binds the {@link JsonRegistry} and the {@link NativeJsonParserImpl} as
+     * {@link JsonParser}.
      * 
      * @see com.google.gwt.inject.client.AbstractGinModule#configure()
      */
     @Override
     protected void configure()
     {
-        bind(JsonRegistry.class).to(JsonRegistryImpl.class).in(Singleton.class);
+        bind(JsonRegistry.class);
         bind(JsonParser.class).to(NativeJsonParserImpl.class).in(Singleton.class);
     }
 }

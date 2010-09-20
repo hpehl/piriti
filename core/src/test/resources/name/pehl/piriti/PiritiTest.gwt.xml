@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
 <module>
-    <!--
-        $LastChangedBy: harald.pehl 
-        $LastChangedRevision: 138 $
-     -->
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 138 $ -->
     <inherits name="com.google.gwt.inject.Inject" />
     <inherits name="com.google.gwt.json.JSON" />
     <inherits name="com.google.gwt.resources.Resources" />
@@ -37,4 +34,8 @@
     <generate-with class="name.pehl.piriti.rebind.xml.XmlWriterGenerator">
         <when-type-assignable class="name.pehl.piriti.client.xml.XmlWriter" />
     </generate-with>
+
+    <!-- GIN configuration -->
+    <define-configuration-property name="gin.ginjector" is-multi-valued="false" />
+    <set-configuration-property name="gin.ginjector" value="name.pehl.piriti.client.PiritiGinjector" />
 </module>

@@ -63,9 +63,9 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         super.createConstructorBody(writer);
-        writer.write("this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();");
+        writer.write("this.jsonRegistry = PiritiGinjector.INJECTOR.getJsonRegistry();");
         writer.write("this.jsonRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
-        writer.write("this.jsonParser = JsonGinjector.INJECTOR.getJsonParser();");
+        writer.write("this.jsonParser = PiritiGinjector.INJECTOR.getJsonParser();");
     }
 
 
@@ -75,7 +75,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     {
         int counter = 0;
         Map<String, FieldAnnotation<JsonField>> fields = findFieldAnnotations();
-        for (Iterator<FieldAnnotation<JsonField>> iter = fields.values().iterator(); iter.hasNext(); )
+        for (Iterator<FieldAnnotation<JsonField>> iter = fields.values().iterator(); iter.hasNext();)
         {
             FieldAnnotation<JsonField> fieldAnnotation = iter.next();
             String jsonPath = calculateJsonPath(fieldAnnotation.field, fieldAnnotation.annotation);

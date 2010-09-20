@@ -142,6 +142,7 @@ public abstract class AbstractCreator
         writer.write("import java.util.List;");
         writer.write("import java.util.Map;");
         writer.write("import java.util.Set;");
+        writer.write("import name.pehl.piriti.client.PiritiGinjector;");
         writer.write("import name.pehl.piriti.client.converter.*;");
     }
 
@@ -221,7 +222,7 @@ public abstract class AbstractCreator
      */
     protected void createConstructorBody(IndentedWriter writer)
     {
-        writer.write("this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();");
+        writer.write("this.converterRegistry = PiritiGinjector.INJECTOR.getConverterRegistry();");
     }
 
 

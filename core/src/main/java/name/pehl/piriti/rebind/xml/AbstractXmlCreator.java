@@ -75,7 +75,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         super.createConstructorBody(writer);
-        writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
+        writer.write("this.xmlRegistry = PiritiGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
     }
 

@@ -1,7 +1,6 @@
 package name.pehl.piriti.client.xml;
 
 import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
 
 /**
  * Gin module to bind the default implementation for {@link XmlRegistry}.
@@ -12,14 +11,13 @@ import com.google.inject.Singleton;
 public class XmlModule extends AbstractGinModule
 {
     /**
-     * Binds {@link XmlRegistry} to {@link XmlRegistryImpl} in {@link Singleton}
-     * scope.
+     * Binds the {@link XmlRegistry}.
      * 
      * @see com.google.gwt.inject.client.AbstractGinModule#configure()
      */
     @Override
     protected void configure()
     {
-        bind(XmlRegistry.class).to(XmlRegistryImpl.class).in(Singleton.class);
+        bind(XmlRegistry.class);
     }
 }
