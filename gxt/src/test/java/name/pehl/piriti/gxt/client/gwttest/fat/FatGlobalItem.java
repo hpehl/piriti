@@ -34,7 +34,7 @@ import com.google.gwt.core.client.GWT;
     @JsonField(name = "longObject", type = Long.class),
     @JsonField(name = "shortObject", type = Short.class),
     @JsonField(name = "string", type = String.class),
-    @JsonField(name = "stringAttribute", type = String.class),
+    @JsonField(name = "stringAttribute", path="customNameForStringAttribute", type = String.class),
     @JsonField(name = "fatGlobalItem", type = FatGlobalItem.class),
     @JsonField(name = "skinnyNestedItem", type = SkinnyNestedItem.class),
     @JsonField(name = "arrayOfIntegerObjects", type = Integer.class, array = true),

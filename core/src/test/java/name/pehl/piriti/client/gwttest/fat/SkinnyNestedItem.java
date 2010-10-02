@@ -19,32 +19,23 @@ public class SkinnyNestedItem
 {
     // ------------------------------------------------------------ json reader
 
-    interface SkinnyNestedItemJsonReader extends JsonReader<SkinnyNestedItem>
-    {
-    }
-
+    // @formatter:off
+    interface SkinnyNestedItemJsonReader extends JsonReader<SkinnyNestedItem> {}
     public static final SkinnyNestedItemJsonReader SOME_FANCY_JSON_NAME = GWT.create(SkinnyNestedItemJsonReader.class);
 
-    interface SkinnyNestedItemJsonWriter extends JsonWriter<SkinnyNestedItem>
-    {
-    }
-
-    public static final SkinnyNestedItemJsonWriter ANOTHER_FANCY_JSON_NAME = GWT
-            .create(SkinnyNestedItemJsonWriter.class);
+    interface SkinnyNestedItemJsonWriter extends JsonWriter<SkinnyNestedItem> {}
+    public static final SkinnyNestedItemJsonWriter ANOTHER_FANCY_JSON_NAME = GWT.create(SkinnyNestedItemJsonWriter.class);
+    // @formatter:off
 
     // ------------------------------------------------------------- xml reader
 
-    interface SkinnyNestedItemXmlReader extends XmlReader<SkinnyNestedItem>
-    {
-    }
-
+    // @formatter:off
+    interface SkinnyNestedItemXmlReader extends XmlReader<SkinnyNestedItem> {}
     public static final SkinnyNestedItemXmlReader SOME_FANCY_XML_NAME = GWT.create(SkinnyNestedItemXmlReader.class);
 
-    interface SkinnyNestedItemXmlWriter extends XmlWriter<SkinnyNestedItem>
-    {
-    }
-
+    interface SkinnyNestedItemXmlWriter extends XmlWriter<SkinnyNestedItem> {}
     public static final SkinnyNestedItemXmlWriter ANOTHER_FANCY_XML_NAME = GWT.create(SkinnyNestedItemXmlWriter.class);
+    // @formatter:on
 
     // -------------------------------------------------------- private members
 
@@ -124,7 +115,7 @@ public class SkinnyNestedItem
     @XmlField
     public String string;
 
-    @JsonField
+    @JsonField("customNameForStringAttribute")
     @XmlField("string/@attribute")
     public String stringAttribute;
 }

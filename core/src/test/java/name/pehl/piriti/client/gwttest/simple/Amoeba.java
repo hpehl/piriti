@@ -18,31 +18,23 @@ public class Amoeba
 {
     // --------------------------------------------------- json reader / writer
 
-    public interface AmoebaJsonWriter extends JsonWriter<Amoeba>
-    {
-    }
-
+    // @formatter:off
+    public interface AmoebaJsonWriter extends JsonWriter<Amoeba> {}
     public static final AmoebaJsonWriter JSON_WRITER = GWT.create(AmoebaJsonWriter.class);
 
-    public interface AmoebaJsonReader extends JsonReader<Amoeba>
-    {
-    }
-
+    public interface AmoebaJsonReader extends JsonReader<Amoeba> {}
     public static final AmoebaJsonReader JSON_READER = GWT.create(AmoebaJsonReader.class);
+    // @formatter:on
 
     // ---------------------------------------------------- xml reader / writer
 
-    public interface AmoebaXmlReader extends XmlReader<Amoeba>
-    {
-    }
-
+    // @formatter:off
+    public interface AmoebaXmlReader extends XmlReader<Amoeba> {}
     public static final AmoebaXmlReader XML_READER = GWT.create(AmoebaXmlReader.class);
 
-    public interface AmoebaXmlWriter extends XmlWriter<Amoeba>
-    {
-    }
-
+    public interface AmoebaXmlWriter extends XmlWriter<Amoeba> {}
     public static final AmoebaXmlWriter XML_WRITER = GWT.create(AmoebaXmlWriter.class);
+    // @formatter:on
 
     // ------------------------------------------------------------------- data
 
@@ -50,10 +42,15 @@ public class Amoeba
     @XmlField
     String name;
 
+    @JsonField("__size__")
+    @XmlField("__size__")
+    int size;
+
 
     public Amoeba()
     {
         this.name = "blueprint";
+        this.size = 0;
     }
 
 
@@ -62,7 +59,7 @@ public class Amoeba
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
         return result;
     }
 
@@ -116,5 +113,17 @@ public class Amoeba
     public void setName(String name)
     {
         this.name = name;
+    }
+
+
+    public int getSize()
+    {
+        return size;
+    }
+
+
+    public void setSize(int size)
+    {
+        this.size = size;
     }
 }

@@ -27,5 +27,6 @@ public abstract class AbstractAmoebaTest extends AbstractPiritiTest
     {
         assertNotNull(amoeba);
         assertEquals(name, amoeba.getName());
+        assertEquals(1, amoeba.getSize());
     }
 }

@@ -2,11 +2,14 @@
 <amoebas>
     <amoeba>
         <name>Alpha</name>
+        <__size__>1</__size__>
     </amoeba>
     <amoeba>
         <name>Bravo</name>
+        <__size__>1</__size__>
     </amoeba>
     <amoeba>
         <name>Charlie</name>
+        <__size__>1</__size__>
     </amoeba>
 </amoebas>

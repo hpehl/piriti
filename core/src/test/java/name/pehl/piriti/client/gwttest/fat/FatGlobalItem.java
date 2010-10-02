@@ -23,31 +23,23 @@ public class FatGlobalItem
 {
     // ------------------------------------------------------------ json reader
 
-    public interface FatGlobalItemJsonReader extends JsonReader<FatGlobalItem>
-    {
-    }
-
+    // @formatter:off
+    public interface FatGlobalItemJsonReader extends JsonReader<FatGlobalItem> {}
     public static final FatGlobalItemJsonReader JSON_READER = GWT.create(FatGlobalItemJsonReader.class);
 
-    public interface FatGlobalItemJsonWriter extends JsonWriter<FatGlobalItem>
-    {
-    }
-
+    public interface FatGlobalItemJsonWriter extends JsonWriter<FatGlobalItem> {}
     public static final FatGlobalItemJsonWriter JSON_WRITER = GWT.create(FatGlobalItemJsonWriter.class);
+    // @formatter:on
 
     // ------------------------------------------------------------- xml reader
 
-    public interface FatGlobalItemXmlReader extends XmlReader<FatGlobalItem>
-    {
-    }
-
+    // @formatter:off
+    public interface FatGlobalItemXmlReader extends XmlReader<FatGlobalItem> {}
     public static final FatGlobalItemXmlReader XML_READER = GWT.create(FatGlobalItemXmlReader.class);
 
-    public interface FatGlobalItemXmlWriter extends XmlWriter<FatGlobalItem>
-    {
-    }
-
+    public interface FatGlobalItemXmlWriter extends XmlWriter<FatGlobalItem> {}
     public static final FatGlobalItemXmlWriter XML_WRITER = GWT.create(FatGlobalItemXmlWriter.class);
+    // @formatter:on
 
     // ------------------------------------------ primitives and simple objects
 
@@ -127,7 +119,7 @@ public class FatGlobalItem
     @XmlField
     public String string;
 
-    @JsonField
+    @JsonField("customNameForStringAttribute")
     @XmlField("string/@attribute")
     public String stringAttribute;
 

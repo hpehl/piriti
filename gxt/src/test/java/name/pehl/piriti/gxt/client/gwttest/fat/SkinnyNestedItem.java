@@ -30,7 +30,7 @@ import com.google.gwt.core.client.GWT;
     @JsonField(name = "longObject", type = Long.class),
     @JsonField(name = "shortObject", type = Short.class), 
     @JsonField(name = "string", type = String.class),
-    @JsonField(name = "stringAttribute", type = String.class)})
+    @JsonField(name = "stringAttribute", path="customNameForStringAttribute", type = String.class)})
 @XmlFields({
     @XmlField(name = "booleanObject", type = Boolean.class),
     @XmlField(name = "byteObject", type = Byte.class),

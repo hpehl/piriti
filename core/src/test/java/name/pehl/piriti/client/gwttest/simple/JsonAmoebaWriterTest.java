@@ -27,7 +27,7 @@ public class JsonAmoebaWriterTest extends AbstractAmoebaTest
     public void testWriteEmptyAmoeba()
     {
         String json = Amoeba.JSON_WRITER.toJson(new Amoeba());
-        assertEquals("{\"name\":\"blueprint\"}", json);
+        assertEquals("{\"name\":\"blueprint\",\"__size__\":0}", json);
     }
 
 
@@ -35,8 +35,9 @@ public class JsonAmoebaWriterTest extends AbstractAmoebaTest
     {
         Amoeba alpha = new Amoeba();
         alpha.setName("Alpha");
+        alpha.setSize(1);
         String json = Amoeba.JSON_WRITER.toJson(alpha);
-        assertEquals("{\"name\":\"Alpha\"}", json);
+        assertEquals("{\"name\":\"Alpha\",\"__size__\":1}", json);
     }
 
 
@@ -45,7 +46,7 @@ public class JsonAmoebaWriterTest extends AbstractAmoebaTest
         Amoeba alpha = new Amoeba();
         alpha.setName(null);
         String json = Amoeba.JSON_WRITER.toJson(alpha);
-        assertEquals("{\"name\":null}", json);
+        assertEquals("{\"name\":null,\"__size__\":0}", json);
     }
 
 
@@ -80,17 +81,22 @@ public class JsonAmoebaWriterTest extends AbstractAmoebaTest
         List<Amoeba> amoebas = new ArrayList<Amoeba>();
         Amoeba a = new Amoeba();
         a.setName("Alpha");
+        a.setSize(1);
         amoebas.add(a);
         Amoeba b = new Amoeba();
         b.setName("Bravo");
+        b.setSize(1);
         amoebas.add(b);
         Amoeba c = new Amoeba();
         c.setName("Charlie");
+        c.setSize(1);
         amoebas.add(c);
 
         json = Amoeba.JSON_WRITER.toJson(amoebas, NULL_STRING);
         assertNull(json);
         json = Amoeba.JSON_WRITER.toJson(amoebas, "amoebas");
-        assertEquals("{\"amoebas\":[{\"name\":\"Alpha\"},{\"name\":\"Bravo\"},{\"name\":\"Charlie\"}]}", json);
+        assertEquals(
+                "{\"amoebas\":[{\"name\":\"Alpha\",\"__size__\":1},{\"name\":\"Bravo\",\"__size__\":1},{\"name\":\"Charlie\",\"__size__\":1}]}",
+                json);
     }
 }

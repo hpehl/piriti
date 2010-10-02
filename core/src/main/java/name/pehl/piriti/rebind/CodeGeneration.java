@@ -298,7 +298,7 @@ public final class CodeGeneration
      */
     public static void appendJsonKey(IndentedWriter writer, FieldContext fieldContext)
     {
-        writer.write("%s.append(\"\\\"%s\\\":\");", fieldContext.getBuilderVariable(), fieldContext.getFieldName());
+        writer.write("%s.append(\"\\\"%s\\\":\");", fieldContext.getBuilderVariable(), fieldContext.getPath());
     }
 
 

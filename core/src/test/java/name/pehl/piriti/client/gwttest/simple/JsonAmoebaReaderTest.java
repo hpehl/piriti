@@ -101,6 +101,7 @@ public class JsonAmoebaReaderTest extends AbstractAmoebaTest
     {
         JSONObject json = new JSONObject();
         json.put("name", new JSONString(AmoebaResources.ALPHA));
+        json.put("__size__", new JSONNumber(1));
         Amoeba amoeba = Amoeba.JSON_READER.read(json);
         assertAmoeba(amoeba, AmoebaResources.ALPHA);
     }
@@ -378,10 +379,13 @@ public class JsonAmoebaReaderTest extends AbstractAmoebaTest
     {
         JSONObject a = new JSONObject();
         a.put("name", new JSONString("Alpha"));
+        a.put("__size__", new JSONNumber(1));
         JSONObject b = new JSONObject();
         b.put("name", new JSONString("Bravo"));
+        b.put("__size__", new JSONNumber(1));
         JSONObject c = new JSONObject();
         c.put("name", new JSONString("Charlie"));
+        c.put("__size__", new JSONNumber(1));
         JSONArray array = new JSONArray();
         array.set(0, a);
         array.set(1, b);
@@ -475,10 +479,13 @@ public class JsonAmoebaReaderTest extends AbstractAmoebaTest
     {
         JSONObject a = new JSONObject();
         a.put("name", new JSONString("Alpha"));
+        a.put("__size__", new JSONNumber(1));
         JSONObject b = new JSONObject();
         b.put("name", new JSONString("Bravo"));
+        b.put("__size__", new JSONNumber(1));
         JSONObject c = new JSONObject();
         c.put("name", new JSONString("Charlie"));
+        c.put("__size__", new JSONNumber(1));
         JSONArray array = new JSONArray();
         array.set(0, a);
         array.set(1, b);
@@ -502,6 +509,6 @@ public class JsonAmoebaReaderTest extends AbstractAmoebaTest
     public void testWriteEmptyAmoeba()
     {
         String json = Amoeba.JSON_WRITER.toJson(new Amoeba());
-        assertEquals("{\"name\":\"blueprint\"}", json);
+        assertEquals("{\"name\":\"blueprint\",\"__size__\":0}", json);
     }
 }
