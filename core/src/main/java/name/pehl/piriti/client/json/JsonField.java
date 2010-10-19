@@ -6,16 +6,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import name.pehl.piriti.client.converter.Converter;
+import name.pehl.piriti.client.converter.NoopConverter;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONString;
 
 /**
  * Annotation for mapping JSON data to POJO fields. The JSON data is selected by
  * a "path" expression (the key of the JSON data) and converted if necessary to
- * the type of the annotated field. For some types you can specify a format
- * which is used when converting the JSON data to the fields type.
+ * the type of the annotated field. For some types you can specify a format and
+ * a custom converter which is used to parse / serialize the JSON data to / from
+ * the fields type.
  * <p>
  * Please note that the annotated fields must not be private!
  * <p>
@@ -25,21 +26,25 @@ import com.google.gwt.json.client.JSONString;
  * <th>Type</th>
  * <th>Default path expression</th>
  * <th>Format options</th>
+ * <th>Converter options</th>
  * </tr>
  * <tr>
  * <td>boolean, Boolean</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>byte, Byte</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>char, Character</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>java.util.Date</td>
@@ -48,68 +53,68 @@ import com.google.gwt.json.client.JSONString;
  * {@linkplain name.pehl.piriti.client.converter.DateConverter#DEFAULT_FORMAT
  * default format} is used. Otherwise must be a valid date format as described
  * by {@link DateTimeFormat}</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>double, Double</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber}, otherwise the JSON data is expected to be a
- * {@link JSONString} and the format must be a valid number format as described
- * by {@link NumberFormat}</td>
+ * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>float, Float</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber}, otherwise the JSON data is expected to be a
- * {@link JSONString} and the format must be a valid number format as described
- * by {@link NumberFormat}</td>
+ * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>int, Integer</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber}, otherwise the JSON data is expected to be a
- * {@link JSONString} and the format must be a valid number format as described
- * by {@link NumberFormat}</td>
+ * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>long, Long</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If no format is specified the JSON data is expected to be a
- * {@link JSONNumber}, otherwise the JSON data is expected to be a
- * {@link JSONString} and the format must be a valid number format as described
- * by {@link NumberFormat}</td>
+ * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>short, Short</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>String</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>Enums</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>All types for which a {@link JsonReader} is registered</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>Arrays of the above types</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If a format is specified it is applied for all array elements.</td>
+ * <td>If a format is specified it is applied to all array elements.</td>
+ * <td>If a custom converter is specified it is applied to all array elements.</td>
  * </tr>
  * <tr>
  * <td>Typed collections of the above types</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If a format is specified it is applied for all collection elements.</td>
+ * <td>If a format is specified it is applied to all collection elements.</td>
+ * <td>If a custom converter is specified it is applied to all collection
+ * elements.</td>
  * </tr>
  * </table>
  * <p>
@@ -159,4 +164,15 @@ public @interface JsonField
      * @return
      */
     String format() default "";
+
+
+    /**
+     * A custom converter which is used for the parsing and serialization of the
+     * json value. Defaults to {@link NoopConverter}, which means no custom
+     * converter should be used.
+     * 
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    Class<? extends Converter> converter() default NoopConverter.class;
 }

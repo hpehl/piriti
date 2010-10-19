@@ -6,14 +6,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import name.pehl.piriti.client.converter.Converter;
+import name.pehl.piriti.client.converter.NoopConverter;
+
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 
 /**
  * Annotation for mapping XML data to POJO fields. The XML is selected by an
  * XPath expression and converted if necessary to the type of the annotated
- * field. For some types you can specify a format which is used when converting
- * the XML data to the fields type.
+ * field.For some types you can specify a format and a custom converter which is
+ * used to parse / serialize the XML data to / from the fields type.
  * <p>
  * Please note that the annotated fields must not be private!
  * <p>
@@ -23,21 +26,25 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <th>Type</th>
  * <th>Default XPath expression</th>
  * <th>Format options</th>
+ * <th>Converter options</th>
  * </tr>
  * <tr>
  * <td>boolean, Boolean</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>byte, Byte</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>char, Character</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>java.util.Date</td>
@@ -46,6 +53,7 @@ import com.google.gwt.i18n.client.NumberFormat;
  * {@linkplain name.pehl.piriti.client.converter.DateConverter#DEFAULT_FORMAT
  * default format} is used. Otherwise must be a valid date format as described
  * by {@link DateTimeFormat}</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>double, Double</td>
@@ -53,6 +61,7 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>If no format is specified the XML data is converted using
  * {@link Double#parseDouble(String)}. Otherwise must be a valid number format
  * as described by {@link NumberFormat}</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>float, Float</td>
@@ -60,6 +69,7 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>If no format is specified the XML data is converted using
  * {@link Float#parseFloat(String)}. Otherwise must be a valid number format as
  * described by {@link NumberFormat}</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>int, Integer</td>
@@ -67,6 +77,7 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>If no format is specified the XML data is converted using
  * {@link Integer#parseInt(String)}. Otherwise must be a valid number format as
  * described by {@link NumberFormat}</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>long, Long</td>
@@ -74,36 +85,44 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>If no format is specified the XML data is converted using
  * {@link Long#parseLong(String)}. Otherwise must be a valid number format as
  * described by {@link NumberFormat}</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>short, Short</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>String</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>Enums</td>
  * <td>&lt;fieldname&gt;/text()</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>All types for which a {@link XmlReader} is registered</td>
  * <td>&lt;fieldname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
+ * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>Arrays of the above types</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If a format is specified it is applied for all array elements.</td>
+ * <td>If a format is specified it is applied to all array elements.</td>
+ * <td>If a custom converter is specified it is applied to all array elements.</td>
  * </tr>
  * <tr>
  * <td>Typed collections of the above types</td>
  * <td>&lt;fieldname&gt;</td>
- * <td>If a format is specified it is applied for all collection elements.</td>
+ * <td>If a format is specified it is applied to all collection elements.</td>
+ * <td>If a custom converter is specified it is applied to all collection
+ * elements.</td>
  * </tr>
  * </table>
  * <p>
@@ -162,4 +181,15 @@ public @interface XmlField
      * @return
      */
     boolean stripWsnl() default true;
+
+
+    /**
+     * A custom converter which is used for the parsing and serialization of the
+     * json value. Defaults to {@link NoopConverter}, which means no custom
+     * converter should be used.
+     * 
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    Class<? extends Converter> converter() default NoopConverter.class;
 }
