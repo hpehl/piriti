@@ -142,18 +142,18 @@
 
     <properties>
         <!-- Taoki & Totoe -->
-        <taoki.version>0.2</taoki.version>
+        <taoki.version>0.21</taoki.version>
         <totoe.version>0.1</totoe.version>
 
         <!-- GAE & GWT Stuff -->
-        <gae.version>1.3.7</gae.version>
-        <gae-test.version>1.3.7</gae-test.version>
+        <gae.version>1.3.8</gae.version>
+        <gae-test.version>1.3.8</gae-test.version>
         <datanucleus.version>1.1.5</datanucleus.version>
         <gwt.version>2.0.4</gwt.version>
         <gxt.version>2.1.1</gxt.version>
 
         <!-- Restlet -->
-        <restlet.version>2.0-RC4</restlet.version>
+        <restlet.version>2.0.1</restlet.version>
 
         <!-- Logging -->
         <slf4j.version>1.6.1</slf4j.version>
