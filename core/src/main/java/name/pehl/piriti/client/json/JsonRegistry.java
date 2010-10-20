@@ -3,8 +3,6 @@ package name.pehl.piriti.client.json;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.inject.Singleton;
-
 /**
  * A registry for {@linkplain JsonReader}s and {@linkplain JsonWriter}s. All
  * readers and writers are registered against this registry. Thereby references
@@ -13,7 +11,6 @@ import com.google.inject.Singleton;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 8 $
  */
-@Singleton
 public final class JsonRegistry
 {
     private final Map<Class<?>, JsonReader<?>> readers;

@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.inject.Singleton;
-
 /**
  * Registry for converter. Currently these converters are registered:
  * <ul>
@@ -23,7 +21,6 @@ import com.google.inject.Singleton;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 7 $
  */
-@Singleton
 public final class ConverterRegistry
 {
     private final Map<Class<?>, Converter<?>> registry;
@@ -69,8 +66,8 @@ public final class ConverterRegistry
 
 
     /**
-     * {@inheritDoc} If a converter for the specified class is already
-     * registered it is overwritten with the converter.
+     * If a converter for the specified class is already registered it is
+     * overwritten with the converter.
      */
     public <T> void register(Class<T> clazz, Converter<T> converter)
     {
@@ -78,9 +75,6 @@ public final class ConverterRegistry
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @SuppressWarnings("unchecked")
     public <T> Converter<T> get(Class<T> clazz)
     {

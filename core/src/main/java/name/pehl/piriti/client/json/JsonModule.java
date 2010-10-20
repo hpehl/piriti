@@ -22,7 +22,7 @@ public class JsonModule extends AbstractGinModule
     @Override
     protected void configure()
     {
-        bind(JsonRegistry.class);
+        bind(JsonRegistry.class).in(Singleton.class);
         bind(JsonParser.class).to(NativeJsonParserImpl.class).in(Singleton.class);
     }
 }

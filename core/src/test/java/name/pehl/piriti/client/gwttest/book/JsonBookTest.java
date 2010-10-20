@@ -1,6 +1,6 @@
 package name.pehl.piriti.client.gwttest.book;
 
-import name.pehl.piriti.client.json.JsonGinjector;
+import name.pehl.piriti.client.PiritiGinjector;
 import name.pehl.piriti.client.json.JsonParser;
 
 import com.google.gwt.json.client.JSONObject;
@@ -29,7 +29,7 @@ public class JsonBookTest extends AbstractBookTest
         String jsonIn = BookResources.INSTANCE.bookJson().getText();
         Book book = Book.JSON_READER.read(jsonIn);
         String jsonOut = Book.JSON_WRITER.toJson(book);
-        JsonParser jsonParser = JsonGinjector.INJECTOR.getJsonParser();
+        JsonParser jsonParser = PiritiGinjector.INJECTOR.getJsonParser();
         JSONObject jsonObject = jsonParser.parse(jsonOut);
         assertNotNull(jsonObject);
         // TODO More asserts

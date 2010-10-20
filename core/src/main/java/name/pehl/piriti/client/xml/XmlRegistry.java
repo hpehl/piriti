@@ -3,8 +3,6 @@ package name.pehl.piriti.client.xml;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.inject.Singleton;
-
 /**
  * A registry for {@linkplain XmlReader}s and {@linkplain XmlWriter}s. All
  * readers and writers are registered against this registry. Thereby references
@@ -13,7 +11,6 @@ import com.google.inject.Singleton;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 8 $
  */
-@Singleton
 public final class XmlRegistry
 {
     private final Map<Class<?>, XmlReader<?>> readers;

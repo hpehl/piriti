@@ -185,7 +185,7 @@ public @interface XmlField
 
     /**
      * A custom converter which is used for the parsing and serialization of the
-     * json value. Defaults to {@link NoopConverter}, which means no custom
+     * XML data. Defaults to {@link NoopConverter}, which means no custom
      * converter should be used.
      * 
      * @return

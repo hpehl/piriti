@@ -19,11 +19,11 @@ public class Author
     // --------------------------------------------------- json reader / writer
 
     // @formatter:off
-    public interface AuthorJsonWriter extends JsonWriter<Author> {}
-    public static final AuthorJsonWriter JSON_WRITER = GWT.create(AuthorJsonWriter.class);
-
     public interface AuthorJsonReader extends JsonReader<Author> {}
     public static final AuthorJsonReader JSON_READER = GWT.create(AuthorJsonReader.class);
+
+    public interface AuthorJsonWriter extends JsonWriter<Author> {}
+    public static final AuthorJsonWriter JSON_WRITER = GWT.create(AuthorJsonWriter.class);
     // @formatter:on
 
     // ---------------------------------------------------- xml reader / writer

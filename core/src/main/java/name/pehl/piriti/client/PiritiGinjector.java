@@ -10,13 +10,14 @@ import name.pehl.piriti.client.xml.XmlRegistry;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.inject.client.GinModules;
+import com.google.gwt.inject.client.Ginjector;
 
 /**
  * @author $Author:$
  * @version $Date:$ $Revision:$
  */
 @GinModules({ConverterModule.class, JsonModule.class, XmlModule.class})
-public interface PiritiGinjector
+public interface PiritiGinjector extends Ginjector
 {
     /**
      * Injector instance
