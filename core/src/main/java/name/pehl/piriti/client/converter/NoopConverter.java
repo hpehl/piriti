@@ -1,12 +1,13 @@
 package name.pehl.piriti.client.converter;
 
 /**
- * Default noop converter used as default value in
- * {@link name.pehl.piriti.client.json.JsonField JsonField} and
- * {@link name.pehl.piriti.client.xml.XmlField XmlField}.
+ * Noop converter used as default value in
+ * {@link name.pehl.piriti.client.json.JsonField#converter()} and
+ * {@link name.pehl.piriti.client.xml.XmlField#converter()}.
  * 
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision:
+ *          1097 $
  */
 @SuppressWarnings("rawtypes")
 public class NoopConverter implements Converter
