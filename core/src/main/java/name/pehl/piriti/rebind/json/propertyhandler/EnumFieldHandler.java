@@ -1,22 +1,22 @@
-package name.pehl.piriti.rebind.json.fieldhandler;
+package name.pehl.piriti.rebind.json.propertyhandler;
 
-import name.pehl.piriti.client.json.JsonReader;
-import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.fieldhandler.AbstractRegistryFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractEnumFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link FieldHandler} implementation for types with an own {@link JsonReader}.
+ * {@link FieldHandler} for enum types. This implementation reads the JSON data
+ * as string and tries to convert it using <code>enumType.valueOf(String)</code>
+ * .
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
+public class EnumFieldHandler extends AbstractEnumFieldHandler
 {
     /**
      * TODO Javadoc
@@ -24,15 +24,12 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-        String readerVariable = startReader(writer, fieldContext, "jsonRegistry",
-                fieldContext.getClassOrInterfaceType());
-
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
@@ -51,13 +48,33 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        writer.write("%s = %s.read(%s.toString());", fieldContext.getValueVariable(), readerVariable, jsonValue);
+        String jsonString = fieldContext.newVariableName("AsJsonString");
+        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
+        writer.write("if (%s != null) {", jsonString);
+        writer.indent();
+        writer.write("try {");
+        writer.indent();
+        writer.write("%s = %s.valueOf(%s.stringValue());", fieldContext.getValueVariable(), fieldContext.getEnumType()
+                .getQualifiedSourceName(), jsonString);
+        writer.outdent();
+        writer.write("}");
+        writer.write("catch (IllegalArgumentException e1) {");
+        writer.indent();
+        writer.write("try {");
+        writer.indent();
+        writer.write("%s = %s.valueOf(%s.stringValue().toUpperCase());", fieldContext.getValueVariable(), fieldContext
+                .getEnumType().getQualifiedSourceName(), jsonString);
+        writer.outdent();
+        writer.write("}");
+        writer.write("catch (IllegalArgumentException e2) {}");
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-
-        endReader(writer);
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
     }
 
 
@@ -78,11 +95,7 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
         writer.write("}");
         writer.write("else {");
         writer.indent();
-        String writerVariable = startWriter(writer, fieldContext, "jsonRegistry",
-                fieldContext.getClassOrInterfaceType());
-        writer.write("%s.append(%s.toJson(%s));", fieldContext.getBuilderVariable(), writerVariable,
-                fieldContext.getValueVariable());
-        endReader(writer);
+        CodeGeneration.appendJsonValue(writer, fieldContext, true);
         writer.outdent();
         writer.write("}");
     }
@@ -94,25 +107,11 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
     {
-    }
-
-
-    @Override
-    protected String getReaderClassname()
-    {
-        return JsonReader.class.getName();
-    }
-
-
-    @Override
-    protected String getWriterClassname()
-    {
-        return JsonWriter.class.getName();
     }
 }

@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind.fieldhandler;
+package name.pehl.piriti.rebind.propertyhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;

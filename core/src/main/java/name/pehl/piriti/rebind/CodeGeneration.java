@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind;
 
-import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JClassType;

@@ -11,12 +11,12 @@ import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
-import name.pehl.piriti.rebind.fieldhandler.FieldAnnotation;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.FieldAnnotation;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;

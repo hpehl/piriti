@@ -1,12 +1,12 @@
-package name.pehl.piriti.rebind.xml.fieldhandler;
+package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.fieldhandler.AbstractArrayFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractArrayFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
+import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -28,8 +28,8 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

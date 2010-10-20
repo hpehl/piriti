@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind.fieldhandler;
+package name.pehl.piriti.rebind.propertyhandler;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,7 +43,7 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

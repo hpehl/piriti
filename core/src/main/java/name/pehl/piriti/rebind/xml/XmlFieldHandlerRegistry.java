@@ -12,18 +12,18 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.fieldhandler.AssignmentType;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
-import name.pehl.piriti.rebind.xml.fieldhandler.ArrayFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.ConverterFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.EnumFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.IdFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.IdRefFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.StringFieldHandler;
-import name.pehl.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.xml.propertyhandler.ArrayFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.CollectionFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.EnumFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.IdFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.IdRefFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.StringFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler;
 
 /**
  * {@link FieldHandlerRegistry} used by the {@link XmlReaderCreator}.
@@ -133,7 +133,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      * 
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     public FieldHandler findFieldHandler(FieldContext fieldContext)
     {

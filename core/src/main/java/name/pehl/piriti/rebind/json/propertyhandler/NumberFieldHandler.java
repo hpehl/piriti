@@ -1,10 +1,10 @@
-package name.pehl.piriti.rebind.json.fieldhandler;
+package name.pehl.piriti.rebind.json.propertyhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -26,8 +26,8 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @param fieldContext
      * @return
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
@@ -57,8 +57,8 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
@@ -157,8 +157,8 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

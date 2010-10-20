@@ -1,12 +1,12 @@
-package name.pehl.piriti.rebind.json.fieldhandler;
+package name.pehl.piriti.rebind.json.propertyhandler;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.json.client.JSONString;
@@ -24,8 +24,8 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
@@ -45,8 +45,8 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * 
      * @param writer
      * @param fieldContext
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     protected void readInputAsString(IndentedWriter writer, FieldContext fieldContext)
@@ -109,8 +109,8 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.fieldhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

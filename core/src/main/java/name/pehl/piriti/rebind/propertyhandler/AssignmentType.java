@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind.fieldhandler;
+package name.pehl.piriti.rebind.propertyhandler;
 
 /**
  * @author $Author$

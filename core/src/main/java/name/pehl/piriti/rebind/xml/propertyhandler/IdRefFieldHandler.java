@@ -1,13 +1,13 @@
-package name.pehl.piriti.rebind.xml.fieldhandler;
+package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.fieldhandler.AbstractCollectionFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.AbstractRegistryFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -32,7 +32,7 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

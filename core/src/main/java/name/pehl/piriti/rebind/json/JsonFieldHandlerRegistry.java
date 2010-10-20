@@ -12,16 +12,16 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
-import name.pehl.piriti.rebind.json.fieldhandler.ArrayFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.BooleanFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.CollectionFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.ConverterFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.EnumFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.JsonRegistryFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.NumberFieldHandler;
-import name.pehl.piriti.rebind.json.fieldhandler.StringFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.ArrayFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.BooleanFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.CollectionFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.ConverterFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.EnumFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.JsonRegistryFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.NumberFieldHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.StringFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
 
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 

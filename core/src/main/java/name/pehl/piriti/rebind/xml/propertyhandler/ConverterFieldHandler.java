@@ -1,13 +1,13 @@
-package name.pehl.piriti.rebind.xml.fieldhandler;
+package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
 
 /**
  * {@link FieldHandler} implementation which uses a {@link Converter} from the
@@ -24,8 +24,8 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * 
      * @param writer
      * @param fieldContext
-     * @see name.pehl.piriti.rebind.fieldhandler.AbstractConverterFieldHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.fieldhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
      */
     @Override
     protected void readInputAsString(IndentedWriter writer, FieldContext fieldContext)
