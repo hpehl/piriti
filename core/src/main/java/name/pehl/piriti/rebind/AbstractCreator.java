@@ -9,13 +9,14 @@ import name.pehl.piriti.rebind.fieldhandler.FieldContext;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
 
-import com.google.gwt.core.ext.BadPropertyValueException;
-import com.google.gwt.core.ext.ConfigurationProperty;
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JParameter;
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
  * Base class for creating deferred binding implementations. This class contains
@@ -244,7 +245,7 @@ public abstract class AbstractCreator
     /**
      * Returns all fields from the specified type <b>and</b> all of its
      * supertypes that are marked with the specified annotation. Returns an
-     * empty array if no fields were found
+     * empty array if no annotated fields were found.
      * 
      * @param <T>
      * @param type
@@ -283,43 +284,51 @@ public abstract class AbstractCreator
 
 
     /**
-     * Reads a configuration property from the module definition. Throws a
-     * {@link UnableToCompleteException} if the property is not definied or
-     * empty.
+     * Returns all public setters from the specified type <b>and</b> all of its
+     * supertypes that are marked with the specified annotation. Returns an
+     * empty array if no annotated setters were found.
      * 
-     * @param propertyName
+     * @param <T>
+     * @param type
+     * @param annotationClass
      * @return
      */
-    protected String readConfigurationProperty(String propertyName) throws UnableToCompleteException
+    protected <T extends Annotation> JMethod[] findAnnotatedSetters(JClassType type, Class<T> annotationClass)
     {
-        String value = null;
-        ConfigurationProperty property = null;
-        String missingProperty = "No configuration property found for '" + property
-                + "'.\n    Did you specifiy <set-configuration-property name=\"" + property
-                + "\" value=\"...\" /> in the module definition?";
-        try
+        List<JMethod> setters = new ArrayList<JMethod>();
+        collectSetters(type, setters, annotationClass);
+        return setters.toArray(new JMethod[] {});
+    }
+
+
+    private <T extends Annotation> void collectSetters(JClassType type, List<JMethod> setters, Class<T> annotationClass)
+    {
+        // Superclass first please!
+        if (type == null)
         {
-            property = context.getPropertyOracle().getConfigurationProperty(propertyName);
-            if (property == null)
+            return;
+        }
+        collectSetters(type.getSuperclass(), setters, annotationClass);
+
+        JMethod[] allMethods = type.getMethods();
+        if (allMethods != null)
+        {
+            for (JMethod method : allMethods)
             {
-                die(missingProperty);
-            }
-            List<String> values = property.getValues();
-            if (values == null || values.isEmpty())
-            {
-                die(missingProperty);
-            }
-            value = values.get(0);
-            if (value == null || value.length() == 0)
-            {
-                die(missingProperty);
+                if (method.isPublic() && JPrimitiveType.VOID.equals(method.getReturnType())
+                        && method.getName().startsWith("set"))
+                {
+                    JParameter[] parameters = method.getParameters();
+                    if (parameters != null && parameters.length == 1)
+                    {
+                        if (method.isAnnotationPresent(annotationClass))
+                        {
+                            setters.add(method);
+                        }
+                    }
+                }
             }
         }
-        catch (BadPropertyValueException e)
-        {
-            die(missingProperty);
-        }
-        return value;
     }
 
 
