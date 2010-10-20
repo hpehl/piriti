@@ -35,37 +35,37 @@ public class StringPropertyHandler extends AbstractPropertyHandler
      * TODO Javadoc
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.newVariableName("AsJsonValue");
-        if (fieldContext.getPath() != null)
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (propertyContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
-                    fieldContext.getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                    .getInputVariable(), propertyContext.getPath());
         }
         else
         {
-            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
         }
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        String jsonString = fieldContext.newVariableName("AsJsonString");
+        String jsonString = propertyContext.getVariableNames().newVariableName("AsJsonString");
         writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
-        writer.write("%s = %s.stringValue();", fieldContext.getValueVariable(), jsonString);
+        writer.write("%s = %s.stringValue();", propertyContext.getVariableNames().getValueVariable(), jsonString);
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -76,23 +76,23 @@ public class StringPropertyHandler extends AbstractPropertyHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
+        CodeGeneration.appendJsonKey(writer, propertyContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("if (%s == null) {", fieldContext.getValueVariable());
+        writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
+        writer.write("%s.append(\"null\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.write("else {");
         writer.indent();
-        CodeGeneration.appendJsonValue(writer, fieldContext, true);
+        CodeGeneration.appendJsonValue(writer, propertyContext, true);
         writer.outdent();
         writer.write("}");
     }
@@ -102,12 +102,13 @@ public class StringPropertyHandler extends AbstractPropertyHandler
      * Empty!
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter, name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
     }
 }

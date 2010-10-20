@@ -16,32 +16,35 @@ import com.google.gwt.core.ext.typeinfo.JType;
 public class JsonReaderPropertyHandlerRegistry extends JsonPropertyHandlerRegistry
 {
     /**
-     * Looks up a field handler based on the information provided in the field
-     * context. The lookup logic is implemented like this:
+     * Looks up a property handler based on the information provided in the
+     * property context. The lookup logic is implemented like this:
      * <ol>
-     * <li>if the fields type is an enum return {@link #newEnumFieldHandler()}
-     * <li>If the fields type is an array return {@link #newArrayFieldHandler()}
+     * <li>if the properties type is an enum return
+     * {@link #newEnumFieldHandler()}
+     * <li>If the properties type is an array return
+     * {@link #newArrayFieldHandler()}
      * <li>If there's a format specified in the annotation and the type is int
      * Integer, long, Long, float, Float, double or Double return
      * {@link #newConverterFieldHandler()}
-     * <li>Try to lookup the field handler by the fields type classname (this
-     * will resolve all types registered in
-     * {@link #registerInitialFieldHandlers()}
-     * <li>If no field handler return {@link #newRegistryFieldHandler()}
+     * <li>Try to lookup the property handler by the properties type classname
+     * (this will resolve all types registered in
+     * {@link #registerInitialPropertyHandlers()}
+     * <li>Return {@link #newRegistryFieldHandler()}
      * </ol>
      * 
-     * @param fieldContext
+     * @param propertyContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findPropertyHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
-    public PropertyHandler findFieldHandler(PropertyContext fieldContext)
+    @Override
+    public PropertyHandler findPropertyHandler(PropertyContext propertyContext)
     {
         PropertyHandler handler = null;
-        if (fieldContext.isEnum())
+        if (propertyContext.isEnum())
         {
             handler = newEnumFieldHandler();
         }
-        else if (fieldContext.isArray())
+        else if (propertyContext.isArray())
         {
             handler = newArrayFieldHandler();
         }
@@ -50,8 +53,8 @@ public class JsonReaderPropertyHandlerRegistry extends JsonPropertyHandlerRegist
             // If there's a format specified in the annotation and
             // the type is int, long, float or double use the converter
             // to convert the value, which is expected to be a string!
-            JType fieldType = fieldContext.getFieldType();
-            if (fieldContext.getFormat() != null
+            JType fieldType = propertyContext.getType();
+            if (propertyContext.getFormat() != null
                     && (TypeUtils.isInteger(fieldType) || TypeUtils.isLong(fieldType) || TypeUtils.isFloat(fieldType) || TypeUtils
                             .isDouble(fieldType)))
             {
@@ -61,10 +64,10 @@ public class JsonReaderPropertyHandlerRegistry extends JsonPropertyHandlerRegist
             {
                 // Ask the registry for all other stuff (basic types,
                 // collections, maps, ...)
-                handler = registry.get(fieldContext.getFieldType().getQualifiedSourceName());
+                handler = registry.get(propertyContext.getType().getQualifiedSourceName());
                 if (handler == null)
                 {
-                    // Delegate to the XmlRegistry to resolve other mapped
+                    // Delegate to the JsonRegistry to resolve other mapped
                     // models
                     handler = newRegistryFieldHandler();
                 }

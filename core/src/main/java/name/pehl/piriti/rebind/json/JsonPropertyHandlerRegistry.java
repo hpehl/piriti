@@ -43,13 +43,13 @@ public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegi
     public JsonPropertyHandlerRegistry()
     {
         registry = new HashMap<String, PropertyHandler>();
-        registerInitialFieldHandlers();
+        registerInitialPropertyHandlers();
     }
 
 
     /**
-     * Registers the initial field handler for the json reader. The following
-     * handlers are registered:
+     * Registers the initial property handlers for the json reader. The
+     * following handlers are registered:
      * <ul>
      * <li>{@linkplain BooleanPropertyHandler}
      * <ul>
@@ -86,7 +86,7 @@ public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegi
      * </ul>
      * <ul>
      */
-    protected void registerInitialFieldHandlers()
+    protected void registerInitialPropertyHandlers()
     {
         PropertyHandler handler = null;
 

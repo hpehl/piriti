@@ -1,12 +1,14 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.Assignment;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -26,22 +28,22 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
      * TODO Javadoc
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        JArrayType arrayType = fieldContext.getArrayType();
+        JArrayType arrayType = propertyContext.getArrayType();
         JType componentType = arrayType.getComponentType();
         JPrimitiveType primitiveComponentType = componentType.isPrimitive();
         if (primitiveComponentType != null)
         {
             try
             {
-                componentType = fieldContext.getTypeOracle().getType(
+                componentType = propertyContext.getTypeOracle().getType(
                         primitiveComponentType.getQualifiedBoxedSourceName());
             }
             catch (NotFoundException e)
@@ -49,17 +51,19 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
                 throw new UnableToCompleteException();
             }
         }
-        String valueVariableAsList = fieldContext.newVariableName("AsList");
-        String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
-        String nestedValueVariable = fieldContext.newVariableName("NestedValue");
+        String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
+        String nestedJsonValueVariable = propertyContext.getVariableNames().newVariableName("NestedJsonValue");
+        String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        PropertyContext nestedFieldContext = new PropertyContext(fieldContext.getTypeOracle(),
-                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
-                fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
-                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable,
-                fieldContext.getBuilderVariable());
-        PropertyHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        // TODO Implement usage of setters
+        Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
+        VariableNames variableNames = new VariableNames(nestedJsonValueVariable, nestedValueVariable, propertyContext
+                .getVariableNames().getBuilderVariable());
+        PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
+                propertyContext.getHandlerRegistry(), propertyContext.getClazz(), componentType,
+                propertyContext.getName(), null, propertyContext.getFormat(), false, assignment, variableNames);
+        PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
@@ -69,15 +73,15 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.newVariableName("AsJsonValue");
-        if (fieldContext.getPath() != null)
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (propertyContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
-                    fieldContext.getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                    .getInputVariable(), propertyContext.getPath());
         }
         else
         {
-            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
         }
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
@@ -95,9 +99,9 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         nestedHandler.comment(writer, nestedFieldContext);
         nestedHandler.declare(writer, nestedFieldContext);
         nestedHandler.readInput(writer, nestedFieldContext);
-        writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
+        writer.write("if (%s != null) {", nestedFieldContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("%s.add(%s);", valueVariableAsList, nestedFieldContext.getValueVariable());
+        writer.write("%s.add(%s);", valueVariableAsList, nestedFieldContext.getVariableNames().getValueVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -109,17 +113,17 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         writer.write("int index = 0;");
         if (primitiveComponentType != null)
         {
-            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+            writer.write("%s = new %s[%s.size()];", propertyContext.getVariableNames().getValueVariable(),
                     primitiveComponentType.getQualifiedSourceName(), valueVariableAsList);
         }
         else
         {
-            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+            writer.write("%s = new %s[%s.size()];", propertyContext.getVariableNames().getValueVariable(),
                     componentType.getQualifiedSourceName(), valueVariableAsList);
         }
         writer.write("for(%s currentValue : %s) {", componentType.getQualifiedSourceName(), valueVariableAsList);
         writer.indent();
-        writer.write("%s[index] = currentValue;", fieldContext.getValueVariable());
+        writer.write("%s[index] = currentValue;", propertyContext.getVariableNames().getValueVariable());
         writer.write("index++;");
         writer.outdent();
         writer.write("}");
@@ -133,23 +137,23 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
+        CodeGeneration.appendJsonKey(writer, propertyContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        JArrayType arrayType = fieldContext.getArrayType();
+        JArrayType arrayType = propertyContext.getArrayType();
         JType componentType = arrayType.getComponentType();
         JPrimitiveType primitiveComponentType = componentType.isPrimitive();
         if (primitiveComponentType != null)
         {
             try
             {
-                componentType = fieldContext.getTypeOracle().getType(
+                componentType = propertyContext.getTypeOracle().getType(
                         primitiveComponentType.getQualifiedBoxedSourceName());
             }
             catch (NotFoundException e)
@@ -158,51 +162,54 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
             }
         }
 
-        String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
-        String nestedValueVariable = fieldContext.newVariableName("NestedValue");
+        String nestedJsonValueVariable = propertyContext.getVariableNames().newVariableName("NestedJsonValue");
+        String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        PropertyContext nestedFieldContext = new PropertyContext(fieldContext.getTypeOracle(),
-                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
-                fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
-                AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable,
-                fieldContext.getBuilderVariable());
-        PropertyHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        // TODO Implement usage of setters
+        Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
+        VariableNames variableNames = new VariableNames(nestedJsonValueVariable, nestedValueVariable, propertyContext
+                .getVariableNames().getBuilderVariable());
+        PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
+                propertyContext.getHandlerRegistry(), propertyContext.getClazz(), componentType,
+                propertyContext.getName(), null, propertyContext.getFormat(), false, assignment, variableNames);
+        PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
         }
 
-        writer.write("if (%s == null) {", fieldContext.getValueVariable());
+        writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
+        writer.write("%s.append(\"null\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.write("else {");
         writer.indent();
         // Iterate over values
-        writer.write("%s.append(\"[\");", fieldContext.getBuilderVariable());
-        writer.write("for (int i = 0; i < %s.length; i++ ) {", fieldContext.getValueVariable());
+        writer.write("%s.append(\"[\");", propertyContext.getVariableNames().getBuilderVariable());
+        writer.write("for (int i = 0; i < %s.length; i++ ) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
 
         nestedHandler.comment(writer, nestedFieldContext);
         nestedHandler.declare(writer, nestedFieldContext);
         // Replace nestedHandler.readField(writer, nestedFieldContext) with
-        writer.write("%s = %s[i];", nestedFieldContext.getValueVariable(), fieldContext.getValueVariable());
+        writer.write("%s = %s[i];", nestedFieldContext.getVariableNames().getValueVariable(), propertyContext
+                .getVariableNames().getValueVariable());
         // No nestedHandler.markupStart(writer, nestedFieldContext); since we're
         // in an JSON array
         nestedHandler.writeValue(writer, nestedFieldContext);
         // No nestedHandler.markupEnd(writer, nestedFieldContext); since we're
         // in an JSON array
-        
-        writer.write("if (i < %s.length - 1) {", fieldContext.getValueVariable());
+
+        writer.write("if (i < %s.length - 1) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("%s.append(\",\");", fieldContext.getBuilderVariable());
+        writer.write("%s.append(\",\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        writer.write("%s.append(\"]\");", fieldContext.getBuilderVariable());
+        writer.write("%s.append(\"]\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
     }
@@ -212,13 +219,13 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
      * Empty!
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
     }
 }

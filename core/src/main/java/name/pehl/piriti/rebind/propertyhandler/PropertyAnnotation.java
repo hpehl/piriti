@@ -6,6 +6,8 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 
 /**
+ * Helper class for one annotated property, which is either a field or a setter.
+ * 
  * @author $Author$
  * @version $Date$ $Revision: 728
  *          $
@@ -15,26 +17,29 @@ public class PropertyAnnotation<T extends Annotation>
     final private JField field;
     final private JMethod setter;
     final private T annotation;
-    final private AssignmentPolicy assignmentPolicy;
 
 
-    public PropertyAnnotation(JField field, T annotation, AssignmentPolicy assignmentPolicy)
+    public PropertyAnnotation(JField field, T annotation)
     {
         super();
         this.field = field;
         this.setter = null;
         this.annotation = annotation;
-        this.assignmentPolicy = assignmentPolicy;
     }
 
 
-    public PropertyAnnotation(JMethod setter, T annotation, AssignmentPolicy assignmentPolicy)
+    public PropertyAnnotation(JMethod setter, T annotation)
     {
         super();
         this.field = null;
         this.setter = setter;
         this.annotation = annotation;
-        this.assignmentPolicy = assignmentPolicy;
+    }
+
+
+    public boolean isFieldAnnotated()
+    {
+        return field != null;
     }
 
 
@@ -50,14 +55,14 @@ public class PropertyAnnotation<T extends Annotation>
     }
 
 
-    public T getAnnotation()
+    public boolean isSetterAnnotated()
     {
-        return annotation;
+        return setter != null;
     }
 
 
-    public AssignmentPolicy getAssignmentPolicy()
+    public T getAnnotation()
     {
-        return assignmentPolicy;
+        return annotation;
     }
 }

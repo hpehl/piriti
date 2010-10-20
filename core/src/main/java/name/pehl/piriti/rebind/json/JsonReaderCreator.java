@@ -311,7 +311,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
         // This creates all FieldHandler / FieldContexts and calls handleField()
         // in a loop
-        handleFields(writer);
+        handleProperties(writer);
 
         writer.write("return model;");
         writer.outdent();
@@ -322,7 +322,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
+    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.comment(writer, fieldContext);

@@ -5,33 +5,35 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * Interface for generating code for one field.
+ * Interface for generating code for one property.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
 public interface PropertyHandler
 {
+    // -------------------------------------- methods used in reader and writer
+
     /**
-     * Checks whether the handler can process the field. Returning
-     * <code>false</code> skips the field during code generation.
+     * Checks whether the handler can process the property. Returning
+     * <code>false</code> skips the property during code generation.
      * 
      * @param writer
      *            Can be used to write a fail comment
-     * @param fieldContext
+     * @param propertyContext
      * @return
      */
-    boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
 
     /**
-     * Generated a comment containing the fields name, type and the relevant
+     * Generated a comment containing the properties name, type and the relevant
      * path
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      */
-    void comment(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void comment(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
 
     /**
@@ -42,41 +44,45 @@ public interface PropertyHandler
      * .
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      */
-    void declare(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
+
+    // ------------------------------------------------- methods used in reader
 
     /**
-     * Generates the code for reading the input (JSON / XML), convert if and
-     * assign it to {@link PropertyContext#getValueVariable()}.
+     * Generates the code for reading the input (JSON / XML), convert if
+     * necessary and assign it to {@link PropertyContext#getValueVariable()}.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      */
-    void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
 
     /**
      * Generates the assignment of {@link PropertyContext#getValueVariable()} to
-     * the the field. The assignment should only be done when the
+     * the property. The assignment should only be done when the
      * {@link PropertyContext#getValueVariable()} <code>!= null</code>.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      */
-    void assign(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void assign(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
+
+    // ------------------------------------------------- methods used in writer
 
     /**
-     * Generates code to read the fields value and assign it to
+     * Generates code to read the properties value and assign it to
      * {@link PropertyContext#getValueVariable()}.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      */
-    void readField(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void readProperty(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
 
     /**
@@ -84,20 +90,20 @@ public interface PropertyHandler
      * method is called.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      */
-    void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
 
     /**
      * Generates code for the {@code toXyz()} method.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      */
-    void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
 
     /**
@@ -105,8 +111,8 @@ public interface PropertyHandler
      * method was called.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      */
-    void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
+    void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 }

@@ -23,25 +23,25 @@ public class NumberPropertyHandler extends AbstractPropertyHandler
      * otherwise.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @return
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (fieldContext.isPrimitive())
+        if (propertyContext.isPrimitive())
         {
-            JPrimitiveType primitiveType = fieldContext.getPrimitiveType();
+            JPrimitiveType primitiveType = propertyContext.getPrimitiveType();
             return primitiveType.equals(JPrimitiveType.BYTE) || primitiveType.equals(JPrimitiveType.SHORT)
                     || primitiveType.equals(JPrimitiveType.INT) || primitiveType.equals(JPrimitiveType.LONG)
                     || primitiveType.equals(JPrimitiveType.FLOAT) || primitiveType.equals(JPrimitiveType.DOUBLE);
         }
-        else if (fieldContext.isClassOrInterface())
+        else if (propertyContext.isClassOrInterface())
         {
-            JClassType type = fieldContext.getClassOrInterfaceType();
+            JClassType type = propertyContext.getClassOrInterfaceType();
             return type.getQualifiedSourceName().equals(Byte.class.getName())
                     || type.getQualifiedSourceName().equals(Short.class.getName())
                     || type.getQualifiedSourceName().equals(Integer.class.getName())
@@ -55,61 +55,61 @@ public class NumberPropertyHandler extends AbstractPropertyHandler
 
     /**
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.newVariableName("AsJsonValue");
-        if (fieldContext.getPath() != null)
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (propertyContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
-                    fieldContext.getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                    .getInputVariable(), propertyContext.getPath());
         }
         else
         {
-            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
         }
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        String jsonNumber = fieldContext.newVariableName("AsJsonNumber");
+        String jsonNumber = propertyContext.getVariableNames().newVariableName("AsJsonNumber");
         writer.write("JSONNumber %s = %s.isNumber();", jsonNumber, jsonValue);
         writer.write("if (%s != null) {", jsonNumber);
         writer.indent();
-        String doubleValue = fieldContext.getValueVariable() + "AsDouble";
+        String doubleValue = propertyContext.getVariableNames().getValueVariable() + "AsDouble";
         writer.write("Double %s = new Double(%s.doubleValue());", doubleValue, jsonNumber);
-        if (TypeUtils.isByte(fieldContext.getFieldType()))
+        if (TypeUtils.isByte(propertyContext.getType()))
         {
-            writer.write("%s = %s.byteValue();", fieldContext.getValueVariable(), doubleValue);
+            writer.write("%s = %s.byteValue();", propertyContext.getVariableNames().getValueVariable(), doubleValue);
         }
-        else if (TypeUtils.isShort(fieldContext.getFieldType()))
+        else if (TypeUtils.isShort(propertyContext.getType()))
         {
-            writer.write("%s = %s.shortValue();", fieldContext.getValueVariable(), doubleValue);
+            writer.write("%s = %s.shortValue();", propertyContext.getVariableNames().getValueVariable(), doubleValue);
         }
-        else if (TypeUtils.isInteger(fieldContext.getFieldType()))
+        else if (TypeUtils.isInteger(propertyContext.getType()))
         {
-            writer.write("%s = %s.intValue();", fieldContext.getValueVariable(), doubleValue);
+            writer.write("%s = %s.intValue();", propertyContext.getVariableNames().getValueVariable(), doubleValue);
         }
-        else if (TypeUtils.isLong(fieldContext.getFieldType()))
+        else if (TypeUtils.isLong(propertyContext.getType()))
         {
-            writer.write("%s = %s.longValue();", fieldContext.getValueVariable(), doubleValue);
+            writer.write("%s = %s.longValue();", propertyContext.getVariableNames().getValueVariable(), doubleValue);
         }
-        else if (TypeUtils.isFloat(fieldContext.getFieldType()))
+        else if (TypeUtils.isFloat(propertyContext.getType()))
         {
-            writer.write("%s = %s.floatValue();", fieldContext.getValueVariable(), doubleValue);
+            writer.write("%s = %s.floatValue();", propertyContext.getVariableNames().getValueVariable(), doubleValue);
         }
-        else if (TypeUtils.isDouble(fieldContext.getFieldType()))
+        else if (TypeUtils.isDouble(propertyContext.getType()))
         {
-            writer.write("%s = %s;", fieldContext.getValueVariable(), doubleValue);
+            writer.write("%s = %s;", propertyContext.getVariableNames().getValueVariable(), doubleValue);
         }
         writer.outdent();
         writer.write("}");
@@ -121,32 +121,32 @@ public class NumberPropertyHandler extends AbstractPropertyHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
+        CodeGeneration.appendJsonKey(writer, propertyContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (fieldContext.getFieldType().isPrimitive() == null)
+        if (propertyContext.getType().isPrimitive() == null)
         {
             // if the Number object is null, append 0
-            writer.write("if (%s == null) {", fieldContext.getValueVariable());
+            writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
             writer.indent();
-            writer.write("%s.append(\"0\");", fieldContext.getBuilderVariable());
+            writer.write("%s.append(\"0\");", propertyContext.getVariableNames().getBuilderVariable());
             writer.outdent();
             writer.write("}");
             writer.write("else {");
             writer.indent();
-            CodeGeneration.appendJsonValue(writer, fieldContext, false);
+            CodeGeneration.appendJsonValue(writer, propertyContext, false);
             writer.outdent();
             writer.write("}");
         }
         else
         {
-            CodeGeneration.appendJsonValue(writer, fieldContext, false);
+            CodeGeneration.appendJsonValue(writer, propertyContext, false);
         }
     }
 
@@ -155,13 +155,13 @@ public class NumberPropertyHandler extends AbstractPropertyHandler
      * Empty!
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
     }
 }

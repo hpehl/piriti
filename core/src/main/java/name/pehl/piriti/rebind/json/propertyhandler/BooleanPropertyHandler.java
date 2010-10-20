@@ -20,18 +20,18 @@ public class BooleanPropertyHandler extends AbstractPropertyHandler
      * <code>false</code> otherwise.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @return
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (!TypeUtils.isBoolean(fieldContext.getFieldType()))
+        if (!TypeUtils.isBoolean(propertyContext.getType()))
         {
-            CodeGeneration.skipField(writer, fieldContext, "Type is neither boolean nor Boolean");
+            CodeGeneration.skipField(writer, propertyContext, "Type is neither boolean nor Boolean");
         }
         return true;
     }
@@ -39,37 +39,37 @@ public class BooleanPropertyHandler extends AbstractPropertyHandler
 
     /**
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.newVariableName("AsJsonValue");
-        if (fieldContext.getPath() != null)
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (propertyContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
-                    fieldContext.getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                    .getInputVariable(), propertyContext.getPath());
         }
         else
         {
-            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
         }
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        String jsonBoolean = fieldContext.newVariableName("AsJsonBoolean");
+        String jsonBoolean = propertyContext.getVariableNames().newVariableName("AsJsonBoolean");
         writer.write("JSONBoolean %s = %s.isBoolean();", jsonBoolean, jsonValue);
         writer.write("if (%s != null) {", jsonBoolean);
         writer.indent();
-        writer.write("%s = %s.booleanValue();", fieldContext.getValueVariable(), jsonBoolean);
+        writer.write("%s = %s.booleanValue();", propertyContext.getVariableNames().getValueVariable(), jsonBoolean);
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -80,32 +80,32 @@ public class BooleanPropertyHandler extends AbstractPropertyHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
+        CodeGeneration.appendJsonKey(writer, propertyContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (fieldContext.getFieldType().isPrimitive() == null)
+        if (propertyContext.getType().isPrimitive() == null)
         {
             // if the Boolean object is null, append false
-            writer.write("if (%s == null) {", fieldContext.getValueVariable());
+            writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
             writer.indent();
-            writer.write("%s.append(\"false\");", fieldContext.getBuilderVariable());
+            writer.write("%s.append(\"false\");", propertyContext.getVariableNames().getBuilderVariable());
             writer.outdent();
             writer.write("}");
             writer.write("else {");
             writer.indent();
-            CodeGeneration.appendJsonValue(writer, fieldContext, false);
+            CodeGeneration.appendJsonValue(writer, propertyContext, false);
             writer.outdent();
             writer.write("}");
         }
         else
         {
-            CodeGeneration.appendJsonValue(writer, fieldContext, false);
+            CodeGeneration.appendJsonValue(writer, propertyContext, false);
         }
     }
 
@@ -114,13 +114,13 @@ public class BooleanPropertyHandler extends AbstractPropertyHandler
      * Empty!
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
     }
 }

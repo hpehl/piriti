@@ -1,5 +1,8 @@
 package name.pehl.piriti.rebind.xml;
 
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,12 +14,12 @@ import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.Assignment;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -83,21 +86,23 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<XmlField>> fields = findFieldAnnotations();
-        for (Iterator<PropertyAnnotation<XmlField>> iter = fields.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<XmlField>> properties = findFieldAnnotations();
+        for (Iterator<PropertyAnnotation<XmlField>> iter = properties.values().iterator(); iter.hasNext();)
         {
-            PropertyAnnotation<XmlField> fieldAnnotation = iter.next();
-            String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
+            PropertyAnnotation<XmlField> propertyAnnotation = iter.next();
+            String xpath = calculateXpath(propertyAnnotation.getField(), propertyAnnotation.getAnnotation().value());
+            // TODO Implement usage of setters
+            Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
+            VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), xpath, fieldAnnotation
-                            .getAnnotation().format(), fieldAnnotation.getAnnotation().stripWsnl(),
-                    AssignmentType.MAPPING, fieldAnnotation.getAssignmentPolicy(), "element", "value" + counter,
-                    "xmlBuilder");
-            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+                    propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), xpath, propertyAnnotation
+                            .getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(), assignment,
+                    variableNames);
+            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
+                handleProperty(writer, fieldHandler, fieldContext, iter.hasNext());
                 counter++;
             }
         }
@@ -105,8 +110,8 @@ public abstract class AbstractXmlCreator extends AbstractCreator
 
 
     /**
-     * Returns a map with the fields name as key and the {@link PropertyAnnotation}
-     * for {@link XmlField} as value.
+     * Returns a map with the fields name as key and the
+     * {@link PropertyAnnotation} for {@link XmlField} as value.
      * 
      * @return
      */
@@ -125,8 +130,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
                 JField field = modelType.getField(annotation.name());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new PropertyAnnotation<XmlField>(field, annotation,
-                            AssignmentPolicy.PROPERTY_FIRST));
+                    fields.put(field.getName(), new PropertyAnnotation<XmlField>(field, annotation));
                 }
                 // TODO Is it an error if field == null?
             }
@@ -139,7 +143,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
         for (JField field : modelTypeFields)
         {
             XmlField annotation = field.getAnnotation(XmlField.class);
-            fields.put(field.getName(), new PropertyAnnotation<XmlField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
+            fields.put(field.getName(), new PropertyAnnotation<XmlField>(field, annotation));
         }
         return fields;
     }

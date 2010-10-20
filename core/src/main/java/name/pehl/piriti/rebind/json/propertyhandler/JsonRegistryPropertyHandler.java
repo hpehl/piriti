@@ -11,7 +11,8 @@ import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link PropertyHandler} implementation for types with an own {@link JsonReader}.
+ * {@link PropertyHandler} implementation for types with an own
+ * {@link JsonReader}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
@@ -22,67 +23,68 @@ public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
      * TODO Javadoc
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        String readerVariable = startReader(writer, fieldContext, "jsonRegistry",
-                fieldContext.getClassOrInterfaceType());
+        String readerVariable = startReader(writer, propertyContext, "jsonRegistry",
+                propertyContext.getClassOrInterfaceType());
 
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
         // itself (e.g. an array of strings has no path information for the
         // array elements)
-        String jsonValue = fieldContext.newVariableName("AsJsonValue");
-        if (fieldContext.getPath() != null)
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (propertyContext.getPath() != null)
         {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, fieldContext.getInputVariable(),
-                    fieldContext.getPath());
+            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                    .getInputVariable(), propertyContext.getPath());
         }
         else
         {
-            writer.write("JSONValue %s = %s;", jsonValue, fieldContext.getInputVariable());
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
         }
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        writer.write("%s = %s.read(%s.toString());", fieldContext.getValueVariable(), readerVariable, jsonValue);
+        writer.write("%s = %s.read(%s.toString());", propertyContext.getVariableNames().getValueVariable(),
+                readerVariable, jsonValue);
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
 
-        endReader(writer);
+        endReaderWriter(writer);
     }
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
+        CodeGeneration.appendJsonKey(writer, propertyContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("if (%s == null) {", fieldContext.getValueVariable());
+        writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("%s.append(\"null\");", fieldContext.getBuilderVariable());
+        writer.write("%s.append(\"null\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.write("else {");
         writer.indent();
-        String writerVariable = startWriter(writer, fieldContext, "jsonRegistry",
-                fieldContext.getClassOrInterfaceType());
-        writer.write("%s.append(%s.toJson(%s));", fieldContext.getBuilderVariable(), writerVariable,
-                fieldContext.getValueVariable());
-        endReader(writer);
+        String writerVariable = startWriter(writer, propertyContext, "jsonRegistry",
+                propertyContext.getClassOrInterfaceType());
+        writer.write("%s.append(%s.toJson(%s));", propertyContext.getVariableNames().getBuilderVariable(),
+                writerVariable, propertyContext.getVariableNames().getValueVariable());
+        endReaderWriter(writer);
         writer.outdent();
         writer.write("}");
     }
@@ -92,13 +94,13 @@ public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
      * Empty!
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
     }
 

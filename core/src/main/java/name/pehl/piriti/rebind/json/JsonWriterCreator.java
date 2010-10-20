@@ -100,7 +100,7 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
         // This creates all FieldHandler / FieldContexts and calls handleField()
         // in a loop
-        handleFields(writer);
+        handleProperties(writer);
 
         writer.write("jsonBuilder.append(\"}\");");
         writer.write("json = jsonBuilder.toString();");
@@ -115,18 +115,18 @@ public class JsonWriterCreator extends AbstractJsonCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
+    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.comment(writer, fieldContext);
         fieldHandler.declare(writer, fieldContext);
-        fieldHandler.readField(writer, fieldContext);
+        fieldHandler.readProperty(writer, fieldContext);
         fieldHandler.markupStart(writer, fieldContext);
         fieldHandler.writeValue(writer, fieldContext);
         fieldHandler.markupEnd(writer, fieldContext);
         if (hasNext)
         {
-            writer.write("%s.append(\",\");", fieldContext.getBuilderVariable());
+            writer.write("%s.append(\",\");", fieldContext.getVariableNames().getBuilderVariable());
         }
     }
 }

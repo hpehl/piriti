@@ -1,5 +1,8 @@
 package name.pehl.piriti.rebind.xml;
 
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -11,14 +14,14 @@ import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.Assignment;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.ArrayFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.CollectionFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.VariableNames;
+import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -267,7 +270,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         PropertyContext fieldContext = checkForIdField();
         if (fieldContext != null)
         {
-            handler = handlerRegistry.findFieldHandler(fieldContext);
+            handler = handlerRegistry.findPropertyHandler(fieldContext);
             validIdField = handler != null && handler.isValid(writer, fieldContext);
         }
 
@@ -280,8 +283,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
             handler.comment(writer, fieldContext);
             handler.declare(writer, fieldContext);
             handler.readInput(writer, fieldContext);
-            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(),
-                    fieldContext.getValueVariable());
+            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), fieldContext
+                    .getVariableNames().getValueVariable());
             writer.write("if (model == null) {");
             writer.indent();
             writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
@@ -396,9 +399,12 @@ public class XmlReaderCreator extends AbstractXmlCreator
             if (fields.length == 1)
             {
                 XmlId xmlId = field.getAnnotation(XmlId.class);
+                // TODO Implement usage of setters
+                Assignment assignment = new Assignment(ID, FIELD_FIRST);
+                VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
                 fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                        field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(), AssignmentType.ID,
-                        AssignmentPolicy.FIELD_ONLY, "element", "idValue", "xmlBuilder");
+                        field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(), assignment,
+                        variableNames);
             }
             else
             {
@@ -418,9 +424,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
                     JField field = modelType.getField(xmlId.name());
                     if (field != null)
                     {
+                        Assignment assignment = new Assignment(ID, PROPERTY_FIRST);
+                        VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
                         fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                                field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
-                                AssignmentType.ID, AssignmentPolicy.PROPERTY_FIRST, "element", "idValue", "xmlBuilder");
+                                field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(), assignment,
+                                variableNames);
                     }
                     else
                     {
@@ -442,17 +450,19 @@ public class XmlReaderCreator extends AbstractXmlCreator
         {
             PropertyAnnotation<XmlField> fieldAnnotation = iter.next();
             String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
+            // TODO Implement usage of setters
+            Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
+            VariableNames variableNames = new VariableNames("element", "nestedValue" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), xpath, fieldAnnotation
-                            .getAnnotation().format(), fieldAnnotation.getAnnotation().stripWsnl(),
-                    AssignmentType.MAPPING, fieldAnnotation.getAssignmentPolicy(), "element", "nestedValue" + counter,
-                    "xmlBuilder");
-            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
-            if ((fieldHandler instanceof XmlRegistryFieldHandler || fieldHandler instanceof ArrayFieldHandler || fieldHandler instanceof CollectionFieldHandler)
+                            .getAnnotation().format(), fieldAnnotation.getAnnotation().stripWsnl(), assignment,
+                    variableNames);
+            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
+            if ((fieldHandler instanceof XmlRegistryPropertyHandler || fieldHandler instanceof ArrayPropertyHandler || fieldHandler instanceof CollectionPropertyHandler)
                     && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
+                handleProperty(writer, fieldHandler, fieldContext, iter.hasNext());
                 counter++;
             }
         }
@@ -467,15 +477,17 @@ public class XmlReaderCreator extends AbstractXmlCreator
         {
             PropertyAnnotation<XmlIdRef> fieldAnnotation = iter.next();
             String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
+            // TODO Implement usage of setters
+            Assignment assignment = new Assignment(IDREF, FIELD_FIRST);
+            VariableNames variableNames = new VariableNames("element", "idRefValue" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), xpath, null,
-                    fieldAnnotation.getAnnotation().stripWsnl(), AssignmentType.IDREF,
-                    fieldAnnotation.getAssignmentPolicy(), "element", "idRefValue" + counter, "xmlBuilder");
-            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+                    fieldAnnotation.getAnnotation().stripWsnl(), assignment, variableNames);
+            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
+                handleProperty(writer, fieldHandler, fieldContext, iter.hasNext());
                 counter++;
             }
         }
@@ -497,8 +509,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 JField field = modelType.getField(annotation.name());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation,
-                            AssignmentPolicy.PROPERTY_FIRST));
+                    fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation));
                 }
                 // TODO Is it an error if field == null?
             }
@@ -511,14 +522,14 @@ public class XmlReaderCreator extends AbstractXmlCreator
         for (JField field : modelTypeFields)
         {
             XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
-            fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation, AssignmentPolicy.FIELD_ONLY));
+            fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation));
         }
         return fields;
     }
 
 
     @Override
-    protected void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
+    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.comment(writer, fieldContext);

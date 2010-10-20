@@ -1,5 +1,8 @@
 package name.pehl.piriti.gxt.rebind.json;
 
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,11 +12,11 @@ import name.pehl.piriti.gxt.client.json.JsonModelReader;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.json.JsonReaderCreator;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.Assignment;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -55,7 +58,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
 
 
     @Override
-    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
+    protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
         JsonField[] fields = findFieldAnnotations();
@@ -65,15 +68,17 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             writer.newline();
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
+            // TODO Implement usage of setters
+            Assignment assignment = new Assignment(MAPPING, GXT);
+            VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, jsonField.name(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
-                    AssignmentPolicy.GXT, "jsonObject", "value" + counter, "jsonBuilder");
+                    fieldType, jsonField.name(), jsonPath, jsonField.format(), false, assignment, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
-            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext, (i < fields.length - 1));
+                handleProperty(writer, fieldHandler, fieldContext, (i < fields.length - 1));
                 counter++;
             }
         }

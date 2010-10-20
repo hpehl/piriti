@@ -19,9 +19,9 @@ public abstract class AbstractPropertyHandler implements PropertyHandler
      * {@inheritDoc}
      */
     @Override
-    public void comment(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void comment(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("// %s: %s", getClass().getSimpleName(), fieldContext);
+        writer.write("// %s: %s", getClass().getSimpleName(), propertyContext);
     }
 
 
@@ -29,24 +29,25 @@ public abstract class AbstractPropertyHandler implements PropertyHandler
      * {@inheritDoc}
      */
     @Override
-    public void declare(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("%s %s = null;", fieldContext.getFieldType().getParameterizedQualifiedSourceName(),
-                fieldContext.getValueVariable());
+        writer.write("%s %s = null;", propertyContext.getType().getParameterizedQualifiedSourceName(), propertyContext
+                .getVariableNames().getValueVariable());
     }
 
 
     /**
      * {@inheritDoc}
      * <p>
-     * Delegates to {@link CodeGeneration#assign(IndentedWriter, PropertyContext)}.
-     * The assignement is only done if {@link PropertyContext#getValueVariable()}
-     * is not null.
+     * Delegates to
+     * {@link CodeGeneration#assign(IndentedWriter, PropertyContext)}. The
+     * assignement is only done if {@link PropertyContext#getValueVariable()} is
+     * not null.
      */
     @Override
-    public void assign(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void assign(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.assign(writer, fieldContext);
+        CodeGeneration.assign(writer, propertyContext);
     }
 
 
@@ -57,8 +58,8 @@ public abstract class AbstractPropertyHandler implements PropertyHandler
      * {@link CodeGeneration#readField(IndentedWriter, PropertyContext)}.
      */
     @Override
-    public void readField(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readProperty(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.readField(writer, fieldContext);
+        CodeGeneration.readField(writer, propertyContext);
     }
 }

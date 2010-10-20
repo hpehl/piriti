@@ -1,5 +1,8 @@
 package name.pehl.piriti.gxt.rebind.xml;
 
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,11 +11,11 @@ import name.pehl.piriti.gxt.client.xml.XmlFields;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.Assignment;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 import name.pehl.piriti.rebind.xml.XmlReaderCreator;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -61,15 +64,18 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             writer.newline();
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
+            // TODO Implement usage of setters
+            Assignment assignment = new Assignment(MAPPING, GXT);
+            VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), AssignmentType.MAPPING,
-                    AssignmentPolicy.GXT, "element", "value" + counter, "xmlBuilder");
+                    fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), assignment,
+                    variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
-            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext, (i < fields.length - 1));
+                handleProperty(writer, fieldHandler, fieldContext, (i < fields.length - 1));
                 counter++;
             }
         }

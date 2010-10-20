@@ -9,7 +9,7 @@ import name.pehl.piriti.gxt.client.xml.XmlModelReader;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class XmlRegistryPropertyHandler extends name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler
+public class XmlRegistryPropertyHandler extends name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler
 {
     @Override
     protected String getReaderClassname()

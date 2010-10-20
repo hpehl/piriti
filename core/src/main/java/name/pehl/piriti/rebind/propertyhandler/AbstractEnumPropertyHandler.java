@@ -18,16 +18,16 @@ public abstract class AbstractEnumPropertyHandler extends AbstractPropertyHandle
      * <code>false</code> otherwise.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @return
      * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (!fieldContext.isEnum())
+        if (!propertyContext.isEnum())
         {
-            CodeGeneration.skipField(writer, fieldContext, "Type is no enum");
+            CodeGeneration.skipField(writer, propertyContext, "Type is no enum");
             return false;
         }
         return true;

@@ -16,32 +16,31 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
  * Class which contains information needed to generate code for the evaluation,
- * conversion and assignment of a field. An instance of this class is passed to
- * the {@link PropertyHandler}.
+ * conversion and assignment of a property. An instance of this class is passed
+ * to the {@link PropertyHandler}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
 public class PropertyContext
 {
-    private static final String AS_STRING_SUFFIX = "AsString";
+    // -------------------------------------------------------- private members
 
     private final TypeOracle typeOracle;
     private final PropertyHandlerRegistry handlerRegistry;
-    private final JClassType modelType;
-    private final JType fieldType;
+    private final JClassType clazz;
+    private final JType type;
     private final JPrimitiveType primitiveType;
-    private final String fieldName;
+    private final String name;
     private final String path;
     private final String format;
     private final boolean stripWsnl;
-    private AssignmentType assignmentType;
-    private AssignmentPolicy assignmentPolicy;
-    private final String inputVariable;
-    private final String valueVariable;
-    private final String builderVariable;
+    private final Assignment assignment;
+    private final VariableNames variableNames;
     private final Map<String, Object> metadata;
 
+
+    // ----------------------------------------------------------- constructors
 
     /**
      * Construct a new instance of this class
@@ -50,45 +49,39 @@ public class PropertyContext
      *            The type oracle from the GWT generator API
      * @param handlerRegistry
      *            The handler registry for {@link PropertyHandler} lookup
-     * @param modelType
-     *            The model type
-     * @param fieldType
-     *            The field type
-     * @param fieldName
-     *            The name of the field
+     * @param clazz
+     *            The type of the properties class
+     * @param type
+     *            The property type itself
+     * @param name
+     *            The name of the property
      * @param path
      *            The path information for the mapping
      * @param format
      *            The format
-     * @param assignmentType
-     *            Kind of assignment.
-     * @param assignmentPolicy
-     *            How to do the assignement.
-     * @param inputVariable
-     *            The name of the input variable
-     * @param valueVariable
-     *            The name of the value variable
-     * @param builderVariable
-     *            The name of the variable for the {@link StringBuilder} which
-     *            is used for serialization
+     * @param stripWsnl
+     *            Whether to strip whitespace and newlines from the input
+     * @param assignment
+     *            Information about the assignment.
+     * @param variableNames
+     *            Contains various variable names
      * @throws UnableToCompleteException
      */
-    public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType modelType,
-            JType fieldType, String fieldName, String path, String format, boolean stripWsnl,
-            AssignmentType assignmentType, AssignmentPolicy assignmentPolicy, String inputVariable,
-            String valueVariable, String builderVariable) throws UnableToCompleteException
+    public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType clazz,
+            JType type, String name, String path, String format, boolean stripWsnl, Assignment assignment,
+            VariableNames variableNames) throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
         this.handlerRegistry = handlerRegistry;
-        this.modelType = modelType;
-        JPrimitiveType primitiveType = fieldType.isPrimitive();
+        this.clazz = clazz;
+        JPrimitiveType primitiveType = type.isPrimitive();
         if (primitiveType != null) // isPrimitive() is not yet available!
         {
             try
             {
                 // Use the boxed type for primitives
-                this.fieldType = typeOracle.getType(primitiveType.getQualifiedBoxedSourceName());
+                this.type = typeOracle.getType(primitiveType.getQualifiedBoxedSourceName());
                 this.primitiveType = primitiveType;
             }
             catch (NotFoundException e)
@@ -98,12 +91,12 @@ public class PropertyContext
         }
         else
         {
-            this.fieldType = fieldType;
+            this.type = type;
             this.primitiveType = null;
         }
 
-        // Field properties
-        this.fieldName = fieldName;
+        // Name, path and format
+        this.name = name;
         this.path = path;
         if (format == null || format.length() == 0)
         {
@@ -114,23 +107,21 @@ public class PropertyContext
             this.format = format;
         }
         this.stripWsnl = stripWsnl;
-        this.assignmentType = assignmentType;
-        this.assignmentPolicy = assignmentPolicy;
 
-        // Variable names
-        this.inputVariable = inputVariable;
-        this.valueVariable = valueVariable;
-        this.builderVariable = builderVariable;
-
+        // Assignment, variable names and metadata
+        this.assignment = assignment;
+        this.variableNames = variableNames;
         this.metadata = new HashMap<String, Object>();
     }
 
 
+    // --------------------------------------------------------- object methods
+
     @Override
     public String toString()
     {
-        StringBuilder builder = new StringBuilder().append(fieldType.getParameterizedQualifiedSourceName()).append(" ")
-                .append(fieldName).append(", path=\"").append(path).append("\"");
+        StringBuilder builder = new StringBuilder().append(type.getParameterizedQualifiedSourceName()).append(" ")
+                .append(name).append(", path=\"").append(path).append("\"");
         if (format != null)
         {
             builder.append(", format=\"").append(format).append("\"");
@@ -139,65 +130,127 @@ public class PropertyContext
     }
 
 
+    // --------------------------------- methods related to the properties type
+
+    /**
+     * Whether the properties type is primitive.
+     * 
+     * @return <code>true</code> if the properties type is primitive,
+     *         <code>false</code> otherwise.
+     */
     public boolean isPrimitive()
     {
         return getPrimitiveType() != null;
     }
 
 
+    /**
+     * The properties primitive type.
+     * 
+     * @return the properties primitive type.
+     */
     public JPrimitiveType getPrimitiveType()
     {
         return primitiveType;
     }
 
 
+    /**
+     * Whether the properties type is either primitive or a
+     * {@linkplain TypeUtils#isBasicType(JType) basic type}.
+     * 
+     * @return <code>true</code> if the properties type is either primitive or a
+     *         {@linkplain TypeUtils#isBasicType(JType) basic type},
+     *         <code>false</code> othewrwise.
+     */
     public boolean isBasicType()
     {
-        return isPrimitive() || TypeUtils.isBasicType(fieldType);
+        return isPrimitive() || TypeUtils.isBasicType(type);
     }
 
 
+    /**
+     * Whether the properties type is an enum.
+     * 
+     * @return <code>true</code> if the properties type is an enum,
+     *         <code>false</code> othwerwise.
+     */
     public boolean isEnum()
     {
         return getEnumType() != null;
     }
 
 
+    /**
+     * The properties enum type.
+     * 
+     * @return the properties enum type.
+     */
     public JEnumType getEnumType()
     {
-        return fieldType.isEnum();
+        return type.isEnum();
     }
 
 
+    /**
+     * Whether the properties type is a class or interface.
+     * 
+     * @return <code>true</code> if the properties type is a class or interface,
+     *         <code>false</code> otherwise.
+     */
     public boolean isClassOrInterface()
     {
         return getClassOrInterfaceType() != null;
     }
 
 
+    /**
+     * The properties class or interface type.
+     * 
+     * @return the properties class or interface type.
+     */
     public JClassType getClassOrInterfaceType()
     {
-        return fieldType.isClass();
+        return type.isClass();
     }
 
 
+    /**
+     * Whether the properties type is an array.
+     * 
+     * @return <code>true</code> if the properties type is an array,
+     *         <code>false</code> otherwise.
+     */
     public boolean isArray()
     {
         return getArrayType() != null;
     }
 
 
+    /**
+     * The properties array type.
+     * 
+     * @return the properties array type.
+     */
     public JArrayType getArrayType()
     {
-        return fieldType.isArray();
+        return type.isArray();
     }
 
 
+    /**
+     * Whether the properties type is a collection.
+     * 
+     * @return <code>true</code> if the properties type is a collection,
+     *         <code>false</code> otherwise.
+     */
     public boolean isCollection()
     {
-        return TypeUtils.isCollection(fieldType);
+        return TypeUtils.isCollection(type);
     }
 
+
+    // ------------------------------------------------------------- properties
 
     public TypeOracle getTypeOracle()
     {
@@ -211,24 +264,44 @@ public class PropertyContext
     }
 
 
-    public JClassType getModelType()
+    /**
+     * The type of the properties class.
+     * 
+     * @return the type of the properties class.
+     */
+    public JClassType getClazz()
     {
-        return modelType;
+        return clazz;
     }
 
 
-    public JType getFieldType()
+    /**
+     * The properties type.
+     * 
+     * @return the properties type.
+     */
+    public JType getType()
     {
-        return fieldType;
+        return type;
     }
 
 
-    public String getFieldName()
+    /**
+     * The name of the property.
+     * 
+     * @return the name of the property.
+     */
+    public String getName()
     {
-        return fieldName;
+        return name;
     }
 
 
+    /**
+     * The path information for the mapping.
+     * 
+     * @return the path information for the mapping.
+     */
     public String getPath()
     {
         return path;
@@ -247,47 +320,19 @@ public class PropertyContext
     }
 
 
-    public AssignmentType getAssignmentType()
+    public Assignment getAssignment()
     {
-        return assignmentType;
+        return assignment;
     }
 
 
-    public AssignmentPolicy getAssignmentPolicy()
+    public VariableNames getVariableNames()
     {
-        return assignmentPolicy;
+        return variableNames;
     }
 
 
-    public String getInputVariable()
-    {
-        return inputVariable;
-    }
-
-
-    public String getValueVariable()
-    {
-        return valueVariable;
-    }
-
-
-    public String getValueAsStringVariable()
-    {
-        return newVariableName(AS_STRING_SUFFIX);
-    }
-
-
-    public String newVariableName(String suffix)
-    {
-        return getValueVariable() + suffix;
-    }
-
-
-    public String getBuilderVariable()
-    {
-        return builderVariable;
-    }
-
+    // --------------------------------------------------------------- metadata
 
     public <T> void addMetadata(String key, T value)
     {

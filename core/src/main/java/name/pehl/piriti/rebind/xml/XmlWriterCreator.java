@@ -101,12 +101,12 @@ public class XmlWriterCreator extends AbstractXmlCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
+    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.comment(writer, fieldContext);
         fieldHandler.declare(writer, fieldContext);
-        fieldHandler.readField(writer, fieldContext);
+        fieldHandler.readProperty(writer, fieldContext);
         fieldHandler.markupStart(writer, fieldContext);
         fieldHandler.writeValue(writer, fieldContext);
         fieldHandler.markupEnd(writer, fieldContext);

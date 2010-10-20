@@ -1,6 +1,5 @@
 package name.pehl.piriti.rebind.propertyhandler;
 
-
 /**
  * Registry to find {@link PropertyHandler}s based on a {@link PropertyContext}.
  * 
@@ -10,11 +9,11 @@ package name.pehl.piriti.rebind.propertyhandler;
 public interface PropertyHandlerRegistry
 {
     /**
-     * Looks up a field handler based on the information provided in the field
-     * context.
+     * Looks up a property handler based on the information provided in the
+     * property context.
      * 
-     * @param fieldContext
+     * @param propertyContext
      * @return
      */
-    PropertyHandler findFieldHandler(PropertyContext fieldContext);
+    PropertyHandler findPropertyHandler(PropertyContext propertyContext);
 }

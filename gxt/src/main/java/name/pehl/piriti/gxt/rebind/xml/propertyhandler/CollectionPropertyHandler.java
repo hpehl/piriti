@@ -13,14 +13,15 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class CollectionPropertyHandler extends name.pehl.piriti.rebind.xml.propertyhandler.CollectionFieldHandler
+public class CollectionPropertyHandler extends name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler
         implements ModelReaderConstants
 {
     @Override
     public void declare(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("%s<%s> %s = null;", fieldContext.getFieldType().getQualifiedSourceName(),
-                getTypeVariable(fieldContext).getParameterizedQualifiedSourceName(), fieldContext.getValueVariable());
+        writer.write("%s<%s> %s = null;", fieldContext.getType().getQualifiedSourceName(),
+                getTypeVariable(fieldContext).getParameterizedQualifiedSourceName(), fieldContext.getVariableNames()
+                        .getValueVariable());
     }
 
 

@@ -20,15 +20,15 @@ public class JsonWriterPropertyHandlerRegistry extends JsonPropertyHandlerRegist
      * <li>If the fields type is an array return {@link #newArrayFieldHandler()}
      * <li>Try to lookup the field handler by the fields type classname (this
      * will resolve all types registered in
-     * {@link #registerInitialFieldHandlers()}
+     * {@link #registerInitialPropertyHandlers()}
      * <li>If no field handler return {@link #newRegistryFieldHandler()}
      * </ol>
      * 
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findPropertyHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
-    public PropertyHandler findFieldHandler(PropertyContext fieldContext)
+    public PropertyHandler findPropertyHandler(PropertyContext fieldContext)
     {
         PropertyHandler handler = null;
         if (fieldContext.isEnum())
@@ -43,7 +43,7 @@ public class JsonWriterPropertyHandlerRegistry extends JsonPropertyHandlerRegist
         {
             // Ask the registry for all other stuff (basic types,
             // collections, maps, ...)
-            handler = registry.get(fieldContext.getFieldType().getQualifiedSourceName());
+            handler = registry.get(fieldContext.getType().getQualifiedSourceName());
             if (handler == null)
             {
                 // Delegate to the JsonRegistry to resolve other mapped

@@ -36,30 +36,31 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
 
 
     /**
-     * Returns <code>false</code> if the field type is no collection, if the
-     * collection has no type arguments or if the type argument of the
+     * Returns <code>false</code> if the properties type is no collection, if
+     * the collection has no type arguments or if the type argument of the
      * collection is an array, collection or map, <code>true</code> otherwise.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @return
      * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (!fieldContext.isCollection())
+        if (!propertyContext.isCollection())
         {
-            CodeGeneration.skipField(writer, fieldContext, "Type is no collection");
+            CodeGeneration.skipField(writer, propertyContext, "Type is no collection");
             return false;
         }
-        JClassType parameterType = getTypeVariable(fieldContext);
+        JClassType parameterType = getTypeVariable(propertyContext);
         if (parameterType != null)
         {
             if (parameterType.isArray() != null || TypeUtils.isCollection(parameterType)
                     || TypeUtils.isMap(parameterType))
             {
-                CodeGeneration.skipField(writer, fieldContext, "Nested arrays / collections / maps are not supported");
+                CodeGeneration.skipField(writer, propertyContext,
+                        "Nested arrays / collections / maps are not supported");
                 return false;
             }
         }
@@ -67,18 +68,18 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
         {
             // collections and maps without type arguments are not
             // supported!
-            CodeGeneration.skipField(writer, fieldContext, "Collection has no / invalid type argument");
+            CodeGeneration.skipField(writer, propertyContext, "Collection has no / invalid type argument");
             return false;
         }
         // Initialize the parameter type to make sure the relevant reader
         // is in the registry (ugly - but it works)
-        CodeGeneration.readerInitialization(writer, parameterType);
+        CodeGeneration.readerWriterInitialization(writer, parameterType);
         return true;
     }
 
 
-    protected JClassType getTypeVariable(PropertyContext fieldContext)
+    protected JClassType getTypeVariable(PropertyContext propertyContext)
     {
-        return TypeUtils.getTypeVariable(fieldContext.getFieldType());
+        return TypeUtils.getTypeVariable(propertyContext.getType());
     }
 }

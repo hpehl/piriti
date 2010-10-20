@@ -12,18 +12,18 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
-import name.pehl.piriti.rebind.xml.propertyhandler.ArrayFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.CollectionFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.EnumFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.IdFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.IdRefFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.StringFieldHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.ConverterPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.EnumPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.IdPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.IdRefPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.StringPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler;
 
 /**
  * {@link PropertyHandlerRegistry} used by the {@link XmlReaderCreator}.
@@ -33,7 +33,7 @@ import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler;
  */
 public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
 {
-    private Map<String, PropertyHandler> registry;
+    private final Map<String, PropertyHandler> registry;
 
 
     /**
@@ -43,15 +43,15 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
     public XmlPropertyHandlerRegistry()
     {
         registry = new HashMap<String, PropertyHandler>();
-        registerInitialFieldHandlers();
+        registerInitialPropertyHandlers();
     }
 
 
     /**
-     * Registers the initial field handler for the xml reader. The following
+     * Registers the initial property handlers for the xml reader. The following
      * handlers are registered:
      * <ul>
-     * <li>{@linkplain ConverterFieldHandler}
+     * <li>{@linkplain ConverterPropertyHandler}
      * <ul>
      * <li>Boolean
      * <li>Byte
@@ -63,11 +63,11 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
      * <li>Long
      * <li>Short
      * </ul>
-     * <li>{@linkplain StringFieldHandler}
+     * <li>{@linkplain StringPropertyHandler}
      * <ul>
      * <li>String
      * </ul>
-     * <li>{@linkplain CollectionFieldHandler}
+     * <li>{@linkplain CollectionPropertyHandler}
      * <ul>
      * <li>Collection
      * <li>List
@@ -80,7 +80,7 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
      * </ul>
      * <ul>
      */
-    private void registerInitialFieldHandlers()
+    private void registerInitialPropertyHandlers()
     {
         PropertyHandler handler = null;
 
@@ -114,36 +114,37 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
 
 
     /**
-     * Looks up a field handler based on the information provided in the field
-     * context. The lookup logic is implemented like this:
+     * Looks up a property handler based on the information provided in the
+     * property context. The lookup logic is implemented like this:
      * <ol>
      * <li>If the assignment type is {@link AssignmentType#ID} return
-     * {@link IdFieldHandler}
+     * {@link IdPropertyHandler}
      * <li>if the assignment type is {@link AssignmentType#IDREF} return
-     * {@link IdRefFieldHandler}
+     * {@link IdRefPropertyHandler}
      * <li>if the fields type is a primitive return the
-     * {@link ConverterFieldHandler}
-     * <li>if the fields type is an enum return {@link EnumFieldHandler}
-     * <li>If the fields type is an array return {@link ArrayFieldHandler}
+     * {@link ConverterPropertyHandler}
+     * <li>if the fields type is an enum return {@link EnumPropertyHandler}
+     * <li>If the fields type is an array return {@link ArrayPropertyHandler}
      * <li>Try to lookup the field handler by the fields type classname (this
      * will resolve all types registered in
-     * {@link #registerInitialFieldHandlers()}
-     * <li>If no field handler return {@link XmlRegistryFieldHandler}.
+     * {@link #registerInitialPropertyHandlers()}
+     * <li>If no field handler return {@link XmlRegistryPropertyHandler}.
      * </ol>
      * 
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findPropertyHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
-    public PropertyHandler findFieldHandler(PropertyContext fieldContext)
+    @Override
+    public PropertyHandler findPropertyHandler(PropertyContext fieldContext)
     {
         PropertyHandler handler = null;
 
-        if (fieldContext.getAssignmentType() == AssignmentType.ID)
+        if (fieldContext.getAssignment().getType() == AssignmentType.ID)
         {
             handler = newIdFieldHandler();
         }
-        else if (fieldContext.getAssignmentType() == AssignmentType.IDREF)
+        else if (fieldContext.getAssignment().getType() == AssignmentType.IDREF)
         {
             handler = newIdRefFieldHandler();
         }
@@ -163,7 +164,7 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
         {
             // Ask the registry for all other stuff (basic types,
             // collections, maps, ...)
-            handler = registry.get(fieldContext.getFieldType().getQualifiedSourceName());
+            handler = registry.get(fieldContext.getType().getQualifiedSourceName());
             if (handler == null)
             {
                 // Delegate to the XmlRegistry to resolve other mapped models
@@ -176,48 +177,48 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
 
     protected PropertyHandler newIdFieldHandler()
     {
-        return new IdFieldHandler();
+        return new IdPropertyHandler();
     }
 
 
     protected PropertyHandler newIdRefFieldHandler()
     {
-        return new IdRefFieldHandler();
+        return new IdRefPropertyHandler();
     }
 
 
     protected PropertyHandler newConverterFieldHandler()
     {
-        return new ConverterFieldHandler();
+        return new ConverterPropertyHandler();
     }
 
 
     protected PropertyHandler newStringFieldHandler()
     {
-        return new StringFieldHandler();
+        return new StringPropertyHandler();
     }
 
 
     protected PropertyHandler newEnumFieldHandler()
     {
-        return new EnumFieldHandler();
+        return new EnumPropertyHandler();
     }
 
 
     protected PropertyHandler newArrayFieldHandler()
     {
-        return new ArrayFieldHandler();
+        return new ArrayPropertyHandler();
     }
 
 
     protected PropertyHandler newCollectionFieldHandler()
     {
-        return new CollectionFieldHandler();
+        return new CollectionPropertyHandler();
     }
 
 
     protected PropertyHandler newRegistryFieldHandler()
     {
-        return new XmlRegistryFieldHandler();
+        return new XmlRegistryPropertyHandler();
     }
 }

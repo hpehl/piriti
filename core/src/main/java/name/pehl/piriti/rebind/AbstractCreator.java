@@ -236,7 +236,7 @@ public abstract class AbstractCreator
     protected abstract void createMethods(IndentedWriter writer) throws UnableToCompleteException;
 
 
-    protected abstract void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
+    protected abstract void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException;
 
 

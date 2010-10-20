@@ -7,8 +7,8 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link PropertyHandler} implementation which uses a {@link Converter} from the
- * {@link ConverterRegistry}.
+ * {@link PropertyHandler} implementation which uses a {@link Converter} from
+ * the {@link ConverterRegistry}.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
@@ -34,25 +34,26 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      * {@inheritDoc}
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        readInputAsString(writer, fieldContext);
-        writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
+        readInputAsString(writer, propertyContext);
+        writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueAsStringVariable());
         writer.indent();
-        String converterVariable = fieldContext.newVariableName("ReadConverter");
-        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
+        String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
+        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", propertyContext.getType()
                 .getQualifiedSourceName(), converterVariable);
         writer.write("if (%s != null) {", converterVariable);
         writer.indent();
-        if (fieldContext.getFormat() != null)
+        if (propertyContext.getFormat() != null)
         {
-            writer.write("%s = %s.convert(%s, \"%s\");", fieldContext.getValueVariable(), converterVariable,
-                    fieldContext.getValueAsStringVariable(), fieldContext.getFormat());
+            writer.write("%s = %s.convert(%s, \"%s\");", propertyContext.getVariableNames().getValueVariable(),
+                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable(),
+                    propertyContext.getFormat());
         }
         else
         {
-            writer.write("%s = %s.convert(%s, null);", fieldContext.getValueVariable(), converterVariable,
-                    fieldContext.getValueAsStringVariable());
+            writer.write("%s = %s.convert(%s, null);", propertyContext.getVariableNames().getValueVariable(),
+                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable());
         }
         writer.outdent();
         writer.write("}");
@@ -75,7 +76,7 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      * Converts the {@link PropertyContext#getValueVariable()} to a String
      * represented by {@link PropertyContext#getValueAsStringVariable()} using a
      * registered converter. If no converter for
-     * {@link PropertyContext#getFieldType()} was found, {@code toString()} will be
+     * {@link PropertyContext#getType()} was found, {@code toString()} will be
      * used.
      * 
      * @param writer
@@ -83,30 +84,30 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      */
     protected void writeValueAsString(IndentedWriter writer, PropertyContext fieldContext)
     {
-        writer.write("String %s = null;", fieldContext.getValueAsStringVariable());
-        String converterVariable = fieldContext.newVariableName("WriteConverter");
-        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getFieldType()
+        writer.write("String %s = null;", fieldContext.getVariableNames().getValueAsStringVariable());
+        String converterVariable = fieldContext.getVariableNames().newVariableName("WriteConverter");
+        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getType()
                 .getQualifiedSourceName(), converterVariable);
         writer.write("if (%s != null) {", converterVariable);
         // Use the registered converter
         writer.indent();
         if (fieldContext.getFormat() != null)
         {
-            writer.write("%s = %s.serialize(%s, \"%s\");", fieldContext.getValueAsStringVariable(), converterVariable,
-                    fieldContext.getValueVariable(), fieldContext.getFormat());
+            writer.write("%s = %s.serialize(%s, \"%s\");", fieldContext.getVariableNames().getValueAsStringVariable(),
+                    converterVariable, fieldContext.getVariableNames().getValueVariable(), fieldContext.getFormat());
         }
         else
         {
-            writer.write("%s = %s.serialize(%s, null);", fieldContext.getValueAsStringVariable(), converterVariable,
-                    fieldContext.getValueVariable());
+            writer.write("%s = %s.serialize(%s, null);", fieldContext.getVariableNames().getValueAsStringVariable(),
+                    converterVariable, fieldContext.getVariableNames().getValueVariable());
         }
         writer.outdent();
         writer.write("}");
         writer.write("else {");
         // Fall back to toString()
         writer.indent();
-        writer.write("%s = String.valueOf(%s);", fieldContext.getValueAsStringVariable(),
-                fieldContext.getValueVariable());
+        writer.write("%s = String.valueOf(%s);", fieldContext.getVariableNames().getValueAsStringVariable(),
+                fieldContext.getVariableNames().getValueVariable());
         writer.outdent();
         writer.write("}");
     }

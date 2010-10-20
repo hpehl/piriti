@@ -18,7 +18,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @version $Date$ $Revision: 421
  *          $
  */
-public class IdRefFieldHandler extends AbstractRegistryPropertyHandler
+public class IdRefPropertyHandler extends AbstractRegistryPropertyHandler
 {
     private static final String NESTED_TYPE = "nestedType";
 
@@ -30,47 +30,47 @@ public class IdRefFieldHandler extends AbstractRegistryPropertyHandler
      * type, <code>false</code> otherwise.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @return
      * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         JType type = null;
-        if (fieldContext.isArray())
+        if (propertyContext.isArray())
         {
-            type = fieldContext.getArrayType().getComponentType();
+            type = propertyContext.getArrayType().getComponentType();
         }
-        else if (TypeUtils.isCollection(fieldContext.getFieldType()))
+        else if (TypeUtils.isCollection(propertyContext.getType()))
         {
-            type = TypeUtils.getTypeVariable(fieldContext.getFieldType());
+            type = TypeUtils.getTypeVariable(propertyContext.getType());
         }
         else
         {
-            type = fieldContext.getFieldType();
+            type = propertyContext.getType();
         }
 
         JClassType classOrInterface = type.isClassOrInterface();
         if (classOrInterface == null)
         {
-            CodeGeneration.skipField(writer, fieldContext, "Type is no class or interface");
+            CodeGeneration.skipField(writer, propertyContext, "Type is no class or interface");
             return false;
         }
-        fieldContext.addMetadata(NESTED_TYPE, classOrInterface);
+        propertyContext.addMetadata(NESTED_TYPE, classOrInterface);
         return true;
     }
 
 
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        JClassType nestedType = fieldContext.getMetadata(NESTED_TYPE);
-        String readerVariable = startReader(writer, fieldContext, "xmlRegistry", nestedType);
+        JClassType nestedType = propertyContext.getMetadata(NESTED_TYPE);
+        String readerVariable = startReader(writer, propertyContext, "xmlRegistry", nestedType);
 
-        String references = fieldContext.newVariableName("References");
-        writer.write("String[] %s = %s.selectValues(\"%s\", %s);", references, fieldContext.getInputVariable(),
-                fieldContext.getPath(), fieldContext.isStripWsnl());
+        String references = propertyContext.getVariableNames().newVariableName("References");
+        writer.write("String[] %s = %s.selectValues(\"%s\", %s);", references, propertyContext.getVariableNames()
+                .getInputVariable(), propertyContext.getPath(), propertyContext.isStripWsnl());
         writer.write("if (%s.length == 1) {", references);
         writer.indent();
         // If there's only one value it is expected that this value contains
@@ -80,27 +80,27 @@ public class IdRefFieldHandler extends AbstractRegistryPropertyHandler
         writer.write("}");
         writer.write("if (%s.length != 0) {", references);
         writer.indent();
-        if (fieldContext.isArray() || TypeUtils.isCollection(fieldContext.getFieldType()))
+        if (propertyContext.isArray() || TypeUtils.isCollection(propertyContext.getType()))
         {
             String collectionVariable = null;
-            if (fieldContext.isArray())
+            if (propertyContext.isArray())
             {
-                collectionVariable = fieldContext.newVariableName("AsList");
+                collectionVariable = propertyContext.getVariableNames().newVariableName("AsList");
                 writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();",
                         nestedType.getParameterizedQualifiedSourceName(), collectionVariable);
             }
             else
             {
-                collectionVariable = fieldContext.getValueVariable();
+                collectionVariable = propertyContext.getVariableNames().getValueVariable();
                 String collectionImplementation = AbstractCollectionPropertyHandler.interfaceToImplementation
-                        .get(fieldContext.getFieldType().getErasedType().getQualifiedSourceName());
+                        .get(propertyContext.getType().getErasedType().getQualifiedSourceName());
                 if (collectionImplementation == null)
                 {
                     // the field type is already an implementation
-                    collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
+                    collectionImplementation = propertyContext.getType().getParameterizedQualifiedSourceName();
                 }
-                writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation,
-                        nestedType.getQualifiedSourceName());
+                writer.write("%s = new %s<%s>();", propertyContext.getVariableNames().getValueVariable(),
+                        collectionImplementation, nestedType.getQualifiedSourceName());
             }
             writer.write("for (String reference : %s) {", references);
             writer.indent();
@@ -113,14 +113,14 @@ public class IdRefFieldHandler extends AbstractRegistryPropertyHandler
             writer.write("}");
             writer.outdent();
             writer.write("}");
-            if (fieldContext.isArray())
+            if (propertyContext.isArray())
             {
-                writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                writer.write("%s = new %s[%s.size()];", propertyContext.getVariableNames().getValueVariable(),
                         nestedType.getQualifiedSourceName(), collectionVariable);
                 writer.write("int index = 0;");
                 writer.write("for(%s currentValue : %s) {", nestedType.getQualifiedSourceName(), collectionVariable);
                 writer.indent();
-                writer.write("%s[index] = currentValue;", fieldContext.getValueVariable());
+                writer.write("%s[index] = currentValue;", propertyContext.getVariableNames().getValueVariable());
                 writer.write("index++;");
                 writer.outdent();
                 writer.write("}");
@@ -128,31 +128,32 @@ public class IdRefFieldHandler extends AbstractRegistryPropertyHandler
         }
         else
         {
-            writer.write("%s = %s.idRef(%s[0]);", fieldContext.getValueVariable(), readerVariable, references);
+            writer.write("%s = %s.idRef(%s[0]);", propertyContext.getVariableNames().getValueVariable(),
+                    readerVariable, references);
         }
         writer.outdent();
         writer.write("}");
 
-        endReader(writer);
+        endReaderWriter(writer);
     }
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         writer.write("// markupStart() NYI");
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }
 
 
     @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         writer.write("// markupEnd() NYI");
     }

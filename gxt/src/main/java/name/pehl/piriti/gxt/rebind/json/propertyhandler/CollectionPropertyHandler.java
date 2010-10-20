@@ -20,8 +20,9 @@ public class CollectionPropertyHandler extends name.pehl.piriti.rebind.json.prop
     @Override
     public void declare(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
-        writer.write("%s<%s> %s = null;", fieldContext.getFieldType().getQualifiedSourceName(),
-                getTypeVariable(fieldContext).getParameterizedQualifiedSourceName(), fieldContext.getValueVariable());
+        writer.write("%s<%s> %s = null;", fieldContext.getType().getQualifiedSourceName(),
+                getTypeVariable(fieldContext).getParameterizedQualifiedSourceName(), fieldContext.getVariableNames()
+                        .getValueVariable());
     }
 
 

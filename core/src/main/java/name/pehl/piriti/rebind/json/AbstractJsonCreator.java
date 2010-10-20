@@ -1,5 +1,8 @@
 package name.pehl.piriti.rebind.json;
 
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
+import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,11 +13,11 @@ import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
+import name.pehl.piriti.rebind.propertyhandler.Assignment;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -71,23 +74,25 @@ public abstract class AbstractJsonCreator extends AbstractCreator
 
     // --------------------------------------------------------- helper methods
 
-    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
+    protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<JsonField>> fields = findFieldAnnotations();
-        for (Iterator<PropertyAnnotation<JsonField>> iter = fields.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<JsonField>> properties = findPropertyAnnotations();
+        for (Iterator<PropertyAnnotation<JsonField>> iter = properties.values().iterator(); iter.hasNext();)
         {
-            PropertyAnnotation<JsonField> fieldAnnotation = iter.next();
-            String jsonPath = calculateJsonPath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation());
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), jsonPath,
-                    fieldAnnotation.getAnnotation().format(), false, AssignmentType.MAPPING,
-                    fieldAnnotation.getAssignmentPolicy(), "jsonObject", "value" + counter, "jsonBuilder");
-            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
-            if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
+            PropertyAnnotation<JsonField> propertyAnnotation = iter.next();
+            String jsonPath = calculateJsonPath(propertyAnnotation.getField(), propertyAnnotation.getAnnotation());
+            // TODO Implement usage of setters
+            Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
+            VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
+            PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), jsonPath,
+                    propertyAnnotation.getAnnotation().format(), false, assignment, variableNames);
+            PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
+            if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
                 writer.newline();
-                handleField(writer, fieldHandler, fieldContext, iter.hasNext());
+                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
                 counter++;
             }
         }
@@ -95,12 +100,12 @@ public abstract class AbstractJsonCreator extends AbstractCreator
 
 
     /**
-     * Returns a map with the fields name as key and the {@link PropertyAnnotation}
-     * for {@link JsonField} as value.
+     * Returns a map with the fields name as key and the
+     * {@link PropertyAnnotation} for {@link JsonField} as value.
      * 
      * @return
      */
-    private Map<String, PropertyAnnotation<JsonField>> findFieldAnnotations()
+    private Map<String, PropertyAnnotation<JsonField>> findPropertyAnnotations()
     {
         Map<String, PropertyAnnotation<JsonField>> fields = new HashMap<String, PropertyAnnotation<JsonField>>();
 
@@ -115,8 +120,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
                 JField field = modelType.getField(annotation.name());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new PropertyAnnotation<JsonField>(field, annotation,
-                            AssignmentPolicy.PROPERTY_FIRST));
+                    fields.put(field.getName(), new PropertyAnnotation<JsonField>(field, annotation));
                 }
                 // TODO Is it an error if field == null?
             }
@@ -129,7 +133,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
         for (JField field : modelTypeFields)
         {
             JsonField annotation = field.getAnnotation(JsonField.class);
-            fields.put(field.getName(), new PropertyAnnotation<JsonField>(field, annotation, AssignmentPolicy.FIELD_ONLY));
+            fields.put(field.getName(), new PropertyAnnotation<JsonField>(field, annotation));
         }
         return fields;
     }
