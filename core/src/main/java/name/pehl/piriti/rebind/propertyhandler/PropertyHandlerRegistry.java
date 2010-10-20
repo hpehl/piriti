@@ -2,12 +2,12 @@ package name.pehl.piriti.rebind.propertyhandler;
 
 
 /**
- * Registry to find {@link FieldHandler}s based on a {@link FieldContext}.
+ * Registry to find {@link PropertyHandler}s based on a {@link PropertyContext}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public interface FieldHandlerRegistry
+public interface PropertyHandlerRegistry
 {
     /**
      * Looks up a field handler based on the information provided in the field
@@ -16,5 +16,5 @@ public interface FieldHandlerRegistry
      * @param fieldContext
      * @return
      */
-    FieldHandler findFieldHandler(FieldContext fieldContext);
+    PropertyHandler findFieldHandler(PropertyContext fieldContext);
 }

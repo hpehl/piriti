@@ -4,31 +4,31 @@ import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.json.client.JSONString;
 
 /**
- * {@link FieldHandler} implementation which uses a {@link Converter} from the
+ * {@link PropertyHandler} implementation which uses a {@link Converter} from the
  * {@link ConverterRegistry}.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class ConverterFieldHandler extends AbstractConverterFieldHandler
+public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
 {
     /**
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         super.readInput(writer, fieldContext);
         writer.outdent();
@@ -45,11 +45,11 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * 
      * @param writer
      * @param fieldContext
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    protected void readInputAsString(IndentedWriter writer, FieldContext fieldContext)
+    protected void readInputAsString(IndentedWriter writer, PropertyContext fieldContext)
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
@@ -78,14 +78,14 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.appendJsonKey(writer, fieldContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writeValueAsString(writer, fieldContext);
         writer.write("if (%s == null) {", fieldContext.getValueAsStringVariable());
@@ -109,11 +109,11 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
     }
 }

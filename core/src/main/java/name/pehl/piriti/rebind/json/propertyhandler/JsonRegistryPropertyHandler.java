@@ -4,19 +4,19 @@ import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link FieldHandler} implementation for types with an own {@link JsonReader}.
+ * {@link PropertyHandler} implementation for types with an own {@link JsonReader}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
+public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
 {
     /**
      * TODO Javadoc
@@ -25,10 +25,10 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         String readerVariable = startReader(writer, fieldContext, "jsonRegistry",
                 fieldContext.getClassOrInterfaceType());
@@ -62,14 +62,14 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.appendJsonKey(writer, fieldContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("if (%s == null) {", fieldContext.getValueVariable());
         writer.indent();
@@ -94,11 +94,11 @@ public class JsonRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
     }
 

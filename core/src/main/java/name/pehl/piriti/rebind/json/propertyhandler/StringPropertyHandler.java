@@ -2,33 +2,46 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AbstractEnumFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link FieldHandler} for enum types. This implementation reads the JSON data
- * as string and tries to convert it using <code>enumType.valueOf(String)</code>
- * .
+ * Simple {@link PropertyHandler} implementation for strings.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class EnumFieldHandler extends AbstractEnumFieldHandler
+public class StringPropertyHandler extends AbstractPropertyHandler
 {
+    /**
+     * Returns always <code>true</code>.
+     * 
+     * @param writer
+     * @param fieldContext
+     * @return always <code>true</code>
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     */
+    @Override
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    {
+        return true;
+    }
+
+
     /**
      * TODO Javadoc
      * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
@@ -52,23 +65,7 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
         writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
-        writer.write("try {");
-        writer.indent();
-        writer.write("%s = %s.valueOf(%s.stringValue());", fieldContext.getValueVariable(), fieldContext.getEnumType()
-                .getQualifiedSourceName(), jsonString);
-        writer.outdent();
-        writer.write("}");
-        writer.write("catch (IllegalArgumentException e1) {");
-        writer.indent();
-        writer.write("try {");
-        writer.indent();
-        writer.write("%s = %s.valueOf(%s.stringValue().toUpperCase());", fieldContext.getValueVariable(), fieldContext
-                .getEnumType().getQualifiedSourceName(), jsonString);
-        writer.outdent();
-        writer.write("}");
-        writer.write("catch (IllegalArgumentException e2) {}");
-        writer.outdent();
-        writer.write("}");
+        writer.write("%s = %s.stringValue();", fieldContext.getValueVariable(), jsonString);
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -79,14 +76,14 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.appendJsonKey(writer, fieldContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("if (%s == null) {", fieldContext.getValueVariable());
         writer.indent();
@@ -107,11 +104,10 @@ public class EnumFieldHandler extends AbstractEnumFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter, name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
     }
 }

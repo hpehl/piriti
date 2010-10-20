@@ -13,9 +13,9 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
-import name.pehl.piriti.rebind.propertyhandler.FieldAnnotation;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.CollectionFieldHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler;
@@ -263,8 +263,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void readIds(IndentedWriter writer) throws UnableToCompleteException
     {
         boolean validIdField = false;
-        FieldHandler handler = null;
-        FieldContext fieldContext = checkForIdField();
+        PropertyHandler handler = null;
+        PropertyContext fieldContext = checkForIdField();
         if (fieldContext != null)
         {
             handler = handlerRegistry.findFieldHandler(fieldContext);
@@ -370,7 +370,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
      * is scanned for an {@link XmlId} annotation. If there's no such annotation
      * the {@link XmlReader} is asked whether it contains an {@link XmlId}
      * annotation inside an {@link XmlFields} annotation. If one of them was
-     * found the corresponding {@link FieldContext} is created and returned.
+     * found the corresponding {@link PropertyContext} is created and returned.
      * <p>
      * If more than one {@link XmlId} annotation was found in the
      * {@code modelType} an {@link UnableToCompleteException} is thrown.
@@ -378,15 +378,15 @@ public class XmlReaderCreator extends AbstractXmlCreator
      * If no id mapping was found (neither in the {@code modelType} nor inside
      * the {@link XmlFields} annotation) <code>null</code> is returned.
      * 
-     * @return the {@link FieldContext} for the id mapping or <code>null</code>
-     *         if no id mapping is present.
+     * @return the {@link PropertyContext} for the id mapping or
+     *         <code>null</code> if no id mapping is present.
      * @throws UnableToCompleteException
      *             if more than one {@link XmlId} annotation was found in the
      *             {@code modelType}
      */
-    protected FieldContext checkForIdField() throws UnableToCompleteException
+    protected PropertyContext checkForIdField() throws UnableToCompleteException
     {
-        FieldContext fieldContext = null;
+        PropertyContext fieldContext = null;
 
         // First look for an XmlId annotation in the modelType
         JField[] fields = findAnnotatedFields(modelType, XmlId.class);
@@ -396,8 +396,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
             if (fields.length == 1)
             {
                 XmlId xmlId = field.getAnnotation(XmlId.class);
-                fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType, field.getType(),
-                        field.getName(), xmlId.value(), null, xmlId.stripWsnl(), AssignmentType.ID,
+                fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
+                        field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(), AssignmentType.ID,
                         AssignmentPolicy.FIELD_ONLY, "element", "idValue", "xmlBuilder");
             }
             else
@@ -418,7 +418,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                     JField field = modelType.getField(xmlId.name());
                     if (field != null)
                     {
-                        fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+                        fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                                 field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
                                 AssignmentType.ID, AssignmentPolicy.PROPERTY_FIRST, "element", "idValue", "xmlBuilder");
                     }
@@ -437,17 +437,17 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, FieldAnnotation<XmlField>> fields = findFieldAnnotations();
-        for (Iterator<FieldAnnotation<XmlField>> iter = fields.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<XmlField>> fields = findFieldAnnotations();
+        for (Iterator<PropertyAnnotation<XmlField>> iter = fields.values().iterator(); iter.hasNext();)
         {
-            FieldAnnotation<XmlField> fieldAnnotation = iter.next();
-            String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
-            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath,
-                    fieldAnnotation.annotation.format(), fieldAnnotation.annotation.stripWsnl(),
-                    AssignmentType.MAPPING, fieldAnnotation.assignmentPolicy, "element", "nestedValue" + counter,
+            PropertyAnnotation<XmlField> fieldAnnotation = iter.next();
+            String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
+            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), xpath, fieldAnnotation
+                            .getAnnotation().format(), fieldAnnotation.getAnnotation().stripWsnl(),
+                    AssignmentType.MAPPING, fieldAnnotation.getAssignmentPolicy(), "element", "nestedValue" + counter,
                     "xmlBuilder");
-            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if ((fieldHandler instanceof XmlRegistryFieldHandler || fieldHandler instanceof ArrayFieldHandler || fieldHandler instanceof CollectionFieldHandler)
                     && fieldHandler.isValid(writer, fieldContext))
             {
@@ -462,16 +462,16 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, FieldAnnotation<XmlIdRef>> fields = findReferenceAnnotations();
-        for (Iterator<FieldAnnotation<XmlIdRef>> iter = fields.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<XmlIdRef>> fields = findReferenceAnnotations();
+        for (Iterator<PropertyAnnotation<XmlIdRef>> iter = fields.values().iterator(); iter.hasNext();)
         {
-            FieldAnnotation<XmlIdRef> fieldAnnotation = iter.next();
-            String xpath = calculateXpath(fieldAnnotation.field, fieldAnnotation.annotation.value());
-            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.field.getType(), fieldAnnotation.field.getName(), xpath, null,
-                    fieldAnnotation.annotation.stripWsnl(), AssignmentType.IDREF, fieldAnnotation.assignmentPolicy,
-                    "element", "idRefValue" + counter, "xmlBuilder");
-            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            PropertyAnnotation<XmlIdRef> fieldAnnotation = iter.next();
+            String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
+            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), xpath, null,
+                    fieldAnnotation.getAnnotation().stripWsnl(), AssignmentType.IDREF,
+                    fieldAnnotation.getAssignmentPolicy(), "element", "idRefValue" + counter, "xmlBuilder");
+            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
@@ -482,9 +482,9 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    private Map<String, FieldAnnotation<XmlIdRef>> findReferenceAnnotations()
+    private Map<String, PropertyAnnotation<XmlIdRef>> findReferenceAnnotations()
     {
-        Map<String, FieldAnnotation<XmlIdRef>> fields = new HashMap<String, FieldAnnotation<XmlIdRef>>();
+        Map<String, PropertyAnnotation<XmlIdRef>> fields = new HashMap<String, PropertyAnnotation<XmlIdRef>>();
 
         // Step 1: Add all XmlField annotations in the XmlFields annotation
         // from the interfaceType
@@ -497,7 +497,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 JField field = modelType.getField(annotation.name());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new FieldAnnotation<XmlIdRef>(field, annotation,
+                    fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation,
                             AssignmentPolicy.PROPERTY_FIRST));
                 }
                 // TODO Is it an error if field == null?
@@ -511,14 +511,14 @@ public class XmlReaderCreator extends AbstractXmlCreator
         for (JField field : modelTypeFields)
         {
             XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
-            fields.put(field.getName(), new FieldAnnotation<XmlIdRef>(field, annotation, AssignmentPolicy.FIELD_ONLY));
+            fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation, AssignmentPolicy.FIELD_ONLY));
         }
         return fields;
     }
 
 
     @Override
-    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+    protected void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.comment(writer, fieldContext);

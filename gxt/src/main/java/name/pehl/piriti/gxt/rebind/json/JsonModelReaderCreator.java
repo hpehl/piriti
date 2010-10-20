@@ -11,9 +11,9 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.json.JsonReaderCreator;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -38,9 +38,9 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
 
 
     @Override
-    protected FieldHandlerRegistry setupFieldHandlerRegistry()
+    protected PropertyHandlerRegistry setupFieldHandlerRegistry()
     {
-        return new JsonModelReaderFieldHandlerRegistry();
+        return new JsonModelReaderPropertyHandlerRegistry();
     }
 
 
@@ -65,11 +65,11 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             writer.newline();
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
-            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldType, jsonField.name(), jsonPath, jsonField.format(), false, AssignmentType.MAPPING,
                     AssignmentPolicy.GXT, "jsonObject", "value" + counter, "jsonBuilder");
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
-            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();

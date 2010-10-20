@@ -7,13 +7,13 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link FieldHandler} implementation which uses a {@link Converter} from the
+ * {@link PropertyHandler} implementation which uses a {@link Converter} from the
  * {@link ConverterRegistry}.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
+public abstract class AbstractConverterPropertyHandler extends AbstractPropertyHandler
 {
     /**
      * Returns always <code>true</code>.
@@ -21,10 +21,10 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return always <code>true</code>
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         return true;
     }
@@ -34,7 +34,7 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
      * {@inheritDoc}
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         readInputAsString(writer, fieldContext);
         writer.write("if (%s != null) {", fieldContext.getValueAsStringVariable());
@@ -63,25 +63,25 @@ public abstract class AbstractConverterFieldHandler extends AbstractFieldHandler
 
     /**
      * Responsible to read the value as string and assigning it to
-     * {@link FieldContext#getValueAsStringVariable()}.
+     * {@link PropertyContext#getValueAsStringVariable()}.
      * 
      * @param writer
      * @param fieldContext
      */
-    protected abstract void readInputAsString(IndentedWriter writer, FieldContext fieldContext);
+    protected abstract void readInputAsString(IndentedWriter writer, PropertyContext fieldContext);
 
 
     /**
-     * Converts the {@link FieldContext#getValueVariable()} to a String
-     * represented by {@link FieldContext#getValueAsStringVariable()} using a
+     * Converts the {@link PropertyContext#getValueVariable()} to a String
+     * represented by {@link PropertyContext#getValueAsStringVariable()} using a
      * registered converter. If no converter for
-     * {@link FieldContext#getFieldType()} was found, {@code toString()} will be
+     * {@link PropertyContext#getFieldType()} was found, {@code toString()} will be
      * used.
      * 
      * @param writer
      * @param fieldContext
      */
-    protected void writeValueAsString(IndentedWriter writer, FieldContext fieldContext)
+    protected void writeValueAsString(IndentedWriter writer, PropertyContext fieldContext)
     {
         writer.write("String %s = null;", fieldContext.getValueAsStringVariable());
         String converterVariable = fieldContext.newVariableName("WriteConverter");

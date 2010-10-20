@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind;
 
 import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -29,12 +29,12 @@ public final class CodeGeneration
     /**
      * Writes the assignment based on the {@link AssignmentPolicy} in the
      * {@code fieldContext}. The assignement is only done if
-     * {@link FieldContext#getValueVariable()} is not null.
+     * {@link PropertyContext#getValueVariable()} is not null.
      * 
      * @param writer
      * @param fieldContext
      */
-    public static void assign(IndentedWriter writer, FieldContext fieldContext)
+    public static void assign(IndentedWriter writer, PropertyContext fieldContext)
     {
         writer.write("if (%s != null) {", fieldContext.getValueVariable());
         writer.indent();
@@ -115,13 +115,13 @@ public final class CodeGeneration
     }
 
 
-    private static void assignGxt(IndentedWriter writer, FieldContext fieldContext)
+    private static void assignGxt(IndentedWriter writer, PropertyContext fieldContext)
     {
         writer.write("model.set(\"%s\", %s);", fieldContext.getFieldName(), fieldContext.getValueVariable());
     }
 
 
-    private static boolean isSetterAccessible(FieldContext fieldContext)
+    private static boolean isSetterAccessible(PropertyContext fieldContext)
     {
         boolean accessible = false;
         if (fieldContext.getPrimitiveType() != null)
@@ -142,7 +142,7 @@ public final class CodeGeneration
 
     // ------------------------------------------------------------- read field
 
-    public static void readField(IndentedWriter writer, FieldContext fieldContext)
+    public static void readField(IndentedWriter writer, PropertyContext fieldContext)
     {
         AssignmentPolicy assignmentPolicy = fieldContext.getAssignmentPolicy();
         switch (assignmentPolicy)
@@ -278,7 +278,7 @@ public final class CodeGeneration
      * @param fieldContext
      * @param reason
      */
-    public static void skipField(IndentedWriter writer, FieldContext fieldContext, String reason)
+    public static void skipField(IndentedWriter writer, PropertyContext fieldContext, String reason)
     {
         writer.write("// Skipping field %s", fieldContext);
         writer.write("// " + reason);
@@ -296,23 +296,23 @@ public final class CodeGeneration
      * @param writer
      * @param fieldContext
      */
-    public static void appendJsonKey(IndentedWriter writer, FieldContext fieldContext)
+    public static void appendJsonKey(IndentedWriter writer, PropertyContext fieldContext)
     {
         writer.write("%s.append(\"\\\"%s\\\":\");", fieldContext.getBuilderVariable(), fieldContext.getPath());
     }
 
 
     /**
-     * Appends {@link FieldContext#getValueVariable()} to the StringBuilder
+     * Appends {@link PropertyContext#getValueVariable()} to the StringBuilder
      * holding the JSON serialization data. Use this method only for non-null
-     * values of {@link FieldContext#getValueVariable()}.
+     * values of {@link PropertyContext#getValueVariable()}.
      * 
      * @param writer
      * @param fieldContext
      * @param quote
      *            Whether to quote the value.
      */
-    public static void appendJsonValue(IndentedWriter writer, FieldContext fieldContext, boolean quote)
+    public static void appendJsonValue(IndentedWriter writer, PropertyContext fieldContext, boolean quote)
     {
         if (quote)
         {

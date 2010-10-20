@@ -1,9 +1,9 @@
 package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -28,9 +28,9 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
 
     @Override
-    protected FieldHandlerRegistry setupFieldHandlerRegistry()
+    protected PropertyHandlerRegistry setupFieldHandlerRegistry()
     {
-        return new JsonWriterFieldHandlerRegistry();
+        return new JsonWriterPropertyHandlerRegistry();
     }
 
 
@@ -115,7 +115,7 @@ public class JsonWriterCreator extends AbstractJsonCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+    protected void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.comment(writer, fieldContext);

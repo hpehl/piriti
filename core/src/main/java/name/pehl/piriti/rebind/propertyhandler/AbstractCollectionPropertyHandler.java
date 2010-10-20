@@ -18,12 +18,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
- * Abstract {@link FieldHandler} for collections.
+ * Abstract {@link PropertyHandler} for collections.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandler
+public abstract class AbstractCollectionPropertyHandler extends AbstractPropertyHandler
 {
     public static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
     static
@@ -43,10 +43,10 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         if (!fieldContext.isCollection())
         {
@@ -77,7 +77,7 @@ public abstract class AbstractCollectionFieldHandler extends AbstractFieldHandle
     }
 
 
-    protected JClassType getTypeVariable(FieldContext fieldContext)
+    protected JClassType getTypeVariable(PropertyContext fieldContext)
     {
         return TypeUtils.getTypeVariable(fieldContext.getFieldType());
     }

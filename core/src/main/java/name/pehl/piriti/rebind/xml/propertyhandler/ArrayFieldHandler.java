@@ -2,11 +2,11 @@ package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractArrayFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -15,12 +15,12 @@ import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
 
 /**
- * {@link FieldHandler} for arrays.
+ * {@link PropertyHandler} for arrays.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class ArrayFieldHandler extends AbstractArrayFieldHandler
+public class ArrayFieldHandler extends AbstractArrayPropertyHandler
 {
     /**
      * TODO Javadoc
@@ -29,10 +29,10 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         JArrayType arrayType = fieldContext.getArrayType();
         JType componentType = arrayType.getComponentType();
@@ -60,12 +60,12 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
             nestedXpath += "/text()";
         }
 
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
+        PropertyContext nestedFieldContext = new PropertyContext(fieldContext.getTypeOracle(),
                 fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
                 fieldContext.getFieldName(), nestedXpath, fieldContext.getFormat(), fieldContext.isStripWsnl(),
                 AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, nestedElementVariable, nestedValueVariable,
                 fieldContext.getBuilderVariable());
-        FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        PropertyHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
@@ -115,21 +115,21 @@ public class ArrayFieldHandler extends AbstractArrayFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupStart() NYI");
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }
 
 
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupEnd() NYI");
     }

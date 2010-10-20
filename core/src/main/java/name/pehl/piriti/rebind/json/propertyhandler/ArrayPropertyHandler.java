@@ -2,22 +2,25 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JArrayType;
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
+import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.NotFoundException;
 
 /**
- * {@link FieldHandler} for collections.
+ * {@link PropertyHandler} for arrays.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class CollectionFieldHandler extends AbstractCollectionFieldHandler
+public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
 {
     /**
      * TODO Javadoc
@@ -26,22 +29,37 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
-        JClassType parameterType = getTypeVariable(fieldContext);
+        JArrayType arrayType = fieldContext.getArrayType();
+        JType componentType = arrayType.getComponentType();
+        JPrimitiveType primitiveComponentType = componentType.isPrimitive();
+        if (primitiveComponentType != null)
+        {
+            try
+            {
+                componentType = fieldContext.getTypeOracle().getType(
+                        primitiveComponentType.getQualifiedBoxedSourceName());
+            }
+            catch (NotFoundException e)
+            {
+                throw new UnableToCompleteException();
+            }
+        }
+        String valueVariableAsList = fieldContext.newVariableName("AsList");
         String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
         String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
-                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
+        PropertyContext nestedFieldContext = new PropertyContext(fieldContext.getTypeOracle(),
+                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
                 fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
                 AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable,
                 fieldContext.getBuilderVariable());
-        FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        PropertyHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
@@ -67,15 +85,8 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         writer.write("if (jsonArray != null) {");
         writer.indent();
         writer.write("int size = jsonArray.size();");
-        String collectionImplementation = interfaceToImplementation.get(fieldContext.getFieldType().getErasedType()
-                .getQualifiedSourceName());
-        if (collectionImplementation == null)
-        {
-            // the field type is already an implementation
-            collectionImplementation = fieldContext.getFieldType().getParameterizedQualifiedSourceName();
-        }
-        writer.write("%s = new %s<%s>();", fieldContext.getValueVariable(), collectionImplementation,
-                parameterType.getQualifiedSourceName());
+        writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", componentType.getParameterizedQualifiedSourceName(),
+                valueVariableAsList);
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
         writer.write("JSONValue %s = jsonArray.get(i);", nestedJsonValueVariable);
@@ -86,9 +97,30 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         nestedHandler.readInput(writer, nestedFieldContext);
         writer.write("if (%s != null) {", nestedFieldContext.getValueVariable());
         writer.indent();
-        writer.write("%s.add(%s);", fieldContext.getValueVariable(), nestedFieldContext.getValueVariable());
+        writer.write("%s.add(%s);", valueVariableAsList, nestedFieldContext.getValueVariable());
         writer.outdent();
         writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.write("if (!%s.isEmpty()) {", valueVariableAsList);
+        writer.indent();
+        writer.write("int index = 0;");
+        if (primitiveComponentType != null)
+        {
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                    primitiveComponentType.getQualifiedSourceName(), valueVariableAsList);
+        }
+        else
+        {
+            writer.write("%s = new %s[%s.size()];", fieldContext.getValueVariable(),
+                    componentType.getQualifiedSourceName(), valueVariableAsList);
+        }
+        writer.write("for(%s currentValue : %s) {", componentType.getQualifiedSourceName(), valueVariableAsList);
+        writer.indent();
+        writer.write("%s[index] = currentValue;", fieldContext.getValueVariable());
+        writer.write("index++;");
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -101,26 +133,41 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.appendJsonKey(writer, fieldContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
-        JClassType parameterType = getTypeVariable(fieldContext);
+        JArrayType arrayType = fieldContext.getArrayType();
+        JType componentType = arrayType.getComponentType();
+        JPrimitiveType primitiveComponentType = componentType.isPrimitive();
+        if (primitiveComponentType != null)
+        {
+            try
+            {
+                componentType = fieldContext.getTypeOracle().getType(
+                        primitiveComponentType.getQualifiedBoxedSourceName());
+            }
+            catch (NotFoundException e)
+            {
+                throw new UnableToCompleteException();
+            }
+        }
+
         String nestedJsonValueVariable = fieldContext.newVariableName("NestedJsonValue");
         String nestedValueVariable = fieldContext.newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
-                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
+        PropertyContext nestedFieldContext = new PropertyContext(fieldContext.getTypeOracle(),
+                fieldContext.getHandlerRegistry(), fieldContext.getModelType(), componentType,
                 fieldContext.getFieldName(), null, fieldContext.getFormat(), false, AssignmentType.MAPPING,
                 AssignmentPolicy.FIELD_ONLY, nestedJsonValueVariable, nestedValueVariable,
                 fieldContext.getBuilderVariable());
-        FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        PropertyHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
@@ -135,21 +182,20 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
         writer.indent();
         // Iterate over values
         writer.write("%s.append(\"[\");", fieldContext.getBuilderVariable());
-        writer.write("for (Iterator<%s> iter = %s.iterator(); iter.hasNext(); ) {",
-                parameterType.getQualifiedSourceName(), fieldContext.getValueVariable());
+        writer.write("for (int i = 0; i < %s.length; i++ ) {", fieldContext.getValueVariable());
         writer.indent();
 
         nestedHandler.comment(writer, nestedFieldContext);
         nestedHandler.declare(writer, nestedFieldContext);
         // Replace nestedHandler.readField(writer, nestedFieldContext) with
-        writer.write("%s = iter.next();", nestedFieldContext.getValueVariable());
+        writer.write("%s = %s[i];", nestedFieldContext.getValueVariable(), fieldContext.getValueVariable());
         // No nestedHandler.markupStart(writer, nestedFieldContext); since we're
         // in an JSON array
         nestedHandler.writeValue(writer, nestedFieldContext);
         // No nestedHandler.markupEnd(writer, nestedFieldContext); since we're
         // in an JSON array
-
-        writer.write("if (iter.hasNext()) {", fieldContext.getValueVariable());
+        
+        writer.write("if (i < %s.length - 1) {", fieldContext.getValueVariable());
         writer.indent();
         writer.write("%s.append(\",\");", fieldContext.getBuilderVariable());
         writer.outdent();
@@ -168,11 +214,11 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
     }
 }

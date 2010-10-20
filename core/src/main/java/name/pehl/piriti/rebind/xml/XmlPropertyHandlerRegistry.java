@@ -13,9 +13,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.rebind.xml.propertyhandler.ArrayFieldHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.CollectionFieldHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler;
@@ -26,23 +26,23 @@ import name.pehl.piriti.rebind.xml.propertyhandler.StringFieldHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler;
 
 /**
- * {@link FieldHandlerRegistry} used by the {@link XmlReaderCreator}.
+ * {@link PropertyHandlerRegistry} used by the {@link XmlReaderCreator}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
+public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
 {
-    private Map<String, FieldHandler> registry;
+    private Map<String, PropertyHandler> registry;
 
 
     /**
      * Construct a new instance of this class and registers the initial field
      * handlers.
      */
-    public XmlFieldHandlerRegistry()
+    public XmlPropertyHandlerRegistry()
     {
-        registry = new HashMap<String, FieldHandler>();
+        registry = new HashMap<String, PropertyHandler>();
         registerInitialFieldHandlers();
     }
 
@@ -82,7 +82,7 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      */
     private void registerInitialFieldHandlers()
     {
-        FieldHandler handler = null;
+        PropertyHandler handler = null;
 
         // Basics
         handler = newConverterFieldHandler();
@@ -133,11 +133,11 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
      * 
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
-    public FieldHandler findFieldHandler(FieldContext fieldContext)
+    public PropertyHandler findFieldHandler(PropertyContext fieldContext)
     {
-        FieldHandler handler = null;
+        PropertyHandler handler = null;
 
         if (fieldContext.getAssignmentType() == AssignmentType.ID)
         {
@@ -174,49 +174,49 @@ public class XmlFieldHandlerRegistry implements FieldHandlerRegistry
     }
 
 
-    protected FieldHandler newIdFieldHandler()
+    protected PropertyHandler newIdFieldHandler()
     {
         return new IdFieldHandler();
     }
 
 
-    protected FieldHandler newIdRefFieldHandler()
+    protected PropertyHandler newIdRefFieldHandler()
     {
         return new IdRefFieldHandler();
     }
 
 
-    protected FieldHandler newConverterFieldHandler()
+    protected PropertyHandler newConverterFieldHandler()
     {
         return new ConverterFieldHandler();
     }
 
 
-    protected FieldHandler newStringFieldHandler()
+    protected PropertyHandler newStringFieldHandler()
     {
         return new StringFieldHandler();
     }
 
 
-    protected FieldHandler newEnumFieldHandler()
+    protected PropertyHandler newEnumFieldHandler()
     {
         return new EnumFieldHandler();
     }
 
 
-    protected FieldHandler newArrayFieldHandler()
+    protected PropertyHandler newArrayFieldHandler()
     {
         return new ArrayFieldHandler();
     }
 
 
-    protected FieldHandler newCollectionFieldHandler()
+    protected PropertyHandler newCollectionFieldHandler()
     {
         return new CollectionFieldHandler();
     }
 
 
-    protected FieldHandler newRegistryFieldHandler()
+    protected PropertyHandler newRegistryFieldHandler()
     {
         return new XmlRegistryFieldHandler();
     }

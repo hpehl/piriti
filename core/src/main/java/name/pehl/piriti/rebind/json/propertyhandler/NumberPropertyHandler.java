@@ -3,8 +3,8 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -15,7 +15,7 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
  * @version $Date$ $Revision: 364
  *          $
  */
-public class NumberFieldHandler extends AbstractFieldHandler
+public class NumberPropertyHandler extends AbstractPropertyHandler
 {
     /**
      * Returns <code>true</code> if the field type is short, Short, int,
@@ -26,11 +26,11 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @param fieldContext
      * @return
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         if (fieldContext.isPrimitive())
         {
@@ -57,11 +57,11 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         // If there's a path then get the JSON value using this path,
         // otherwise it is expected that the JSON value is the inputVariable
@@ -121,14 +121,14 @@ public class NumberFieldHandler extends AbstractFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         CodeGeneration.appendJsonKey(writer, fieldContext);
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         if (fieldContext.getFieldType().isPrimitive() == null)
         {
@@ -157,11 +157,11 @@ public class NumberFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
     }
 }

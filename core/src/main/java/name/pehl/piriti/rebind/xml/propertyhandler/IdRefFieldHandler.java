@@ -5,9 +5,9 @@ import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -18,7 +18,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @version $Date$ $Revision: 421
  *          $
  */
-public class IdRefFieldHandler extends AbstractRegistryFieldHandler
+public class IdRefFieldHandler extends AbstractRegistryPropertyHandler
 {
     private static final String NESTED_TYPE = "nestedType";
 
@@ -32,10 +32,10 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         JType type = null;
         if (fieldContext.isArray())
@@ -63,7 +63,7 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
 
 
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         JClassType nestedType = fieldContext.getMetadata(NESTED_TYPE);
         String readerVariable = startReader(writer, fieldContext, "xmlRegistry", nestedType);
@@ -92,7 +92,7 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
             else
             {
                 collectionVariable = fieldContext.getValueVariable();
-                String collectionImplementation = AbstractCollectionFieldHandler.interfaceToImplementation
+                String collectionImplementation = AbstractCollectionPropertyHandler.interfaceToImplementation
                         .get(fieldContext.getFieldType().getErasedType().getQualifiedSourceName());
                 if (collectionImplementation == null)
                 {
@@ -138,21 +138,21 @@ public class IdRefFieldHandler extends AbstractRegistryFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupStart() NYI");
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }
 
 
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupEnd() NYI");
     }

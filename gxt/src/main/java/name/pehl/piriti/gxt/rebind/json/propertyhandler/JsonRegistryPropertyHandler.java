@@ -4,12 +4,12 @@ import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
 
 /**
- * {@link FieldHandler} implementation for types with an own {@link JsonReader}.
+ * {@link PropertyHandler} implementation for types with an own {@link JsonReader}.
  * 
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class JsonRegistryFieldHandler extends name.pehl.piriti.rebind.json.propertyhandler.JsonRegistryFieldHandler
+public class JsonRegistryPropertyHandler extends name.pehl.piriti.rebind.json.propertyhandler.JsonRegistryPropertyHandler
 {
     @Override
     protected String getReaderClassname()

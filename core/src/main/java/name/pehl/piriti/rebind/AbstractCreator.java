@@ -5,9 +5,9 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -34,7 +34,7 @@ public abstract class AbstractCreator
     protected final String implName;
     protected final TreeLogger logger;
     protected final JClassType modelType;
-    protected final FieldHandlerRegistry handlerRegistry;
+    protected final PropertyHandlerRegistry handlerRegistry;
 
 
     // ----------------------------------------------------------- constructors
@@ -76,7 +76,7 @@ public abstract class AbstractCreator
     /**
      * Method to setup the field handler registry used in this creator.
      */
-    protected abstract FieldHandlerRegistry setupFieldHandlerRegistry();
+    protected abstract PropertyHandlerRegistry setupFieldHandlerRegistry();
 
 
     // --------------------------------------------------------- create methods
@@ -236,7 +236,7 @@ public abstract class AbstractCreator
     protected abstract void createMethods(IndentedWriter writer) throws UnableToCompleteException;
 
 
-    protected abstract void handleField(IndentedWriter writer, FieldHandler fieldHandler, FieldContext fieldContext,
+    protected abstract void handleField(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException;
 
 

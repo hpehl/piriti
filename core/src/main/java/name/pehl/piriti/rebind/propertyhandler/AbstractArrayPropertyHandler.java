@@ -8,12 +8,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * Abstract {@link FieldHandler} for arrays.
+ * Abstract {@link PropertyHandler} for arrays.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractArrayFieldHandler extends AbstractFieldHandler
+public abstract class AbstractArrayPropertyHandler extends AbstractPropertyHandler
 {
     /**
      * Returns <code>false</code> if the field type is no array, or if the
@@ -23,10 +23,10 @@ public abstract class AbstractArrayFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         if (!fieldContext.isArray())
         {

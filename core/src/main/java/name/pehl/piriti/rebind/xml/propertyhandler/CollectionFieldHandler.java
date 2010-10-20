@@ -2,22 +2,22 @@ package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
- * {@link FieldHandler} for collections.
+ * {@link PropertyHandler} for collections.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class CollectionFieldHandler extends AbstractCollectionFieldHandler
+public class CollectionFieldHandler extends AbstractCollectionPropertyHandler
 {
     /**
      * TODO Javadoc
@@ -26,10 +26,10 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         JClassType parameterType = getTypeVariable(fieldContext);
         String nestedElementVariable = fieldContext.newVariableName("NestedElement");
@@ -42,12 +42,12 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
             nestedXpath += "/text()";
         }
 
-        FieldContext nestedFieldContext = new FieldContext(fieldContext.getTypeOracle(),
+        PropertyContext nestedFieldContext = new PropertyContext(fieldContext.getTypeOracle(),
                 fieldContext.getHandlerRegistry(), fieldContext.getModelType(), parameterType,
                 fieldContext.getFieldName(), nestedXpath, fieldContext.getFormat(), fieldContext.isStripWsnl(),
                 AssignmentType.MAPPING, AssignmentPolicy.FIELD_ONLY, nestedElementVariable, nestedValueVariable,
                 fieldContext.getBuilderVariable());
-        FieldHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
+        PropertyHandler nestedHandler = fieldContext.getHandlerRegistry().findFieldHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
             return;
@@ -84,21 +84,21 @@ public class CollectionFieldHandler extends AbstractCollectionFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupStart() NYI");
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }
 
 
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupEnd() NYI");
     }

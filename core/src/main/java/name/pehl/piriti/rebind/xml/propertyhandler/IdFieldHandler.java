@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -13,7 +13,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 public class IdFieldHandler extends StringFieldHandler
 {
     @Override
-    public void assign(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void assign(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         super.assign(writer, fieldContext);
         writer.write("if (%s != null) {", fieldContext.getValueVariable());

@@ -17,17 +17,17 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 /**
  * Class which contains information needed to generate code for the evaluation,
  * conversion and assignment of a field. An instance of this class is passed to
- * the {@link FieldHandler}.
+ * the {@link PropertyHandler}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public class FieldContext
+public class PropertyContext
 {
     private static final String AS_STRING_SUFFIX = "AsString";
 
     private final TypeOracle typeOracle;
-    private final FieldHandlerRegistry handlerRegistry;
+    private final PropertyHandlerRegistry handlerRegistry;
     private final JClassType modelType;
     private final JType fieldType;
     private final JPrimitiveType primitiveType;
@@ -49,7 +49,7 @@ public class FieldContext
      * @param typeOracle
      *            The type oracle from the GWT generator API
      * @param handlerRegistry
-     *            The handler registry for {@link FieldHandler} lookup
+     *            The handler registry for {@link PropertyHandler} lookup
      * @param modelType
      *            The model type
      * @param fieldType
@@ -73,7 +73,7 @@ public class FieldContext
      *            is used for serialization
      * @throws UnableToCompleteException
      */
-    public FieldContext(TypeOracle typeOracle, FieldHandlerRegistry handlerRegistry, JClassType modelType,
+    public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType modelType,
             JType fieldType, String fieldName, String path, String format, boolean stripWsnl,
             AssignmentType assignmentType, AssignmentPolicy assignmentPolicy, String inputVariable,
             String valueVariable, String builderVariable) throws UnableToCompleteException
@@ -205,7 +205,7 @@ public class FieldContext
     }
 
 
-    public FieldHandlerRegistry getHandlerRegistry()
+    public PropertyHandlerRegistry getHandlerRegistry()
     {
         return handlerRegistry;
     }

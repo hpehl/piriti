@@ -1,19 +1,19 @@
 package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * {@link FieldHandlerRegistry} used by the {@link JsonReaderCreator}.
+ * {@link PropertyHandlerRegistry} used by the {@link JsonReaderCreator}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 136 $
  */
-public class JsonReaderFieldHandlerRegistry extends JsonFieldHandlerRegistry
+public class JsonReaderPropertyHandlerRegistry extends JsonPropertyHandlerRegistry
 {
     /**
      * Looks up a field handler based on the information provided in the field
@@ -32,11 +32,11 @@ public class JsonReaderFieldHandlerRegistry extends JsonFieldHandlerRegistry
      * 
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findFieldHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
-    public FieldHandler findFieldHandler(FieldContext fieldContext)
+    public PropertyHandler findFieldHandler(PropertyContext fieldContext)
     {
-        FieldHandler handler = null;
+        PropertyHandler handler = null;
         if (fieldContext.isEnum())
         {
             handler = newEnumFieldHandler();

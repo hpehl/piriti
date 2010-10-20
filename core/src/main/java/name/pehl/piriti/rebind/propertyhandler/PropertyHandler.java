@@ -10,7 +10,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public interface FieldHandler
+public interface PropertyHandler
 {
     /**
      * Checks whether the handler can process the field. Returning
@@ -21,7 +21,7 @@ public interface FieldHandler
      * @param fieldContext
      * @return
      */
-    boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
@@ -31,12 +31,12 @@ public interface FieldHandler
      * @param writer
      * @param fieldContext
      */
-    void comment(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void comment(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
      * Generates the variable declaration of
-     * {@link FieldContext#getValueVariable()}. The variable is used in the
+     * {@link PropertyContext#getValueVariable()}. The variable is used in the
      * remaining methods. The type of the variable will be
      * <code>fieldContext.getFieldType().getParameterizedQualifiedSourceName()</code>
      * .
@@ -44,39 +44,39 @@ public interface FieldHandler
      * @param writer
      * @param fieldContext
      */
-    void declare(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void declare(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
      * Generates the code for reading the input (JSON / XML), convert if and
-     * assign it to {@link FieldContext#getValueVariable()}.
+     * assign it to {@link PropertyContext#getValueVariable()}.
      * 
      * @param writer
      * @param fieldContext
      */
-    void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
-     * Generates the assignment of {@link FieldContext#getValueVariable()} to
+     * Generates the assignment of {@link PropertyContext#getValueVariable()} to
      * the the field. The assignment should only be done when the
-     * {@link FieldContext#getValueVariable()} <code>!= null</code>.
+     * {@link PropertyContext#getValueVariable()} <code>!= null</code>.
      * 
      * @param writer
      * @param fieldContext
      */
-    void assign(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void assign(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
      * Generates code to read the fields value and assign it to
-     * {@link FieldContext#getValueVariable()}.
+     * {@link PropertyContext#getValueVariable()}.
      * 
      * @param writer
      * @param fieldContext
      * @throws UnableToCompleteException
      */
-    void readField(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void readField(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
@@ -87,7 +87,7 @@ public interface FieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      */
-    void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
@@ -97,7 +97,7 @@ public interface FieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      */
-    void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 
 
     /**
@@ -108,5 +108,5 @@ public interface FieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      */
-    void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException;
+    void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException;
 }

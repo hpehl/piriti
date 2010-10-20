@@ -10,9 +10,9 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentPolicy;
 import name.pehl.piriti.rebind.propertyhandler.AssignmentType;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.rebind.xml.XmlReaderCreator;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -36,9 +36,9 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
 
 
     @Override
-    protected FieldHandlerRegistry setupFieldHandlerRegistry()
+    protected PropertyHandlerRegistry setupFieldHandlerRegistry()
     {
-        return new XmlModelFieldHandlerRegistry();
+        return new XmlModelPropertyHandlerRegistry();
     }
 
 
@@ -61,11 +61,11 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             writer.newline();
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
-            FieldContext fieldContext = new FieldContext(context.getTypeOracle(), handlerRegistry, modelType,
+            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), AssignmentType.MAPPING,
                     AssignmentPolicy.GXT, "element", "value" + counter, "xmlBuilder");
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
-            FieldHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
+            PropertyHandler fieldHandler = handlerRegistry.findFieldHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();

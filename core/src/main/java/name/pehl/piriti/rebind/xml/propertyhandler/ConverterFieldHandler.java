@@ -5,18 +5,18 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 /**
- * {@link FieldHandler} implementation which uses a {@link Converter} from the
+ * {@link PropertyHandler} implementation which uses a {@link Converter} from the
  * {@link ConverterRegistry}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class ConverterFieldHandler extends AbstractConverterFieldHandler
+public class ConverterFieldHandler extends AbstractConverterPropertyHandler
 {
     /**
      * Reads the string value using
@@ -24,11 +24,11 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
      * 
      * @param writer
      * @param fieldContext
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterFieldHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    protected void readInputAsString(IndentedWriter writer, FieldContext fieldContext)
+    protected void readInputAsString(IndentedWriter writer, PropertyContext fieldContext)
     {
         writer.write("String %s = %s.selectValue(\"%s\", %s);", fieldContext.getValueAsStringVariable(), fieldContext
                 .getInputVariable(), fieldContext.getPath(), fieldContext.isStripWsnl());
@@ -36,21 +36,21 @@ public class ConverterFieldHandler extends AbstractConverterFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupStart() NYI");
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }
 
 
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupEnd() NYI");
     }

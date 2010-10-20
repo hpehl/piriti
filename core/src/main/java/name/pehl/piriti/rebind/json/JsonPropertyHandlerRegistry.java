@@ -12,37 +12,37 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.json.propertyhandler.ArrayFieldHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.BooleanFieldHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.CollectionFieldHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.ConverterFieldHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.EnumFieldHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.JsonRegistryFieldHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.NumberFieldHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.StringFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
+import name.pehl.piriti.rebind.json.propertyhandler.ArrayPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.BooleanPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.CollectionPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.ConverterPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.EnumPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.JsonRegistryPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.NumberPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.StringPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
- * {@link FieldHandlerRegistry} used by the {@link JsonWriterCreator}.
+ * {@link PropertyHandlerRegistry} used by the {@link JsonWriterCreator}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 136 $
  */
-public abstract class JsonFieldHandlerRegistry implements FieldHandlerRegistry
+public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegistry
 {
-    protected Map<String, FieldHandler> registry;
+    protected Map<String, PropertyHandler> registry;
 
 
     /**
      * Construct a new instance of this class and registers the initial field
      * handlers.
      */
-    public JsonFieldHandlerRegistry()
+    public JsonPropertyHandlerRegistry()
     {
-        registry = new HashMap<String, FieldHandler>();
+        registry = new HashMap<String, PropertyHandler>();
         registerInitialFieldHandlers();
     }
 
@@ -51,11 +51,11 @@ public abstract class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * Registers the initial field handler for the json reader. The following
      * handlers are registered:
      * <ul>
-     * <li>{@linkplain BooleanFieldHandler}
+     * <li>{@linkplain BooleanPropertyHandler}
      * <ul>
      * <li>boolean, Boolean
      * </ul>
-     * <li>{@link NumberFieldHandler}
+     * <li>{@link NumberPropertyHandler}
      * <ul>
      * <li>byte, Byte
      * <li>short, Short
@@ -64,16 +64,16 @@ public abstract class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      * <li>float, Float
      * <li>double, Double
      * </ul>
-     * <li>{@link ConverterFieldHandler}
+     * <li>{@link ConverterPropertyHandler}
      * <ul>
      * <li>char, Character
      * <li>Date
      * </ul>
-     * <li>{@linkplain StringFieldHandler}
+     * <li>{@linkplain StringPropertyHandler}
      * <ul>
      * <li>String
      * </ul>
-     * <li>{@linkplain CollectionFieldHandler}
+     * <li>{@linkplain CollectionPropertyHandler}
      * <ul>
      * <li>Collection
      * <li>List
@@ -88,7 +88,7 @@ public abstract class JsonFieldHandlerRegistry implements FieldHandlerRegistry
      */
     protected void registerInitialFieldHandlers()
     {
-        FieldHandler handler = null;
+        PropertyHandler handler = null;
 
         // Boolean
         handler = newBooleanFieldHandler();
@@ -133,50 +133,50 @@ public abstract class JsonFieldHandlerRegistry implements FieldHandlerRegistry
     }
 
 
-    protected FieldHandler newBooleanFieldHandler()
+    protected PropertyHandler newBooleanFieldHandler()
     {
-        return new BooleanFieldHandler();
+        return new BooleanPropertyHandler();
     }
 
 
-    protected FieldHandler newNumberFieldHandler()
+    protected PropertyHandler newNumberFieldHandler()
     {
-        return new NumberFieldHandler();
+        return new NumberPropertyHandler();
     }
 
 
-    protected FieldHandler newConverterFieldHandler()
+    protected PropertyHandler newConverterFieldHandler()
     {
-        return new ConverterFieldHandler();
+        return new ConverterPropertyHandler();
     }
 
 
-    protected FieldHandler newStringFieldHandler()
+    protected PropertyHandler newStringFieldHandler()
     {
-        return new StringFieldHandler();
+        return new StringPropertyHandler();
     }
 
 
-    protected FieldHandler newEnumFieldHandler()
+    protected PropertyHandler newEnumFieldHandler()
     {
-        return new EnumFieldHandler();
+        return new EnumPropertyHandler();
     }
 
 
-    protected FieldHandler newArrayFieldHandler()
+    protected PropertyHandler newArrayFieldHandler()
     {
-        return new ArrayFieldHandler();
+        return new ArrayPropertyHandler();
     }
 
 
-    protected FieldHandler newCollectionFieldHandler()
+    protected PropertyHandler newCollectionFieldHandler()
     {
-        return new CollectionFieldHandler();
+        return new CollectionPropertyHandler();
     }
 
 
-    protected FieldHandler newRegistryFieldHandler()
+    protected PropertyHandler newRegistryFieldHandler()
     {
-        return new JsonRegistryFieldHandler();
+        return new JsonRegistryPropertyHandler();
     }
 }

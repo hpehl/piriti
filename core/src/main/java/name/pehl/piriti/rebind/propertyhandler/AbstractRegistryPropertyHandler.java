@@ -7,12 +7,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
- * Abstract {@link FieldHandler} implementation for types with an own reader.
+ * Abstract {@link PropertyHandler} implementation for types with an own reader.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
+public abstract class AbstractRegistryPropertyHandler extends AbstractPropertyHandler
 {
     /**
      * Returns <code>true</code> if the field type is a class or interface and
@@ -22,10 +22,10 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         if (!fieldContext.isClassOrInterface())
         {
@@ -51,7 +51,7 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
      * @param fieldContext
      * @return the variable name of the reader
      */
-    protected String startReader(IndentedWriter writer, FieldContext fieldContext, String registryName, JClassType type)
+    protected String startReader(IndentedWriter writer, PropertyContext fieldContext, String registryName, JClassType type)
     {
         // Cast because subclasses might use a subtype of getReaderClassname()
         String readerVariable = fieldContext.newVariableName("Reader");
@@ -71,7 +71,7 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
      * @param fieldContext
      * @return the variable name of the reader
      */
-    protected String startWriter(IndentedWriter writer, FieldContext fieldContext, String registryName, JClassType type)
+    protected String startWriter(IndentedWriter writer, PropertyContext fieldContext, String registryName, JClassType type)
     {
         // Cast because subclasses might use a subtype of getReaderClassname()
         String writerVariable = fieldContext.newVariableName("Writer");
@@ -85,8 +85,8 @@ public abstract class AbstractRegistryFieldHandler extends AbstractFieldHandler
 
     /**
      * Closes the if statement started by
-     * {@link #startReader(IndentedWriter, FieldContext)} or
-     * {@link #startWriter(IndentedWriter, FieldContext, String, JClassType)}.
+     * {@link #startReader(IndentedWriter, PropertyContext)} or
+     * {@link #startWriter(IndentedWriter, PropertyContext, String, JClassType)}.
      * 
      * @param writer
      */

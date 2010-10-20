@@ -6,12 +6,12 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * Abstract {@link FieldHandler} for enum types.
+ * Abstract {@link PropertyHandler} for enum types.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractEnumFieldHandler extends AbstractFieldHandler
+public abstract class AbstractEnumPropertyHandler extends AbstractPropertyHandler
 {
     /**
      * Returns <code>true</code> if the field type is an enum,
@@ -20,10 +20,10 @@ public abstract class AbstractEnumFieldHandler extends AbstractFieldHandler
      * @param writer
      * @param fieldContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractFieldHandler#isValid(name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         if (!fieldContext.isEnum())
         {

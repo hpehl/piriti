@@ -3,19 +3,19 @@ package name.pehl.piriti.rebind.xml.propertyhandler;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryFieldHandler;
-import name.pehl.piriti.rebind.propertyhandler.FieldContext;
-import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * {@link FieldHandler} implementation for types with an own {@link XmlReader}.
+ * {@link PropertyHandler} implementation for types with an own {@link XmlReader}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
+public class XmlRegistryFieldHandler extends AbstractRegistryPropertyHandler
 {
     /**
      * TODO Javadoc
@@ -24,10 +24,10 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
      * @param fieldContext
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterFieldHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.FieldContext)
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         String readerVariable = startReader(writer, fieldContext, "xmlRegistry", fieldContext.getClassOrInterfaceType());
 
@@ -44,21 +44,21 @@ public class XmlRegistryFieldHandler extends AbstractRegistryFieldHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupStart() NYI");
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }
 
 
     @Override
-    public void markupEnd(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException
+    public void markupEnd(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
     {
         writer.write("// markupEnd() NYI");
     }
