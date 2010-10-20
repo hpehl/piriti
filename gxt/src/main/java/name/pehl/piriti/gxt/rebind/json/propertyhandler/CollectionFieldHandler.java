@@ -1,9 +1,9 @@
-package name.pehl.piriti.gxt.rebind.xml.fieldhandler;
+package name.pehl.piriti.gxt.rebind.json.propertyhandler;
 
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.fieldhandler.FieldContext;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldContext;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -14,8 +14,8 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class CollectionFieldHandler extends name.pehl.piriti.rebind.xml.fieldhandler.CollectionFieldHandler implements
-        ModelReaderConstants
+public class CollectionFieldHandler extends name.pehl.piriti.rebind.json.propertyhandler.CollectionFieldHandler
+        implements ModelReaderConstants
 {
     @Override
     public void declare(IndentedWriter writer, FieldContext fieldContext) throws UnableToCompleteException

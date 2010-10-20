@@ -1,9 +1,9 @@
 package name.pehl.piriti.gxt.rebind.xml;
 
-import name.pehl.piriti.gxt.rebind.xml.fieldhandler.CollectionFieldHandler;
-import name.pehl.piriti.gxt.rebind.xml.fieldhandler.XmlRegistryFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
+import name.pehl.piriti.gxt.rebind.xml.propertyhandler.CollectionFieldHandler;
+import name.pehl.piriti.gxt.rebind.xml.propertyhandler.XmlRegistryFieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
 import name.pehl.piriti.rebind.xml.XmlFieldHandlerRegistry;
 
 /**

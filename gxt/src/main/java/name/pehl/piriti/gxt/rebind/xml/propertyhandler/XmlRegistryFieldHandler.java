@@ -1,8 +1,7 @@
-package name.pehl.piriti.gxt.rebind.xml.fieldhandler;
+package name.pehl.piriti.gxt.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
 
 /**
  * {@link FieldHandler} implementation for types with an own {@link XmlReader}.
@@ -10,7 +9,7 @@ import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class XmlRegistryFieldHandler extends name.pehl.piriti.rebind.xml.fieldhandler.XmlRegistryFieldHandler
+public class XmlRegistryFieldHandler extends name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryFieldHandler
 {
     @Override
     protected String getReaderClassname()

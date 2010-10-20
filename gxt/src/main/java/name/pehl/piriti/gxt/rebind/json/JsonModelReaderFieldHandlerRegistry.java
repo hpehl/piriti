@@ -1,10 +1,10 @@
 package name.pehl.piriti.gxt.rebind.json;
 
-import name.pehl.piriti.gxt.rebind.json.fieldhandler.CollectionFieldHandler;
-import name.pehl.piriti.gxt.rebind.json.fieldhandler.JsonRegistryFieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandler;
-import name.pehl.piriti.rebind.fieldhandler.FieldHandlerRegistry;
+import name.pehl.piriti.gxt.rebind.json.propertyhandler.CollectionFieldHandler;
+import name.pehl.piriti.gxt.rebind.json.propertyhandler.JsonRegistryFieldHandler;
 import name.pehl.piriti.rebind.json.JsonReaderFieldHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandler;
+import name.pehl.piriti.rebind.propertyhandler.FieldHandlerRegistry;
 
 /**
  * {@link FieldHandlerRegistry} used by the {@link JsonModelReaderCreator}.
