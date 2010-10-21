@@ -1,8 +1,5 @@
 package name.pehl.piriti.rebind.json;
 
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,10 +10,11 @@ import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.Assignment;
+import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -83,12 +81,11 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             PropertyAnnotation<Json> propertyAnnotation = iter.next();
             String jsonPath = calculateJsonPath(propertyAnnotation.getField(), propertyAnnotation.getAnnotation());
             // TODO Implement usage of setters
-            Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
             PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), jsonPath,
                     propertyAnnotation.getAnnotation().format(), false, propertyAnnotation.getAnnotation().converter(),
-                    assignment, variableNames);
+                    MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {

@@ -156,7 +156,7 @@ import com.google.gwt.json.client.JSONString;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface Json
 {
     /**

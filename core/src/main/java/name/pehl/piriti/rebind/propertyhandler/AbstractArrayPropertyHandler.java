@@ -30,18 +30,18 @@ public abstract class AbstractArrayPropertyHandler extends AbstractPropertyHandl
     {
         if (!propertyContext.isArray())
         {
-            CodeGeneration.skipField(writer, propertyContext, "Type is no array");
+            CodeGeneration.skipProperty(writer, propertyContext, "Type is no array");
             return false;
         }
         JType componentType = propertyContext.getArrayType().getComponentType();
         if (componentType.isArray() != null)
         {
-            CodeGeneration.skipField(writer, propertyContext, "Multi-dimensional arrays are not supported");
+            CodeGeneration.skipProperty(writer, propertyContext, "Multi-dimensional arrays are not supported");
             return false;
         }
         if (TypeUtils.isCollection(componentType) || TypeUtils.isMap(componentType))
         {
-            CodeGeneration.skipField(writer, propertyContext, "Arrays of collections / maps are not supported");
+            CodeGeneration.skipProperty(writer, propertyContext, "Arrays of collections / maps are not supported");
             return false;
         }
         return true;

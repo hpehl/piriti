@@ -54,7 +54,7 @@ public class IdRefPropertyHandler extends AbstractRegistryPropertyHandler
         JClassType classOrInterface = type.isClassOrInterface();
         if (classOrInterface == null)
         {
-            CodeGeneration.skipField(writer, propertyContext, "Type is no class or interface");
+            CodeGeneration.skipProperty(writer, propertyContext, "Type is no class or interface");
             return false;
         }
         propertyContext.addMetadata(NESTED_TYPE, classOrInterface);

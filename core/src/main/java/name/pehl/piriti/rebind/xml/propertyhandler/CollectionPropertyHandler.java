@@ -1,13 +1,12 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.Assignment;
+import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -45,13 +44,12 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         }
 
         // TODO Implement usage of setters
-        Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
         VariableNames variableNames = new VariableNames(nestedElementVariable, nestedValueVariable, propertyContext
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getClazz(), parameterType,
                 propertyContext.getName(), nestedXpath, propertyContext.getFormat(), propertyContext.isStripWsnl(),
-                propertyContext.getConverter(), assignment, variableNames);
+                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

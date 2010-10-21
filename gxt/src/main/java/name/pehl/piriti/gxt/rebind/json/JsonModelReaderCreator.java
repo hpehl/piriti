@@ -1,8 +1,5 @@
 package name.pehl.piriti.gxt.rebind.json;
 
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,10 +9,11 @@ import name.pehl.piriti.gxt.client.json.JsonModelReader;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.json.JsonReaderCreator;
-import name.pehl.piriti.rebind.propertyhandler.Assignment;
+import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -69,11 +67,10 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
             // TODO Implement usage of setters
-            Assignment assignment = new Assignment(MAPPING, GXT);
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     fieldType, jsonField.property(), jsonPath, jsonField.format(), false, jsonField.converter(),
-                    assignment, variableNames);
+                    MappingType.MAPPING, PropertyStyle.GXT, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))

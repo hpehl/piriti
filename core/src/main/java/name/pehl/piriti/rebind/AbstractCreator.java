@@ -15,7 +15,6 @@ import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JParameter;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
@@ -236,8 +235,8 @@ public abstract class AbstractCreator
     protected abstract void createMethods(IndentedWriter writer) throws UnableToCompleteException;
 
 
-    protected abstract void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
-            boolean hasNext) throws UnableToCompleteException;
+    protected abstract void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler,
+            PropertyContext fieldContext, boolean hasNext) throws UnableToCompleteException;
 
 
     // --------------------------------------------------------- helper methods
@@ -318,12 +317,59 @@ public abstract class AbstractCreator
                 if (method.isPublic() && JPrimitiveType.VOID.equals(method.getReturnType())
                         && method.getName().startsWith("set"))
                 {
-                    JParameter[] parameters = method.getParameters();
-                    if (parameters != null && parameters.length == 1)
+                    if (method.getParameters().length == 1)
                     {
                         if (method.isAnnotationPresent(annotationClass))
                         {
                             setters.add(method);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Returns all public getters from the specified type <b>and</b> all of its
+     * supertypes that are marked with the specified annotation. Returns an
+     * empty array if no annotated getters were found.
+     * 
+     * @param <T>
+     * @param type
+     * @param annotationClass
+     * @return
+     */
+    protected <T extends Annotation> JMethod[] findAnnotatedGetters(JClassType type, Class<T> annotationClass)
+    {
+        List<JMethod> getters = new ArrayList<JMethod>();
+        collectGetters(type, getters, annotationClass);
+        return getters.toArray(new JMethod[] {});
+    }
+
+
+    private <T extends Annotation> void collectGetters(JClassType type, List<JMethod> getters, Class<T> annotationClass)
+    {
+        // Superclass first please!
+        if (type == null)
+        {
+            return;
+        }
+        collectGetters(type.getSuperclass(), getters, annotationClass);
+
+        JMethod[] allMethods = type.getMethods();
+        if (allMethods != null)
+        {
+            for (JMethod method : allMethods)
+            {
+                if (method.isPublic() && (!JPrimitiveType.VOID.equals(method.getReturnType()))
+                        && (method.getName().startsWith("get") || method.getName().startsWith("is")))
+                {
+                    if (method.getParameters().length == 0)
+                    {
+                        if (method.isAnnotationPresent(annotationClass))
+                        {
+                            getters.add(method);
                         }
                     }
                 }

@@ -1,8 +1,5 @@
 package name.pehl.piriti.rebind.xml;
 
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,11 +11,12 @@ import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.Assignment;
+import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -92,12 +90,12 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             PropertyAnnotation<Xml> propertyAnnotation = iter.next();
             String xpath = calculateXpath(propertyAnnotation.getField(), propertyAnnotation.getAnnotation().value());
             // TODO Implement usage of setters
-            Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), xpath,
                     propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
-                    propertyAnnotation.getAnnotation().converter(), assignment, variableNames);
+                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING, PropertyStyle.FIELD,
+                    variableNames);
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, propertyContext))
             {

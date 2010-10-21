@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind;
 
-import name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -38,9 +38,9 @@ public final class CodeGeneration
     {
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        switch (propertyContext.getAssignment().getPolicy())
+        switch (propertyContext.getPropertyStyle())
         {
-            case FIELD_ONLY:
+            case FIELD:
                 if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), false))
                 {
                     writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
@@ -50,30 +50,10 @@ public final class CodeGeneration
                 {
                     String reason = String.format("Cannot assign %s to model.%s: Field is not accessible.",
                             propertyContext.getVariableNames().getValueVariable(), propertyContext.getName());
-                    skipField(writer, propertyContext, reason);
+                    skipProperty(writer, propertyContext, reason);
                 }
                 break;
-            case FIELD_FIRST:
-                if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), false))
-                {
-                    writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
-                            .getValueVariable());
-                }
-                else if (isSetterAccessible(propertyContext))
-                {
-                    writer.write("model.%s(%s);", TypeUtils.buildSetter(propertyContext.getName()), propertyContext
-                            .getVariableNames().getValueVariable());
-                }
-                else
-                {
-                    String reason = String
-                            .format("Can neither assign %1$s to model.%s, nor call model.%s(%1$s): Field and / or setter is not available / accessible.",
-                                    propertyContext.getVariableNames().getValueVariable(), propertyContext.getName(),
-                                    TypeUtils.buildSetter(propertyContext.getName()));
-                    skipField(writer, propertyContext, reason);
-                }
-                break;
-            case PROPERTY_ONLY:
+            case GETTER_SETTER:
                 if (isSetterAccessible(propertyContext))
                 {
                     writer.write("model.%s(%s);", TypeUtils.buildSetter(propertyContext.getName()), propertyContext
@@ -84,27 +64,7 @@ public final class CodeGeneration
                     String reason = String.format("Setter is not available / not accessible.", TypeUtils
                             .buildSetter(propertyContext.getName()), propertyContext.getVariableNames()
                             .getValueVariable());
-                    skipField(writer, propertyContext, reason);
-                }
-                break;
-            case PROPERTY_FIRST:
-                if (isSetterAccessible(propertyContext))
-                {
-                    writer.write("model.%s(%s);", TypeUtils.buildSetter(propertyContext.getName()), propertyContext
-                            .getVariableNames().getValueVariable());
-                }
-                else if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), false))
-                {
-                    writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
-                            .getValueVariable());
-                }
-                else
-                {
-                    String reason = String
-                            .format("Can neither call model.%s(%2$s) nor assign %2$s to model.%s: Setter and / or field is not available / accessible",
-                                    TypeUtils.buildSetter(propertyContext.getName()), propertyContext
-                                            .getVariableNames().getValueVariable(), propertyContext.getName());
-                    skipField(writer, propertyContext, reason);
+                    skipProperty(writer, propertyContext, reason);
                 }
                 break;
             case GXT:
@@ -136,7 +96,7 @@ public final class CodeGeneration
         }
         if (!accessible)
         {
-            // Fall back to fieldContext.getFieldType()
+            // Fall back to fieldContext.getType()
             accessible = TypeUtils.isSetterAccessible(propertyContext.getClazz(), propertyContext.getName(),
                     propertyContext.getType());
         }
@@ -148,9 +108,9 @@ public final class CodeGeneration
 
     public static void readField(IndentedWriter writer, PropertyContext propertyContext)
     {
-        switch (propertyContext.getAssignment().getPolicy())
+        switch (propertyContext.getPropertyStyle())
         {
-            case FIELD_ONLY:
+            case FIELD:
                 if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), true))
                 {
                     writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
@@ -160,29 +120,10 @@ public final class CodeGeneration
                 {
                     String reason = String.format("Cannot read model.%s: Field is not accessible.", propertyContext
                             .getVariableNames().getValueVariable(), propertyContext.getName());
-                    skipField(writer, propertyContext, reason);
+                    skipProperty(writer, propertyContext, reason);
                 }
                 break;
-            case FIELD_FIRST:
-                if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), true))
-                {
-                    writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
-                            propertyContext.getName());
-                }
-                else if (TypeUtils.isGetterAccessible(propertyContext.getClazz(), propertyContext.getName()))
-                {
-                    writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
-                            TypeUtils.buildGetter(propertyContext.getName()));
-                }
-                else
-                {
-                    String reason = String
-                            .format("Can neither read model.%s, nor call model.%s(): Field and / or getter is not available / accessible.",
-                                    propertyContext.getName(), TypeUtils.buildGetter(propertyContext.getName()));
-                    skipField(writer, propertyContext, reason);
-                }
-                break;
-            case PROPERTY_ONLY:
+            case GETTER_SETTER:
                 if (TypeUtils.isGetterAccessible(propertyContext.getClazz(), propertyContext.getName()))
                 {
                     writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
@@ -192,26 +133,7 @@ public final class CodeGeneration
                 {
                     String reason = String.format("Cannot call model.%s(): Getter is not available / accessible.",
                             TypeUtils.buildGetter(propertyContext.getName()));
-                    skipField(writer, propertyContext, reason);
-                }
-                break;
-            case PROPERTY_FIRST:
-                if (TypeUtils.isGetterAccessible(propertyContext.getClazz(), propertyContext.getName()))
-                {
-                    writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
-                            TypeUtils.buildGetter(propertyContext.getName()));
-                }
-                else if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), true))
-                {
-                    writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
-                            propertyContext.getName());
-                }
-                else
-                {
-                    String reason = String
-                            .format("Can neither call model.%s() nor read model.%s: Getter Field and / or field is not available / accessible.",
-                                    propertyContext.getName(), TypeUtils.buildGetter(propertyContext.getName()));
-                    skipField(writer, propertyContext, reason);
+                    skipProperty(writer, propertyContext, reason);
                 }
                 break;
             case GXT:
@@ -278,18 +200,18 @@ public final class CodeGeneration
 
 
     /**
-     * Generates code comments if a field was skipped (contains the reason why
-     * the field was skipped)
+     * Generates code comments if a property was skipped (contains the reason
+     * why the field was skipped)
      * 
      * @param writer
      * @param propertyContext
      * @param reason
      */
-    public static void skipField(IndentedWriter writer, PropertyContext propertyContext, String reason)
+    public static void skipProperty(IndentedWriter writer, PropertyContext propertyContext, String reason)
     {
-        writer.write("// Skipping field %s", propertyContext);
+        writer.write("// Skipping property %s", propertyContext);
         writer.write("// " + reason);
-        GWT.log("Skipping field " + propertyContext, null);
+        GWT.log("Skipping property " + propertyContext, null);
         GWT.log(reason, null);
     }
 
@@ -297,7 +219,7 @@ public final class CodeGeneration
     // ----------------------------------------------------------- json methods
 
     /**
-     * Appends the fields name in quotes and the colon to the StringBuilder
+     * Appends the properties name in quotes and the colon to the StringBuilder
      * holding the JSON serialization data.
      * 
      * @param writer
@@ -311,9 +233,9 @@ public final class CodeGeneration
 
 
     /**
-     * Appends {@link PropertyContext#getValueVariable()} to the StringBuilder
+     * Appends {@link VariableNames#getValueVariable()} to the StringBuilder
      * holding the JSON serialization data. Use this method only for non-null
-     * values of {@link PropertyContext#getValueVariable()}.
+     * values of {@link VariableNames#getValueVariable()}.
      * 
      * @param writer
      * @param propertyContext

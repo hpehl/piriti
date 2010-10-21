@@ -1,5 +1,7 @@
 package name.pehl.piriti.rebind.xml;
 
+import static name.pehl.piriti.rebind.propertyhandler.MappingType.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,7 +14,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
@@ -140,11 +141,11 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
     {
         PropertyHandler handler = null;
 
-        if (fieldContext.getAssignment().getType() == AssignmentType.ID)
+        if (fieldContext.getMappingType() == ID)
         {
             handler = newIdFieldHandler();
         }
-        else if (fieldContext.getAssignment().getType() == AssignmentType.IDREF)
+        else if (fieldContext.getMappingType() == IDREF)
         {
             handler = newIdRefFieldHandler();
         }

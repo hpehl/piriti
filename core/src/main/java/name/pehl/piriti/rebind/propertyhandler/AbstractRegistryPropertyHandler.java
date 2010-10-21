@@ -28,7 +28,7 @@ public abstract class AbstractRegistryPropertyHandler extends AbstractPropertyHa
     {
         if (!propertyContext.isClassOrInterface())
         {
-            CodeGeneration.skipField(writer, propertyContext, "Type is no class or interface");
+            CodeGeneration.skipProperty(writer, propertyContext, "Type is no class or interface");
             return false;
         }
         CodeGeneration.readerWriterInitialization(writer, propertyContext.getClassOrInterfaceType());

@@ -50,7 +50,7 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
     {
         if (!propertyContext.isCollection())
         {
-            CodeGeneration.skipField(writer, propertyContext, "Type is no collection");
+            CodeGeneration.skipProperty(writer, propertyContext, "Type is no collection");
             return false;
         }
         JClassType parameterType = getTypeVariable(propertyContext);
@@ -59,7 +59,7 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
             if (parameterType.isArray() != null || TypeUtils.isCollection(parameterType)
                     || TypeUtils.isMap(parameterType))
             {
-                CodeGeneration.skipField(writer, propertyContext,
+                CodeGeneration.skipProperty(writer, propertyContext,
                         "Nested arrays / collections / maps are not supported");
                 return false;
             }
@@ -68,7 +68,7 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
         {
             // collections and maps without type arguments are not
             // supported!
-            CodeGeneration.skipField(writer, propertyContext, "Collection has no / invalid type argument");
+            CodeGeneration.skipProperty(writer, propertyContext, "Collection has no / invalid type argument");
             return false;
         }
         // Initialize the parameter type to make sure the relevant reader

@@ -31,7 +31,7 @@ public class BooleanPropertyHandler extends AbstractPropertyHandler
     {
         if (!TypeUtils.isBoolean(propertyContext.getType()))
         {
-            CodeGeneration.skipField(writer, propertyContext, "Type is neither boolean nor Boolean");
+            CodeGeneration.skipProperty(writer, propertyContext, "Type is neither boolean nor Boolean");
         }
         return true;
     }

@@ -38,7 +38,8 @@ public class PropertyContext
     private final String format;
     private final boolean stripWsnl;
     private final Class<? extends Converter<?>> converter;
-    private final Assignment assignment;
+    private final MappingType mappingType;
+    private final PropertyStyle propertyStyle;
     private final VariableNames variableNames;
     private final Map<String, Object> metadata;
 
@@ -66,16 +67,18 @@ public class PropertyContext
      *            A custom converter
      * @param stripWsnl
      *            Whether to strip whitespace and newlines from the input
-     * @param assignment
-     *            Information about the assignment.
+     * @param mappingType
+     *            The mapping type.
+     * @param propertyStyle
+     *            The property style.
      * @param variableNames
      *            Contains various variable names
      * @throws UnableToCompleteException
      */
     public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType clazz,
             JType type, String name, String path, String format, boolean stripWsnl,
-            Class<? extends Converter<?>> converter, Assignment assignment, VariableNames variableNames)
-            throws UnableToCompleteException
+            Class<? extends Converter<?>> converter, MappingType mappingType, PropertyStyle propertyStyle,
+            VariableNames variableNames) throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
@@ -115,8 +118,9 @@ public class PropertyContext
         this.stripWsnl = stripWsnl;
         this.converter = converter;
 
-        // Assignment, variable names and metadata
-        this.assignment = assignment;
+        // Mapping type, property style, variable names and metadata
+        this.mappingType = mappingType;
+        this.propertyStyle = propertyStyle;
         this.variableNames = variableNames;
         this.metadata = new HashMap<String, Object>();
     }
@@ -339,9 +343,15 @@ public class PropertyContext
     }
 
 
-    public Assignment getAssignment()
+    public MappingType getMappingType()
     {
-        return assignment;
+        return mappingType;
+    }
+
+
+    public PropertyStyle getPropertyStyle()
+    {
+        return propertyStyle;
     }
 
 

@@ -1,8 +1,5 @@
 package name.pehl.piriti.gxt.rebind.xml;
 
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentPolicy.*;
-import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.*;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,10 +8,11 @@ import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.Assignment;
+import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 import name.pehl.piriti.rebind.xml.XmlReaderCreator;
 
@@ -65,11 +63,10 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
             // TODO Implement usage of setters
-            Assignment assignment = new Assignment(MAPPING, GXT);
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(), xmlField.converter(),
-                    assignment, variableNames);
+                    fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
+                    xmlField.converter(), MappingType.MAPPING, PropertyStyle.GXT, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))

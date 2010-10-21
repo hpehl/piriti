@@ -148,7 +148,7 @@ import com.google.gwt.i18n.client.NumberFormat;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface Xml
 {
     /**

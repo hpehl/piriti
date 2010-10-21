@@ -27,7 +27,7 @@ public abstract class AbstractEnumPropertyHandler extends AbstractPropertyHandle
     {
         if (!propertyContext.isEnum())
         {
-            CodeGeneration.skipField(writer, propertyContext, "Type is no enum");
+            CodeGeneration.skipProperty(writer, propertyContext, "Type is no enum");
             return false;
         }
         return true;
