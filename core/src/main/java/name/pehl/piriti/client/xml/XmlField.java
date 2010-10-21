@@ -190,6 +190,14 @@ public @interface XmlField
      * 
      * @return
      */
-    @SuppressWarnings("rawtypes")
-    Class<? extends Converter> converter() default NoopConverter.class;
+    Class<? extends Converter<?>> converter() default NoopConverter.class;
+
+
+    /**
+     * The order in which the properties are processed. Default to -1 which
+     * means order does not matter.
+     * 
+     * @return
+     */
+    int order() default -1;
 }

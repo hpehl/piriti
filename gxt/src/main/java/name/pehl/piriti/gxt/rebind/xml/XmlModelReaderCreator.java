@@ -68,8 +68,8 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             Assignment assignment = new Assignment(MAPPING, GXT);
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), assignment,
-                    variableNames);
+                    fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), xmlField.converter(),
+                    assignment, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))

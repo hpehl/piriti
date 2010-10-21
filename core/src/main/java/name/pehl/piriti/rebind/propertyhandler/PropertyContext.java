@@ -3,6 +3,8 @@ package name.pehl.piriti.rebind.propertyhandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import name.pehl.piriti.client.converter.Converter;
+import name.pehl.piriti.client.converter.NoopConverter;
 import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -35,6 +37,7 @@ public class PropertyContext
     private final String path;
     private final String format;
     private final boolean stripWsnl;
+    private final Class<? extends Converter<?>> converter;
     private final Assignment assignment;
     private final VariableNames variableNames;
     private final Map<String, Object> metadata;
@@ -59,6 +62,8 @@ public class PropertyContext
      *            The path information for the mapping
      * @param format
      *            The format
+     * @param converter
+     *            A custom converter
      * @param stripWsnl
      *            Whether to strip whitespace and newlines from the input
      * @param assignment
@@ -68,8 +73,9 @@ public class PropertyContext
      * @throws UnableToCompleteException
      */
     public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType clazz,
-            JType type, String name, String path, String format, boolean stripWsnl, Assignment assignment,
-            VariableNames variableNames) throws UnableToCompleteException
+            JType type, String name, String path, String format, boolean stripWsnl,
+            Class<? extends Converter<?>> converter, Assignment assignment, VariableNames variableNames)
+            throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
@@ -95,7 +101,7 @@ public class PropertyContext
             this.primitiveType = null;
         }
 
-        // Name, path and format
+        // Name, path, format and converter
         this.name = name;
         this.path = path;
         if (format == null || format.length() == 0)
@@ -107,6 +113,7 @@ public class PropertyContext
             this.format = format;
         }
         this.stripWsnl = stripWsnl;
+        this.converter = converter;
 
         // Assignment, variable names and metadata
         this.assignment = assignment;
@@ -317,6 +324,18 @@ public class PropertyContext
     public boolean isStripWsnl()
     {
         return stripWsnl;
+    }
+
+
+    public Class<? extends Converter<?>> getConverter()
+    {
+        return converter;
+    }
+
+
+    public boolean isCustomConverter()
+    {
+        return converter != null && !(NoopConverter.class.equals(converter));
     }
 
 

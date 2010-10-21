@@ -5,6 +5,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import name.pehl.piriti.client.converter.Converter;
+import name.pehl.piriti.client.converter.NoopConverter;
+
 import com.extjs.gxt.ui.client.data.ModelData;
 
 /**
@@ -81,4 +84,14 @@ public @interface XmlField
      * @return
      */
     boolean stripWsnl() default true;
+
+
+    /**
+     * A custom converter which is used for the parsing and serialization of the
+     * json value. Defaults to {@link NoopConverter}, which means no custom
+     * converter should be used.
+     * 
+     * @return
+     */
+    Class<? extends Converter<?>> converter() default NoopConverter.class;
 }

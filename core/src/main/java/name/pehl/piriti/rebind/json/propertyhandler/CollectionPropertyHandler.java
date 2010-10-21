@@ -44,7 +44,8 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getClazz(), parameterType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, assignment, variableNames);
+                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
+                assignment, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -126,7 +127,8 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getClazz(), parameterType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, assignment, variableNames);
+                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
+                assignment, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

@@ -62,7 +62,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getClazz(), componentType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, assignment, variableNames);
+                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
+                assignment, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -172,7 +173,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getClazz(), componentType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, assignment, variableNames);
+                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
+                assignment, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

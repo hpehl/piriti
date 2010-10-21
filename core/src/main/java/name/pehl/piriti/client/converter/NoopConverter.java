@@ -9,8 +9,7 @@ package name.pehl.piriti.client.converter;
  * @version $Date$ $Revision:
  *          1097 $
  */
-@SuppressWarnings("rawtypes")
-public class NoopConverter implements Converter
+public class NoopConverter implements Converter<Object>
 {
 
     /**

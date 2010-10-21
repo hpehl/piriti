@@ -87,7 +87,8 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
             PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                     propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), jsonPath,
-                    propertyAnnotation.getAnnotation().format(), false, assignment, variableNames);
+                    propertyAnnotation.getAnnotation().format(), false, propertyAnnotation.getAnnotation().converter(),
+                    assignment, variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {

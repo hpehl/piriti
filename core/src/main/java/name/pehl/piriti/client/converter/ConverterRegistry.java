@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Registry for converter. Currently these converters are registered:
+ * Registry with built-in converter. Currently these converter are registered:
  * <ul>
  * <li>Boolean.class --> {@link BooleanConverter}
  * <li>Byte.class --> {@link ByteConverter}
@@ -27,18 +27,18 @@ public final class ConverterRegistry
 
 
     /**
-     * Construct a new instance of this class and registers the default
-     * converters by calling {@link #registerDefaultConverters()}.
+     * Construct a new instance of this class and registers the built-in
+     * converter by calling {@link #registerDefaultConverter()}.
      */
     public ConverterRegistry()
     {
         registry = new HashMap<Class<?>, Converter<?>>();
-        registerDefaultConverters();
+        registerDefaultConverter();
     }
 
 
     /**
-     * Registers the following converters:
+     * Registers the following converter:
      * <ul>
      * <li>Boolean.class --> {@link BooleanConverter}
      * <li>Byte.class --> {@link ByteConverter}
@@ -51,7 +51,7 @@ public final class ConverterRegistry
      * <li>Short.class --> {@link ShortConverter}
      * </ul>
      */
-    private void registerDefaultConverters()
+    private void registerDefaultConverter()
     {
         register(Boolean.class, new BooleanConverter());
         register(Byte.class, new ByteConverter());

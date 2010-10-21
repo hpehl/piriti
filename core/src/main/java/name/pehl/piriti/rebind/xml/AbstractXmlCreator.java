@@ -94,15 +94,15 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             // TODO Implement usage of setters
             Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), xpath, propertyAnnotation
-                            .getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(), assignment,
-                    variableNames);
-            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
-            if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
+            PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), xpath,
+                    propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
+                    propertyAnnotation.getAnnotation().converter(), assignment, variableNames);
+            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(propertyContext);
+            if (fieldHandler != null && fieldHandler.isValid(writer, propertyContext))
             {
                 writer.newline();
-                handleProperty(writer, fieldHandler, fieldContext, iter.hasNext());
+                handleProperty(writer, fieldHandler, propertyContext, iter.hasNext());
                 counter++;
             }
         }
