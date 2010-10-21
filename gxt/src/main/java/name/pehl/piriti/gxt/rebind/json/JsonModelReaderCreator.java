@@ -6,8 +6,8 @@ import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.
 import java.util.HashMap;
 import java.util.Map;
 
-import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonFields;
+import name.pehl.piriti.gxt.client.json.Json;
+import name.pehl.piriti.gxt.client.json.JsonMappings;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
@@ -61,10 +61,10 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        JsonField[] fields = findFieldAnnotations();
+        Json[] fields = findFieldAnnotations();
         for (int i = 0; i < fields.length; i++)
         {
-            JsonField jsonField = fields[i];
+            Json jsonField = fields[i];
             writer.newline();
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
@@ -72,7 +72,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             Assignment assignment = new Assignment(MAPPING, GXT);
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, jsonField.name(), jsonPath, jsonField.format(), false, jsonField.converter(),
+                    fieldType, jsonField.property(), jsonPath, jsonField.format(), false, jsonField.converter(),
                     assignment, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
@@ -86,18 +86,18 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     }
 
 
-    private JsonField[] findFieldAnnotations()
+    private Json[] findFieldAnnotations()
     {
-        Map<String, JsonField> fields = new HashMap<String, JsonField>();
+        Map<String, Json> fields = new HashMap<String, Json>();
 
         // Step 1: Add all JsonField annotations from the interfaceType
-        JsonFields interfaceTypeFields = interfaceType.getAnnotation(JsonFields.class);
+        JsonMappings interfaceTypeFields = interfaceType.getAnnotation(JsonMappings.class);
         if (interfaceTypeFields != null)
         {
-            JsonField[] annotations = interfaceTypeFields.value();
-            for (JsonField annotation : annotations)
+            Json[] annotations = interfaceTypeFields.value();
+            for (Json annotation : annotations)
             {
-                fields.put(annotation.name(), annotation);
+                fields.put(annotation.property(), annotation);
             }
         }
 
@@ -105,11 +105,11 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
         // there's already an entry from step 1, it will be overwritten!
         collectModelTypeFields(modelType, fields);
 
-        return fields.values().toArray(new JsonField[] {});
+        return fields.values().toArray(new Json[] {});
     }
 
 
-    private void collectModelTypeFields(JClassType type, Map<String, JsonField> fields)
+    private void collectModelTypeFields(JClassType type, Map<String, Json> fields)
     {
         // Superclass first please!
         if (type == null)
@@ -118,22 +118,22 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
         }
         collectModelTypeFields(type.getSuperclass(), fields);
 
-        JsonFields modelTypeFields = type.getAnnotation(JsonFields.class);
+        JsonMappings modelTypeFields = type.getAnnotation(JsonMappings.class);
         if (modelTypeFields != null)
         {
-            JsonField[] modelTypeFieldsValue = modelTypeFields.value();
+            Json[] modelTypeFieldsValue = modelTypeFields.value();
             if (modelTypeFieldsValue != null)
             {
-                for (JsonField annotation : modelTypeFieldsValue)
+                for (Json annotation : modelTypeFieldsValue)
                 {
-                    fields.put(annotation.name(), annotation);
+                    fields.put(annotation.property(), annotation);
                 }
             }
         }
     }
 
 
-    private JClassType getFieldType(JsonField jsonField) throws UnableToCompleteException
+    private JClassType getFieldType(Json jsonField) throws UnableToCompleteException
     {
         JClassType fieldType = null;
         if (jsonField.array())
@@ -153,12 +153,12 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     }
 
 
-    private String calculateJsonPath(JsonField jsonField)
+    private String calculateJsonPath(Json jsonField)
     {
         String jsonPath = jsonField.path();
         if (jsonPath == null || jsonPath.length() == 0)
         {
-            jsonPath = jsonField.name();
+            jsonPath = jsonField.property();
         }
         return jsonPath;
     }

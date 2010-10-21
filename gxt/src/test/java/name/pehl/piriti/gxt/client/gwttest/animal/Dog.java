@@ -1,11 +1,11 @@
 package name.pehl.piriti.gxt.client.gwttest.animal;
 
 import name.pehl.piriti.client.gwttest.animal.Size;
-import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonFields;
+import name.pehl.piriti.gxt.client.json.Json;
+import name.pehl.piriti.gxt.client.json.JsonMappings;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
-import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlFields;
+import name.pehl.piriti.gxt.client.xml.Xml;
+import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
 
 import com.google.gwt.core.client.GWT;
@@ -14,8 +14,8 @@ import com.google.gwt.core.client.GWT;
  * @author $Author$
  * @version $Date$ $Revision$
  */
-@JsonFields(@JsonField(name = "size", type = Size.class))
-@XmlFields(@XmlField(name = "size", type = Size.class))
+@JsonMappings(@Json(property = "size", type = Size.class))
+@XmlMappings(@Xml(property = "size", type = Size.class))
 public class Dog extends Mammal
 {
     // --------------------------------------------------- json reader / writer

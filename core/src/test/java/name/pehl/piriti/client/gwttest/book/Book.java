@@ -2,10 +2,10 @@ package name.pehl.piriti.client.gwttest.book;
 
 import java.util.List;
 
-import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -40,27 +40,27 @@ public class Book
 
     // ------------------------------------------------------------------- data
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     String isbn;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     int pages;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     String title;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     Author author;
 
-    @JsonField
-    @XmlField("reviews/review")
+    @Json
+    @Xml("reviews/review")
     List<String> reviews;
 
-    @JsonField
-    @XmlField("related/book")
+    @Json
+    @Xml("related/book")
     List<Book> related;
 }

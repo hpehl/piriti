@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import name.pehl.piriti.client.converter.NoopConverter;
-import name.pehl.piriti.client.xml.XmlField;
-import name.pehl.piriti.client.xml.XmlFields;
+import name.pehl.piriti.client.xml.Xml;
+import name.pehl.piriti.client.xml.XmlMappings;
 import name.pehl.piriti.client.xml.XmlId;
 import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.client.xml.XmlReader;
@@ -373,14 +373,14 @@ public class XmlReaderCreator extends AbstractXmlCreator
      * Tries to find information about an mapped id. First the {@code modelType}
      * is scanned for an {@link XmlId} annotation. If there's no such annotation
      * the {@link XmlReader} is asked whether it contains an {@link XmlId}
-     * annotation inside an {@link XmlFields} annotation. If one of them was
+     * annotation inside an {@link XmlMappings} annotation. If one of them was
      * found the corresponding {@link PropertyContext} is created and returned.
      * <p>
      * If more than one {@link XmlId} annotation was found in the
      * {@code modelType} an {@link UnableToCompleteException} is thrown.
      * <p>
      * If no id mapping was found (neither in the {@code modelType} nor inside
-     * the {@link XmlFields} annotation) <code>null</code> is returned.
+     * the {@link XmlMappings} annotation) <code>null</code> is returned.
      * 
      * @return the {@link PropertyContext} for the id mapping or
      *         <code>null</code> if no id mapping is present.
@@ -416,13 +416,13 @@ public class XmlReaderCreator extends AbstractXmlCreator
         else
         {
             // Fall back to the interfaceType
-            XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
+            XmlMappings xmlFields = interfaceType.getAnnotation(XmlMappings.class);
             if (xmlFields != null)
             {
                 XmlId xmlId = xmlFields.id();
-                if (!XmlFields.NO_ID.equals(xmlId.value()))
+                if (!XmlMappings.NO_ID.equals(xmlId.value()))
                 {
-                    JField field = modelType.getField(xmlId.name());
+                    JField field = modelType.getField(xmlId.property());
                     if (field != null)
                     {
                         Assignment assignment = new Assignment(ID, PROPERTY_FIRST);
@@ -446,10 +446,10 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<XmlField>> fields = findFieldAnnotations();
-        for (Iterator<PropertyAnnotation<XmlField>> iter = fields.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<Xml>> fields = findFieldAnnotations();
+        for (Iterator<PropertyAnnotation<Xml>> iter = fields.values().iterator(); iter.hasNext();)
         {
-            PropertyAnnotation<XmlField> fieldAnnotation = iter.next();
+            PropertyAnnotation<Xml> fieldAnnotation = iter.next();
             String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
             // TODO Implement usage of setters
             Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
@@ -501,13 +501,13 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
         // Step 1: Add all XmlField annotations in the XmlFields annotation
         // from the interfaceType
-        XmlFields interfaceTypeFields = interfaceType.getAnnotation(XmlFields.class);
+        XmlMappings interfaceTypeFields = interfaceType.getAnnotation(XmlMappings.class);
         if (interfaceTypeFields != null)
         {
             XmlIdRef[] annotations = interfaceTypeFields.references();
             for (XmlIdRef annotation : annotations)
             {
-                JField field = modelType.getField(annotation.name());
+                JField field = modelType.getField(annotation.property());
                 if (field != null)
                 {
                     fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation));

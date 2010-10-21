@@ -1,23 +1,23 @@
 package name.pehl.piriti.client.gwttest.animal;
 
-import name.pehl.piriti.client.json.JsonField;
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.json.Json;
+import name.pehl.piriti.client.xml.Xml;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision$
  */
 public abstract class Animal
 {
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     String name;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     int legs;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     double intelligence;
 }

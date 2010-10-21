@@ -11,12 +11,11 @@ import com.google.inject.internal.Nullable;
 /**
  * Interface for converting an XML document / element to an instance of T or a
  * list of Ts. The implementation for this interface is generated using deferred
- * binding. All fields of T which are annotated with {@link XmlField} are
- * handled by the generated XmlReader implementation. If the xpath expression
- * behind {@link XmlField} returns some data != null the relevant field is
- * assigned with the converted value, otherwise the field remains unchanged.
- * <p>
- * Please note that the annotated fields in T must not be private!
+ * binding. All properties of T which are annotated with {@link Xml},
+ * {@link XmlId} or {@link XmlIdRef} are handled by the generated XmlReader
+ * implementation. If the XPath expression behind {@link Xml} returns some data
+ * != null the relevant property is assigned with the converted value, otherwise
+ * the property remains unchanged.
  * <p>
  * The setup of the XmlReader is inspired by the UiBinder and is typically
  * specified as an inner class:
@@ -27,7 +26,7 @@ import com.google.inject.internal.Nullable;
  *     interface Reader extends XmlReader&lt;SmartYakizakanaState&gt; {}
  *     public static final Reader XML = GWT.create(Reader.class);
  *     
- *     // The fields of this POJO annotated with XmlField.
+ *     // The properties of this POJO annotated with XmlField.
  * }
  * </pre>
  * 
@@ -50,7 +49,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the direct children of the root element from the specified XML to
-     * a list of Ts according to the annotated fields in T.
+     * a list of Ts according to the annotated properties in T.
      * <p>
      * Please note: Use this method only if your XML does <i>not</i> contain
      * namespaces. Othherwise you have to parse the xml yourself and call
@@ -74,7 +73,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the direct children of the documents root element to a list of Ts
-     * according to the annotated fields in T.
+     * according to the annotated properties in T.
      * 
      * @param document
      *            The XML document used as input. May be <code>null</code>.
@@ -87,7 +86,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the data in the specified document to a list of Ts according to
-     * the annotated fields in T.
+     * the annotated properties in T.
      * 
      * @param document
      *            The XML document used as input. May be <code>null</code>.
@@ -102,7 +101,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the direct children of the specified element to a list of Ts
-     * according to the annotated fields in T.
+     * according to the annotated properties in T.
      * 
      * @param document
      *            The XML element used as input. May be <code>null</code>.
@@ -114,7 +113,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the data in the specified element to a list of Ts according to
-     * the annotated fields in T.
+     * the annotated properties in T.
      * 
      * @param document
      *            The XML element used as input. May be <code>null</code>.
@@ -131,7 +130,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the data in the specified document to an instance of T according
-     * to the annotated fields in T.
+     * to the annotated properties in T.
      * <p>
      * Please note: Use this method only if your XML does <i>not</i> contain
      * namespaces. Othherwise you have to parse the xml yourself and call
@@ -155,7 +154,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the data in the specified document to an instance of T according
-     * to the annotated fields in T.
+     * to the annotated properties in T.
      * 
      * @param document
      *            The XML document used as input. May be <code>null</code>.
@@ -168,7 +167,7 @@ public interface XmlReader<T>
 
     /**
      * Convert the data in the specified element to an instance of T according
-     * to the annotated fields in T.
+     * to the annotated properties in T.
      * 
      * @param element
      *            The XML element used as input. May be <code>null</code>.

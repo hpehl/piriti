@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import name.pehl.piriti.client.xml.XmlField;
-import name.pehl.piriti.client.xml.XmlFields;
+import name.pehl.piriti.client.xml.Xml;
+import name.pehl.piriti.client.xml.XmlMappings;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
@@ -86,10 +86,10 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<XmlField>> properties = findFieldAnnotations();
-        for (Iterator<PropertyAnnotation<XmlField>> iter = properties.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<Xml>> properties = findFieldAnnotations();
+        for (Iterator<PropertyAnnotation<Xml>> iter = properties.values().iterator(); iter.hasNext();)
         {
-            PropertyAnnotation<XmlField> propertyAnnotation = iter.next();
+            PropertyAnnotation<Xml> propertyAnnotation = iter.next();
             String xpath = calculateXpath(propertyAnnotation.getField(), propertyAnnotation.getAnnotation().value());
             // TODO Implement usage of setters
             Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
@@ -111,26 +111,26 @@ public abstract class AbstractXmlCreator extends AbstractCreator
 
     /**
      * Returns a map with the fields name as key and the
-     * {@link PropertyAnnotation} for {@link XmlField} as value.
+     * {@link PropertyAnnotation} for {@link Xml} as value.
      * 
      * @return
      */
-    protected Map<String, PropertyAnnotation<XmlField>> findFieldAnnotations()
+    protected Map<String, PropertyAnnotation<Xml>> findFieldAnnotations()
     {
-        Map<String, PropertyAnnotation<XmlField>> fields = new HashMap<String, PropertyAnnotation<XmlField>>();
+        Map<String, PropertyAnnotation<Xml>> fields = new HashMap<String, PropertyAnnotation<Xml>>();
 
         // Step 1: Add all XmlField annotations in the XmlFields annotation
         // from the interfaceType
-        XmlFields xmlFields = interfaceType.getAnnotation(XmlFields.class);
+        XmlMappings xmlFields = interfaceType.getAnnotation(XmlMappings.class);
         if (xmlFields != null)
         {
-            XmlField[] annotations = xmlFields.value();
-            for (XmlField annotation : annotations)
+            Xml[] annotations = xmlFields.value();
+            for (Xml annotation : annotations)
             {
-                JField field = modelType.getField(annotation.name());
+                JField field = modelType.getField(annotation.property());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new PropertyAnnotation<XmlField>(field, annotation));
+                    fields.put(field.getName(), new PropertyAnnotation<Xml>(field, annotation));
                 }
                 // TODO Is it an error if field == null?
             }
@@ -139,11 +139,11 @@ public abstract class AbstractXmlCreator extends AbstractCreator
         // Step 2: Add all XmlField annotations of the modelType fields. If
         // there's already an entry for the field from step 1, it will be
         // overwritten!
-        JField[] modelTypeFields = findAnnotatedFields(modelType, XmlField.class);
+        JField[] modelTypeFields = findAnnotatedFields(modelType, Xml.class);
         for (JField field : modelTypeFields)
         {
-            XmlField annotation = field.getAnnotation(XmlField.class);
-            fields.put(field.getName(), new PropertyAnnotation<XmlField>(field, annotation));
+            Xml annotation = field.getAnnotation(Xml.class);
+            fields.put(field.getName(), new PropertyAnnotation<Xml>(field, annotation));
         }
         return fields;
     }

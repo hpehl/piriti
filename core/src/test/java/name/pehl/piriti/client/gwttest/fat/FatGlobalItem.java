@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -43,244 +43,244 @@ public class FatGlobalItem
 
     // ------------------------------------------ primitives and simple objects
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public boolean booleanPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Boolean booleanObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public byte bytePrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Byte byteObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public char characterPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Character characterObject;
 
-    @JsonField(format = "dd.MM.yyyy")
-    @XmlField(format = "dd.MM.yyyy")
+    @Json(format = "dd.MM.yyyy")
+    @Xml(format = "dd.MM.yyyy")
     public Date date;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Amount amount;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public double doublePrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Double doubleObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public float floatPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Float floatObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public int integerPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Integer integerObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public long longPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Long longObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public short shortPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Short shortObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public String string;
 
-    @JsonField("customNameForStringAttribute")
-    @XmlField("string/@attribute")
+    @Json("customNameForStringAttribute")
+    @Xml("string/@attribute")
     public String stringAttribute;
 
     // --------------------------------------------------------- nested objects
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public FatGlobalItem fatGlobalItem;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public SkinnyNestedItem skinnyNestedItem;
 
     // ----------------------------------------------------------------- arrays
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public int[] arrayOfIntegerPrimitives;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Integer[] arrayOfIntegerObjects;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public String[] arrayOfStrings;
 
-    @JsonField
-    @XmlField("arrayOfFatGlobalItems/fatGlobalItem")
+    @Json
+    @Xml("arrayOfFatGlobalItems/fatGlobalItem")
     public FatGlobalItem[] arrayOfFatGlobalItems;
 
-    @JsonField
-    @XmlField("arrayOfSkinnyNestedItems/skinnyNestedItem")
+    @Json
+    @Xml("arrayOfSkinnyNestedItems/skinnyNestedItem")
     public SkinnyNestedItem[] arrayOfSkinnyNestedItems;
 
     // --------------------------------------------------------- invalid arrays
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public List<String>[] arrayOfLists;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Map<String, String>[] arrayOfMaps;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public int[][] multiDimensionalIntegerPrimitiveArray;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Integer[][] multiDimensionalIntegerObjectArray;
 
     // ------------------------------------------------------------ collections
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Collection<Integer> collectionOfIntegerObjects;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Collection<String> collectionOfStrings;
 
-    @JsonField
-    @XmlField("collectionOfFatGlobalItems/fatGlobalItem")
+    @Json
+    @Xml("collectionOfFatGlobalItems/fatGlobalItem")
     public Collection<FatGlobalItem> collectionOfFatGlobalItems;
 
-    @JsonField
-    @XmlField("collectionOfSkinnyNestedItems/skinnyNestedItem")
+    @Json
+    @Xml("collectionOfSkinnyNestedItems/skinnyNestedItem")
     public Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems;
 
     // ---------------------------------------------------- invalid collections
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     @SuppressWarnings("rawtypes")
     public Collection untypedCollection;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Collection<String[]> collectionOfArrays;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Collection<Collection<String>> collectionOfCollections;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Collection<Map<String, String>> collectionOfMaps;
 
     // ------------------------------------------------------------------ lists
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public List<Integer> listOfIntegerObjects;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public List<String> listOfStrings;
 
-    @JsonField
-    @XmlField("listOfFatGlobalItems/fatGlobalItem")
+    @Json
+    @Xml("listOfFatGlobalItems/fatGlobalItem")
     public List<FatGlobalItem> listOfFatGlobalItems;
 
-    @JsonField
-    @XmlField("listOfSkinnyNestedItems/skinnyNestedItem")
+    @Json
+    @Xml("listOfSkinnyNestedItems/skinnyNestedItem")
     public List<SkinnyNestedItem> listOfSkinnyNestedItems;
 
     // ---------------------------------------------------------- invalid lists
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     @SuppressWarnings("rawtypes")
     public List untypedList;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public List<String[]> listOfArrays;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public List<List<String>> listOfLists;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public List<Map<String, String>> listOfMaps;
 
     // ------------------------------------------------------------------- sets
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Set<Integer> setOfIntegerObjects;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Set<String> setOfStrings;
 
-    @JsonField
-    @XmlField("setOfFatGlobalItems/fatGlobalItem")
+    @Json
+    @Xml("setOfFatGlobalItems/fatGlobalItem")
     public Set<FatGlobalItem> setOfFatGlobalItems;
 
-    @JsonField
-    @XmlField("setOfSkinnyNestedItems/skinnyNestedItem")
+    @Json
+    @Xml("setOfSkinnyNestedItems/skinnyNestedItem")
     public Set<SkinnyNestedItem> setOfSkinnyNestedItems;
 
     // ----------------------------------------------------------- invalid sets
 
-    @XmlField
-    @JsonField
+    @Xml
+    @Json
     @SuppressWarnings("rawtypes")
     public Set untypedSet;
 
-    @XmlField
-    @JsonField
+    @Xml
+    @Json
     public Set<String[]> setOfArrays;
 
-    @XmlField
-    @JsonField
+    @Xml
+    @Json
     public Set<Set<String>> setOfSets;
 
-    @XmlField
-    @JsonField
+    @Xml
+    @Json
     public Set<Map<String, String>> setOfMaps;
 }

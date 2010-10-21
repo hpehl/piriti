@@ -1,9 +1,9 @@
 package name.pehl.piriti.gxt.client.gwttest.animal;
 
-import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonFields;
-import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlFields;
+import name.pehl.piriti.gxt.client.json.Json;
+import name.pehl.piriti.gxt.client.json.JsonMappings;
+import name.pehl.piriti.gxt.client.xml.Xml;
+import name.pehl.piriti.gxt.client.xml.XmlMappings;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
 
@@ -12,14 +12,14 @@ import com.extjs.gxt.ui.client.data.BaseModel;
  * @version $Date$ $Revision$
  */
 //@formatter:off
-@JsonFields({
-    @JsonField(name = "name", type = String.class), 
-    @JsonField(name = "legs", type = Integer.class),
-    @JsonField(name = "intelligence", type = Double.class)})
-@XmlFields({
-    @XmlField(name = "name", type = String.class), 
-    @XmlField(name = "legs", type = Integer.class),
-    @XmlField(name = "intelligence", type = Double.class)})
+@JsonMappings({
+    @Json(property = "name", type = String.class), 
+    @Json(property = "legs", type = Integer.class),
+    @Json(property = "intelligence", type = Double.class)})
+@XmlMappings({
+    @Xml(property = "name", type = String.class), 
+    @Xml(property = "legs", type = Integer.class),
+    @Xml(property = "intelligence", type = Double.class)})
 // @formatter:on
 public abstract class Animal extends BaseModel
 {

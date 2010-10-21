@@ -10,14 +10,12 @@ import com.google.inject.internal.Nullable;
 /**
  * Interface for converting JSON data to an instance of T or a list of Ts. The
  * implementation for this interface is generated using deferred binding. All
- * fields of T which are annotated with {@link JsonField} are handled by the
+ * properties of T which are annotated with {@link Json} are handled by the
  * generated JsonReader implementation. If the path expression behind
- * {@link JsonField} returns some data != null the relevant field is assigned
- * with the converted value, otherwise the field remains unchanged.
+ * {@link Json} returns some data != null the relevant property is assigned with
+ * the converted value, otherwise the property remains unchanged.
  * <p>
- * Please note that the annotated fields in T must not be private!
- * <p>
- * The setup of the XmlReader is inspired by the UiBinder and is typically
+ * The setup of the JsonReader is inspired by the UiBinder and is typically
  * specified as an inner class:
  * 
  * <pre>
@@ -26,7 +24,7 @@ import com.google.inject.internal.Nullable;
  *     interface Reader extends JsonReader&lt;ModalGirlfriendMediator&gt; {}
  *     public static final Reader JSON_READER = GWT.create(Reader.class);
  *     
- *     // The fields of this POJO annotated with JsonField.
+ *     // The properties of this POJO annotated with {@code @}Json.
  * }
  * </pre>
  * 
@@ -34,7 +32,7 @@ import com.google.inject.internal.Nullable;
  * calling
  * 
  * <pre>
- * String json = "...";
+ * String json = &quot;...&quot;;
  * ModalGirlfriendMediator mgm = ModalGirlfriendMediator.JSON_READER.read(jsonString);
  * </pre>
  * 
@@ -49,8 +47,8 @@ public interface JsonReader<T>
 
     /**
      * Convert the specified JSON string to a list of Ts according to the
-     * annotated fields in T. The JSON string must be a valid JSON object with
-     * <i>one</i> key / value pair. The value must be a JSON array which is
+     * annotated properties in T. The JSON string must be a valid JSON object
+     * with <i>one</i> key / value pair. The value must be a JSON array which is
      * converted to the list of Ts.
      * <p>
      * Depending on {@code jsonString} the following value is returned by this
@@ -87,7 +85,7 @@ public interface JsonReader<T>
      * <tr>
      * <td>JSON with one key and a non-empty array<br/>
      * {"foo": [...]}</td>
-     * <td>a list of Ts according to the annotated fields in T</td>
+     * <td>a list of Ts according to the annotated properties in T</td>
      * </tr>
      * </table>
      * 
@@ -103,8 +101,8 @@ public interface JsonReader<T>
 
     /**
      * Convert the specified JSON string to a list of Ts according to the
-     * annotated fields in T. The JSON string must be a valid JSON object with
-     * key / value pairs. The array is taken from the specified key and is
+     * annotated properties in T. The JSON string must be a valid JSON object
+     * with key / value pairs. The array is taken from the specified key and is
      * converted to the list of Ts.
      * <p>
      * Depending on {@code jsonString} and {@code arrayKey} the following value
@@ -156,7 +154,7 @@ public interface JsonReader<T>
      * <td>JSON with the specified key and a non-empty array<br/>
      * {"foo": [...]}</td>
      * <td>"foo"</td>
-     * <td>a list of Ts according to the annotated fields in T</td>
+     * <td>a list of Ts according to the annotated properties in T</td>
      * </tr>
      * </table>
      * 
@@ -174,7 +172,7 @@ public interface JsonReader<T>
 
     /**
      * Convert the specified JSON object to a list of Ts according to the
-     * annotated fields in T. The JSON object must contain <i>one</i> key /
+     * annotated properties in T. The JSON object must contain <i>one</i> key /
      * value pair. The value must be JSON array which converted to the list of
      * Ts.
      * <p>
@@ -208,7 +206,7 @@ public interface JsonReader<T>
      * <tr>
      * <td>JSON with one key and a non-empty array<br/>
      * {"foo": [...]}</td>
-     * <td>a list of Ts according to the annotated fields in T</td>
+     * <td>a list of Ts according to the annotated properties in T</td>
      * </tr>
      * </table>
      * 
@@ -224,8 +222,8 @@ public interface JsonReader<T>
 
     /**
      * Convert the specified JSON object to a list of Ts according to the
-     * annotated fields in T. The JSON object must contains the specified array.
-     * This array is converted to the list of Ts.
+     * annotated properties in T. The JSON object must contains the specified
+     * array. This array is converted to the list of Ts.
      * <p>
      * Depending on {@code jsonObject} and {@code arrayKey} the following value
      * is returned by this method:
@@ -271,7 +269,7 @@ public interface JsonReader<T>
      * <td>JSON with the specified key and a non-empty array<br/>
      * {"foo": [...]}</td>
      * <td>"foo"</td>
-     * <td>a list of Ts according to the annotated fields in T</td>
+     * <td>a list of Ts according to the annotated properties in T</td>
      * </tr>
      * </table>
      * 
@@ -289,7 +287,7 @@ public interface JsonReader<T>
 
     /**
      * Convert the specified JSON array to a list of Ts according to the
-     * annotated fields in T.
+     * annotated properties in T.
      * <p>
      * Depending on {@code jsonArray} the following value is returned by this
      * method:
@@ -310,7 +308,7 @@ public interface JsonReader<T>
      * <tr>
      * <td>Non-empty array<br/>
      * {[...]}</td>
-     * <td>a list of Ts according to the annotated fields in T</td>
+     * <td>a list of Ts according to the annotated properties in T</td>
      * </tr>
      * </table>
      * 
@@ -328,8 +326,8 @@ public interface JsonReader<T>
 
     /**
      * Convert the specified JSON string to an instance of T according to the
-     * annotated fields in T. The JSON string must be a valid JSON object with
-     * key / value pairs.
+     * annotated properties in T. The JSON string must be a valid JSON object
+     * with key / value pairs.
      * <p>
      * Depending on {@code jsonString} the following value is returned by this
      * method:
@@ -370,7 +368,7 @@ public interface JsonReader<T>
 
     /**
      * Convert the specified JSON object to an instance of T according to the
-     * annotated fields in T.
+     * annotated properties in T.
      * <p>
      * Depending on {@code jsonObject} the following value is returned by this
      * method:

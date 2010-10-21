@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to select an identifier fo a POJO. The annotation can only be
- * specified for one field in the POJO. The field type must be string. In most
- * cases the id will be mapped to an ID attribute in the XML. That's why the
- * default value of the annotation is "{@code @}id".
+ * specified for one property in the POJO. The properties type must be string.
+ * In most cases the id will be mapped to an ID attribute in the XML. That's why
+ * the default value of the annotation is "{@code @}id".
  * 
  * @see XmlIdRef
  * @author $LastChangedBy: harald.pehl $
@@ -22,10 +22,10 @@ import java.lang.annotation.Target;
 public @interface XmlId
 {
     /**
-     * The fields name. Only needed if the field cannot be annotated direclty
-     * and this annotation is used inside {@link XmlFields}.
+     * The properties name. Only needed if the property cannot be annotated
+     * direclty and this annotation is used inside {@link XmlMappings}.
      */
-    String name() default "";
+    String property() default "";
 
 
     /**

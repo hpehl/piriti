@@ -2,8 +2,8 @@ package name.pehl.piriti.client.converter;
 
 /**
  * Noop converter used as default value in
- * {@link name.pehl.piriti.client.json.JsonField#converter()} and
- * {@link name.pehl.piriti.client.xml.XmlField#converter()}.
+ * {@link name.pehl.piriti.client.json.Json#converter()} and
+ * {@link name.pehl.piriti.client.xml.Xml#converter()}.
  * 
  * @author $Author$
  * @version $Date$ $Revision:

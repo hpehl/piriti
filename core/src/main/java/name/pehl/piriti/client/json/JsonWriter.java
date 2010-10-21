@@ -7,16 +7,12 @@ import com.google.inject.internal.Nullable;
 /**
  * Interface for serializing an instance of T or a list of Ts to JSON data. The
  * implementation for this interface is generated using deferred binding. All
- * fields of T which are annotated with {@link JsonField} are handled by the
+ * properties of T which are annotated with {@link Json} are handled by the
  * generated JsonWriter implementation.
  * <p>
- * Please note:
- * <ul>
- * <li>Fields in T must not be private
- * <li>Null values in T are generated into the resulting JSON data
- * </ul>
+ * Null values in T are generated into the resulting JSON data.
  * <p>
- * The setup of the XmlWriter is inspired by the UiBinder and is typically
+ * The setup of the JsonWriter is inspired by the UiBinder and is typically
  * specified as an inner class:
  * 
  * <pre>
@@ -25,7 +21,7 @@ import com.google.inject.internal.Nullable;
  *     interface Writer extends JsonWriter&lt;RunnableMessageContext&gt; {}
  *     public static final Writer JSON_WRITER = GWT.create(Writer.class);
  *     
- *     // The fields of this POJO annotated with JsonField.
+ *     // The properties of this POJO annotated with {@code @}Json.
  * }
  * </pre>
  * 
@@ -45,9 +41,9 @@ import com.google.inject.internal.Nullable;
 public interface JsonWriter<T>
 {
     /**
-     * Generates JSON data for the list of Ts according to the annotated fields
-     * in T. The resulting JSON data contains the instances ot T inside an array
-     * with the specified name:
+     * Generates JSON data for the list of Ts according to the annotated
+     * properties in T. The resulting JSON data contains the instances ot T
+     * inside an array with the specified name:
      * 
      * <pre>
      * List&lt;RunnableMessageContext&gt; rmcs = ...;
@@ -66,7 +62,7 @@ public interface JsonWriter<T>
 
 
     /**
-     * Generates JSON data for T according to the annotated fields in T.
+     * Generates JSON data for T according to the annotated properties in T.
      * 
      * @param model
      *            the instance to serialize to JSON.

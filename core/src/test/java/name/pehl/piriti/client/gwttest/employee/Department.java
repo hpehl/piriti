@@ -1,6 +1,6 @@
 package name.pehl.piriti.client.gwttest.employee;
 
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlId;
 import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.client.xml.XmlReader;
@@ -27,7 +27,7 @@ public class Department
     @XmlId
     String id;
 
-    @XmlField
+    @Xml
     String name;
 
     @XmlIdRef("employees/@members")

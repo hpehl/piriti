@@ -2,7 +2,7 @@ package name.pehl.piriti.client.gwttest.employee;
 
 import java.util.List;
 
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlId;
 import name.pehl.piriti.client.xml.XmlIdRef;
 import name.pehl.piriti.client.xml.XmlReader;
@@ -29,7 +29,7 @@ public class Employee
     @XmlId
     String id;
 
-    @XmlField
+    @Xml
     String name;
 
     @XmlIdRef("boss/@ref")
@@ -38,7 +38,7 @@ public class Employee
     @XmlIdRef("team/member/@ref")
     List<Employee> team;
 
-    @XmlField
+    @Xml
     @XmlIdRef("department/@ref")
     Department department;
 

@@ -1,9 +1,9 @@
 package name.pehl.piriti.client.gwttest.simple;
 
-import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -38,12 +38,12 @@ public class Amoeba
 
     // ------------------------------------------------------------------- data
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     String name;
 
-    @JsonField("__size__")
-    @XmlField("__size__")
+    @Json("__size__")
+    @Xml("__size__")
     int size;
 
 

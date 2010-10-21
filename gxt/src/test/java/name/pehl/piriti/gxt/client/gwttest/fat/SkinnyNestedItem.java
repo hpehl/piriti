@@ -3,11 +3,11 @@ package name.pehl.piriti.gxt.client.gwttest.fat;
 import java.util.Date;
 
 import name.pehl.piriti.client.gwttest.fat.Amount;
-import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonFields;
+import name.pehl.piriti.gxt.client.json.Json;
+import name.pehl.piriti.gxt.client.json.JsonMappings;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
-import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlFields;
+import name.pehl.piriti.gxt.client.xml.Xml;
+import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
@@ -18,32 +18,32 @@ import com.google.gwt.core.client.GWT;
  * @version $LastChangedRevision$
  */
 //@formatter:off
-@JsonFields({
-    @JsonField(name = "booleanObject", type = Boolean.class),
-    @JsonField(name = "byteObject", type = Byte.class),
-    @JsonField(name = "characterObject", type = Character.class),
-    @JsonField(name = "date", type = Date.class), 
-    @JsonField(name = "amount", type = Amount.class),
-    @JsonField(name = "doubleObject", type = Double.class),
-    @JsonField(name = "floatObject", type = Float.class),
-    @JsonField(name = "integerObject", type = Integer.class),
-    @JsonField(name = "longObject", type = Long.class),
-    @JsonField(name = "shortObject", type = Short.class), 
-    @JsonField(name = "string", type = String.class),
-    @JsonField(name = "stringAttribute", path="customNameForStringAttribute", type = String.class)})
-@XmlFields({
-    @XmlField(name = "booleanObject", type = Boolean.class),
-    @XmlField(name = "byteObject", type = Byte.class),
-    @XmlField(name = "characterObject", type = Character.class),
-    @XmlField(name = "date", type = Date.class), 
-    @XmlField(name = "amount", type = Amount.class),
-    @XmlField(name = "doubleObject", type = Double.class),
-    @XmlField(name = "floatObject", type = Float.class),
-    @XmlField(name = "integerObject", type = Integer.class),
-    @XmlField(name = "longObject", type = Long.class), 
-    @XmlField(name = "shortObject", type = Short.class),
-    @XmlField(name = "string", type = String.class),
-    @XmlField(name = "stringAttribute", path = "string/@attribute", type = String.class)})
+@JsonMappings({
+    @Json(property = "booleanObject", type = Boolean.class),
+    @Json(property = "byteObject", type = Byte.class),
+    @Json(property = "characterObject", type = Character.class),
+    @Json(property = "date", type = Date.class), 
+    @Json(property = "amount", type = Amount.class),
+    @Json(property = "doubleObject", type = Double.class),
+    @Json(property = "floatObject", type = Float.class),
+    @Json(property = "integerObject", type = Integer.class),
+    @Json(property = "longObject", type = Long.class),
+    @Json(property = "shortObject", type = Short.class), 
+    @Json(property = "string", type = String.class),
+    @Json(property = "stringAttribute", path="customNameForStringAttribute", type = String.class)})
+@XmlMappings({
+    @Xml(property = "booleanObject", type = Boolean.class),
+    @Xml(property = "byteObject", type = Byte.class),
+    @Xml(property = "characterObject", type = Character.class),
+    @Xml(property = "date", type = Date.class), 
+    @Xml(property = "amount", type = Amount.class),
+    @Xml(property = "doubleObject", type = Double.class),
+    @Xml(property = "floatObject", type = Float.class),
+    @Xml(property = "integerObject", type = Integer.class),
+    @Xml(property = "longObject", type = Long.class), 
+    @Xml(property = "shortObject", type = Short.class),
+    @Xml(property = "string", type = String.class),
+    @Xml(property = "stringAttribute", path = "string/@attribute", type = String.class)})
 // @formatter:on
 public class SkinnyNestedItem extends BaseModel
 {

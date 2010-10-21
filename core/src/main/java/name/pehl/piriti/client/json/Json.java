@@ -1,4 +1,4 @@
-package name.pehl.piriti.client.xml;
+package name.pehl.piriti.client.json;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -11,44 +11,50 @@ import name.pehl.piriti.client.converter.NoopConverter;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONString;
 
 /**
- * Annotation for mapping XML data to POJO fields. The XML is selected by an
- * XPath expression and converted if necessary to the type of the annotated
- * field.For some types you can specify a format and a custom converter which is
- * used to parse / serialize the XML data to / from the fields type.
+ * Annotation for mapping JSON data to POJO properties. The JSON data is
+ * selected by a "path" expression. In the simplest case the path is just the
+ * key of the JSON data. For more complex cases, you can also use an XPath like
+ * <a href="http://code.google.com/p/jsonpath/">JSONPath</a>. If necessary, the
+ * selected data is converted to the type of the annotated property. For some
+ * types you can specify a format and a custom converter which is used to parse
+ * / serialize the JSON data to / from the properties type.
  * <p>
- * Please note that the annotated fields must not be private!
+ * The annotation can be placed either on a field or on a setter. If placed on a
+ * field, please note that the field must not be private!
  * <p>
  * The following types are supported:
  * <table border="1" cellspacing="2" cellpadding="2">
  * <tr>
  * <th>Type</th>
- * <th>Default XPath expression</th>
+ * <th>Default path expression</th>
  * <th>Format options</th>
  * <th>Converter options</th>
  * </tr>
  * <tr>
  * <td>boolean, Boolean</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>byte, Byte</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>char, Character</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>java.util.Date</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>If no format is specified a
  * {@linkplain name.pehl.piriti.client.converter.DateConverter#DEFAULT_FORMAT
  * default format} is used. Otherwise must be a valid date format as described
@@ -57,69 +63,73 @@ import com.google.gwt.i18n.client.NumberFormat;
  * </tr>
  * <tr>
  * <td>double, Double</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Double#parseDouble(String)}. Otherwise must be a valid number format
- * as described by {@link NumberFormat}</td>
+ * <td>&lt;propertyname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>float, Float</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Float#parseFloat(String)}. Otherwise must be a valid number format as
- * described by {@link NumberFormat}</td>
+ * <td>&lt;propertyname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>int, Integer</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Integer#parseInt(String)}. Otherwise must be a valid number format as
- * described by {@link NumberFormat}</td>
+ * <td>&lt;propertyname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>long, Long</td>
- * <td>&lt;fieldname&gt;/text()</td>
- * <td>If no format is specified the XML data is converted using
- * {@link Long#parseLong(String)}. Otherwise must be a valid number format as
- * described by {@link NumberFormat}</td>
+ * <td>&lt;propertyname&gt;</td>
+ * <td>If no format is specified the JSON data is expected to be a
+ * {@link JSONNumber}, otherwise the JSON data is expected to be a
+ * {@link JSONString} and the format must be a valid number format as described
+ * by {@link NumberFormat}</td>
  * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>short, Short</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>String</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>Enums</td>
- * <td>&lt;fieldname&gt;/text()</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * <td>Custom converter supported</td>
  * </tr>
  * <tr>
- * <td>All types for which a {@link XmlReader} is registered</td>
- * <td>&lt;fieldname&gt;</td>
+ * <td>All types for which a {@link JsonReader} is registered</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
  * <td>No custom converter supported. If specified it is ignored.</td>
  * </tr>
  * <tr>
  * <td>Arrays of the above types</td>
- * <td>&lt;fieldname&gt;</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>If a format is specified it is applied to all array elements.</td>
  * <td>If a custom converter is specified it is applied to all array elements.</td>
  * </tr>
  * <tr>
  * <td>Typed collections of the above types</td>
- * <td>&lt;fieldname&gt;</td>
+ * <td>&lt;propertyname&gt;</td>
  * <td>If a format is specified it is applied to all collection elements.</td>
  * <td>If a custom converter is specified it is applied to all collection
  * elements.</td>
@@ -147,18 +157,21 @@ import com.google.gwt.i18n.client.NumberFormat;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface XmlField
+public @interface Json
 {
     /**
-     * The fields name. Only needed if the field cannot be annotated direclty
-     * and this annotation is used inside {@link XmlFields}.
+     * The properties name. Only needed if the property cannot be annotated
+     * direclty and this annotation is used inside {@link JsonMappings}.
      */
-    String name() default "";
+    String property() default "";
 
 
     /**
-     * An XPath expression to select the XML data. Defaults to "" which means
-     * that the fields name is taken as a base for the XPath expression.
+     * A "path" expression to select the JSON data. This can be either just the
+     * key of the JSON data or a <a
+     * href="http://code.google.com/p/jsonpath/">JSONPath</a> expression.
+     * Defaults to "" which means that the properties name is taken as a
+     * default.
      * 
      * @return
      */
@@ -166,7 +179,7 @@ public @interface XmlField
 
 
     /**
-     * The format to use when converting the XML data to the fields type.
+     * The format to use when converting the JSON data to the properties type.
      * Defaults to "".
      * 
      * @return
@@ -175,17 +188,8 @@ public @interface XmlField
 
 
     /**
-     * If <code>true</code> white spaces and new lines are stripped from the
-     * selected XPath value. Defaults to <code>true</code>.
-     * 
-     * @return
-     */
-    boolean stripWsnl() default true;
-
-
-    /**
      * A custom converter which is used for the parsing and serialization of the
-     * XML data. Defaults to {@link NoopConverter}, which means no custom
+     * JSON value. Defaults to {@link NoopConverter}, which means no custom
      * converter should be used.
      * 
      * @return

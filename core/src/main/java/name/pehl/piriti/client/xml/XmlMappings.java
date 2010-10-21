@@ -7,15 +7,15 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation which can be used in case the POJOs fields cannot be annotated
+ * Annotation which can be used in case the POJOs properties cannot be annotated
  * direclty. The annotation has to be placed at the interface which extends
  * {@link XmlReader}:
  * 
  * <pre>
  * public class Readers
  * {
- *     &#64;XmlFields(id = &#64;XmlId(name = "id"), 
- *         value = {&#64;XmlField(name = "firstname"), &#64;XmlField(name = "surname")})
+ *     {@code @}XmlMappings(id = {@code @}XmlId(property = "id"), 
+ *         value = {{@code @}Xml(property = "firstname"), {@code @}XmlField(property = "surname")})
  *     public interface CustomerReader extends XmlReader&lt;Customer&gt; { }
  *     public static final CustomerReader CUSTOMER = GWT.create(CustomerReader.class);
  *     
@@ -33,7 +33,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface XmlFields
+public @interface XmlMappings
 {
     String NO_ID = "This is a special no-id-marker. Do not use for real IDs!";
 
@@ -41,7 +41,7 @@ public @interface XmlFields
     XmlId id() default @XmlId(NO_ID);
 
 
-    XmlField[] value();
+    Xml[] value();
 
 
     XmlIdRef[] references() default {};

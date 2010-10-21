@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import name.pehl.piriti.client.json.JsonField;
-import name.pehl.piriti.client.json.JsonFields;
+import name.pehl.piriti.client.json.Json;
+import name.pehl.piriti.client.json.JsonMappings;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
@@ -77,10 +77,10 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<JsonField>> properties = findPropertyAnnotations();
-        for (Iterator<PropertyAnnotation<JsonField>> iter = properties.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<Json>> properties = findPropertyAnnotations();
+        for (Iterator<PropertyAnnotation<Json>> iter = properties.values().iterator(); iter.hasNext();)
         {
-            PropertyAnnotation<JsonField> propertyAnnotation = iter.next();
+            PropertyAnnotation<Json> propertyAnnotation = iter.next();
             String jsonPath = calculateJsonPath(propertyAnnotation.getField(), propertyAnnotation.getAnnotation());
             // TODO Implement usage of setters
             Assignment assignment = new Assignment(MAPPING, FIELD_FIRST);
@@ -102,26 +102,26 @@ public abstract class AbstractJsonCreator extends AbstractCreator
 
     /**
      * Returns a map with the fields name as key and the
-     * {@link PropertyAnnotation} for {@link JsonField} as value.
+     * {@link PropertyAnnotation} for {@link Json} as value.
      * 
      * @return
      */
-    private Map<String, PropertyAnnotation<JsonField>> findPropertyAnnotations()
+    private Map<String, PropertyAnnotation<Json>> findPropertyAnnotations()
     {
-        Map<String, PropertyAnnotation<JsonField>> fields = new HashMap<String, PropertyAnnotation<JsonField>>();
+        Map<String, PropertyAnnotation<Json>> fields = new HashMap<String, PropertyAnnotation<Json>>();
 
         // Step 1: Add all JsonField annotations in the JsonFields annotation
         // from the interfaceType
-        JsonFields interfaceTypeFields = interfaceType.getAnnotation(JsonFields.class);
+        JsonMappings interfaceTypeFields = interfaceType.getAnnotation(JsonMappings.class);
         if (interfaceTypeFields != null)
         {
-            JsonField[] annotations = interfaceTypeFields.value();
-            for (JsonField annotation : annotations)
+            Json[] annotations = interfaceTypeFields.value();
+            for (Json annotation : annotations)
             {
-                JField field = modelType.getField(annotation.name());
+                JField field = modelType.getField(annotation.property());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new PropertyAnnotation<JsonField>(field, annotation));
+                    fields.put(field.getName(), new PropertyAnnotation<Json>(field, annotation));
                 }
                 // TODO Is it an error if field == null?
             }
@@ -130,17 +130,17 @@ public abstract class AbstractJsonCreator extends AbstractCreator
         // Step 2: Add all JsonField annotations of the modelType fields. If
         // there's already an entry for the field from step 1, it will be
         // overwritten!
-        JField[] modelTypeFields = findAnnotatedFields(modelType, JsonField.class);
+        JField[] modelTypeFields = findAnnotatedFields(modelType, Json.class);
         for (JField field : modelTypeFields)
         {
-            JsonField annotation = field.getAnnotation(JsonField.class);
-            fields.put(field.getName(), new PropertyAnnotation<JsonField>(field, annotation));
+            Json annotation = field.getAnnotation(Json.class);
+            fields.put(field.getName(), new PropertyAnnotation<Json>(field, annotation));
         }
         return fields;
     }
 
 
-    protected String calculateJsonPath(JField field, JsonField jsonField)
+    protected String calculateJsonPath(JField field, Json jsonField)
     {
         String jsonPath = jsonField.value();
         if (jsonPath == null || jsonPath.length() == 0)

@@ -3,7 +3,7 @@ package name.pehl.piriti.client.gwttest.lotteryticket;
 import java.util.Date;
 import java.util.List;
 
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -31,15 +31,15 @@ public class LotteryTicket
 
     // ------------------------------------------------------------------- data
 
-    @XmlField(value = "@date", format = "dd.MM.yyyy")
+    @Xml(value = "@date", format = "dd.MM.yyyy")
     Date date;
 
-    @XmlField("foo:player")
+    @Xml("foo:player")
     Player player;
 
-    @XmlField("numbers/@game")
+    @Xml("numbers/@game")
     String game;
 
-    @XmlField("numbers/number")
+    @Xml("numbers/number")
     List<Integer> numbers;
 }

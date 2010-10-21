@@ -6,8 +6,8 @@ import static name.pehl.piriti.rebind.propertyhandler.Assignment.AssignmentType.
 import java.util.HashMap;
 import java.util.Map;
 
-import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlFields;
+import name.pehl.piriti.gxt.client.xml.Xml;
+import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -57,10 +57,10 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        XmlField[] fields = findModelFieldAnnotations();
+        Xml[] fields = findModelFieldAnnotations();
         for (int i = 0; i < fields.length; i++)
         {
-            XmlField xmlField = fields[i];
+            Xml xmlField = fields[i];
             writer.newline();
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
@@ -68,7 +68,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             Assignment assignment = new Assignment(MAPPING, GXT);
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, xmlField.name(), xpath, xmlField.format(), xmlField.stripWsnl(), xmlField.converter(),
+                    fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(), xmlField.converter(),
                     assignment, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
@@ -82,18 +82,18 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     }
 
 
-    private XmlField[] findModelFieldAnnotations()
+    private Xml[] findModelFieldAnnotations()
     {
-        Map<String, XmlField> fields = new HashMap<String, XmlField>();
+        Map<String, Xml> fields = new HashMap<String, Xml>();
 
         // Step 1: Add all XmlField annotations from the interfaceType
-        XmlFields interfaceTypeFields = interfaceType.getAnnotation(XmlFields.class);
+        XmlMappings interfaceTypeFields = interfaceType.getAnnotation(XmlMappings.class);
         if (interfaceTypeFields != null)
         {
-            XmlField[] annotations = interfaceTypeFields.value();
-            for (XmlField annotation : annotations)
+            Xml[] annotations = interfaceTypeFields.value();
+            for (Xml annotation : annotations)
             {
-                fields.put(annotation.name(), annotation);
+                fields.put(annotation.property(), annotation);
             }
         }
 
@@ -101,11 +101,11 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
         // there's already an entry from step 1, it will be overwritten!
         collectModelTypeFields(modelType, fields);
 
-        return fields.values().toArray(new XmlField[] {});
+        return fields.values().toArray(new Xml[] {});
     }
 
 
-    private void collectModelTypeFields(JClassType type, Map<String, XmlField> fields)
+    private void collectModelTypeFields(JClassType type, Map<String, Xml> fields)
     {
         // Superclass first please!
         if (type == null)
@@ -114,22 +114,22 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
         }
         collectModelTypeFields(type.getSuperclass(), fields);
 
-        XmlFields modelTypeFields = type.getAnnotation(XmlFields.class);
+        XmlMappings modelTypeFields = type.getAnnotation(XmlMappings.class);
         if (modelTypeFields != null)
         {
-            XmlField[] modelTypeFieldsValue = modelTypeFields.value();
+            Xml[] modelTypeFieldsValue = modelTypeFields.value();
             if (modelTypeFieldsValue != null)
             {
-                for (XmlField annotation : modelTypeFieldsValue)
+                for (Xml annotation : modelTypeFieldsValue)
                 {
-                    fields.put(annotation.name(), annotation);
+                    fields.put(annotation.property(), annotation);
                 }
             }
         }
     }
 
 
-    private JClassType getFieldType(XmlField xmlField) throws UnableToCompleteException
+    private JClassType getFieldType(Xml xmlField) throws UnableToCompleteException
     {
         JClassType fieldType = null;
         if (xmlField.array())
@@ -149,12 +149,12 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     }
 
 
-    private String calculateXpath(JClassType fieldType, XmlField xmlField)
+    private String calculateXpath(JClassType fieldType, Xml xmlField)
     {
         String xpath = xmlField.path();
         if (xpath == null || xpath.length() == 0)
         {
-            xpath = xmlField.name();
+            xpath = xmlField.property();
             if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
             {
                 xpath += "/text()";

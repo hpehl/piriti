@@ -1,9 +1,9 @@
 package name.pehl.piriti.client.gwttest.book;
 
-import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -38,15 +38,15 @@ public class Author
 
     // ------------------------------------------------------------------- data
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     String firstname;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     String surname;
 
-    @JsonField
-    @XmlField("bestseller/book")
+    @Json
+    @Xml("bestseller/book")
     Book bestseller;
 }

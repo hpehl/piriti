@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.Set;
 import java.util.SortedSet;
 
-import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonFields;
+import name.pehl.piriti.gxt.client.json.Json;
+import name.pehl.piriti.gxt.client.json.JsonMappings;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
-import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlFields;
+import name.pehl.piriti.gxt.client.xml.Xml;
+import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
 
 import com.google.gwt.core.client.GWT;
@@ -23,10 +23,10 @@ public class ShopReader
     // ----------------------------------------------------------- json readers
 
     // @formatter:off
-    @JsonFields({
-        @JsonField(name = "customers", type = Set.class, typeVariable = Customer.class),
-        @JsonField(name = "products", type = SortedSet.class, typeVariable = Product.class),
-        @JsonField(name = "order", type = Order.class)})
+    @JsonMappings({
+        @Json(property = "customers", type = Set.class, typeVariable = Customer.class),
+        @Json(property = "products", type = SortedSet.class, typeVariable = Product.class),
+        @Json(property = "order", type = Order.class)})
     // @formatter:on
     public interface ShopJsonReader extends JsonModelReader<Shop>
     {
@@ -35,10 +35,10 @@ public class ShopReader
     public static final ShopJsonReader SHOP_JSON_READER = GWT.create(ShopJsonReader.class);
 
     // @formatter:off
-    @JsonFields({
-        @JsonField(name = "id", type = String.class), 
-        @JsonField(name = "firstname", type = String.class),
-        @JsonField(name = "surname", type = String.class)})
+    @JsonMappings({
+        @Json(property = "id", type = String.class), 
+        @Json(property = "firstname", type = String.class),
+        @Json(property = "surname", type = String.class)})
     // @formatter:on
     public interface CustomerJsonReader extends JsonModelReader<Customer>
     {
@@ -47,10 +47,10 @@ public class ShopReader
     public static final CustomerJsonReader CUSTOMER_JSON_READER = GWT.create(CustomerJsonReader.class);
 
     // @formatter:off
-    @JsonFields({
-        @JsonField(name = "id", type = String.class), 
-        @JsonField(name = "name", type = String.class),
-        @JsonField(name = "price", type = Double.class)})
+    @JsonMappings({
+        @Json(property = "id", type = String.class), 
+        @Json(property = "name", type = String.class),
+        @Json(property = "price", type = Double.class)})
     // @formatter:on
     public interface ProductJsonReader extends JsonModelReader<Product>
     {
@@ -59,10 +59,10 @@ public class ShopReader
     public static final ProductJsonReader PRODUCT_JSON_READER = GWT.create(ProductJsonReader.class);
 
     // @formatter:off
-    @JsonFields({
-        @JsonField(name = "date", type = Date.class, format = "dd.MM.yyyy"),
-        @JsonField(name = "customer", type = Customer.class),
-        @JsonField(name = "items", type = SortedSet.class, typeVariable = OrderItem.class)})
+    @JsonMappings({
+        @Json(property = "date", type = Date.class, format = "dd.MM.yyyy"),
+        @Json(property = "customer", type = Customer.class),
+        @Json(property = "items", type = SortedSet.class, typeVariable = OrderItem.class)})
     // @formatter:on
     public interface OrderJsonReader extends JsonModelReader<Order>
     {
@@ -71,9 +71,9 @@ public class ShopReader
     public static final OrderJsonReader ORDER_JSON_READER = GWT.create(OrderJsonReader.class);
 
     // @formatter:off
-    @JsonFields({
-        @JsonField(name = "product", type = Product.class), 
-        @JsonField(name = "amount", type = Integer.class)})
+    @JsonMappings({
+        @Json(property = "product", type = Product.class), 
+        @Json(property = "amount", type = Integer.class)})
     // @formatter:on
     public interface OrderItemJsonReader extends JsonModelReader<OrderItem>
     {
@@ -84,10 +84,10 @@ public class ShopReader
     // ------------------------------------------------------------ xml readers
 
     // @formatter:off
-    @XmlFields({
-        @XmlField(name = "customers", path = "customers/customer", type = Set.class, typeVariable = Customer.class),
-        @XmlField(name = "products", path = "products/product", type = SortedSet.class, typeVariable = Product.class),
-        @XmlField(name = "order", type = Order.class)})
+    @XmlMappings({
+        @Xml(property = "customers", path = "customers/customer", type = Set.class, typeVariable = Customer.class),
+        @Xml(property = "products", path = "products/product", type = SortedSet.class, typeVariable = Product.class),
+        @Xml(property = "order", type = Order.class)})
     // @formatter:on
     public interface ShopXmlReader extends XmlModelReader<Shop>
     {
@@ -96,10 +96,10 @@ public class ShopReader
     public static final ShopXmlReader SHOP_XML_READER = GWT.create(ShopXmlReader.class);
 
     // @formatter:off
-    @XmlFields({
-        @XmlField(name = "id", type = String.class), 
-        @XmlField(name = "firstname", type = String.class),
-        @XmlField(name = "surname", type = String.class)})
+    @XmlMappings({
+        @Xml(property = "id", type = String.class), 
+        @Xml(property = "firstname", type = String.class),
+        @Xml(property = "surname", type = String.class)})
     // @formatter:on
     public interface CustomerXmlReader extends XmlModelReader<Customer>
     {
@@ -108,10 +108,10 @@ public class ShopReader
     public static final CustomerXmlReader CUSTOMER_XML_READER = GWT.create(CustomerXmlReader.class);
 
     // @formatter:off
-    @XmlFields({
-        @XmlField(name = "id", path = "@id", type = String.class),
-        @XmlField(name = "name", type = String.class), 
-        @XmlField(name = "price", type = Double.class)})
+    @XmlMappings({
+        @Xml(property = "id", path = "@id", type = String.class),
+        @Xml(property = "name", type = String.class), 
+        @Xml(property = "price", type = Double.class)})
     // @formatter:on
     public interface ProductXmlReader extends XmlModelReader<Product>
     {
@@ -120,10 +120,10 @@ public class ShopReader
     public static final ProductXmlReader PRODUCT_XML_READER = GWT.create(ProductXmlReader.class);
 
     // @formatter:off
-    @XmlFields({
-        @XmlField(name = "date", path = "@date", type = Date.class, format = "dd.MM.yyyy"),
-        @XmlField(name = "items", path = "items/item", type = SortedSet.class, typeVariable = OrderItem.class),
-        @XmlField(name = "customer", type = Customer.class)})
+    @XmlMappings({
+        @Xml(property = "date", path = "@date", type = Date.class, format = "dd.MM.yyyy"),
+        @Xml(property = "items", path = "items/item", type = SortedSet.class, typeVariable = OrderItem.class),
+        @Xml(property = "customer", type = Customer.class)})
     // @formatter:on
     public interface OrderXmlReader extends XmlModelReader<Order>
     {
@@ -132,9 +132,9 @@ public class ShopReader
     public static final OrderXmlReader ORDER_XML_READER = GWT.create(OrderXmlReader.class);
 
     // @formatter:off
-    @XmlFields({
-        @XmlField(name = "amount", path = "@amount", type = Integer.class),
-        @XmlField(name = "product", type = Product.class)})
+    @XmlMappings({
+        @Xml(property = "amount", path = "@amount", type = Integer.class),
+        @Xml(property = "product", type = Product.class)})
     // @formatter:on
     public interface OrderItemXmlReader extends XmlModelReader<OrderItem>
     {

@@ -1,6 +1,6 @@
 package name.pehl.piriti.client.gwttest.lotteryticket;
 
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -29,24 +29,24 @@ public class Player
 
     // ------------------------------------------------------------------- data
 
-    @XmlField("@foo:gender")
+    @Xml("@foo:gender")
     Gender gender;
 
-    @XmlField("@age")
+    @Xml("@age")
     int age;
 
-    @XmlField("foo:firstname/text()")
+    @Xml("foo:firstname/text()")
     String firstname;
 
-    @XmlField("foo:surname/text()")
+    @Xml("foo:surname/text()")
     String surname;
 
-    @XmlField("bar:address/text()")
+    @Xml("bar:address/text()")
     String address;
 
-    @XmlField("bar:address/@bar:type")
+    @Xml("bar:address/@bar:type")
     String addressType;
 
-    @XmlField("bar:address/@foo:valid")
+    @Xml("bar:address/@foo:valid")
     boolean validAddress;
 }

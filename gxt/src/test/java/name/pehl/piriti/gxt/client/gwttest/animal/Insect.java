@@ -1,10 +1,10 @@
 package name.pehl.piriti.gxt.client.gwttest.animal;
 
-import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonFields;
+import name.pehl.piriti.gxt.client.json.Json;
+import name.pehl.piriti.gxt.client.json.JsonMappings;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
-import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlFields;
+import name.pehl.piriti.gxt.client.xml.Xml;
+import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
 
 import com.google.gwt.core.client.GWT;
@@ -14,8 +14,8 @@ import com.google.gwt.core.client.GWT;
  * @version $Date$ $Revision: 740
  *          $
  */
-@JsonFields(@JsonField(name = "flies", type = Boolean.class))
-@XmlFields(@XmlField(name = "flies", type = Boolean.class))
+@JsonMappings(@Json(property = "flies", type = Boolean.class))
+@XmlMappings(@Xml(property = "flies", type = Boolean.class))
 public class Insect extends Animal
 {
     // --------------------------------------------------- json reader / writer

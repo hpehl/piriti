@@ -2,10 +2,10 @@ package name.pehl.piriti.client.gwttest.fat;
 
 import java.util.Date;
 
-import name.pehl.piriti.client.json.JsonField;
+import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
-import name.pehl.piriti.client.xml.XmlField;
+import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -39,83 +39,83 @@ public class SkinnyNestedItem
 
     // -------------------------------------------------------- private members
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public boolean booleanPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Boolean booleanObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public byte bytePrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Byte byteObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public char characterPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Character characterObject;
 
-    @JsonField(format = "dd.MM.yyyy")
-    @XmlField(format = "dd.MM.yyyy")
+    @Json(format = "dd.MM.yyyy")
+    @Xml(format = "dd.MM.yyyy")
     public Date date;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Amount amount;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public double doublePrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Double doubleObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public float floatPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Float floatObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public int integerPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Integer integerObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public long longPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Long longObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public short shortPrimitive;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public Short shortObject;
 
-    @JsonField
-    @XmlField
+    @Json
+    @Xml
     public String string;
 
-    @JsonField("customNameForStringAttribute")
-    @XmlField("string/@attribute")
+    @Json("customNameForStringAttribute")
+    @Xml("string/@attribute")
     public String stringAttribute;
 }

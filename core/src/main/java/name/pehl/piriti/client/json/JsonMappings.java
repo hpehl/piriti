@@ -7,15 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation which can be used in case the POJOs fields cannot be annotated
+ * Annotation which can be used in case the POJOs properties cannot be annotated
  * direclty. The annotation has to be placed at the interface which extends
  * {@link JsonReader}:
  * 
  * <pre>
  * public class Readers
  * {
- *     &#64;JsonFields({&#64;JsonField(name = "id"), 
- *         &#64;JsonField(name = "firstname"), &#64;JsonField(name = "surname")})
+ *     {@code @}JsonMappings({{@code @}Json(property = "id"), 
+ *         {@code @}Json(property = "firstname"), 
+ *         {@code @}Json(property = "surname")})
  *     public interface CustomerReader extends JsonReader&lt;Customer&gt; { }
  *     public static final CustomerReader CUSTOMER = GWT.create(CustomerReader.class);
  *     
@@ -33,12 +34,12 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface JsonFields
+public @interface JsonMappings
 {
     /**
      * The mapping definitions for the POJOs fields.
      * 
      * @return
      */
-    JsonField[] value();
+    Json[] value();
 }

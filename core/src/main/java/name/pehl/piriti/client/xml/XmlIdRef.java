@@ -8,8 +8,9 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to reference one or more POJOs in the XML data. The value of the
- * annotation must select one or several ids. The field type must be a POJO with
- * a registered {@link XmlReader} or an array or collection of such a POJO.
+ * annotation must select one or several ids. The properties type must be a POJO
+ * with a registered {@link XmlReader} or an array or collection of such a
+ * POJOs.
  * 
  * @see XmlId
  * @author $LastChangedBy: harald.pehl $
@@ -21,15 +22,15 @@ import java.lang.annotation.Target;
 public @interface XmlIdRef
 {
     /**
-     * The fields name. Only needed if the field cannot be annotated direclty
-     * and this annotation is used inside {@link XmlFields}.
+     * The properties name. Only needed if the property cannot be annotated
+     * direclty and this annotation is used inside {@link XmlMappings}.
      */
-    String name() default "";
+    String property() default "";
 
 
     /**
      * An XPath expression to select the XML IdRef. Defaults to "" which means
-     * that the fields name is taken as a base for the XPath expression.
+     * that the properties name is taken as a base for the XPath expression.
      * 
      * @return
      */
