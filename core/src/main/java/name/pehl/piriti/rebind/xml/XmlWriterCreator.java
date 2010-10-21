@@ -87,7 +87,7 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
         // This creates all FieldHandler / FieldContexts and calls handleField()
         // in a loop
-        handleFields(writer);
+        handleProperties(writer);
 
         writer.write("xml = xmlBuilder.toString();");
         writer.outdent();

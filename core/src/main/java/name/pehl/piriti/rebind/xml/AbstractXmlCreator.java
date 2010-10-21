@@ -24,6 +24,7 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
@@ -81,26 +82,26 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     }
 
 
-    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
+    protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<Xml>> properties = findFieldAnnotations();
+        Map<String, PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
         for (Iterator<PropertyAnnotation<Xml>> iter = properties.values().iterator(); iter.hasNext();)
         {
             PropertyAnnotation<Xml> propertyAnnotation = iter.next();
-            String xpath = calculateXpath(propertyAnnotation.getField(), propertyAnnotation.getAnnotation().value());
-            // TODO Implement usage of setters
+            String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
+                    propertyAnnotation.getType());
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    propertyAnnotation.getField().getType(), propertyAnnotation.getField().getName(), xpath,
-                    propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
-                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING, PropertyStyle.FIELD,
-                    variableNames);
-            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(propertyContext);
-            if (fieldHandler != null && fieldHandler.isValid(writer, propertyContext))
+                    propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, propertyAnnotation
+                            .getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
+                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING,
+                    propertyAnnotation.getPropertyStyle(), variableNames);
+            PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
+            if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
                 writer.newline();
-                handleProperty(writer, fieldHandler, propertyContext, iter.hasNext());
+                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
                 counter++;
             }
         }
@@ -113,11 +114,11 @@ public abstract class AbstractXmlCreator extends AbstractCreator
      * 
      * @return
      */
-    protected Map<String, PropertyAnnotation<Xml>> findFieldAnnotations()
+    protected Map<String, PropertyAnnotation<Xml>> findPropertyAnnotations()
     {
-        Map<String, PropertyAnnotation<Xml>> fields = new HashMap<String, PropertyAnnotation<Xml>>();
+        Map<String, PropertyAnnotation<Xml>> properties = new HashMap<String, PropertyAnnotation<Xml>>();
 
-        // Step 1: Add all XmlField annotations in the XmlFields annotation
+        // Step 1: Add all @Xml annotations in the @XmlMappings annotation
         // from the interfaceType
         XmlMappings xmlFields = interfaceType.getAnnotation(XmlMappings.class);
         if (xmlFields != null)
@@ -128,37 +129,70 @@ public abstract class AbstractXmlCreator extends AbstractCreator
                 JField field = modelType.getField(annotation.property());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new PropertyAnnotation<Xml>(field, annotation));
+                    properties.put(annotation.property(),
+                            new PropertyAnnotation<Xml>(annotation.property(), field.getType(), PropertyStyle.FIELD,
+                                    annotation));
                 }
-                // TODO Is it an error if field == null?
+                else
+                {
+                    JType type = TypeUtils.getGetterSetterType(modelType, annotation.property());
+                    if (type != null)
+                    {
+                        properties.put(annotation.property(), new PropertyAnnotation<Xml>(annotation.property(), type,
+                                PropertyStyle.GETTER_SETTER, annotation));
+                    }
+                    // TODO Is it an error if type == null?
+                }
             }
         }
 
-        // Step 2: Add all XmlField annotations of the modelType fields. If
-        // there's already an entry for the field from step 1, it will be
-        // overwritten!
-        JField[] modelTypeFields = findAnnotatedFields(modelType, Xml.class);
-        for (JField field : modelTypeFields)
+        // Step 2: Add all @Xml annotations on fields. If there's already an
+        // entry for the property from previous steps, it will be overwritten!
+        JField[] fields = findAnnotatedFields(modelType, Xml.class);
+        for (JField field : fields)
         {
             Xml annotation = field.getAnnotation(Xml.class);
-            fields.put(field.getName(), new PropertyAnnotation<Xml>(field, annotation));
+            properties.put(field.getName(), new PropertyAnnotation<Xml>(field.getName(), field.getType(),
+                    PropertyStyle.FIELD, annotation));
         }
-        return fields;
+
+        // Step 3: Add all @Xml annotations on getters. If there's already an
+        // entry for the property from previous steps, it will be overwritten!
+        JMethod[] getters = findAnnotatedGetters(modelType, Xml.class);
+        for (JMethod method : getters)
+        {
+            Xml annotation = method.getAnnotation(Xml.class);
+            String property = TypeUtils.buildProperty(method.getName());
+            properties.put(property, new PropertyAnnotation<Xml>(property, method.getReturnType(),
+                    PropertyStyle.GETTER_SETTER, annotation));
+        }
+
+        // Step 4: Add all @Xml annotations on setters. If there's already an
+        // entry for the property from previous steps, it will be overwritten!
+        JMethod[] setters = findAnnotatedSetters(modelType, Xml.class);
+        for (JMethod method : setters)
+        {
+            Xml annotation = method.getAnnotation(Xml.class);
+            String property = TypeUtils.buildProperty(method.getName());
+            properties.put(property, new PropertyAnnotation<Xml>(property, method.getParameters()[0].getType(),
+                    PropertyStyle.GETTER_SETTER, annotation));
+        }
+
+        return properties;
     }
 
 
-    protected String calculateXpath(JField field, String defaultValue)
+    protected String calculateXpath(String xpath, String property, JType type)
     {
-        String xpath = defaultValue;
-        if (xpath == null || xpath.length() == 0)
+        String effectiveXpath = xpath;
+        if (effectiveXpath == null || effectiveXpath.length() == 0)
         {
-            xpath = field.getName();
-            JType fieldType = field.getType();
-            if (fieldType.isPrimitive() != null || TypeUtils.isBasicType(fieldType) || fieldType.isEnum() != null)
+            effectiveXpath = property;
+            if (type.isPrimitive() != null || TypeUtils.isBasicType(type) || type.isEnum() != null)
             {
-                xpath += "/text()";
+                effectiveXpath += "/text()";
             }
         }
-        return xpath;
+        return effectiveXpath;
     }
 }

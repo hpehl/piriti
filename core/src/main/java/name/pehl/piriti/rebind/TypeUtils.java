@@ -333,27 +333,27 @@ public final class TypeUtils
      * <code>false</code>, the field is accesible if it isn't private or final.
      * 
      * @param type
-     * @param name
+     * @param property
      * @param readOnly
      * @return
      */
-    public static boolean isFieldAccessible(JClassType type, String name, boolean readOnly)
+    public static boolean isFieldAccessible(JClassType type, String property, boolean readOnly)
     {
         boolean accessible = false;
-        if (type != null && name != null && name.length() != 0)
+        if (type != null && property != null && property.length() != 0)
         {
-            JField field = type.getField(name);
+            JField field = type.getField(property);
             if (field != null)
             {
                 accessible = readOnly ? !field.isPrivate() : !(field.isPrivate() || field.isFinal());
                 if (!accessible)
                 {
-                    accessible = isFieldAccessible(type.getSuperclass(), name, readOnly);
+                    accessible = isFieldAccessible(type.getSuperclass(), property, readOnly);
                 }
             }
             else
             {
-                accessible = isFieldAccessible(type.getSuperclass(), name, readOnly);
+                accessible = isFieldAccessible(type.getSuperclass(), property, readOnly);
             }
         }
         return accessible;
@@ -361,66 +361,124 @@ public final class TypeUtils
 
 
     /**
-     * Checks if the setter for the given field is accessible in the given type
-     * or in the supertypes of the given type.
+     * Checks if the setter for the given property is accessible in the given
+     * type or in the supertypes of the given type.
      * 
      * @param type
-     * @param name
+     * @param property
      * @param parameter
      * @return
      */
-    public static boolean isSetterAccessible(JClassType type, String name, JType parameter)
+    public static boolean isSetterAccessible(JClassType type, String property, JType parameter)
     {
-        return isMethodAccessible(type, buildSetter(name), parameter);
+        return isMethodAccessible(type, buildSetter(property), parameter);
     }
 
 
     /**
-     * Returns the setter method name for the given field.
+     * Returns the setter method name for the given property.
      * 
-     * @param name
+     * @param property
      * @return
      */
-    public static String buildSetter(String name)
+    public static String buildSetter(String property)
     {
-        String setter = name;
-        if (name != null && name.length() > 0)
+        String setter = property;
+        if (property != null && property.length() > 0)
         {
-            setter = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
+            setter = "set" + property.substring(0, 1).toUpperCase() + property.substring(1);
         }
         return setter;
     }
 
 
     /**
-     * Checks if the getter for the given field is accessible in the given type
-     * or in the supertypes of the given type.
+     * Checks if the getter for the given property is accessible in the given
+     * type or in the supertypes of the given type.
      * 
      * @param type
-     * @param name
+     * @param property
      * @param parameter
      * @return
      */
-    public static boolean isGetterAccessible(JClassType type, String name)
+    public static boolean isGetterAccessible(JClassType type, String property)
     {
-        return isMethodAccessible(type, buildGetter(name), null);
+        return isMethodAccessible(type, buildGetter(property), null);
     }
 
 
     /**
-     * Returns the setter method name for the given field.
+     * Returns the setter method name for the given property.
      * 
-     * @param name
+     * @param property
      * @return
      */
-    public static String buildGetter(String name)
+    public static String buildGetter(String property)
     {
-        String getter = name;
-        if (name != null && name.length() > 0)
+        String getter = property;
+        if (property != null && property.length() > 0)
         {
-            getter = "get" + name.substring(0, 1).toUpperCase() + name.substring(1);
+            getter = "get" + property.substring(0, 1).toUpperCase() + property.substring(1);
         }
         return getter;
+    }
+
+
+    /**
+     * Checks if the getter for the given property is accessible in the given
+     * type or in the supertypes of the given type.
+     * 
+     * @param type
+     * @param property
+     * @param parameter
+     * @return
+     */
+    public static boolean isBooleanGetterAccessible(JClassType type, String property)
+    {
+        return isMethodAccessible(type, buildBooleanGetter(property), null);
+    }
+
+
+    /**
+     * Returns the setter method name for the given property.
+     * 
+     * @param property
+     * @return
+     */
+    public static String buildBooleanGetter(String property)
+    {
+        String getter = property;
+        if (property != null && property.length() > 0)
+        {
+            getter = "is" + property.substring(0, 1).toUpperCase() + property.substring(1);
+        }
+        return getter;
+    }
+
+
+    /**
+     * Returns the property for the given getter or setter method name.
+     * 
+     * @param setter
+     * @return
+     */
+    public static String buildProperty(String setterOrGetter)
+    {
+        String property = setterOrGetter;
+        if (setterOrGetter != null)
+        {
+            if ((setterOrGetter.startsWith("set") || setterOrGetter.startsWith("get")) && setterOrGetter.length() > 3)
+            {
+                property = setterOrGetter.substring(3);
+                property = property.substring(0, 1).toLowerCase() + property.substring(1);
+            }
+            else if (setterOrGetter.startsWith("is") && setterOrGetter.length() > 2)
+            {
+                property = setterOrGetter.substring(2);
+                property = property.substring(0, 1).toLowerCase() + property.substring(1);
+            }
+        }
+        return property;
     }
 
 
@@ -465,5 +523,45 @@ public final class TypeUtils
             }
         }
         return accessible;
+    }
+
+
+    /**
+     * Returns the type of the specified setter/getter in the specified type or
+     * <code>null</code> if no such getter / setter could be found.
+     * 
+     * @param type
+     * @param property
+     * @return
+     */
+    public static JType getGetterSetterType(JClassType type, String property)
+    {
+        JType result = null;
+        JMethod[] methods = type.getMethods();
+        if (methods != null && methods.length != 0)
+        {
+            String getter = buildGetter(property);
+            String setter = buildSetter(property);
+            for (JMethod method : methods)
+            {
+                if (method.getName().equals(getter))
+                {
+                    if (!JPrimitiveType.VOID.equals(method.getReturnType()))
+                    {
+                        result = method.getReturnType();
+                        break;
+                    }
+                }
+                else if (method.getName().equals(setter))
+                {
+                    if (method.getParameters().length == 1)
+                    {
+                        result = method.getParameters()[0].getType();
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

@@ -12,6 +12,7 @@ import name.pehl.piriti.client.xml.XmlMappings;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
@@ -27,6 +28,7 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Creator for {@linkplain XmlReader}s.
@@ -317,7 +319,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
         // This creates all FieldHandler / FieldContexts and calls handleField()
         // in a loop
-        handleFields(writer);
+        handleProperties(writer);
 
         writer.outdent();
         writer.write("}");
@@ -388,6 +390,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
      */
     protected PropertyContext checkForIdField() throws UnableToCompleteException
     {
+        // TODO Look for @XmlId on getters and setters!
         PropertyContext fieldContext = null;
 
         // First look for an XmlId annotation in the modelType
@@ -398,7 +401,6 @@ public class XmlReaderCreator extends AbstractXmlCreator
             if (fields.length == 1)
             {
                 XmlId xmlId = field.getAnnotation(XmlId.class);
-                // TODO Implement usage of setters
                 VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
                 fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
                         field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(), NoopConverter.class,
@@ -442,23 +444,25 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<Xml>> fields = findFieldAnnotations();
-        for (Iterator<PropertyAnnotation<Xml>> iter = fields.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
+        for (Iterator<PropertyAnnotation<Xml>> iter = properties.values().iterator(); iter.hasNext();)
         {
-            PropertyAnnotation<Xml> fieldAnnotation = iter.next();
-            String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
-            // TODO Implement usage of setters
+            PropertyAnnotation<Xml> propertyAnnotation = iter.next();
+            String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
+                    propertyAnnotation.getType());
             VariableNames variableNames = new VariableNames("element", "nestedValue" + counter, "xmlBuilder");
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), xpath, fieldAnnotation
-                            .getAnnotation().format(), fieldAnnotation.getAnnotation().stripWsnl(),
-                    NoopConverter.class, MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
-            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
-            if ((fieldHandler instanceof XmlRegistryPropertyHandler || fieldHandler instanceof ArrayPropertyHandler || fieldHandler instanceof CollectionPropertyHandler)
-                    && fieldHandler.isValid(writer, fieldContext))
+            PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
+                    propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, propertyAnnotation
+                            .getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
+                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING,
+                    propertyAnnotation.getPropertyStyle(), variableNames);
+            PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
+            if ((propertyHandler instanceof XmlRegistryPropertyHandler
+                    || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
+                    && propertyHandler.isValid(writer, propertyContext))
             {
                 writer.newline();
-                handleProperty(writer, fieldHandler, fieldContext, iter.hasNext());
+                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
                 counter++;
             }
         }
@@ -468,17 +472,17 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<XmlIdRef>> fields = findReferenceAnnotations();
-        for (Iterator<PropertyAnnotation<XmlIdRef>> iter = fields.values().iterator(); iter.hasNext();)
+        Map<String, PropertyAnnotation<XmlIdRef>> properties = findReferenceAnnotations();
+        for (Iterator<PropertyAnnotation<XmlIdRef>> iter = properties.values().iterator(); iter.hasNext();)
         {
-            PropertyAnnotation<XmlIdRef> fieldAnnotation = iter.next();
-            String xpath = calculateXpath(fieldAnnotation.getField(), fieldAnnotation.getAnnotation().value());
-            // TODO Implement usage of setters
+            PropertyAnnotation<XmlIdRef> propertyAnnotation = iter.next();
+            String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
+                    propertyAnnotation.getType());
             VariableNames variableNames = new VariableNames("element", "idRefValue" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldAnnotation.getField().getType(), fieldAnnotation.getField().getName(), xpath, null,
-                    fieldAnnotation.getAnnotation().stripWsnl(), NoopConverter.class, MappingType.IDREF,
-                    PropertyStyle.FIELD, variableNames);
+                    propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, null, propertyAnnotation
+                            .getAnnotation().stripWsnl(), NoopConverter.class, MappingType.IDREF, PropertyStyle.FIELD,
+                    variableNames);
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
@@ -492,9 +496,10 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     private Map<String, PropertyAnnotation<XmlIdRef>> findReferenceAnnotations()
     {
-        Map<String, PropertyAnnotation<XmlIdRef>> fields = new HashMap<String, PropertyAnnotation<XmlIdRef>>();
+        // TODO Look for @XmlId on getters and setters!
+        Map<String, PropertyAnnotation<XmlIdRef>> properties = new HashMap<String, PropertyAnnotation<XmlIdRef>>();
 
-        // Step 1: Add all XmlField annotations in the XmlFields annotation
+        // Step 1: Add all @XmlIdRef annotations in the @XmlMappings annotation
         // from the interfaceType
         XmlMappings interfaceTypeFields = interfaceType.getAnnotation(XmlMappings.class);
         if (interfaceTypeFields != null)
@@ -505,22 +510,26 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 JField field = modelType.getField(annotation.property());
                 if (field != null)
                 {
-                    fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation));
+                    properties.put(annotation.property(),
+                            new PropertyAnnotation<XmlIdRef>(annotation.property(), field.getType(),
+                                    PropertyStyle.FIELD, annotation));
                 }
                 // TODO Is it an error if field == null?
             }
         }
 
-        // Step 2: Add all XmlField annotations of the modelType fields. If
-        // there's already an entry for the field from step 1, it will be
+        // Step 2: Add all @XmlIdRef annotations on fields. If there's already
+        // an entry for the property from previous steps, it will be
         // overwritten!
-        JField[] modelTypeFields = findAnnotatedFields(modelType, XmlIdRef.class);
-        for (JField field : modelTypeFields)
+        JField[] fields = findAnnotatedFields(modelType, XmlIdRef.class);
+        for (JField field : fields)
         {
             XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
-            fields.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field, annotation));
+            properties.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field.getName(), field.getType(),
+                    PropertyStyle.FIELD, annotation));
         }
-        return fields;
+
+        return properties;
     }
 
 
@@ -532,5 +541,21 @@ public class XmlReaderCreator extends AbstractXmlCreator
         fieldHandler.declare(writer, fieldContext);
         fieldHandler.readInput(writer, fieldContext);
         fieldHandler.assign(writer, fieldContext);
+    }
+
+
+    protected String calculateXpath(PropertyAnnotation<XmlIdRef> propertyAnnotation)
+    {
+        String xpath = propertyAnnotation.getAnnotation().value();
+        if (xpath == null || xpath.length() == 0)
+        {
+            xpath = propertyAnnotation.getProperty();
+            JType type = propertyAnnotation.getType();
+            if (type.isPrimitive() != null || TypeUtils.isBasicType(type) || type.isEnum() != null)
+            {
+                xpath += "/text()";
+            }
+        }
+        return xpath;
     }
 }

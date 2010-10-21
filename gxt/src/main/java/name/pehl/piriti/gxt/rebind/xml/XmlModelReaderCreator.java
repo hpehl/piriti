@@ -52,7 +52,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
 
 
     @Override
-    protected void handleFields(IndentedWriter writer) throws UnableToCompleteException
+    protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
         Xml[] fields = findModelFieldAnnotations();

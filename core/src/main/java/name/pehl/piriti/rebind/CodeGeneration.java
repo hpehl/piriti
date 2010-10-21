@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind;
 
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.client.GWT;
@@ -9,6 +10,8 @@ import com.google.gwt.core.ext.typeinfo.JConstructor;
 import com.google.gwt.core.ext.typeinfo.JParameter;
 
 /**
+ * Contains utility method for the code generation
+ * 
  * @author $Author$
  * @version $Date$ $Revision: 527
  *          $
@@ -27,9 +30,9 @@ public final class CodeGeneration
     // ----------------------------------------------------- assignment methods
 
     /**
-     * Writes the assignment based on the {@link AssignmentPolicy} in the
+     * Writes the assignment based on the {@link PropertyStyle} in the
      * {@code fieldContext}. The assignement is only done if
-     * {@link PropertyContext#getValueVariable()} is not null.
+     * {@link VariableNames#getValueVariable()} is not null.
      * 
      * @param writer
      * @param propertyContext
@@ -128,6 +131,11 @@ public final class CodeGeneration
                 {
                     writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
                             TypeUtils.buildGetter(propertyContext.getName()));
+                }
+                else if (TypeUtils.isBooleanGetterAccessible(propertyContext.getClazz(), propertyContext.getName()))
+                {
+                    writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
+                            TypeUtils.buildBooleanGetter(propertyContext.getName()));
                 }
                 else
                 {

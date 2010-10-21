@@ -2,8 +2,7 @@ package name.pehl.piriti.rebind.propertyhandler;
 
 import java.lang.annotation.Annotation;
 
-import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JMethod;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Helper class for one annotated property, which is either a field or a setter.
@@ -14,50 +13,36 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
  */
 public class PropertyAnnotation<T extends Annotation>
 {
-    final private JField field;
-    final private JMethod setter;
-    final private T annotation;
+    private final String property;
+    private final JType type;
+    private final PropertyStyle propertyStyle;
+    private final T annotation;
 
 
-    public PropertyAnnotation(JField field, T annotation)
+    public PropertyAnnotation(String property, JType type, PropertyStyle propertyStyle, T annotation)
     {
-        super();
-        this.field = field;
-        this.setter = null;
+        this.property = property;
+        this.type = type;
+        this.propertyStyle = propertyStyle;
         this.annotation = annotation;
     }
 
 
-    public PropertyAnnotation(JMethod setter, T annotation)
+    public String getProperty()
     {
-        super();
-        this.field = null;
-        this.setter = setter;
-        this.annotation = annotation;
+        return property;
     }
 
 
-    public boolean isFieldAnnotated()
+    public JType getType()
     {
-        return field != null;
+        return type;
     }
 
 
-    public JField getField()
+    public PropertyStyle getPropertyStyle()
     {
-        return field;
-    }
-
-
-    public JMethod getSetter()
-    {
-        return setter;
-    }
-
-
-    public boolean isSetterAnnotated()
-    {
-        return setter != null;
+        return propertyStyle;
     }
 
 
