@@ -12,6 +12,5 @@ package name.pehl.piriti.rebind.propertyhandler;
 public enum PropertyStyle
 {
     FIELD,
-    GETTER_SETTER,
     GXT
 }

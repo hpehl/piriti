@@ -23,8 +23,6 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Common creator for {@linkplain JsonReader}s and {@linkplain JsonWriter}s.
@@ -85,10 +83,10 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             String jsonPath = calculateJsonPath(propertyAnnotation.getAnnotation().value(),
                     propertyAnnotation.getProperty());
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
-            PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    propertyAnnotation.getType(), propertyAnnotation.getProperty(), jsonPath, propertyAnnotation
-                            .getAnnotation().format(), false, propertyAnnotation.getAnnotation().converter(),
-                    MappingType.MAPPING, propertyAnnotation.getPropertyStyle(), variableNames);
+            PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry,
+                    interfaceType, modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), jsonPath,
+                    propertyAnnotation.getAnnotation().format(), false, propertyAnnotation.getAnnotation().converter(),
+                    MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
@@ -105,8 +103,9 @@ public abstract class AbstractJsonCreator extends AbstractCreator
      * {@link PropertyAnnotation} for {@link Json} as value.
      * 
      * @return
+     * @throws UnableToCompleteException
      */
-    private Map<String, PropertyAnnotation<Json>> findPropertyAnnotations()
+    private Map<String, PropertyAnnotation<Json>> findPropertyAnnotations() throws UnableToCompleteException
     {
         Map<String, PropertyAnnotation<Json>> properties = new HashMap<String, PropertyAnnotation<Json>>();
 
@@ -118,56 +117,27 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             Json[] annotations = interfaceTypeFields.value();
             for (Json annotation : annotations)
             {
-                JField field = modelType.getField(annotation.property());
+                JField field = TypeUtils.findField(modelType, annotation.property());
                 if (field != null)
                 {
                     properties.put(annotation.property(),
-                            new PropertyAnnotation<Json>(annotation.property(), field.getType(), PropertyStyle.FIELD,
-                                    annotation));
+                            new PropertyAnnotation<Json>(annotation.property(), field.getType(), annotation));
                 }
                 else
                 {
-                    JType type = TypeUtils.getGetterSetterType(modelType, annotation.property());
-                    if (type != null)
-                    {
-                        properties.put(annotation.property(), new PropertyAnnotation<Json>(annotation.property(), type,
-                                PropertyStyle.GETTER_SETTER, annotation));
-                    }
-                    // TODO Is it an error if type == null?
+                    die("Cannot find field %s in %s or its superclasses", annotation.property(),
+                            modelType.getQualifiedSourceName());
                 }
             }
         }
 
         // Step 2: Add all @Json annotations on fields. If there's already an
-        // entry for the property from previous steps, it will be overwritten!
+        // entry for the property from previous step, it will be overwritten!
         JField[] fields = findAnnotatedFields(modelType, Json.class);
         for (JField field : fields)
         {
             Json annotation = field.getAnnotation(Json.class);
-            properties.put(field.getName(), new PropertyAnnotation<Json>(field.getName(), field.getType(),
-                    PropertyStyle.FIELD, annotation));
-        }
-
-        // Step 3: Add all @Json annotations on getters. If there's already an
-        // entry for the property from previous steps, it will be overwritten!
-        JMethod[] getters = findAnnotatedGetters(modelType, Json.class);
-        for (JMethod method : getters)
-        {
-            Json annotation = method.getAnnotation(Json.class);
-            String property = TypeUtils.buildProperty(method.getName());
-            properties.put(property, new PropertyAnnotation<Json>(property, method.getReturnType(),
-                    PropertyStyle.GETTER_SETTER, annotation));
-        }
-
-        // Step 4: Add all @Json annotations on setters. If there's already an
-        // entry for the property from previous steps, it will be overwritten!
-        JMethod[] setters = findAnnotatedSetters(modelType, Json.class);
-        for (JMethod method : setters)
-        {
-            Json annotation = method.getAnnotation(Json.class);
-            String property = TypeUtils.buildProperty(method.getName());
-            properties.put(property, new PropertyAnnotation<Json>(property, method.getParameters()[0].getType(),
-                    PropertyStyle.GETTER_SETTER, annotation));
+            properties.put(field.getName(), new PropertyAnnotation<Json>(field.getName(), field.getType(), annotation));
         }
 
         return properties;

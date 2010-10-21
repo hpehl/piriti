@@ -1,7 +1,6 @@
 package name.pehl.piriti.rebind;
 
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
-import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.client.GWT;
@@ -30,9 +29,8 @@ public final class CodeGeneration
     // ----------------------------------------------------- assignment methods
 
     /**
-     * Writes the assignment based on the {@link PropertyStyle} in the
-     * {@code fieldContext}. The assignement is only done if
-     * {@link VariableNames#getValueVariable()} is not null.
+     * Writes the assignment based on {@link PropertyContext#getPropertyStyle()}
+     * . The assignement is only done if some value was read from JSON / XML.
      * 
      * @param writer
      * @param propertyContext
@@ -56,20 +54,25 @@ public final class CodeGeneration
                     skipProperty(writer, propertyContext, reason);
                 }
                 break;
-            case GETTER_SETTER:
-                if (isSetterAccessible(propertyContext))
-                {
-                    writer.write("model.%s(%s);", TypeUtils.buildSetter(propertyContext.getName()), propertyContext
-                            .getVariableNames().getValueVariable());
-                }
-                else
-                {
-                    String reason = String.format("Setter is not available / not accessible.", TypeUtils
-                            .buildSetter(propertyContext.getName()), propertyContext.getVariableNames()
-                            .getValueVariable());
-                    skipProperty(writer, propertyContext, reason);
-                }
-                break;
+            // TODO Implement setter
+            // case GETTER_SETTER:
+            // if (isSetterAccessible(propertyContext))
+            // {
+            // writer.write("model.%s(%s);",
+            // TypeUtils.buildSetter(propertyContext.getName()), propertyContext
+            // .getVariableNames().getValueVariable());
+            // }
+            // else
+            // {
+            // String reason =
+            // String.format("Setter is not available / not accessible.",
+            // TypeUtils
+            // .buildSetter(propertyContext.getName()),
+            // propertyContext.getVariableNames()
+            // .getValueVariable());
+            // skipProperty(writer, propertyContext, reason);
+            // }
+            // break;
             case GXT:
                 assignGxt(writer, propertyContext);
                 break;
@@ -126,24 +129,31 @@ public final class CodeGeneration
                     skipProperty(writer, propertyContext, reason);
                 }
                 break;
-            case GETTER_SETTER:
-                if (TypeUtils.isGetterAccessible(propertyContext.getClazz(), propertyContext.getName()))
-                {
-                    writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
-                            TypeUtils.buildGetter(propertyContext.getName()));
-                }
-                else if (TypeUtils.isBooleanGetterAccessible(propertyContext.getClazz(), propertyContext.getName()))
-                {
-                    writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
-                            TypeUtils.buildBooleanGetter(propertyContext.getName()));
-                }
-                else
-                {
-                    String reason = String.format("Cannot call model.%s(): Getter is not available / accessible.",
-                            TypeUtils.buildGetter(propertyContext.getName()));
-                    skipProperty(writer, propertyContext, reason);
-                }
-                break;
+            // TODO Implement getter
+            // case GETTER_SETTER:
+            // if (TypeUtils.isGetterAccessible(propertyContext.getClazz(),
+            // propertyContext.getName()))
+            // {
+            // writer.write("%s = model.%s();",
+            // propertyContext.getVariableNames().getValueVariable(),
+            // TypeUtils.buildGetter(propertyContext.getName()));
+            // }
+            // else if
+            // (TypeUtils.isBooleanGetterAccessible(propertyContext.getClazz(),
+            // propertyContext.getName()))
+            // {
+            // writer.write("%s = model.%s();",
+            // propertyContext.getVariableNames().getValueVariable(),
+            // TypeUtils.buildBooleanGetter(propertyContext.getName()));
+            // }
+            // else
+            // {
+            // String reason =
+            // String.format("Cannot call model.%s(): Getter is not available / accessible.",
+            // TypeUtils.buildGetter(propertyContext.getName()));
+            // skipProperty(writer, propertyContext, reason);
+            // }
+            // break;
             case GXT:
                 writer.write("%s = model.get(\"%s\");", propertyContext.getVariableNames().getValueVariable(),
                         propertyContext.getName());

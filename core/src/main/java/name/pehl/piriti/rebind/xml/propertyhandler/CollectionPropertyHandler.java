@@ -47,9 +47,10 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         VariableNames variableNames = new VariableNames(nestedElementVariable, nestedValueVariable, propertyContext
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
-                propertyContext.getHandlerRegistry(), propertyContext.getClazz(), parameterType,
-                propertyContext.getName(), nestedXpath, propertyContext.getFormat(), propertyContext.isStripWsnl(),
-                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
+                propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
+                parameterType, propertyContext.getName(), nestedXpath, propertyContext.getFormat(),
+                propertyContext.isStripWsnl(), propertyContext.getConverter(), MappingType.MAPPING,
+                PropertyStyle.FIELD, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

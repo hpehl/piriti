@@ -327,6 +327,68 @@ public final class TypeUtils
 
 
     /**
+     * Tries to find the given field with the given modifier in the given type
+     * or in the supertypes of the given type. If {@code modifiers} is
+     * <code>null</code>, the fields modifier is not evaluated, otherwise the
+     * field must have one of the specified modifiers.
+     * 
+     * @param type
+     * @param property
+     * @param modifier
+     * @return
+     */
+    public static JField findField(JClassType type, String property, Modifier... modifiers)
+    {
+        JField field = null;
+        if (type != null && property != null && property.length() != 0)
+        {
+            field = type.getField(property);
+            if (field != null)
+            {
+                boolean accessible = true;
+                if (modifiers != null && modifiers.length != 0)
+                {
+                    accessible = false;
+                    for (Modifier modifier : modifiers)
+                    {
+                        switch (modifier)
+                        {
+                            case PRIVATE:
+                                accessible = field.isPrivate();
+                                break;
+                            case DEFAULT:
+                                accessible = field.isDefaultAccess();
+                                break;
+                            case PROTECTED:
+                                accessible = field.isProtected();
+                                break;
+                            case PUBLIC:
+                                accessible = field.isPublic();
+                                break;
+                            default:
+                                break;
+                        }
+                        if (accessible)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (!accessible)
+                {
+                    field = findField(type.getSuperclass(), property, modifiers);
+                }
+            }
+            else
+            {
+                field = findField(type.getSuperclass(), property, modifiers);
+            }
+        }
+        return field;
+    }
+
+
+    /**
      * Checks whether the given field is accessible in the given type or in the
      * supertypes of the given type. If {@code readOnly} is <code>true</code>,
      * the field is accesible if it isn't private. If {@code readOnly} is

@@ -15,15 +15,13 @@ public class PropertyAnnotation<T extends Annotation>
 {
     private final String property;
     private final JType type;
-    private final PropertyStyle propertyStyle;
     private final T annotation;
 
 
-    public PropertyAnnotation(String property, JType type, PropertyStyle propertyStyle, T annotation)
+    public PropertyAnnotation(String property, JType type, T annotation)
     {
         this.property = property;
         this.type = type;
-        this.propertyStyle = propertyStyle;
         this.annotation = annotation;
     }
 
@@ -37,12 +35,6 @@ public class PropertyAnnotation<T extends Annotation>
     public JType getType()
     {
         return type;
-    }
-
-
-    public PropertyStyle getPropertyStyle()
-    {
-        return propertyStyle;
     }
 
 

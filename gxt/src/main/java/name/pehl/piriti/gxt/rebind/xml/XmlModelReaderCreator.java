@@ -64,8 +64,8 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             String xpath = calculateXpath(fieldType, xmlField);
             // TODO Implement usage of setters
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
+            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
+                    modelType, fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
                     xmlField.converter(), MappingType.MAPPING, PropertyStyle.GXT, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);

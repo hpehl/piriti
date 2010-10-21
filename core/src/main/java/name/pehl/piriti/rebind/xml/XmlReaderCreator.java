@@ -98,7 +98,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         readIds(writer);
         writer.newline();
 
-        readFields(writer);
+        readProperties(writer);
         writer.newline();
 
         readIdRefs(writer);
@@ -223,7 +223,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.outdent();
         writer.write("}");
         writer.write("%s model = readIds(element);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("readFields(element, model);");
+        writer.write("readProperties(element, model);");
         writer.write("readIdRefs(element, model);");
         writer.write("return model;");
         writer.outdent();
@@ -252,7 +252,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.write("for (Element element : elements) {");
         writer.indent();
         writer.write("%s model = models.get(index++);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("readFields(element, model);");
+        writer.write("readProperties(element, model);");
         writer.write("readIdRefs(element, model);");
         writer.outdent();
         writer.write("}");
@@ -268,11 +268,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
     {
         boolean validIdField = false;
         PropertyHandler handler = null;
-        PropertyContext fieldContext = checkForIdField();
-        if (fieldContext != null)
+        PropertyContext propertyContext = checkForIdField();
+        if (propertyContext != null)
         {
-            handler = handlerRegistry.findPropertyHandler(fieldContext);
-            validIdField = handler != null && handler.isValid(writer, fieldContext);
+            handler = handlerRegistry.findPropertyHandler(propertyContext);
+            validIdField = handler != null && handler.isValid(writer, propertyContext);
         }
 
         writer.write("private %s readIds(Element element) {", modelType.getParameterizedQualifiedSourceName());
@@ -281,15 +281,15 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.indent();
         if (validIdField)
         {
-            handler.comment(writer, fieldContext);
-            handler.declare(writer, fieldContext);
-            handler.readInput(writer, fieldContext);
-            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), fieldContext
+            handler.comment(writer, propertyContext);
+            handler.declare(writer, propertyContext);
+            handler.readInput(writer, propertyContext);
+            writer.write("%s model = this.idRef(%s);", modelType.getParameterizedQualifiedSourceName(), propertyContext
                     .getVariableNames().getValueVariable());
             writer.write("if (model == null) {");
             writer.indent();
             writer.write("model = new %s();", modelType.getParameterizedQualifiedSourceName());
-            handler.assign(writer, fieldContext);
+            handler.assign(writer, propertyContext);
             writer.outdent();
             writer.write("}");
             handleIdsInNestedModels(writer);
@@ -309,18 +309,14 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    protected void readFields(IndentedWriter writer) throws UnableToCompleteException
+    protected void readProperties(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readFields(Element element, %1$s model) {",
+        writer.write("private %1$s readProperties(Element element, %1$s model) {",
                 modelType.getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("if (element != null) {");
         writer.indent();
-
-        // This creates all FieldHandler / FieldContexts and calls handleField()
-        // in a loop
         handleProperties(writer);
-
         writer.outdent();
         writer.write("}");
         writer.write("return model;");
@@ -336,11 +332,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.indent();
         writer.write("if (element != null) {");
         writer.indent();
-
-        // This creates all FieldHandler / FieldContexts and calls handleField()
-        // in a loop
         handleIdRefs(writer);
-
         writer.outdent();
         writer.write("}");
         writer.write("return model;");
@@ -390,27 +382,26 @@ public class XmlReaderCreator extends AbstractXmlCreator
      */
     protected PropertyContext checkForIdField() throws UnableToCompleteException
     {
-        // TODO Look for @XmlId on getters and setters!
-        PropertyContext fieldContext = null;
+        PropertyContext propertyContext = null;
 
-        // First look for an XmlId annotation in the modelType
+        // First look for an @XmlId annotation on fields
         JField[] fields = findAnnotatedFields(modelType, XmlId.class);
-        if (fields.length != 0)
+        if (fields.length == 1)
         {
-            JField field = fields[0];
-            if (fields.length == 1)
+            if (fields.length != 0)
             {
+                JField field = fields[0];
                 XmlId xmlId = field.getAnnotation(XmlId.class);
                 VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
-                fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                        field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(), NoopConverter.class,
-                        MappingType.ID, PropertyStyle.FIELD, variableNames);
+                propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
+                        modelType, field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
+                        NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, variableNames);
             }
-            else
-            {
-                die("There are %d @XmlId annotations in %s or its superclasses, but only one is allowed!",
-                        fields.length, modelType.getQualifiedSourceName());
-            }
+        }
+        else if (fields.length > 1)
+        {
+            die("There are %d @XmlId annotations in %s or its superclasses, but only one is allowed!", fields.length,
+                    modelType.getQualifiedSourceName());
         }
         else
         {
@@ -421,23 +412,23 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 XmlId xmlId = xmlFields.id();
                 if (!XmlMappings.NO_ID.equals(xmlId.value()))
                 {
-                    JField field = modelType.getField(xmlId.property());
+                    JField field = TypeUtils.findField(modelType, xmlId.property());
                     if (field != null)
                     {
                         VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
-                        fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                                field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
+                        propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
+                                modelType, field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
                                 NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, variableNames);
                     }
                     else
                     {
-                        die("Id field \"" + xmlId.value() + "\" cannot be found in \""
-                                + modelType.getQualifiedSourceName() + "\"");
+                        die("Cannot find id field %s in %s or its superclasses", xmlId.property(),
+                                modelType.getQualifiedSourceName());
                     }
                 }
             }
         }
-        return fieldContext;
+        return propertyContext;
     }
 
 
@@ -451,11 +442,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
             String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
                     propertyAnnotation.getType());
             VariableNames variableNames = new VariableNames("element", "nestedValue" + counter, "xmlBuilder");
-            PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, propertyAnnotation
-                            .getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
-                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING,
-                    propertyAnnotation.getPropertyStyle(), variableNames);
+            PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry,
+                    interfaceType, modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath,
+                    propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
+                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING, PropertyStyle.FIELD,
+                    variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if ((propertyHandler instanceof XmlRegistryPropertyHandler
                     || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
@@ -479,10 +470,10 @@ public class XmlReaderCreator extends AbstractXmlCreator
             String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
                     propertyAnnotation.getType());
             VariableNames variableNames = new VariableNames("element", "idRefValue" + counter, "xmlBuilder");
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, null, propertyAnnotation
-                            .getAnnotation().stripWsnl(), NoopConverter.class, MappingType.IDREF, PropertyStyle.FIELD,
-                    variableNames);
+            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
+                    modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, null,
+                    propertyAnnotation.getAnnotation().stripWsnl(), NoopConverter.class, MappingType.IDREF,
+                    PropertyStyle.FIELD, variableNames);
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
@@ -494,7 +485,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    private Map<String, PropertyAnnotation<XmlIdRef>> findReferenceAnnotations()
+    private Map<String, PropertyAnnotation<XmlIdRef>> findReferenceAnnotations() throws UnableToCompleteException
     {
         // TODO Look for @XmlId on getters and setters!
         Map<String, PropertyAnnotation<XmlIdRef>> properties = new HashMap<String, PropertyAnnotation<XmlIdRef>>();
@@ -507,14 +498,17 @@ public class XmlReaderCreator extends AbstractXmlCreator
             XmlIdRef[] annotations = interfaceTypeFields.references();
             for (XmlIdRef annotation : annotations)
             {
-                JField field = modelType.getField(annotation.property());
+                JField field = TypeUtils.findField(modelType, annotation.property());
                 if (field != null)
                 {
                     properties.put(annotation.property(),
-                            new PropertyAnnotation<XmlIdRef>(annotation.property(), field.getType(),
-                                    PropertyStyle.FIELD, annotation));
+                            new PropertyAnnotation<XmlIdRef>(annotation.property(), field.getType(), annotation));
                 }
-                // TODO Is it an error if field == null?
+                else
+                {
+                    die("Cannot find idref field %s in %s or its superclasses", annotation.property(),
+                            modelType.getQualifiedSourceName());
+                }
             }
         }
 
@@ -526,7 +520,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         {
             XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
             properties.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field.getName(), field.getType(),
-                    PropertyStyle.FIELD, annotation));
+                    annotation));
         }
 
         return properties;

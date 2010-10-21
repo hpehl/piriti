@@ -30,6 +30,7 @@ public class PropertyContext
 
     private final TypeOracle typeOracle;
     private final PropertyHandlerRegistry handlerRegistry;
+    private final JClassType readerOrWriter;
     private final JClassType clazz;
     private final JType type;
     private final JPrimitiveType primitiveType;
@@ -53,6 +54,8 @@ public class PropertyContext
      *            The type oracle from the GWT generator API
      * @param handlerRegistry
      *            The handler registry for {@link PropertyHandler} lookup
+     * @param readerOrWriter
+     *            The type of the reader or writer interface
      * @param clazz
      *            The type of the properties class
      * @param type
@@ -75,14 +78,15 @@ public class PropertyContext
      *            Contains various variable names
      * @throws UnableToCompleteException
      */
-    public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType clazz,
-            JType type, String name, String path, String format, boolean stripWsnl,
+    public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType readerOrWriter,
+            JClassType clazz, JType type, String name, String path, String format, boolean stripWsnl,
             Class<? extends Converter<?>> converter, MappingType mappingType, PropertyStyle propertyStyle,
             VariableNames variableNames) throws UnableToCompleteException
     {
         // Types
         this.typeOracle = typeOracle;
         this.handlerRegistry = handlerRegistry;
+        this.readerOrWriter = readerOrWriter;
         this.clazz = clazz;
         JPrimitiveType primitiveType = type.isPrimitive();
         if (primitiveType != null) // isPrimitive() is not yet available!
@@ -272,6 +276,12 @@ public class PropertyContext
     public PropertyHandlerRegistry getHandlerRegistry()
     {
         return handlerRegistry;
+    }
+
+
+    public JClassType getReaderOrWriter()
+    {
+        return readerOrWriter;
     }
 
 

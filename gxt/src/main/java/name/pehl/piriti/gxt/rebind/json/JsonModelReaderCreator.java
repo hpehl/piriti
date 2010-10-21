@@ -68,9 +68,9 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             String jsonPath = calculateJsonPath(jsonField);
             // TODO Implement usage of setters
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, modelType,
-                    fieldType, jsonField.property(), jsonPath, jsonField.format(), false, jsonField.converter(),
-                    MappingType.MAPPING, PropertyStyle.GXT, variableNames);
+            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
+                    modelType, fieldType, jsonField.property(), jsonPath, jsonField.format(), false,
+                    jsonField.converter(), MappingType.MAPPING, PropertyStyle.GXT, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))

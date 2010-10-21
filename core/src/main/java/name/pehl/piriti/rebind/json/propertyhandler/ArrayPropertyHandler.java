@@ -55,13 +55,12 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        // TODO Implement usage of setters
         VariableNames variableNames = new VariableNames(nestedJsonValueVariable, nestedValueVariable, propertyContext
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
-                propertyContext.getHandlerRegistry(), propertyContext.getClazz(), componentType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
-                MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
+                propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
+                componentType, propertyContext.getName(), null, propertyContext.getFormat(), false,
+                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -165,13 +164,12 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
         // The field context is created *without* a path. The nested field
         // handler must take care of this!
-        // TODO Implement usage of setters
         VariableNames variableNames = new VariableNames(nestedJsonValueVariable, nestedValueVariable, propertyContext
                 .getVariableNames().getBuilderVariable());
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
-                propertyContext.getHandlerRegistry(), propertyContext.getClazz(), componentType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
-                MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
+                propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
+                componentType, propertyContext.getName(), null, propertyContext.getFormat(), false,
+                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
