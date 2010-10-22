@@ -3,6 +3,8 @@ package name.pehl.piriti.gxt.rebind.json;
 import java.util.HashMap;
 import java.util.Map;
 
+import name.pehl.piriti.client.property.NoopPropertyGetter;
+import name.pehl.piriti.client.property.NoopPropertySetter;
 import name.pehl.piriti.gxt.client.json.Json;
 import name.pehl.piriti.gxt.client.json.JsonMappings;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
@@ -66,11 +68,11 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             writer.newline();
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
-            // TODO Implement usage of setters
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                     modelType, fieldType, jsonField.property(), jsonPath, jsonField.format(), false,
-                    jsonField.converter(), MappingType.MAPPING, PropertyStyle.GXT, variableNames);
+                    jsonField.converter(), MappingType.MAPPING, PropertyStyle.GXT, NoopPropertyGetter.class,
+                    NoopPropertySetter.class, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))

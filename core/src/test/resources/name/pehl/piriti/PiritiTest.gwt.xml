@@ -35,8 +35,4 @@
     <generate-with class="name.pehl.piriti.rebind.xml.XmlWriterGenerator">
         <when-type-assignable class="name.pehl.piriti.client.xml.XmlWriter" />
     </generate-with>
-
-    <!-- GIN configuration -->
-    <define-configuration-property name="gin.ginjector" is-multi-valued="false" />
-    <set-configuration-property name="gin.ginjector" value="name.pehl.piriti.client.PiritiGinjector" />
 </module>

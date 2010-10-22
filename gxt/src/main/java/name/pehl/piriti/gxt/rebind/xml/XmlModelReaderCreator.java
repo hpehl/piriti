@@ -3,6 +3,8 @@ package name.pehl.piriti.gxt.rebind.xml;
 import java.util.HashMap;
 import java.util.Map;
 
+import name.pehl.piriti.client.property.NoopPropertyGetter;
+import name.pehl.piriti.client.property.NoopPropertySetter;
 import name.pehl.piriti.gxt.client.xml.Xml;
 import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
@@ -62,11 +64,11 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             writer.newline();
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
-            // TODO Implement usage of setters
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                     modelType, fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
-                    xmlField.converter(), MappingType.MAPPING, PropertyStyle.GXT, variableNames);
+                    xmlField.converter(), MappingType.MAPPING, PropertyStyle.GXT, NoopPropertyGetter.class,
+                    NoopPropertySetter.class, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))

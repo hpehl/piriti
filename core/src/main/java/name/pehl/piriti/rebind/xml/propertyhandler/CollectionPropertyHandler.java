@@ -50,7 +50,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
                 propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
                 parameterType, propertyContext.getName(), nestedXpath, propertyContext.getFormat(),
                 propertyContext.isStripWsnl(), propertyContext.getConverter(), MappingType.MAPPING,
-                PropertyStyle.FIELD, variableNames);
+                PropertyStyle.FIELD, propertyContext.getGetter(), propertyContext.getSetter(), variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

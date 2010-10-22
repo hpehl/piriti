@@ -1,5 +1,7 @@
 package name.pehl.piriti.rebind;
 
+import name.pehl.piriti.client.property.NoopPropertyGetter;
+import name.pehl.piriti.client.property.NoopPropertySetter;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
@@ -42,16 +44,24 @@ public final class CodeGeneration
     {
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        switch (propertyContext.getPropertyStyle())
+        if (propertyContext.getSetter() == NoopPropertySetter.class)
         {
-            case FIELD:
-                assignFieldOrSetter(writer, propertyContext);
-                break;
-            case GXT:
-                assignGxt(writer, propertyContext);
-                break;
-            default:
-                break;
+            switch (propertyContext.getPropertyStyle())
+            {
+                case FIELD:
+                    assignFieldOrSetter(writer, propertyContext);
+                    break;
+                case GXT:
+                    assignGxt(writer, propertyContext);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            writer.write("%1$s setter = GWT.create(%1$s.class);", propertyContext.getSetter().getName());
+            writer.write("setter.set(model, %s);", propertyContext.getVariableNames().getValueVariable());
         }
         writer.outdent();
         writer.write("}");
@@ -117,16 +127,24 @@ public final class CodeGeneration
 
     public static void readField(IndentedWriter writer, PropertyContext propertyContext)
     {
-        switch (propertyContext.getPropertyStyle())
+        if (propertyContext.getGetter() == NoopPropertyGetter.class)
         {
-            case FIELD:
-                readFieldOrSetter(writer, propertyContext);
-                break;
-            case GXT:
-                readGxt(writer, propertyContext);
-                break;
-            default:
-                break;
+            switch (propertyContext.getPropertyStyle())
+            {
+                case FIELD:
+                    readFieldOrSetter(writer, propertyContext);
+                    break;
+                case GXT:
+                    readGxt(writer, propertyContext);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            writer.write("%1$s getter = GWT.create(%1$s.class);", propertyContext.getGetter().getName());
+            writer.write("%s = getter.get(model)", propertyContext.getVariableNames().getValueVariable());
         }
     }
 

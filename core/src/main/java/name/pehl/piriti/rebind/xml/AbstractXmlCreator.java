@@ -95,6 +95,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
                     interfaceType, modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath,
                     propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
                     propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING, PropertyStyle.FIELD,
+                    propertyAnnotation.getAnnotation().getter(), propertyAnnotation.getAnnotation().setter(),
                     variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))

@@ -8,6 +8,10 @@ import java.lang.annotation.Target;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.NoopConverter;
+import name.pehl.piriti.client.property.NoopPropertyGetter;
+import name.pehl.piriti.client.property.NoopPropertySetter;
+import name.pehl.piriti.client.property.PropertyGetter;
+import name.pehl.piriti.client.property.PropertySetter;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -152,6 +156,15 @@ import com.google.gwt.i18n.client.NumberFormat;
 public @interface Xml
 {
     /**
+     * The order in which the properties are processed. Default to -1 which
+     * means order does not matter.
+     * 
+     * @return
+     */
+    int order() default -1;
+
+
+    /**
      * The properties name. Only needed if the property cannot be annotated
      * direclty and this annotation is used inside {@link XmlMappings}.
      */
@@ -196,10 +209,21 @@ public @interface Xml
 
 
     /**
-     * The order in which the properties are processed. Default to -1 which
-     * means order does not matter.
+     * A custom property getter for reading the property. Defaults to
+     * {@link NoopPropertyGetter} which means that the property is read using
+     * the field or a getter.
      * 
      * @return
      */
-    int order() default -1;
+    Class<? extends PropertyGetter<?, ?>> getter() default NoopPropertyGetter.class;
+
+
+    /**
+     * A custom property setter for setting the property. Defaults to
+     * {@link NoopPropertySetter} which means that the property is set using the
+     * field or a setter.
+     * 
+     * @return
+     */
+    Class<? extends PropertySetter<?, ?>> setter() default NoopPropertySetter.class;
 }

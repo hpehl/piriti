@@ -60,7 +60,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
                 componentType, propertyContext.getName(), null, propertyContext.getFormat(), false,
-                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
+                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, propertyContext.getGetter(),
+                propertyContext.getSetter(), variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -169,7 +170,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
                 componentType, propertyContext.getName(), null, propertyContext.getFormat(), false,
-                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, variableNames);
+                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, propertyContext.getGetter(),
+                propertyContext.getSetter(), variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {

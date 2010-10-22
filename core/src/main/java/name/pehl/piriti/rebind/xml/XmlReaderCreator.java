@@ -395,7 +395,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
                 propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                         modelType, field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
-                        NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, variableNames);
+                        NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, xmlId.getter(), xmlId.setter(),
+                        variableNames);
             }
         }
         else if (fields.length > 1)
@@ -418,7 +419,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
                         VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
                         propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                                 modelType, field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
-                                NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, variableNames);
+                                NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, xmlId.getter(),
+                                xmlId.setter(), variableNames);
                     }
                     else
                     {
@@ -446,6 +448,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                     interfaceType, modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath,
                     propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
                     propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING, PropertyStyle.FIELD,
+                    propertyAnnotation.getAnnotation().getter(), propertyAnnotation.getAnnotation().setter(),
                     variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if ((propertyHandler instanceof XmlRegistryPropertyHandler
@@ -473,7 +476,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                     modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, null,
                     propertyAnnotation.getAnnotation().stripWsnl(), NoopConverter.class, MappingType.IDREF,
-                    PropertyStyle.FIELD, variableNames);
+                    PropertyStyle.FIELD, propertyAnnotation.getAnnotation().getter(), propertyAnnotation
+                            .getAnnotation().setter(), variableNames);
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {

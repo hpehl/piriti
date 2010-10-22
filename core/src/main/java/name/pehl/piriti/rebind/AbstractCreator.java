@@ -142,6 +142,7 @@ public abstract class AbstractCreator
         writer.write("import java.util.List;");
         writer.write("import java.util.Map;");
         writer.write("import java.util.Set;");
+        writer.write("import com.google.gwt.core.client.GWT;");
         writer.write("import name.pehl.piriti.client.PiritiGinjector;");
         writer.write("import name.pehl.piriti.client.converter.*;");
     }
@@ -362,7 +363,7 @@ public abstract class AbstractCreator
         {
             for (JMethod method : allMethods)
             {
-                if (method.isPublic() && (!JPrimitiveType.VOID.equals(method.getReturnType()))
+                if (method.isPublic() && !JPrimitiveType.VOID.equals(method.getReturnType())
                         && (method.getName().startsWith("get") || method.getName().startsWith("is")))
                 {
                     if (method.getParameters().length == 0)

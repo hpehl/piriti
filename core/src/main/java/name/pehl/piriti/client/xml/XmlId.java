@@ -6,6 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import name.pehl.piriti.client.property.NoopPropertyGetter;
+import name.pehl.piriti.client.property.NoopPropertySetter;
+import name.pehl.piriti.client.property.PropertyGetter;
+import name.pehl.piriti.client.property.PropertySetter;
+
 /**
  * Annotation to select an identifier fo a POJO. The annotation can only be
  * specified for one property in the POJO. The properties type must be string.
@@ -43,4 +48,24 @@ public @interface XmlId
      * @return
      */
     boolean stripWsnl() default true;
+
+
+    /**
+     * A custom property getter for reading the property. Defaults to
+     * {@link NoopPropertyGetter} which means that the property is read using
+     * the field or a getter.
+     * 
+     * @return
+     */
+    Class<? extends PropertyGetter<?, ?>> getter() default NoopPropertyGetter.class;
+
+
+    /**
+     * A custom property setter for setting the property. Defaults to
+     * {@link NoopPropertySetter} which means that the property is set using the
+     * field or a setter.
+     * 
+     * @return
+     */
+    Class<? extends PropertySetter<?, ?>> setter() default NoopPropertySetter.class;
 }

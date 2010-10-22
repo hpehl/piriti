@@ -109,6 +109,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.indent();
         writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
+        writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
@@ -145,6 +146,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.indent();
         writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
+        writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
@@ -180,6 +182,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.indent();
         writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
+        writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
@@ -211,6 +214,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.indent();
         writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
+        writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");

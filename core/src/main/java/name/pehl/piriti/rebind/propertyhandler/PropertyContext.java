@@ -5,6 +5,8 @@ import java.util.Map;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.NoopConverter;
+import name.pehl.piriti.client.property.PropertyGetter;
+import name.pehl.piriti.client.property.PropertySetter;
 import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -41,6 +43,8 @@ public class PropertyContext
     private final Class<? extends Converter<?>> converter;
     private final MappingType mappingType;
     private final PropertyStyle propertyStyle;
+    private final Class<? extends PropertyGetter<?, ?>> getter;
+    private final Class<? extends PropertySetter<?, ?>> setter;
     private final VariableNames variableNames;
     private final Map<String, Object> metadata;
 
@@ -74,6 +78,10 @@ public class PropertyContext
      *            The mapping type.
      * @param propertyStyle
      *            The property style.
+     * @param getter
+     *            A custom property getter
+     * @param setter
+     *            A custom property setter
      * @param variableNames
      *            Contains various variable names
      * @throws UnableToCompleteException
@@ -81,6 +89,7 @@ public class PropertyContext
     public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType readerOrWriter,
             JClassType clazz, JType type, String name, String path, String format, boolean stripWsnl,
             Class<? extends Converter<?>> converter, MappingType mappingType, PropertyStyle propertyStyle,
+            Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
             VariableNames variableNames) throws UnableToCompleteException
     {
         // Types
@@ -122,9 +131,11 @@ public class PropertyContext
         this.stripWsnl = stripWsnl;
         this.converter = converter;
 
-        // Mapping type, property style, variable names and metadata
+        // Mapping type, property stuff, variable names and metadata
         this.mappingType = mappingType;
         this.propertyStyle = propertyStyle;
+        this.getter = getter;
+        this.setter = setter;
         this.variableNames = variableNames;
         this.metadata = new HashMap<String, Object>();
     }
@@ -349,7 +360,7 @@ public class PropertyContext
 
     public boolean isCustomConverter()
     {
-        return converter != null && !(NoopConverter.class.equals(converter));
+        return converter != null && !NoopConverter.class.equals(converter);
     }
 
 
@@ -362,6 +373,18 @@ public class PropertyContext
     public PropertyStyle getPropertyStyle()
     {
         return propertyStyle;
+    }
+
+
+    public Class<? extends PropertyGetter<?, ?>> getGetter()
+    {
+        return getter;
+    }
+
+
+    public Class<? extends PropertySetter<?, ?>> getSetter()
+    {
+        return setter;
     }
 
 
