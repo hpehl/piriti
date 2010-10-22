@@ -6,7 +6,10 @@ import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
+import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Contains utility method for the code generation
@@ -42,37 +45,8 @@ public final class CodeGeneration
         switch (propertyContext.getPropertyStyle())
         {
             case FIELD:
-                if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), false))
-                {
-                    writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
-                            .getValueVariable());
-                }
-                else
-                {
-                    String reason = String.format("Cannot assign %s to model.%s: Field is not accessible.",
-                            propertyContext.getVariableNames().getValueVariable(), propertyContext.getName());
-                    skipProperty(writer, propertyContext, reason);
-                }
+                assignFieldOrSetter(writer, propertyContext);
                 break;
-            // TODO Implement setter
-            // case GETTER_SETTER:
-            // if (isSetterAccessible(propertyContext))
-            // {
-            // writer.write("model.%s(%s);",
-            // TypeUtils.buildSetter(propertyContext.getName()), propertyContext
-            // .getVariableNames().getValueVariable());
-            // }
-            // else
-            // {
-            // String reason =
-            // String.format("Setter is not available / not accessible.",
-            // TypeUtils
-            // .buildSetter(propertyContext.getName()),
-            // propertyContext.getVariableNames()
-            // .getValueVariable());
-            // skipProperty(writer, propertyContext, reason);
-            // }
-            // break;
             case GXT:
                 assignGxt(writer, propertyContext);
                 break;
@@ -84,29 +58,58 @@ public final class CodeGeneration
     }
 
 
+    private static void assignFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == propertyContext.getClazz()
+                .getPackage();
+        JField field = null;
+        if (samePackage)
+        {
+            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.DEFAULT,
+                    Modifier.PROTECTED, Modifier.PUBLIC);
+        }
+        else
+        {
+            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.PUBLIC);
+        }
+        if (field != null && !field.isFinal())
+        {
+            writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
+                    .getValueVariable());
+        }
+        else
+        {
+            JMethod setter = null;
+            JType parameter = propertyContext.isPrimitive() ? propertyContext.getPrimitiveType() : propertyContext
+                    .getType();
+            if (samePackage)
+            {
+                setter = TypeUtils.findSetter(propertyContext.getClazz(), propertyContext.getName(), parameter,
+                        Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
+            }
+            else
+            {
+                setter = TypeUtils.findSetter(propertyContext.getClazz(), propertyContext.getName(), parameter,
+                        Modifier.PUBLIC);
+            }
+            if (setter != null)
+            {
+                writer.write("model.%s(%s);", setter.getName(), propertyContext.getVariableNames().getValueVariable());
+            }
+            else
+            {
+                String reason = String.format("Cannot assign %s: No accessible field or setter found in %s.",
+                        propertyContext.getName(), propertyContext.getClazz().getQualifiedSourceName());
+                skipProperty(writer, propertyContext, reason);
+            }
+        }
+    }
+
+
     private static void assignGxt(IndentedWriter writer, PropertyContext propertyContext)
     {
         writer.write("model.set(\"%s\", %s);", propertyContext.getName(), propertyContext.getVariableNames()
                 .getValueVariable());
-    }
-
-
-    private static boolean isSetterAccessible(PropertyContext propertyContext)
-    {
-        boolean accessible = false;
-        if (propertyContext.getPrimitiveType() != null)
-        {
-            // Autoboxing: First try with primitive type
-            accessible = TypeUtils.isSetterAccessible(propertyContext.getClazz(), propertyContext.getName(),
-                    propertyContext.getPrimitiveType());
-        }
-        if (!accessible)
-        {
-            // Fall back to fieldContext.getType()
-            accessible = TypeUtils.isSetterAccessible(propertyContext.getClazz(), propertyContext.getName(),
-                    propertyContext.getType());
-        }
-        return accessible;
     }
 
 
@@ -117,50 +120,70 @@ public final class CodeGeneration
         switch (propertyContext.getPropertyStyle())
         {
             case FIELD:
-                if (TypeUtils.isFieldAccessible(propertyContext.getClazz(), propertyContext.getName(), true))
-                {
-                    writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
-                            propertyContext.getName());
-                }
-                else
-                {
-                    String reason = String.format("Cannot read model.%s: Field is not accessible.", propertyContext
-                            .getVariableNames().getValueVariable(), propertyContext.getName());
-                    skipProperty(writer, propertyContext, reason);
-                }
+                readFieldOrSetter(writer, propertyContext);
                 break;
-            // TODO Implement getter
-            // case GETTER_SETTER:
-            // if (TypeUtils.isGetterAccessible(propertyContext.getClazz(),
-            // propertyContext.getName()))
-            // {
-            // writer.write("%s = model.%s();",
-            // propertyContext.getVariableNames().getValueVariable(),
-            // TypeUtils.buildGetter(propertyContext.getName()));
-            // }
-            // else if
-            // (TypeUtils.isBooleanGetterAccessible(propertyContext.getClazz(),
-            // propertyContext.getName()))
-            // {
-            // writer.write("%s = model.%s();",
-            // propertyContext.getVariableNames().getValueVariable(),
-            // TypeUtils.buildBooleanGetter(propertyContext.getName()));
-            // }
-            // else
-            // {
-            // String reason =
-            // String.format("Cannot call model.%s(): Getter is not available / accessible.",
-            // TypeUtils.buildGetter(propertyContext.getName()));
-            // skipProperty(writer, propertyContext, reason);
-            // }
-            // break;
             case GXT:
-                writer.write("%s = model.get(\"%s\");", propertyContext.getVariableNames().getValueVariable(),
-                        propertyContext.getName());
+                readGxt(writer, propertyContext);
                 break;
             default:
                 break;
         }
+    }
+
+
+    private static void readFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == propertyContext.getClazz()
+                .getPackage();
+        JField field = null;
+        if (samePackage)
+        {
+            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.DEFAULT,
+                    Modifier.PROTECTED, Modifier.PUBLIC);
+        }
+        else
+        {
+            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.PUBLIC);
+        }
+        if (field != null)
+        {
+            writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
+                    propertyContext.getName());
+        }
+        else
+        {
+            JMethod getter = null;
+            JType returnType = propertyContext.isPrimitive() ? propertyContext.getPrimitiveType() : propertyContext
+                    .getType();
+            if (samePackage)
+            {
+                getter = TypeUtils.findGetter(propertyContext.getClazz(), propertyContext.getName(), returnType,
+                        Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
+            }
+            else
+            {
+                getter = TypeUtils.findGetter(propertyContext.getClazz(), propertyContext.getName(), returnType,
+                        Modifier.PUBLIC);
+            }
+            if (getter != null)
+            {
+                writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
+                        getter.getName());
+            }
+            else
+            {
+                String reason = String.format("Cannot read %s: No accessible field or setter found in %s.",
+                        propertyContext.getName(), propertyContext.getClazz().getQualifiedSourceName());
+                skipProperty(writer, propertyContext, reason);
+            }
+        }
+    }
+
+
+    private static void readGxt(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        writer.write("%s = model.get(\"%s\");", propertyContext.getVariableNames().getValueVariable(),
+                propertyContext.getName());
     }
 
 

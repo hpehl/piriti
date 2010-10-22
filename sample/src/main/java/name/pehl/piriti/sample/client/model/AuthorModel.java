@@ -1,10 +1,10 @@
 package name.pehl.piriti.sample.client.model;
 
-import name.pehl.piriti.gxt.client.json.JsonField;
-import name.pehl.piriti.gxt.client.json.JsonFields;
+import name.pehl.piriti.gxt.client.json.Json;
+import name.pehl.piriti.gxt.client.json.JsonMappings;
 import name.pehl.piriti.gxt.client.json.JsonModelReader;
-import name.pehl.piriti.gxt.client.xml.XmlField;
-import name.pehl.piriti.gxt.client.xml.XmlFields;
+import name.pehl.piriti.gxt.client.xml.Xml;
+import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.client.xml.XmlModelReader;
 
 import com.extjs.gxt.ui.client.data.BaseModel;
@@ -15,25 +15,18 @@ import com.google.gwt.core.client.GWT;
  * @version $Date$ $Revision: 327
  *          $
  */
-//@formatter:off
-@XmlFields({
-    @XmlField(name = "firstname", type = String.class),
-    @XmlField(name = "surname", type = String.class)})
-@JsonFields({
-    @JsonField(name = "firstname", type = String.class),
-    @JsonField(name = "surname", type = String.class)})
-// @formatter:on
+// @formatter:off
+@XmlMappings({
+    @Xml(property = "firstname", type = String.class),
+    @Xml(property = "surname", type = String.class)})
+@JsonMappings({
+    @Json(property = "firstname", type = String.class),
+    @Json(property = "surname", type = String.class)})
 public class AuthorModel extends BaseModel
 {
-    public interface AuthorXmlReader extends XmlModelReader<AuthorModel>
-    {
-    }
-
+    public interface AuthorXmlReader extends XmlModelReader<AuthorModel> {}
     public static final AuthorXmlReader XML = GWT.create(AuthorXmlReader.class);
 
-    public interface AuthorJsonReader extends JsonModelReader<AuthorModel>
-    {
-    }
-
+    public interface AuthorJsonReader extends JsonModelReader<AuthorModel> {}
     public static final AuthorJsonReader JSON = GWT.create(AuthorJsonReader.class);
 }
