@@ -1,8 +1,8 @@
 package name.pehl.piriti.rebind.json;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonMappings;
@@ -11,11 +11,9 @@ import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -76,8 +74,8 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<Json>> properties = findPropertyAnnotations();
-        for (Iterator<PropertyAnnotation<Json>> iter = properties.values().iterator(); iter.hasNext();)
+        SortedSet<PropertyAnnotation<Json>> properties = findPropertyAnnotations();
+        for (Iterator<PropertyAnnotation<Json>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<Json> propertyAnnotation = iter.next();
             String jsonPath = calculateJsonPath(propertyAnnotation.getAnnotation().value(),
@@ -86,8 +84,8 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry,
                     interfaceType, modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), jsonPath,
                     propertyAnnotation.getAnnotation().format(), false, propertyAnnotation.getAnnotation().converter(),
-                    MappingType.MAPPING, PropertyStyle.FIELD, propertyAnnotation.getAnnotation().getter(),
-                    propertyAnnotation.getAnnotation().setter(), variableNames);
+                    null, propertyAnnotation.getAnnotation().getter(), propertyAnnotation.getAnnotation().setter(),
+                    variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
@@ -100,15 +98,14 @@ public abstract class AbstractJsonCreator extends AbstractCreator
 
 
     /**
-     * Returns a map with the properties name as key and the
-     * {@link PropertyAnnotation} for {@link Json} as value.
+     * Returns a sorted set with the annotated properties.
      * 
      * @return
      * @throws UnableToCompleteException
      */
-    private Map<String, PropertyAnnotation<Json>> findPropertyAnnotations() throws UnableToCompleteException
+    private SortedSet<PropertyAnnotation<Json>> findPropertyAnnotations() throws UnableToCompleteException
     {
-        Map<String, PropertyAnnotation<Json>> properties = new HashMap<String, PropertyAnnotation<Json>>();
+        SortedSet<PropertyAnnotation<Json>> properties = new TreeSet<PropertyAnnotation<Json>>();
 
         // Step 1: Add all @Json annotations in the @JsonMappings annotation
         // from the interfaceType
@@ -121,8 +118,8 @@ public abstract class AbstractJsonCreator extends AbstractCreator
                 JField field = TypeUtils.findField(modelType, annotation.property());
                 if (field != null)
                 {
-                    properties.put(annotation.property(),
-                            new PropertyAnnotation<Json>(annotation.property(), field.getType(), annotation));
+                    properties.add(new PropertyAnnotation<Json>(annotation.property(), field.getType(), annotation,
+                            annotation.order()));
                 }
                 else
                 {
@@ -138,7 +135,8 @@ public abstract class AbstractJsonCreator extends AbstractCreator
         for (JField field : fields)
         {
             Json annotation = field.getAnnotation(Json.class);
-            properties.put(field.getName(), new PropertyAnnotation<Json>(field.getName(), field.getType(), annotation));
+            properties.add(new PropertyAnnotation<Json>(field.getName(), field.getType(), annotation, annotation
+                    .order()));
         }
 
         return properties;

@@ -46,16 +46,13 @@ public final class CodeGeneration
         writer.indent();
         if (propertyContext.getSetter() == NoopPropertySetter.class)
         {
-            switch (propertyContext.getPropertyStyle())
+            if (propertyContext.isGxt())
             {
-                case FIELD:
-                    assignFieldOrSetter(writer, propertyContext);
-                    break;
-                case GXT:
-                    assignGxt(writer, propertyContext);
-                    break;
-                default:
-                    break;
+                assignGxt(writer, propertyContext);
+            }
+            else
+            {
+                assignFieldOrSetter(writer, propertyContext);
             }
         }
         else
@@ -129,16 +126,13 @@ public final class CodeGeneration
     {
         if (propertyContext.getGetter() == NoopPropertyGetter.class)
         {
-            switch (propertyContext.getPropertyStyle())
+            if (propertyContext.isGxt())
             {
-                case FIELD:
-                    readFieldOrSetter(writer, propertyContext);
-                    break;
-                case GXT:
-                    readGxt(writer, propertyContext);
-                    break;
-                default:
-                    break;
+                readGxt(writer, propertyContext);
+            }
+            else
+            {
+                readFieldOrSetter(writer, propertyContext);
             }
         }
         else

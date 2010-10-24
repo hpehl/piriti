@@ -10,11 +10,9 @@ import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
-import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 import name.pehl.piriti.rebind.xml.XmlReaderCreator;
 
@@ -67,8 +65,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                     modelType, fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
-                    xmlField.converter(), MappingType.MAPPING, PropertyStyle.GXT, NoopPropertyGetter.class,
-                    NoopPropertySetter.class, variableNames);
+                    xmlField.converter(), null, NoopPropertyGetter.class, NoopPropertySetter.class, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))

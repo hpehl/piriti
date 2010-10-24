@@ -1,8 +1,8 @@
 package name.pehl.piriti.rebind.xml;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlMappings;
@@ -11,12 +11,10 @@ import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
-import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -84,8 +82,8 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
-        for (Iterator<PropertyAnnotation<Xml>> iter = properties.values().iterator(); iter.hasNext();)
+        SortedSet<PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
+        for (Iterator<PropertyAnnotation<Xml>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<Xml> propertyAnnotation = iter.next();
             String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
@@ -94,9 +92,8 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry,
                     interfaceType, modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath,
                     propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
-                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING, PropertyStyle.FIELD,
-                    propertyAnnotation.getAnnotation().getter(), propertyAnnotation.getAnnotation().setter(),
-                    variableNames);
+                    propertyAnnotation.getAnnotation().converter(), null, propertyAnnotation.getAnnotation().getter(),
+                    propertyAnnotation.getAnnotation().setter(), variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
@@ -109,15 +106,14 @@ public abstract class AbstractXmlCreator extends AbstractCreator
 
 
     /**
-     * Returns a map with the fields name as key and the
-     * {@link PropertyAnnotation} for {@link Xml} as value.
+     * Returns a sorted set with the annotated properties.
      * 
      * @return
      * @throws UnableToCompleteException
      */
-    protected Map<String, PropertyAnnotation<Xml>> findPropertyAnnotations() throws UnableToCompleteException
+    protected SortedSet<PropertyAnnotation<Xml>> findPropertyAnnotations() throws UnableToCompleteException
     {
-        Map<String, PropertyAnnotation<Xml>> properties = new HashMap<String, PropertyAnnotation<Xml>>();
+        SortedSet<PropertyAnnotation<Xml>> properties = new TreeSet<PropertyAnnotation<Xml>>();
 
         // Step 1: Add all @Xml annotations in the @XmlMappings annotation
         // from the interfaceType
@@ -130,8 +126,8 @@ public abstract class AbstractXmlCreator extends AbstractCreator
                 JField field = TypeUtils.findField(modelType, annotation.property());
                 if (field != null)
                 {
-                    properties.put(annotation.property(),
-                            new PropertyAnnotation<Xml>(annotation.property(), field.getType(), annotation));
+                    properties.add(new PropertyAnnotation<Xml>(annotation.property(), field.getType(), annotation,
+                            annotation.order()));
                 }
                 else
                 {
@@ -147,7 +143,8 @@ public abstract class AbstractXmlCreator extends AbstractCreator
         for (JField field : fields)
         {
             Xml annotation = field.getAnnotation(Xml.class);
-            properties.put(field.getName(), new PropertyAnnotation<Xml>(field.getName(), field.getType(), annotation));
+            properties
+                    .add(new PropertyAnnotation<Xml>(field.getName(), field.getType(), annotation, annotation.order()));
         }
 
         return properties;

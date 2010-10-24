@@ -41,8 +41,7 @@ public class PropertyContext
     private final String format;
     private final boolean stripWsnl;
     private final Class<? extends Converter<?>> converter;
-    private final MappingType mappingType;
-    private final PropertyStyle propertyStyle;
+    private final ReferenceType referenceType;
     private final Class<? extends PropertyGetter<?, ?>> getter;
     private final Class<? extends PropertySetter<?, ?>> setter;
     private final VariableNames variableNames;
@@ -61,7 +60,7 @@ public class PropertyContext
      * @param readerOrWriter
      *            The type of the reader or writer interface
      * @param clazz
-     *            The type of the properties class
+     *            The type of the class
      * @param type
      *            The property type itself
      * @param name
@@ -74,10 +73,8 @@ public class PropertyContext
      *            A custom converter
      * @param stripWsnl
      *            Whether to strip whitespace and newlines from the input
-     * @param mappingType
-     *            The mapping type.
-     * @param propertyStyle
-     *            The property style.
+     * @param referenceType
+     *            The refereence type.
      * @param getter
      *            A custom property getter
      * @param setter
@@ -88,7 +85,7 @@ public class PropertyContext
      */
     public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType readerOrWriter,
             JClassType clazz, JType type, String name, String path, String format, boolean stripWsnl,
-            Class<? extends Converter<?>> converter, MappingType mappingType, PropertyStyle propertyStyle,
+            Class<? extends Converter<?>> converter, ReferenceType referenceType,
             Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
             VariableNames variableNames) throws UnableToCompleteException
     {
@@ -131,9 +128,8 @@ public class PropertyContext
         this.stripWsnl = stripWsnl;
         this.converter = converter;
 
-        // Mapping type, property stuff, variable names and metadata
-        this.mappingType = mappingType;
-        this.propertyStyle = propertyStyle;
+        // Reference type, property stuff, variable names and metadata
+        this.referenceType = referenceType;
         this.getter = getter;
         this.setter = setter;
         this.variableNames = variableNames;
@@ -153,6 +149,25 @@ public class PropertyContext
             builder.append(", format=\"").append(format).append("\"");
         }
         return builder.toString();
+    }
+
+
+    // -------------------------------------- methods related to the class type
+
+    public boolean isGxt()
+    {
+        JClassType[] interfaces = clazz.getImplementedInterfaces();
+        if (interfaces != null && interfaces.length != 0)
+        {
+            for (JClassType interfaze : interfaces)
+            {
+                if (interfaze.getQualifiedSourceName().equals("com.extjs.gxt.ui.client.data.Model"))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 
@@ -364,15 +379,9 @@ public class PropertyContext
     }
 
 
-    public MappingType getMappingType()
+    public ReferenceType getReferenceType()
     {
-        return mappingType;
-    }
-
-
-    public PropertyStyle getPropertyStyle()
-    {
-        return propertyStyle;
+        return referenceType;
     }
 
 

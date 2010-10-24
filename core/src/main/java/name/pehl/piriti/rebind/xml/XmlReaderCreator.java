@@ -1,8 +1,8 @@
 package name.pehl.piriti.rebind.xml;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import name.pehl.piriti.client.converter.NoopConverter;
 import name.pehl.piriti.client.xml.Xml;
@@ -13,11 +13,10 @@ import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyAnnotation;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
+import name.pehl.piriti.rebind.propertyhandler.ReferenceType;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler;
@@ -395,8 +394,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
                 propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                         modelType, field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
-                        NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, xmlId.getter(), xmlId.setter(),
-                        variableNames);
+                        NoopConverter.class, ReferenceType.ID, xmlId.getter(), xmlId.setter(), variableNames);
             }
         }
         else if (fields.length > 1)
@@ -419,8 +417,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
                         VariableNames variableNames = new VariableNames("element", "idValue", "xmlBuilder");
                         propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                                 modelType, field.getType(), field.getName(), xmlId.value(), null, xmlId.stripWsnl(),
-                                NoopConverter.class, MappingType.ID, PropertyStyle.FIELD, xmlId.getter(),
-                                xmlId.setter(), variableNames);
+                                NoopConverter.class, ReferenceType.ID, xmlId.getter(), xmlId.setter(), variableNames);
                     }
                     else
                     {
@@ -437,8 +434,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
-        for (Iterator<PropertyAnnotation<Xml>> iter = properties.values().iterator(); iter.hasNext();)
+        SortedSet<PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
+        for (Iterator<PropertyAnnotation<Xml>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<Xml> propertyAnnotation = iter.next();
             String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
@@ -447,9 +444,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
             PropertyContext propertyContext = new PropertyContext(context.getTypeOracle(), handlerRegistry,
                     interfaceType, modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath,
                     propertyAnnotation.getAnnotation().format(), propertyAnnotation.getAnnotation().stripWsnl(),
-                    propertyAnnotation.getAnnotation().converter(), MappingType.MAPPING, PropertyStyle.FIELD,
-                    propertyAnnotation.getAnnotation().getter(), propertyAnnotation.getAnnotation().setter(),
-                    variableNames);
+                    propertyAnnotation.getAnnotation().converter(), null, propertyAnnotation.getAnnotation().getter(),
+                    propertyAnnotation.getAnnotation().setter(), variableNames);
             PropertyHandler propertyHandler = handlerRegistry.findPropertyHandler(propertyContext);
             if ((propertyHandler instanceof XmlRegistryPropertyHandler
                     || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
@@ -466,8 +462,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Map<String, PropertyAnnotation<XmlIdRef>> properties = findReferenceAnnotations();
-        for (Iterator<PropertyAnnotation<XmlIdRef>> iter = properties.values().iterator(); iter.hasNext();)
+        SortedSet<PropertyAnnotation<XmlIdRef>> properties = findReferenceAnnotations();
+        for (Iterator<PropertyAnnotation<XmlIdRef>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<XmlIdRef> propertyAnnotation = iter.next();
             String xpath = calculateXpath(propertyAnnotation.getAnnotation().value(), propertyAnnotation.getProperty(),
@@ -475,9 +471,9 @@ public class XmlReaderCreator extends AbstractXmlCreator
             VariableNames variableNames = new VariableNames("element", "idRefValue" + counter, "xmlBuilder");
             PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
                     modelType, propertyAnnotation.getType(), propertyAnnotation.getProperty(), xpath, null,
-                    propertyAnnotation.getAnnotation().stripWsnl(), NoopConverter.class, MappingType.IDREF,
-                    PropertyStyle.FIELD, propertyAnnotation.getAnnotation().getter(), propertyAnnotation
-                            .getAnnotation().setter(), variableNames);
+                    propertyAnnotation.getAnnotation().stripWsnl(), NoopConverter.class, ReferenceType.IDREF,
+                    propertyAnnotation.getAnnotation().getter(), propertyAnnotation.getAnnotation().setter(),
+                    variableNames);
             PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
@@ -489,10 +485,10 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    private Map<String, PropertyAnnotation<XmlIdRef>> findReferenceAnnotations() throws UnableToCompleteException
+    private SortedSet<PropertyAnnotation<XmlIdRef>> findReferenceAnnotations() throws UnableToCompleteException
     {
-        // TODO Look for @XmlId on getters and setters!
-        Map<String, PropertyAnnotation<XmlIdRef>> properties = new HashMap<String, PropertyAnnotation<XmlIdRef>>();
+        // TODO Look for @XmlRef on getters and setters!
+        SortedSet<PropertyAnnotation<XmlIdRef>> properties = new TreeSet<PropertyAnnotation<XmlIdRef>>();
 
         // Step 1: Add all @XmlIdRef annotations in the @XmlMappings annotation
         // from the interfaceType
@@ -505,8 +501,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
                 JField field = TypeUtils.findField(modelType, annotation.property());
                 if (field != null)
                 {
-                    properties.put(annotation.property(),
-                            new PropertyAnnotation<XmlIdRef>(annotation.property(), field.getType(), annotation));
+                    properties.add(new PropertyAnnotation<XmlIdRef>(annotation.property(), field.getType(), annotation,
+                            -1));
                 }
                 else
                 {
@@ -523,8 +519,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         for (JField field : fields)
         {
             XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
-            properties.put(field.getName(), new PropertyAnnotation<XmlIdRef>(field.getName(), field.getType(),
-                    annotation));
+            properties.add(new PropertyAnnotation<XmlIdRef>(field.getName(), field.getType(), annotation, -1));
         }
 
         return properties;

@@ -1,6 +1,6 @@
 package name.pehl.piriti.rebind.xml;
 
-import static name.pehl.piriti.rebind.propertyhandler.MappingType.*;
+import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -141,11 +141,11 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
     {
         PropertyHandler handler = null;
 
-        if (fieldContext.getMappingType() == ID)
+        if (fieldContext.getReferenceType() == ID)
         {
             handler = newIdFieldHandler();
         }
-        else if (fieldContext.getMappingType() == IDREF)
+        else if (fieldContext.getReferenceType() == IDREF)
         {
             handler = newIdRefFieldHandler();
         }

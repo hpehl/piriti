@@ -3,10 +3,8 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.MappingType;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyStyle;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -60,8 +58,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
                 componentType, propertyContext.getName(), null, propertyContext.getFormat(), false,
-                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, propertyContext.getGetter(),
-                propertyContext.getSetter(), variableNames);
+                propertyContext.getConverter(), null, propertyContext.getGetter(), propertyContext.getSetter(),
+                variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
@@ -170,8 +168,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
                 componentType, propertyContext.getName(), null, propertyContext.getFormat(), false,
-                propertyContext.getConverter(), MappingType.MAPPING, PropertyStyle.FIELD, propertyContext.getGetter(),
-                propertyContext.getSetter(), variableNames);
+                propertyContext.getConverter(), null, propertyContext.getGetter(), propertyContext.getSetter(),
+                variableNames);
         PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
         if (!nestedHandler.isValid(writer, nestedFieldContext))
         {
