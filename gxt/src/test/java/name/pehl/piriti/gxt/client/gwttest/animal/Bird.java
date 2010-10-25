@@ -13,8 +13,8 @@ import com.google.gwt.core.client.GWT;
  * @author $Author$
  * @version $Date$ $Revision$
  */
-@JsonMappings(@Json(property = "wingspan", type = Double.class))
-@XmlMappings(@Xml(property = "wingspan", type = Double.class))
+@JsonMappings(@Json(property = "wingspan", type = Integer.class))
+@XmlMappings(@Xml(property = "wingspan", type = Integer.class))
 public class Bird extends Animal
 {
     // --------------------------------------------------- json reader / writer

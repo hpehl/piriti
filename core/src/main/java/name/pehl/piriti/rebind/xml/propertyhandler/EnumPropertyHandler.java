@@ -34,24 +34,35 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
                 .getPath(), propertyContext.isStripWsnl());
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueAsStringVariable());
         writer.indent();
-        writer.write("try {");
-        writer.indent();
-        writer.write("%s = %s.valueOf(%s);", propertyContext.getVariableNames().getValueVariable(), propertyContext
-                .getEnumType().getQualifiedSourceName(), propertyContext.getVariableNames().getValueAsStringVariable());
-        writer.outdent();
-        writer.write("}");
-        writer.write("catch (IllegalArgumentException e1) {");
-        writer.indent();
-        writer.write("try {");
-        writer.indent();
-        writer.write("%s = %s.valueOf(%s.toUpperCase());", propertyContext.getVariableNames().getValueVariable(),
-                propertyContext.getEnumType().getQualifiedSourceName(), propertyContext.getVariableNames()
-                        .getValueAsStringVariable());
-        writer.outdent();
-        writer.write("}");
-        writer.write("catch (IllegalArgumentException e2) {}");
-        writer.outdent();
-        writer.write("}");
+        if (propertyContext.isCustomConverter())
+        {
+            String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
+            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
+                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
+            writer.write("%s = %s.convert(%s, null);", propertyContext.getVariableNames().getValueVariable(),
+                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable());
+        }
+        else
+        {
+            writer.write("try {");
+            writer.indent();
+            writer.write("%s = %s.valueOf(%s);", propertyContext.getVariableNames().getValueVariable(), propertyContext
+                    .getEnumType().getQualifiedSourceName(), propertyContext.getVariableNames().getValueAsStringVariable());
+            writer.outdent();
+            writer.write("}");
+            writer.write("catch (IllegalArgumentException e1) {");
+            writer.indent();
+            writer.write("try {");
+            writer.indent();
+            writer.write("%s = %s.valueOf(%s.toUpperCase());", propertyContext.getVariableNames().getValueVariable(),
+                    propertyContext.getEnumType().getQualifiedSourceName(), propertyContext.getVariableNames()
+                            .getValueAsStringVariable());
+            writer.outdent();
+            writer.write("}");
+            writer.write("catch (IllegalArgumentException e2) {}");
+            writer.outdent();
+            writer.write("}");
+        }
         writer.outdent();
         writer.write("}");
     }

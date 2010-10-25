@@ -35,5 +35,5 @@ public class Bird extends Animal
 
     // ------------------------------------------------------------------- data
 
-    @Json @Xml double wingspan;
+    @Json @Xml int wingspan;
 }

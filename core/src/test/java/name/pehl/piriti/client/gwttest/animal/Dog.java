@@ -35,5 +35,7 @@ public class Dog extends Mammal
 
     // ------------------------------------------------------------------- data
 
-    @Json @Xml Size size;
+    @Json(converter = SizeConverter.class) 
+    @Xml(converter = SizeConverter.class) 
+    Size size;
 }

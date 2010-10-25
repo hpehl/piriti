@@ -17,7 +17,7 @@ public abstract class AbstractAnimalTest extends AbstractPiritiGxtTest
         assertEquals("Kea", bird.get("name"));
         assertEquals(2, bird.get("legs"));
         assertEquals(.66, (Double) bird.get("intelligence"), .01);
-        assertEquals(100, (Double) bird.get("wingspan"), .01);
+        assertEquals(100, bird.get("wingspan"));
     }
 
 

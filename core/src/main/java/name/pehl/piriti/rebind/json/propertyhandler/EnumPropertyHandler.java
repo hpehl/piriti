@@ -52,23 +52,35 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
         writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
-        writer.write("try {");
-        writer.indent();
-        writer.write("%s = %s.valueOf(%s.stringValue());", propertyContext.getVariableNames().getValueVariable(),
-                propertyContext.getEnumType().getQualifiedSourceName(), jsonString);
-        writer.outdent();
-        writer.write("}");
-        writer.write("catch (IllegalArgumentException e1) {");
-        writer.indent();
-        writer.write("try {");
-        writer.indent();
-        writer.write("%s = %s.valueOf(%s.stringValue().toUpperCase());", propertyContext.getVariableNames()
-                .getValueVariable(), propertyContext.getEnumType().getQualifiedSourceName(), jsonString);
-        writer.outdent();
-        writer.write("}");
-        writer.write("catch (IllegalArgumentException e2) {}");
-        writer.outdent();
-        writer.write("}");
+
+        if (propertyContext.isCustomConverter())
+        {
+            String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
+            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
+                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
+            writer.write("%s = %s.convert(%s.stringValue(), null);", propertyContext.getVariableNames().getValueVariable(),
+                    converterVariable, jsonString);
+        }
+        else
+        {
+            writer.write("try {");
+            writer.indent();
+            writer.write("%s = %s.valueOf(%s.stringValue());", propertyContext.getVariableNames().getValueVariable(),
+                    propertyContext.getEnumType().getQualifiedSourceName(), jsonString);
+            writer.outdent();
+            writer.write("}");
+            writer.write("catch (IllegalArgumentException e1) {");
+            writer.indent();
+            writer.write("try {");
+            writer.indent();
+            writer.write("%s = %s.valueOf(%s.stringValue().toUpperCase());", propertyContext.getVariableNames()
+                    .getValueVariable(), propertyContext.getEnumType().getQualifiedSourceName(), jsonString);
+            writer.outdent();
+            writer.write("}");
+            writer.write("catch (IllegalArgumentException e2) {}");
+            writer.outdent();
+            writer.write("}");
+        }
         writer.outdent();
         writer.write("}");
         writer.outdent();

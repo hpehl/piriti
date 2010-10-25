@@ -18,7 +18,7 @@ public abstract class AbstractAnimalTest extends AbstractPiritiTest
         assertName("Kea", bird.name);
         assertEquals(2, bird.legs);
         assertEquals(.66, bird.intelligence, .01);
-        assertEquals(100, bird.wingspan, .01);
+        assertEquals(100, bird.wingspan);
     }
 
 

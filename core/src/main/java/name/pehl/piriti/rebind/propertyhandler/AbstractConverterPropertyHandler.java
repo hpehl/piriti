@@ -40,8 +40,16 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueAsStringVariable());
         writer.indent();
         String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
-        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", propertyContext.getType()
-                .getQualifiedSourceName(), converterVariable);
+        if (propertyContext.isCustomConverter())
+        {
+            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
+                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
+        }
+        else
+        {
+            writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", propertyContext.getType()
+                    .getQualifiedSourceName(), converterVariable);
+        }
         writer.write("if (%s != null) {", converterVariable);
         writer.indent();
         if (propertyContext.getFormat() != null)
@@ -80,34 +88,42 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      * used.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      */
-    protected void writeValueAsString(IndentedWriter writer, PropertyContext fieldContext)
+    protected void writeValueAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
-        writer.write("String %s = null;", fieldContext.getVariableNames().getValueAsStringVariable());
-        String converterVariable = fieldContext.getVariableNames().newVariableName("WriteConverter");
-        writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", fieldContext.getType()
-                .getQualifiedSourceName(), converterVariable);
-        writer.write("if (%s != null) {", converterVariable);
-        // Use the registered converter
-        writer.indent();
-        if (fieldContext.getFormat() != null)
+        writer.write("String %s = null;", propertyContext.getVariableNames().getValueAsStringVariable());
+        String converterVariable = propertyContext.getVariableNames().newVariableName("WriteConverter");
+        if (propertyContext.isCustomConverter())
         {
-            writer.write("%s = %s.serialize(%s, \"%s\");", fieldContext.getVariableNames().getValueAsStringVariable(),
-                    converterVariable, fieldContext.getVariableNames().getValueVariable(), fieldContext.getFormat());
+            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
+                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
         }
         else
         {
-            writer.write("%s = %s.serialize(%s, null);", fieldContext.getVariableNames().getValueAsStringVariable(),
-                    converterVariable, fieldContext.getVariableNames().getValueVariable());
+            writer.write("Converter<%1$s> %2$s = converterRegistry.get(%1$s.class);", propertyContext.getType()
+                    .getQualifiedSourceName(), converterVariable);
+        }
+        writer.write("if (%s != null) {", converterVariable);
+        // Use the registered converter
+        writer.indent();
+        if (propertyContext.getFormat() != null)
+        {
+            writer.write("%s = %s.serialize(%s, \"%s\");", propertyContext.getVariableNames().getValueAsStringVariable(),
+                    converterVariable, propertyContext.getVariableNames().getValueVariable(), propertyContext.getFormat());
+        }
+        else
+        {
+            writer.write("%s = %s.serialize(%s, null);", propertyContext.getVariableNames().getValueAsStringVariable(),
+                    converterVariable, propertyContext.getVariableNames().getValueVariable());
         }
         writer.outdent();
         writer.write("}");
         writer.write("else {");
         // Fall back to toString()
         writer.indent();
-        writer.write("%s = String.valueOf(%s);", fieldContext.getVariableNames().getValueAsStringVariable(),
-                fieldContext.getVariableNames().getValueVariable());
+        writer.write("%s = String.valueOf(%s);", propertyContext.getVariableNames().getValueAsStringVariable(),
+                propertyContext.getVariableNames().getValueVariable());
         writer.outdent();
         writer.write("}");
     }

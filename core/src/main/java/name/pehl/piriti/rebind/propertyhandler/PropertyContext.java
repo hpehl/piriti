@@ -2,6 +2,7 @@ package name.pehl.piriti.rebind.propertyhandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.NoopConverter;
@@ -156,12 +157,12 @@ public class PropertyContext
 
     public boolean isGxt()
     {
-        JClassType[] interfaces = clazz.getImplementedInterfaces();
-        if (interfaces != null && interfaces.length != 0)
+        Set<JClassType> hierarchy = clazz.getFlattenedSupertypeHierarchy();
+        if (hierarchy != null)
         {
-            for (JClassType interfaze : interfaces)
+            for (JClassType h : hierarchy)
             {
-                if (interfaze.getQualifiedSourceName().equals("com.extjs.gxt.ui.client.data.Model"))
+                if (h.getQualifiedSourceName().equals("com.extjs.gxt.ui.client.data.Model"))
                 {
                     return true;
                 }
