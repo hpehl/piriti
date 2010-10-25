@@ -23,6 +23,11 @@
             <artifactId>piriti-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>name.pehl.piriti</groupId>
+            <artifactId>piriti-core</artifactId>
+            <scope>tests</scope>
+        </dependency>
+        <dependency>
             <groupId>com.extjs</groupId>
             <artifactId>gxt</artifactId>
         </dependency>
