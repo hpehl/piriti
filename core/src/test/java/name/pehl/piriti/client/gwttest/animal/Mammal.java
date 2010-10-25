@@ -7,9 +7,8 @@ import name.pehl.piriti.client.xml.Xml;
  * @author $Author$
  * @version $Date$ $Revision$
  */
+// @formatter:off
 public abstract class Mammal extends Animal
 {
-    @Json
-    @Xml
-    Gender gender;
+    @Json @Xml Gender gender;
 }

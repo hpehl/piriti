@@ -11,7 +11,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @version $Date$ $Revision: 728
  *          $
  */
-public class PropertyAnnotation<T extends Annotation> implements Comparable<PropertyAnnotation<T>>
+public class PropertyAnnotation<T extends Annotation>
 {
     private final String property;
     private final JType type;
@@ -70,13 +70,6 @@ public class PropertyAnnotation<T extends Annotation> implements Comparable<Prop
     }
 
 
-    @Override
-    public int compareTo(PropertyAnnotation<T> o)
-    {
-        return order - o.order;
-    }
-
-
     public String getProperty()
     {
         return property;
@@ -92,5 +85,11 @@ public class PropertyAnnotation<T extends Annotation> implements Comparable<Prop
     public T getAnnotation()
     {
         return annotation;
+    }
+    
+    
+    public int getOrder()
+    {
+        return order;
     }
 }

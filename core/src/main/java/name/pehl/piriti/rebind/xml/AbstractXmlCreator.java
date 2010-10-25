@@ -1,8 +1,12 @@
 package name.pehl.piriti.rebind.xml;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.Set;
 
 import name.pehl.piriti.client.xml.Xml;
 import name.pehl.piriti.client.xml.XmlMappings;
@@ -82,7 +86,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        SortedSet<PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
+        List<PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
         for (Iterator<PropertyAnnotation<Xml>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<Xml> propertyAnnotation = iter.next();
@@ -111,12 +115,22 @@ public abstract class AbstractXmlCreator extends AbstractCreator
      * @return
      * @throws UnableToCompleteException
      */
-    protected SortedSet<PropertyAnnotation<Xml>> findPropertyAnnotations() throws UnableToCompleteException
+    protected List<PropertyAnnotation<Xml>> findPropertyAnnotations() throws UnableToCompleteException
     {
-        SortedSet<PropertyAnnotation<Xml>> properties = new TreeSet<PropertyAnnotation<Xml>>();
+        Set<PropertyAnnotation<Xml>> properties = new HashSet<PropertyAnnotation<Xml>>();
 
-        // Step 1: Add all @Xml annotations in the @XmlMappings annotation
-        // from the interfaceType
+        // Step 1: Add all @Xml annotations on fields.
+        JField[] fields = findAnnotatedFields(modelType, Xml.class);
+        for (JField field : fields)
+        {
+            Xml annotation = field.getAnnotation(Xml.class);
+            properties
+                    .add(new PropertyAnnotation<Xml>(field.getName(), field.getType(), annotation, annotation.order()));
+        }
+
+        // Step 2: Add all @Xml annotations in the @XmlMappings annotation
+        // from the interfaceType. If there are already annotated properties
+        // from step 1, they won't be added again.
         XmlMappings xmlFields = interfaceType.getAnnotation(XmlMappings.class);
         if (xmlFields != null)
         {
@@ -137,17 +151,18 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             }
         }
 
-        // Step 2: Add all @Xml annotations on fields. If there's already an
-        // entry for the property from previous step, it will be overwritten!
-        JField[] fields = findAnnotatedFields(modelType, Xml.class);
-        for (JField field : fields)
+        // Sort by order
+        Comparator<PropertyAnnotation<Xml>> comparator = new Comparator<PropertyAnnotation<Xml>>()
         {
-            Xml annotation = field.getAnnotation(Xml.class);
-            properties
-                    .add(new PropertyAnnotation<Xml>(field.getName(), field.getType(), annotation, annotation.order()));
-        }
-
-        return properties;
+            @Override
+            public int compare(PropertyAnnotation<Xml> left, PropertyAnnotation<Xml> right)
+            {
+                return left.getOrder() - right.getOrder();
+            }
+        };
+        List<PropertyAnnotation<Xml>> orderedProperties = new ArrayList<PropertyAnnotation<Xml>>(properties);
+        Collections.sort(orderedProperties, comparator);
+        return orderedProperties;
     }
 
 

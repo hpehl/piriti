@@ -1,8 +1,12 @@
 package name.pehl.piriti.rebind.json;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.Set;
 
 import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonMappings;
@@ -74,7 +78,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        SortedSet<PropertyAnnotation<Json>> properties = findPropertyAnnotations();
+        List<PropertyAnnotation<Json>> properties = findPropertyAnnotations();
         for (Iterator<PropertyAnnotation<Json>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<Json> propertyAnnotation = iter.next();
@@ -103,12 +107,23 @@ public abstract class AbstractJsonCreator extends AbstractCreator
      * @return
      * @throws UnableToCompleteException
      */
-    private SortedSet<PropertyAnnotation<Json>> findPropertyAnnotations() throws UnableToCompleteException
+    private List<PropertyAnnotation<Json>> findPropertyAnnotations() throws UnableToCompleteException
     {
-        SortedSet<PropertyAnnotation<Json>> properties = new TreeSet<PropertyAnnotation<Json>>();
+        Set<PropertyAnnotation<Json>> properties = new HashSet<PropertyAnnotation<Json>>();
 
-        // Step 1: Add all @Json annotations in the @JsonMappings annotation
-        // from the interfaceType
+        // Step 1: Add all @Json annotations on fields.
+        JField[] fields = findAnnotatedFields(modelType, Json.class);
+        for (JField field : fields)
+        {
+            Json annotation = field.getAnnotation(Json.class);
+            PropertyAnnotation<Json> property = new PropertyAnnotation<Json>(field.getName(), field.getType(),
+                    annotation, annotation.order());
+            properties.add(property);
+        }
+
+        // Step 2: Add all @Json annotations in the @JsonMappings annotation
+        // from the interfaceType. If there are already annotated properties
+        // from step 1, they won't be added again.
         JsonMappings interfaceTypeFields = interfaceType.getAnnotation(JsonMappings.class);
         if (interfaceTypeFields != null)
         {
@@ -118,8 +133,9 @@ public abstract class AbstractJsonCreator extends AbstractCreator
                 JField field = TypeUtils.findField(modelType, annotation.property());
                 if (field != null)
                 {
-                    properties.add(new PropertyAnnotation<Json>(annotation.property(), field.getType(), annotation,
-                            annotation.order()));
+                    PropertyAnnotation<Json> property = new PropertyAnnotation<Json>(annotation.property(),
+                            field.getType(), annotation, annotation.order());
+                    properties.add(property);
                 }
                 else
                 {
@@ -129,17 +145,18 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             }
         }
 
-        // Step 2: Add all @Json annotations on fields. If there's already an
-        // entry for the property from previous step, it will be overwritten!
-        JField[] fields = findAnnotatedFields(modelType, Json.class);
-        for (JField field : fields)
+        // Sort by order
+        Comparator<PropertyAnnotation<Json>> comparator = new Comparator<PropertyAnnotation<Json>>()
         {
-            Json annotation = field.getAnnotation(Json.class);
-            properties.add(new PropertyAnnotation<Json>(field.getName(), field.getType(), annotation, annotation
-                    .order()));
-        }
-
-        return properties;
+            @Override
+            public int compare(PropertyAnnotation<Json> left, PropertyAnnotation<Json> right)
+            {
+                return left.getOrder() - right.getOrder();
+            }
+        };
+        List<PropertyAnnotation<Json>> orderedProperties = new ArrayList<PropertyAnnotation<Json>>(properties);
+        Collections.sort(orderedProperties, comparator);
+        return orderedProperties;
     }
 
 

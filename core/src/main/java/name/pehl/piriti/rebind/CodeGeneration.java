@@ -138,7 +138,7 @@ public final class CodeGeneration
         else
         {
             writer.write("%1$s getter = GWT.create(%1$s.class);", propertyContext.getGetter().getName());
-            writer.write("%s = getter.get(model)", propertyContext.getVariableNames().getValueVariable());
+            writer.write("%s = getter.get(model);", propertyContext.getVariableNames().getValueVariable());
         }
     }
 

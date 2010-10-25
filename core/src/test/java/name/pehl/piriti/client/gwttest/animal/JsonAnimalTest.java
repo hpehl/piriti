@@ -53,6 +53,10 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.birdJson().getText();
         Bird bird = Bird.JSON_READER.read(jsonIn);
         String jsonOut = Bird.JSON_WRITER.toJson(bird);
+        
+        // Test order
+        assertEquals(AnimalResources.INSTANCE.birdOrderedJson().getText(), jsonOut);
+        
         JsonParser jsonParser = PiritiGinjector.INJECTOR.getJsonParser();
         JSONObject jsonObject = jsonParser.parse(jsonOut);
         assertNotNull(jsonObject);

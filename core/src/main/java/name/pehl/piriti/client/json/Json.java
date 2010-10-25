@@ -165,12 +165,12 @@ import com.google.gwt.json.client.JSONString;
 public @interface Json
 {
     /**
-     * The order in which the properties are processed. Default to -1 which
-     * means order does not matter.
+     * The order in which the properties are processed. Default to
+     * {@link Integer#MAX_VALUE} which means the property will appear last.
      * 
      * @return
      */
-    int order() default -1;
+    int order() default Integer.MAX_VALUE;
 
 
     /**

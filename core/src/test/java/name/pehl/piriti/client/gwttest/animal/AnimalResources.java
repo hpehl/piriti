@@ -5,8 +5,8 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.TextResource;
 
 /**
- * @author $LastChangedBy:$
- * @version $LastChangedRevision:$
+ * @author $LastChangedBy$
+ * @version $LastChangedRevision$
  */
 
 public interface AnimalResources extends ClientBundle
@@ -18,6 +18,10 @@ public interface AnimalResources extends ClientBundle
 
     @Source("bird.json")
     public TextResource birdJson();
+
+
+    @Source("birdOrdered.json")
+    public TextResource birdOrderedJson();
 
 
     @Source("bird.xml")

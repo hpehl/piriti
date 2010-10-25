@@ -1,8 +1,9 @@
 package name.pehl.piriti.rebind.xml;
 
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.Set;
 
 import name.pehl.piriti.client.converter.NoopConverter;
 import name.pehl.piriti.client.xml.Xml;
@@ -434,7 +435,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        SortedSet<PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
+        List<PropertyAnnotation<Xml>> properties = findPropertyAnnotations();
         for (Iterator<PropertyAnnotation<Xml>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<Xml> propertyAnnotation = iter.next();
@@ -462,7 +463,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        SortedSet<PropertyAnnotation<XmlIdRef>> properties = findReferenceAnnotations();
+        Set<PropertyAnnotation<XmlIdRef>> properties = findReferenceAnnotations();
         for (Iterator<PropertyAnnotation<XmlIdRef>> iter = properties.iterator(); iter.hasNext();)
         {
             PropertyAnnotation<XmlIdRef> propertyAnnotation = iter.next();
@@ -485,13 +486,21 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    private SortedSet<PropertyAnnotation<XmlIdRef>> findReferenceAnnotations() throws UnableToCompleteException
+    private Set<PropertyAnnotation<XmlIdRef>> findReferenceAnnotations() throws UnableToCompleteException
     {
-        // TODO Look for @XmlRef on getters and setters!
-        SortedSet<PropertyAnnotation<XmlIdRef>> properties = new TreeSet<PropertyAnnotation<XmlIdRef>>();
+        Set<PropertyAnnotation<XmlIdRef>> properties = new HashSet<PropertyAnnotation<XmlIdRef>>();
 
-        // Step 1: Add all @XmlIdRef annotations in the @XmlMappings annotation
-        // from the interfaceType
+        // Step 1: Add all @XmlIdRef annotations on fields.
+        JField[] fields = findAnnotatedFields(modelType, XmlIdRef.class);
+        for (JField field : fields)
+        {
+            XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
+            properties.add(new PropertyAnnotation<XmlIdRef>(field.getName(), field.getType(), annotation, -1));
+        }
+
+        // Step 2: Add all @XmlIdRef annotations in the @XmlMappings annotation
+        // from the interfaceType. If there are already annotated properties
+        // from step 1, they won't be added again.
         XmlMappings interfaceTypeFields = interfaceType.getAnnotation(XmlMappings.class);
         if (interfaceTypeFields != null)
         {
@@ -510,16 +519,6 @@ public class XmlReaderCreator extends AbstractXmlCreator
                             modelType.getQualifiedSourceName());
                 }
             }
-        }
-
-        // Step 2: Add all @XmlIdRef annotations on fields. If there's already
-        // an entry for the property from previous steps, it will be
-        // overwritten!
-        JField[] fields = findAnnotatedFields(modelType, XmlIdRef.class);
-        for (JField field : fields)
-        {
-            XmlIdRef annotation = field.getAnnotation(XmlIdRef.class);
-            properties.add(new PropertyAnnotation<XmlIdRef>(field.getName(), field.getType(), annotation, -1));
         }
 
         return properties;
