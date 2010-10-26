@@ -29,7 +29,6 @@ public abstract class AbstractBookTest extends AbstractPiritiTest
         }
         if (withRelated)
         {
-            assertEquals(RELATED_SIZE, book.relatedSize);
             assertEquals(RELATED_SIZE, book.related.size());
             for (Book related : book.related)
             {

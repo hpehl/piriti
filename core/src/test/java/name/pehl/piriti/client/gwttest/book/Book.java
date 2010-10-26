@@ -63,8 +63,4 @@ public class Book
     @Json
     @Xml("related/book")
     List<Book> related;
-
-    @Json("@.related.length")
-    @Xml("count(//related/book)")
-    int relatedSize;
 }
