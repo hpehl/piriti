@@ -94,7 +94,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONObject jsonObject = this.jsonParser.parse(jsonString);");
+        writer.write("JSONObject jsonObject = new JsonParser().parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("Set<String> keys = jsonObject.keySet();");
@@ -133,7 +133,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONObject jsonObject = this.jsonParser.parse(jsonString);");
+        writer.write("JSONObject jsonObject = new JsonParser().parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("if (arrayKey != null) {");
@@ -274,7 +274,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
-        writer.write("JSONObject jsonObject = this.jsonParser.parse(jsonString);");
+        writer.write("JSONObject jsonObject = new JsonParser().parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("model = internalRead(jsonObject);");

@@ -3,8 +3,8 @@ package name.pehl.piriti.client.gwttest.ticketgoose;
 import java.util.List;
 
 import name.pehl.piriti.client.gwttest.AbstractPlaygroundTest;
-import name.pehl.totoe.client.Document;
-import name.pehl.totoe.client.XmlParser;
+import name.pehl.totoe.xml.client.Document;
+import name.pehl.totoe.xml.client.XmlParser;
 
 /**
  * @author $Author$

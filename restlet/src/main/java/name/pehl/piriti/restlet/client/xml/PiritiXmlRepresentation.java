@@ -5,8 +5,8 @@ import java.util.List;
 
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.restlet.client.PiritiRepresentation;
-import name.pehl.totoe.client.Document;
-import name.pehl.totoe.client.XmlParser;
+import name.pehl.totoe.xml.client.Document;
+import name.pehl.totoe.xml.client.XmlParser;
 
 import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.xml.DomRepresentation;

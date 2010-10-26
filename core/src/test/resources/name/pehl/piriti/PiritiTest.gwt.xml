@@ -7,14 +7,12 @@
     <inherits name="com.google.gwt.resources.Resources" />
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.xml.XML" />
-    <inherits name="name.pehl.totoe.Totoe" />
+    <inherits name="name.pehl.totoe.json.JsonParser" />
+    <inherits name="name.pehl.totoe.xml.XmlParser" />
 
     <source path="client">
         <exclude name="converter/*Test.java" />
     </source>
-
-    <script src="json2.js" />
-    <script src="jsonpath.js" />
 
     <!-- Generator for JsonReader -->
     <generate-with class="name.pehl.piriti.rebind.json.JsonReaderGenerator">

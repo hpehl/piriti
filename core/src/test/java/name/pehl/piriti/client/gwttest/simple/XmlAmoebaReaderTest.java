@@ -2,10 +2,10 @@ package name.pehl.piriti.client.gwttest.simple;
 
 import java.util.List;
 
-import name.pehl.totoe.client.Document;
-import name.pehl.totoe.client.Element;
-import name.pehl.totoe.client.XmlParseException;
-import name.pehl.totoe.client.XmlParser;
+import name.pehl.totoe.xml.client.Document;
+import name.pehl.totoe.xml.client.Element;
+import name.pehl.totoe.xml.client.XmlParseException;
+import name.pehl.totoe.xml.client.XmlParser;
 
 /**
  * Among normal {@link Amoeba} JSON tests, this class contains methods to test

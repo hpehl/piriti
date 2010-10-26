@@ -3,7 +3,6 @@ package name.pehl.piriti.client;
 import name.pehl.piriti.client.converter.ConverterModule;
 import name.pehl.piriti.client.converter.ConverterRegistry;
 import name.pehl.piriti.client.json.JsonModule;
-import name.pehl.piriti.client.json.JsonParser;
 import name.pehl.piriti.client.json.JsonRegistry;
 import name.pehl.piriti.client.xml.XmlModule;
 import name.pehl.piriti.client.xml.XmlRegistry;
@@ -39,14 +38,6 @@ public interface PiritiGinjector extends Ginjector
      * @return
      */
     JsonRegistry getJsonRegistry();
-
-
-    /**
-     * Provides the implementation for the {@link JsonParser} implementation
-     * 
-     * @return
-     */
-    JsonParser getJsonParser();
 
 
     /**

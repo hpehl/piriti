@@ -61,7 +61,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     {
         super.createImports(writer);
         writer.write("import name.pehl.piriti.client.xml.*;");
-        writer.write("import name.pehl.totoe.client.*;");
+        writer.write("import name.pehl.totoe.xml.client.*;");
         writer.write("import static name.pehl.piriti.client.xml.XmlReader.*;");
     }
 

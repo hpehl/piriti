@@ -1,7 +1,6 @@
 package name.pehl.piriti.client.gwttest.animal;
 
-import name.pehl.piriti.client.PiritiGinjector;
-import name.pehl.piriti.client.json.JsonParser;
+import name.pehl.totoe.json.client.JsonParser;
 
 import com.google.gwt.json.client.JSONObject;
 
@@ -53,12 +52,11 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.birdJson().getText();
         Bird bird = Bird.JSON_READER.read(jsonIn);
         String jsonOut = Bird.JSON_WRITER.toJson(bird);
-        
+
         // Test order
         assertEquals(AnimalResources.INSTANCE.birdOrderedJson().getText(), jsonOut);
-        
-        JsonParser jsonParser = PiritiGinjector.INJECTOR.getJsonParser();
-        JSONObject jsonObject = jsonParser.parse(jsonOut);
+
+        JSONObject jsonObject = new JsonParser().parse(jsonOut);
         assertNotNull(jsonObject);
         // TODO More asserts
     }
@@ -70,8 +68,7 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.insectJson().getText();
         Insect insect = Insect.JSON_READER.read(jsonIn);
         String jsonOut = Insect.JSON_WRITER.toJson(insect);
-        JsonParser jsonParser = PiritiGinjector.INJECTOR.getJsonParser();
-        JSONObject jsonObject = jsonParser.parse(jsonOut);
+        JSONObject jsonObject = new JsonParser().parse(jsonOut);
         assertNotNull(jsonObject);
         // TODO More asserts
     }
@@ -83,8 +80,7 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.catJson().getText();
         Cat cat = Cat.JSON_READER.read(jsonIn);
         String jsonOut = Cat.JSON_WRITER.toJson(cat);
-        JsonParser jsonParser = PiritiGinjector.INJECTOR.getJsonParser();
-        JSONObject jsonObject = jsonParser.parse(jsonOut);
+        JSONObject jsonObject = new JsonParser().parse(jsonOut);
         assertNotNull(jsonObject);
         // TODO More asserts
     }
@@ -96,8 +92,7 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.dogJson().getText();
         Dog dog = Dog.JSON_READER.read(jsonIn);
         String jsonOut = Dog.JSON_WRITER.toJson(dog);
-        JsonParser jsonParser = PiritiGinjector.INJECTOR.getJsonParser();
-        JSONObject jsonObject = jsonParser.parse(jsonOut);
+        JSONObject jsonObject = new JsonParser().parse(jsonOut);
         assertNotNull(jsonObject);
         // TODO More asserts
     }

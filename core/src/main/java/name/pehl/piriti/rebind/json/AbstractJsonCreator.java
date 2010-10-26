@@ -49,8 +49,17 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createImports(writer);
-        writer.write("import com.google.gwt.json.client.*;");
+        writer.write("import com.google.gwt.json.client.JSONArray;");
+        writer.write("import com.google.gwt.json.client.JSONBoolean;");
+        writer.write("import com.google.gwt.json.client.JSONNull;");
+        writer.write("import com.google.gwt.json.client.JSONNumber;");
+        // Do not import com.google.gwt.json.client.JSONObject as
+        // name.pehl.piriti.client.json.JSONObject is used!
+        writer.write("import com.google.gwt.json.client.JSONString;");
+        writer.write("import com.google.gwt.json.client.JSONValue;");
+        writer.write("import com.google.gwt.json.client.JSONException;");
         writer.write("import name.pehl.piriti.client.json.*;");
+        writer.write("import name.pehl.totoe.json.client.*;");
     }
 
 
@@ -59,7 +68,6 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     {
         super.createMemberVariables(writer);
         writer.write("private JsonRegistry jsonRegistry;");
-        writer.write("private JsonParser jsonParser;");
     }
 
 
@@ -69,7 +77,6 @@ public abstract class AbstractJsonCreator extends AbstractCreator
         super.createConstructorBody(writer);
         writer.write("this.jsonRegistry = PiritiGinjector.INJECTOR.getJsonRegistry();");
         writer.write("this.jsonRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
-        writer.write("this.jsonParser = PiritiGinjector.INJECTOR.getJsonParser();");
     }
 
 

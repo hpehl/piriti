@@ -143,7 +143,7 @@
     <properties>
         <!-- Taoki & Totoe -->
         <taoki.version>0.21</taoki.version>
-        <totoe.version>0.1</totoe.version>
+        <totoe.version>0.2</totoe.version>
 
         <!-- GAE & GWT Stuff -->
         <gae.version>1.3.8</gae.version>

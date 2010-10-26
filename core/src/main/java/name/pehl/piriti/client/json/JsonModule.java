@@ -1,7 +1,5 @@
 package name.pehl.piriti.client.json;
 
-import name.pehl.piriti.client.json.internal.NativeJsonParserImpl;
-
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
@@ -14,8 +12,7 @@ import com.google.inject.Singleton;
 public class JsonModule extends AbstractGinModule
 {
     /**
-     * Binds the {@link JsonRegistry} and the {@link NativeJsonParserImpl} as
-     * {@link JsonParser}.
+     * Binds the {@link JsonRegistry}.
      * 
      * @see com.google.gwt.inject.client.AbstractGinModule#configure()
      */
@@ -23,6 +20,5 @@ public class JsonModule extends AbstractGinModule
     protected void configure()
     {
         bind(JsonRegistry.class).in(Singleton.class);
-        bind(JsonParser.class).to(NativeJsonParserImpl.class).in(Singleton.class);
     }
 }
