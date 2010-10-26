@@ -5,14 +5,12 @@ import java.util.List;
 
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.restlet.client.PiritiRepresentation;
-import name.pehl.totoe.json.client.JSONObject;
-import name.pehl.totoe.json.client.JsonParser;
 
 import org.restlet.client.data.MediaType;
 import org.restlet.client.ext.json.JsonRepresentation;
 import org.restlet.client.representation.Representation;
 
-import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONValue;
 
 /**
@@ -31,12 +29,6 @@ public class PiritiJsonRepresentation<T> extends JsonRepresentation implements P
 
     /** The JsonReader for converting the JSON to an instance of T. */
     private final JsonReader<T> jsonReader;
-
-    /** The wrapped JSON value. */
-    private JSONValue value;
-
-    /** The source JSON representation. */
-    private Representation jsonRepresentation;
 
 
     // ----------------------------------------------------------- constructors
@@ -69,7 +61,6 @@ public class PiritiJsonRepresentation<T> extends JsonRepresentation implements P
     public PiritiJsonRepresentation(JsonReader<T> jsonReader, MediaType mediaType, JSONValue value)
     {
         super(mediaType, value);
-        this.value = value;
         this.jsonReader = jsonReader;
     }
 
@@ -158,45 +149,5 @@ public class PiritiJsonRepresentation<T> extends JsonRepresentation implements P
             models = jsonReader.readList(jsonObject);
         }
         return models;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @return The converted JSON object.
-     * @throws IOException
-     */
-    public JSONObject getJsonObject() throws IOException
-    {
-        if (getValue() != null)
-        {
-            return (JSONObject) getValue().isObject();
-        }
-        return null;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     * 
-     * @return The wrapped DOM document.
-     * @throws IOException
-     */
-    @Override
-    public JSONValue getValue() throws IOException
-    {
-        if (value == null)
-        {
-            if (jsonRepresentation != null)
-            {
-                value = new JsonParser().parse(jsonRepresentation.getText());
-            }
-            else
-            {
-                this.value = JSONNull.getInstance();
-            }
-        }
-        return this.value;
     }
 }

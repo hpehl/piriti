@@ -34,26 +34,19 @@ public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
         String readerVariable = startReader(writer, propertyContext, "jsonRegistry",
                 propertyContext.getClassOrInterfaceType());
 
-        // If there's a path then get the JSON value using this path,
-        // otherwise it is expected that the JSON value is the inputVariable
-        // itself (e.g. an array of strings has no path information for the
-        // array elements)
-        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
-        if (propertyContext.getPath() != null)
-        {
-            writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
-                    .getInputVariable(), propertyContext.getPath());
-        }
-        else
-        {
-            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
-        }
+        String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        writer.write("%s = %s.read(%s.toString());", propertyContext.getVariableNames().getValueVariable(),
-                readerVariable, jsonValue);
+        String jsonObject = propertyContext.getVariableNames().newVariableName("jsonObject");
+        writer.write("JSONObject %s = %s.isObject();", jsonObject, jsonValue);
+        writer.write("if (%s != null) {", jsonObject);
+        writer.indent();
+        writer.write("%s = %s.read(%s);", propertyContext.getVariableNames().getValueVariable(), readerVariable,
+                jsonObject);
+        writer.outdent();
+        writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();

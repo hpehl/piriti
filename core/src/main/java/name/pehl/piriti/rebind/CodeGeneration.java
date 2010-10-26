@@ -5,6 +5,8 @@ import name.pehl.piriti.client.property.NoopPropertySetter;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
@@ -22,6 +24,13 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public final class CodeGeneration
 {
+    /**
+     * JSONPath special characters.
+     */
+    private static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(',
+            ')',};
+
+
     /**
      * Private constructor to ensure that the class acts as a true utility class
      * i.e. it isn't instantiable and extensible.
@@ -200,6 +209,43 @@ public final class CodeGeneration
 
 
     // ----------------------------------------------------------- misc methods
+
+    /**
+     * If {@link PropertyContext#getPath()} is not <code>null</code> get or
+     * select data from the {@link VariableNames#getInputVariable()}, otherwise
+     * assign the json data to {@link VariableNames#getInputVariable()}.
+     * 
+     * @param writer
+     * @param propertyContext
+     * @return the variable name containing the json data.
+     */
+    public static String getOrSelectJson(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        // If there's a path then get the JSON value using this path,
+        // otherwise it is expected that the JSON value is the inputVariable
+        // itself (e.g. an array of strings has no path information for the
+        // array elements)
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (propertyContext.getPath() != null)
+        {
+            if (StringUtils.containsAny(propertyContext.getPath(), JSON_PATH_SYMBOLS))
+            {
+                writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
+                        .getVariableNames().getInputVariable(), propertyContext.getPath());
+            }
+            else
+            {
+                writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                        .getInputVariable(), propertyContext.getPath());
+            }
+        }
+        else
+        {
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
+        }
+        return jsonValue;
+    }
+
 
     public static void idRef(IndentedWriter writer, JClassType type)
     {

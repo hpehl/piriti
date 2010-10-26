@@ -242,7 +242,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONValue currentJsonValue = jsonArray.get(i);");
         writer.write("if (currentJsonValue != null) {");
         writer.indent();
-        writer.write("JSONObject currentJsonObject = (JSONObject) currentJsonValue.isObject();");
+        writer.write("JSONObject currentJsonObject = currentJsonValue.isObject();");
         writer.write("if (currentJsonObject != null) {");
         writer.indent();
         writer.write("%s model = internalRead(currentJsonObject);", modelType.getParameterizedQualifiedSourceName());
