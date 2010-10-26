@@ -2,12 +2,13 @@ package name.pehl.piriti.client.gwttest.simple;
 
 import java.util.List;
 
+import name.pehl.totoe.json.client.JSONObject;
+
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
 import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONNull;
 import com.google.gwt.json.client.JSONNumber;
-import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 
 /**

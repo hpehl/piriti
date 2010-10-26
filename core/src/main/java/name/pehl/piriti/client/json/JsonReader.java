@@ -2,9 +2,10 @@ package name.pehl.piriti.client.json;
 
 import java.util.List;
 
+import name.pehl.totoe.json.client.JSONObject;
+
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONException;
-import com.google.gwt.json.client.JSONObject;
 import com.google.inject.internal.Nullable;
 
 /**
