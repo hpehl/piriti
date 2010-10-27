@@ -23,8 +23,9 @@ import com.google.gwt.i18n.client.NumberFormat;
  * which is used to parse / serialize the XML data to / from the properties
  * type.
  * <p>
- * The annotation can be placed either on a field or on a setter. If placed on a
- * field, please note that the field must not be private!
+ * The annotation must be placed on a field in the POJO or must be part of the
+ * {@code @}{@link XmlMappings} annotation. When placed on a field and the field
+ * is not accessible, Piriti tries to use setters / getters instead.
  * <p>
  * The following types are supported:
  * <table border="1" cellspacing="2" cellpadding="2">
