@@ -4,6 +4,7 @@ import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
@@ -19,6 +20,31 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
 {
+    /**
+     * Returns <code>false</code> if this property context is used with a writer
+     * and a JSONPath expression is used,
+     * 
+     * @param writer
+     * @param propertyContext
+     * @return
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     */
+    @Override
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    {
+        boolean valid = super.isValid(writer, propertyContext);
+        if (valid && propertyContext.isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        {
+            CodeGeneration.skipProperty(writer, propertyContext,
+                    "JSONPath expressions are not supported by this JsonWriter");
+            return false;
+        }
+        return valid;
+    }
+
+
     /**
      * TODO Javadoc
      * 

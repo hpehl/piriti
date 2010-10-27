@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 
@@ -48,6 +49,12 @@ public class NumberPropertyHandler extends AbstractPropertyHandler
                     || type.getQualifiedSourceName().equals(Long.class.getName())
                     || type.getQualifiedSourceName().equals(Float.class.getName())
                     || type.getQualifiedSourceName().equals(Double.class.getName());
+        }
+        if (propertyContext.isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        {
+            CodeGeneration.skipProperty(writer, propertyContext,
+                    "JSONPath expressions are not supported by this JsonWriter");
+            return false;
         }
         return false;
     }

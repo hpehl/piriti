@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 
@@ -32,6 +33,13 @@ public class BooleanPropertyHandler extends AbstractPropertyHandler
         if (!TypeUtils.isBoolean(propertyContext.getType()))
         {
             CodeGeneration.skipProperty(writer, propertyContext, "Type is neither boolean nor Boolean");
+            return false;
+        }
+        if (propertyContext.isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        {
+            CodeGeneration.skipProperty(writer, propertyContext,
+                    "JSONPath expressions are not supported by this JsonWriter");
+            return false;
         }
         return true;
     }
