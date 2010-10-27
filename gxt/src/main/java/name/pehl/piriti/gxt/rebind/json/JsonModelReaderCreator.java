@@ -59,10 +59,10 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Json[] fields = findFieldAnnotations();
-        for (int i = 0; i < fields.length; i++)
+        Json[] properties = findGxtPropertyAnnotations();
+        for (int i = 0; i < properties.length; i++)
         {
-            Json jsonField = fields[i];
+            Json jsonField = properties[i];
             writer.newline();
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
@@ -75,16 +75,16 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleProperty(writer, fieldHandler, fieldContext, (i < fields.length - 1));
+                handleProperty(writer, fieldHandler, fieldContext, (i < properties.length - 1));
                 counter++;
             }
         }
     }
 
 
-    private Json[] findFieldAnnotations()
+    private Json[] findGxtPropertyAnnotations()
     {
-        Map<String, Json> fields = new HashMap<String, Json>();
+        Map<String, Json> properties = new HashMap<String, Json>();
 
         // Step 1: Add all JsonField annotations from the interfaceType
         JsonMappings interfaceTypeFields = interfaceType.getAnnotation(JsonMappings.class);
@@ -93,15 +93,15 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             Json[] annotations = interfaceTypeFields.value();
             for (Json annotation : annotations)
             {
-                fields.put(annotation.property(), annotation);
+                properties.put(annotation.property(), annotation);
             }
         }
 
         // Step 2: Add all JsonField annotations from the modelType. If
         // there's already an entry from step 1, it will be overwritten!
-        collectModelTypeFields(modelType, fields);
+        collectModelTypeFields(modelType, properties);
 
-        return fields.values().toArray(new Json[] {});
+        return properties.values().toArray(new Json[] {});
     }
 
 

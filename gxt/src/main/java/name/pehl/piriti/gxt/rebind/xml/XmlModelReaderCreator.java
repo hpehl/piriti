@@ -55,10 +55,10 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
         int counter = 0;
-        Xml[] fields = findModelFieldAnnotations();
-        for (int i = 0; i < fields.length; i++)
+        Xml[] properties = findGxtPropertyAnnotations();
+        for (int i = 0; i < properties.length; i++)
         {
-            Xml xmlField = fields[i];
+            Xml xmlField = properties[i];
             writer.newline();
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
@@ -71,16 +71,16 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
-                handleProperty(writer, fieldHandler, fieldContext, (i < fields.length - 1));
+                handleProperty(writer, fieldHandler, fieldContext, (i < properties.length - 1));
                 counter++;
             }
         }
     }
 
 
-    private Xml[] findModelFieldAnnotations()
+    private Xml[] findGxtPropertyAnnotations()
     {
-        Map<String, Xml> fields = new HashMap<String, Xml>();
+        Map<String, Xml> properties = new HashMap<String, Xml>();
 
         // Step 1: Add all XmlField annotations from the interfaceType
         XmlMappings interfaceTypeFields = interfaceType.getAnnotation(XmlMappings.class);
@@ -89,15 +89,15 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             Xml[] annotations = interfaceTypeFields.value();
             for (Xml annotation : annotations)
             {
-                fields.put(annotation.property(), annotation);
+                properties.put(annotation.property(), annotation);
             }
         }
 
         // Step 2: Add all XmlField annotations from the modelType. If
         // there's already an entry from step 1, it will be overwritten!
-        collectModelTypeFields(modelType, fields);
+        collectModelTypeFields(modelType, properties);
 
-        return fields.values().toArray(new Xml[] {});
+        return properties.values().toArray(new Xml[] {});
     }
 
 
