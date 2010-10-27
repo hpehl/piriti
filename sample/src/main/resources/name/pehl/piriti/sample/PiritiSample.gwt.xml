@@ -5,7 +5,8 @@
         $LastChangedBy: harald.pehl 
         $LastChangedRevision: 138 $
     -->
-    <inherits name="name.pehl.totoe.Totoe" />
+    <inherits name="name.pehl.totoe.json.JsonParser" />
+    <inherits name="name.pehl.totoe.xml.XmlParser" />
     <inherits name="name.pehl.piriti.Piriti" />
     <inherits name="name.pehl.piriti.gxt.PiritiGxt" />
     <inherits name="name.pehl.piriti.restlet.PiritiRestlet" />
