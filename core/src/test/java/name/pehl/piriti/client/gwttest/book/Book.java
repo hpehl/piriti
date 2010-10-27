@@ -16,51 +16,35 @@ import com.google.gwt.core.client.GWT;
  * @version $Date: 2010-02-15 16:03:08 +0100 (Mo, 15 Feb 2010) $ $Revision: 131
  *          $
  */
+// @formatter:off
 public class Book
 {
     // --------------------------------------------------- json reader / writer
 
-    // @formatter:off
     public interface BookJsonWriter extends JsonWriter<Book> {}
     public static final BookJsonWriter JSON_WRITER = GWT.create(BookJsonWriter.class);
 
     public interface BookJsonReader extends JsonReader<Book> {}
     public static final BookJsonReader JSON_READER = GWT.create(BookJsonReader.class);
-    // @formatter:on
 
     // ---------------------------------------------------- xml reader / writer
 
-    // @formatter:off
     public interface BookXmlReader extends XmlReader<Book> {}
     public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
 
     public interface BookXmlWriter extends XmlWriter<Book> {}
     public static final BookXmlWriter XML_WRITER = GWT.create(BookXmlWriter.class);
-    // @formatter:on
 
     // ------------------------------------------------------------------- data
 
-    @Json
-    @Xml
-    String isbn;
-
-    @Json
-    @Xml
-    int pages;
-
-    @Json
-    @Xml
-    String title;
-
-    @Json
-    @Xml
-    Author author;
-
-    @Json
-    @Xml("reviews/review")
-    List<String> reviews;
-
-    @Json
-    @Xml("related/book")
-    List<Book> related;
+    @Json @Xml String isbn;
+    @Json @Xml int pages;
+    @Json @Xml String title;
+    @Json @Xml Author author;
+    @Json @Xml("reviews/review") List<String> reviews;
+    @Json @Xml("related/book") List<Book> related;
+    
+    @Json("@.related[2].extraInfo") 
+    @Xml("//related/book[3]/extraInfo/text()") 
+    String extraInfoOfLastRelatedBook;
 }
