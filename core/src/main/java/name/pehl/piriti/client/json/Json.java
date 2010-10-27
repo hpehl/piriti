@@ -21,11 +21,12 @@ import com.google.gwt.json.client.JSONString;
 /**
  * Annotation for mapping JSON data to POJO properties. The JSON data is
  * selected by a "path" expression. In the simplest case the path is just the
- * key of the JSON data. For more complex cases, you can also use an XPath like
- * <a href="http://code.google.com/p/jsonpath/">JSONPath</a>. If necessary, the
- * selected data is converted to the type of the annotated property. For some
- * types you can specify a format and a custom converter which is used to parse
- * / serialize the JSON data to / from the properties type.
+ * key of the JSON data. For more complex cases, you can also use a <a
+ * href="http://code.google.com/p/jsonpath/">JSONPath expression</a>. If
+ * necessary, the selected data is converted to the type of the annotated
+ * property. For some types you can specify a format and a custom converter
+ * which is used to parse / serialize the JSON data to / from the properties
+ * type.
  * <p>
  * The annotation must be placed on a field in the POJO or must be part of the
  * {@code @}{@link JsonMappings} annotation. When placed on a field and the
