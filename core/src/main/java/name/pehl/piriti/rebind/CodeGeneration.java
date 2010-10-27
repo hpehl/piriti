@@ -2,10 +2,9 @@ package name.pehl.piriti.rebind;
 
 import name.pehl.piriti.client.property.NoopPropertyGetter;
 import name.pehl.piriti.client.property.NoopPropertySetter;
+import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -24,13 +23,6 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public final class CodeGeneration
 {
-    /**
-     * JSONPath special characters.
-     */
-    private static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(',
-            ')',};
-
-
     /**
      * Private constructor to ensure that the class acts as a true utility class
      * i.e. it isn't instantiable and extensible.
@@ -228,7 +220,7 @@ public final class CodeGeneration
         String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
         if (propertyContext.getPath() != null)
         {
-            if (StringUtils.containsAny(propertyContext.getPath(), JSON_PATH_SYMBOLS))
+            if (JsonPathUtils.isJsonPath(propertyContext.getPath()))
             {
                 writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
                         .getVariableNames().getInputVariable(), propertyContext.getPath());

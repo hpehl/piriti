@@ -6,8 +6,12 @@ import java.util.Set;
 
 import name.pehl.piriti.client.converter.Converter;
 import name.pehl.piriti.client.converter.NoopConverter;
+import name.pehl.piriti.client.json.JsonReader;
+import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.client.property.PropertyGetter;
 import name.pehl.piriti.client.property.PropertySetter;
+import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -309,6 +313,54 @@ public class PropertyContext
     public JClassType getReaderOrWriter()
     {
         return readerOrWriter;
+    }
+
+
+    /**
+     * @return <code>true</code> if {@link #getReaderOrWriter()} references a
+     *         {@link JsonReader} or {@link XmlReader}, <code>false</code>
+     *         otherwise.
+     */
+    public boolean isReader()
+    {
+        boolean reader = false;
+        Set<JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
+        if (hierarchy != null)
+        {
+            for (JClassType h : hierarchy)
+            {
+                if (h.getQualifiedSourceName().equals(JsonReader.class.getName())
+                        || h.getQualifiedSourceName().equals(XmlReader.class.getName()))
+                {
+                    return true;
+                }
+            }
+        }
+        return reader;
+    }
+
+
+    /**
+     * @return <code>true</code> if {@link #getReaderOrWriter()} references a
+     *         {@link JsonWriter} or {@link XmlWriter}, <code>false</code>
+     *         otherwise.
+     */
+    public boolean isWriter()
+    {
+        boolean writer = false;
+        Set<JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
+        if (hierarchy != null)
+        {
+            for (JClassType h : hierarchy)
+            {
+                if (h.getQualifiedSourceName().equals(JsonWriter.class.getName())
+                        || h.getQualifiedSourceName().equals(XmlWriter.class.getName()))
+                {
+                    return true;
+                }
+            }
+        }
+        return writer;
     }
 
 
