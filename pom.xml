@@ -68,62 +68,34 @@
 
     <repositories>
         <repository>
-            <id>piriti-repo</id>
-            <name>Piriti Repository</name>
+            <id>piriti</id>
             <url>http://piriti.googlecode.com/svn/repository</url>
         </repository>
         <repository>
-            <id>totoe-repo</id>
-            <name>Taoki Repository</name>
+            <id>totoe</id>
             <url>http://totoe.googlecode.com/svn/repository</url>
         </repository>
-        <repository>
-            <id>google-maven-repo</id>
-            <name>Google Maven Repository</name>
-            <url>http://google-maven-repository.googlecode.com/svn/repository/</url>
-        </repository>
-	    <repository>
-            <id>maven-gae-plugin-repo</id>
-            <name>Maven GAE Plugin Repository</name>
-            <url>http://maven-gae-plugin.googlecode.com/svn/repository</url>
-        </repository>
         <repository>  
-            <id>maven-restlet</id>  
-            <name>Restlet Repository</name>  
+            <id>restlet</id>  
             <url>http://maven.restlet.org</url>  
         </repository>  
         <repository>
             <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
             <url>http://download.java.net/maven/2/</url>
-        </repository>
-        <repository>
-            <id>codehaus-snapshots</id>
-            <name>Codehaus Snapshots</name>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <!-- For the patched GWT-Maven Plugin -->
-            <id>piriti-plugin-repo</id>
-            <name>Piriti Plugin Repository</name>
+            <id>piriti-plugin</id>
             <url>http://piriti.googlecode.com/svn/repository</url>
         </pluginRepository>
         <pluginRepository>
-            <id>maven-gae-plugin-repo</id>
-            <name>Maven Google App Engine Repository</name>
+            <id>maven-gae-plugin</id>
             <url>http://maven-gae-plugin.googlecode.com/svn/repository/</url>
         </pluginRepository>
         <pluginRepository>
             <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Repository for Maven</name>
             <url>http://download.java.net/maven/2/</url>
         </pluginRepository>
         <pluginRepository>
@@ -149,7 +121,7 @@
         <gae.version>1.3.8</gae.version>
         <gae-test.version>1.3.8</gae-test.version>
         <datanucleus.version>1.1.5</datanucleus.version>
-        <gwt.version>2.0.4</gwt.version>
+        <gwt.version>2.1.0</gwt.version>
         <gxt.version>2.1.1</gxt.version>
 
         <!-- Restlet -->
