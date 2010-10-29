@@ -60,12 +60,14 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
+                <version>1.3.2.google</version>
                 <executions>
                     <execution>
-                        <id>(******** ff3-dev ********)</id>
+                        <id>(******** development mode ********)</id>
                         <configuration>
-                            <testTimeOut>600</testTimeOut>
-                            <runStyle>HtmlUnit:FF3</runStyle>
+                            <logLevel>INFO</logLevel>
+                            <extraJvmArgs>-Xmx512m</extraJvmArgs>
+                            <manualMode>false</manualMode>
                             <productionMode>false</productionMode>
                             <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.gxt.PiritiGxtTest</module>
@@ -76,40 +78,11 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>(******** ff3-prod ********)</id>
+                        <id>(******** production mode ********)</id>
                         <configuration>
-                            <testTimeOut>600</testTimeOut>
-                            <userAgents>gecko1_8</userAgents>
-                            <runStyle>HtmlUnit:FF3</runStyle>
-                            <productionMode>true</productionMode>
-                            <gwtVersion>${gwt.version}</gwtVersion>
-                            <module>name.pehl.piriti.gxt.PiritiGxtTest</module>
-                            <includes>name/pehl/piriti/gxt/PiritiGxtGwtTestSuite.java</includes>
-                        </configuration>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>(******** ie7_8-dev ********)</id>
-                        <configuration>
-                            <testTimeOut>600</testTimeOut>
-                            <runStyle>HtmlUnit:IE7</runStyle>
-                            <productionMode>false</productionMode>
-                            <gwtVersion>${gwt.version}</gwtVersion>
-                            <module>name.pehl.piriti.gxt.PiritiGxtTest</module>
-                            <includes>name/pehl/piriti/gxt/PiritiGxtGwtTestSuite.java</includes>
-                        </configuration>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>(******** ie7_8-prod ********)</id>
-                        <configuration>
-                            <testTimeOut>600</testTimeOut>
-                            <userAgents>ie8</userAgents>
-                            <runStyle>HtmlUnit:IE7</runStyle>
+                            <logLevel>INFO</logLevel>
+                            <extraJvmArgs>-Xmx512m</extraJvmArgs>
+                            <manualMode>false</manualMode>
                             <productionMode>true</productionMode>
                             <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.gxt.PiritiGxtTest</module>

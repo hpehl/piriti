@@ -139,6 +139,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
+                <version>1.3.2.google</version>
                 <configuration>
                     <logLevel>INFO</logLevel>
                     <port>8888</port>
@@ -171,7 +172,6 @@
                     </additionalProjectnatures>
                     <excludes>
                         <exclude>com.google.gwt:gwt-user</exclude>
-                        <exclude>com.google.gwt:gwt-dev</exclude>
                         <exclude>com.google.appengine:appengine-api-1.0-sdk</exclude>
                         <exclude>com.google.appengine:appengine-api-labs</exclude>
                         <exclude>com.google.appengine:geronimo-jpa_3.0_spec</exclude>

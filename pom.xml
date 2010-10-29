@@ -86,28 +86,16 @@
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <!-- For the patched GWT-Maven Plugin -->
-            <id>piriti-plugin</id>
-            <url>http://piriti.googlecode.com/svn/repository</url>
+            <id>gwt-plugin</id>
+            <url>http://google-web-toolkit.googlecode.com/svn/2.1.0/gwt/maven</url>
         </pluginRepository>
         <pluginRepository>
-            <id>maven-gae-plugin</id>
-            <url>http://maven-gae-plugin.googlecode.com/svn/repository/</url>
+            <id>gae-plugin</id>
+            <url>http://maven-gae-plugin.googlecode.com/svn/repository</url>
         </pluginRepository>
         <pluginRepository>
             <id>maven2-repository.dev.java.net</id>
             <url>http://download.java.net/maven/2/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>codehaus-snapshots</id>
-            <name>Codehaus Snapshots</name>
-            <url>http://snapshots.repository.codehaus.org/</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>  <!-- Workaround for MNG-2974, see note below -->
-            </releases>
         </pluginRepository>
     </pluginRepositories>
 
@@ -202,12 +190,6 @@
             <dependency>
                 <groupId>com.google.gwt</groupId>
                 <artifactId>gwt-user</artifactId>
-                <version>${gwt.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.google.gwt</groupId>
-                <artifactId>gwt-dev</artifactId>
                 <version>${gwt.version}</version>
                 <scope>provided</scope>
             </dependency>
@@ -388,10 +370,6 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
