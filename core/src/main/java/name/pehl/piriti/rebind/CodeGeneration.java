@@ -335,13 +335,24 @@ public final class CodeGeneration
      */
     public static void appendJsonValue(IndentedWriter writer, PropertyContext propertyContext, boolean quote)
     {
-        if (quote)
+        if (propertyContext.isCustomConverter() || quote)
         {
             writer.write("%s.append(\"\\\"\");", propertyContext.getVariableNames().getBuilderVariable());
         }
-        writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
-                .getVariableNames().getValueVariable());
-        if (quote)
+        if (propertyContext.isCustomConverter())
+        {
+            String converterVariable = propertyContext.getVariableNames().newVariableName("WriteConverter");
+            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
+                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
+            writer.write("%s.append(%s.serialize(%s, null));", propertyContext.getVariableNames().getBuilderVariable(),
+                    converterVariable, propertyContext.getVariableNames().getValueVariable());
+        }
+        else
+        {
+            writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
+                    .getVariableNames().getValueVariable());
+        }
+        if (propertyContext.isCustomConverter() || quote)
         {
             writer.write("%s.append(\"\\\"\");", propertyContext.getVariableNames().getBuilderVariable());
         }
