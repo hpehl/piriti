@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	xmlns:georss="http://www.georss.org/georss" xmlns:geo="http://www.w3.org/2003/01/geo/wgs84_pos#" xmlns:media="http://search.yahoo.com/mrss/"
+	>
+
+<channel>
+	<title>Arcbees&#039;s developer Blog</title>
+	<atom:link href="http://arcbees.wordpress.com/feed/" rel="self" type="application/rss+xml" />
+	<link>http://arcbees.wordpress.com</link>
+	<description>All about our projects and upcoming events</description>
+	<lastBuildDate>Thu, 30 Sep 2010 20:44:17 +0000</lastBuildDate>
+	<language>en</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>http://wordpress.com/</generator>
+<cloud domain='arcbees.wordpress.com' port='80' path='/?rsscloud=notify' registerProcedure='' protocol='http-post' />
+<image>
+		<url>http://1.gravatar.com/blavatar/9c5782536b577628c7ed95c8e91a7ae7?s=96&#038;d=http%3A%2F%2Fs2.wp.com%2Fi%2Fbuttonw-com.png</url>
+		<title>Arcbees&#039;s developer Blog</title>
+		<link>http://arcbees.wordpress.com</link>
+	</image>
+	<atom:link rel="search" type="application/opensearchdescription+xml" href="http://arcbees.wordpress.com/osd.xml" title="Arcbees&#039;s developer Blog" />
+	<atom:link rel='hub' href='http://arcbees.wordpress.com/?pushpress=hub'/>
+		<item>
+		<title>How I made my GWT/AppEngine application appear to load quicker</title>
+		<link>http://arcbees.wordpress.com/2010/09/29/how-i-made-my-gwtappengine-application-appear-to-load-quicker/</link>
+		<comments>http://arcbees.wordpress.com/2010/09/29/how-i-made-my-gwtappengine-application-appear-to-load-quicker/#comments</comments>
+		<pubDate>Wed, 29 Sep 2010 11:24:22 +0000</pubDate>
+		<dc:creator>Brendan Doherty</dc:creator>
+				<category><![CDATA[Development]]></category>
+		<category><![CDATA[Gwt-Platform]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=241</guid>
+		<description><![CDATA[It&#8217;s a well known &#8220;feature&#8221; of AppEngine for Java that if your application does not retrieve much traffic, it&#8217;ll be unloaded to free resources for other applications. When your application does receive a visitor, your java application must be started. This is referred to as a &#8220;cold start&#8221;. Jakob Nielsen&#8217;s Usability Engineering guidelines state that [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=241&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>It&#8217;s a well known &#8220;feature&#8221; of AppEngine for Java that if your application does not retrieve much traffic, it&#8217;ll be unloaded to free resources for other applications.  When your application does receive a visitor, your java application must be started.  This is referred to as a &#8220;cold start&#8221;.</p>
+<p>Jakob Nielsen&#8217;s <a href="http://www.useit.com/papers/responsetime.html">Usability Engineering</a> guidelines state that for any delay of greater than 1 second feedback is required.  A GWT application running on Google AppEngine takes much longer than 1 second to get started. My GWT 2.0 application takes about 7 seconds from cold, or about 4 seconds on a warm AppEngine.</p>
+<p>The following describes how I made my AppEngine application appear to load faster, without losing the XSRF protection provided by the <a href="http://gwtplatform.com">gwt-platform</a> framework.</p>
+<p>Previously, when I loaded my app, my browser would show a blank page for about 7 seconds while the main html page loaded.  To improve the user experience, I wanted to show the user a &#8220;fake&#8221; progress indicator that makes it seem like something was happening while the application is loading.  (Something like every second, % complete += (15% of percentage incomplete).  If % complete &gt; 95, then % complete = 50.  Gmail used this same pattern when loading. For more discussion on progress indicators, see <a href="http://ajaxpatterns.org/Progress_Indicator">ajaxpatterns.org</a>.</p>
+<p>In my main html file, I moved the script tag that included my .nocache.js from the head, to the bottom of the body.</p>
+<p>Above this script tag I added some javascript that renders my progress bar, and use setTimeout to update it every second. The progress bar will continue to update as the javascript is loaded in background, and once my application is ready to be loaded I hide the progress bar in <em>revealInParent()</em> of my top-level presenter. By ordering things this way, my progress bar was displayed first and then the browser made the request to AppEngine to load the .nocache.js file.</p>
+<h4>Main HTML page</h4>
+<pre class="brush: xml;">
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+    &lt;title&gt;MyApp&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;loading&quot; style=&quot;display: none&quot;&gt;
+      &lt;div id=&quot;progressbar&quot; style=&quot;margin: 15px; width: 300px; height: 10px; border: 2px solid black; overflow: hidden;&quot;&gt;
+      &lt;div id=&quot;progress&quot; style=&quot;background: silver; height: 100%; width: 0;&quot;&gt;&lt;/div&gt;
+        &lt;script type=&quot;text/javascript&quot;&gt;
+          var loading = document.getElementById('loading');
+          var progress = document.getElementById('progress');
+          var progressbar = document.getElementById('progressbar');
+          function updateProgress() {
+            if(loading.style.display !== 'none') {
+              var width = parseInt(progress.offsetWidth+((progressbar.offsetWidth-progress.offsetWidth)*.15));
+              if(width &gt; (progressbar.offsetWidth * .95)) {
+                width = parseInt(progressbar.offsetWidth) * .5;
+              }
+              progress.style.width = width + 'px';
+              window.setTimeout(&quot;updateProgress()&quot;, 1000);
+            }
+          }
+          document.body.style.margin = 0;
+          document.body.style.padding = 0;
+          loading.style.display = 'block';
+          updateProgress();
+        &lt;/script&gt;
+       &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;iframe src=&quot;javascript:''&quot; id=&quot;__gwt_historyFrame&quot; tabIndex='-1' style=&quot;position: absolute; width: 0; height: 0; border: 0&quot;&gt;&lt;/iframe&gt;
+      &lt;noscript&gt;
+        &lt;div style=&quot;width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif&quot;&gt;
+          Your web browser must have JavaScript enabled in order for this application to display correctly.
+        &lt;/div&gt;
+      &lt;/noscript&gt;
+    &lt;script type=&quot;text/javascript&quot; language=&quot;javascript&quot; src=&quot;myapp/myapp.nocache.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<h4>AppPresenter.java</h4>
+<pre class="brush: java;">
+public class AppPresenterImpl extends ...
+  // ...
+  @Override
+  protected void revealInParent() {
+    DOM.setStyleAttribute(RootPanel.get(&quot;loading&quot;).getElement(), &quot;display&quot;, &quot;none&quot;);
+    RevealRootContentEvent.fire(this, this);
+  }
+// ...
+}
+</pre>
+<p>To return the main html before the java application starts, the main html file needs to be a static file, as App Engine <a href="http://code.google.com/appengine/docs/java/gettingstarted/staticfiles.html">serves static files from dedicated servers</a> that are separate from the java application servers.  Previously I used the code that was suggested in the <a href="http://code.google.com/p/gwt-platform/wiki/IntroductionActionValidator#Protecting_against_XSRF_attacks">wiki </a>for XSRF protection, however this would no longer work as my main html file will be static and served from a different server.</p>
+<p><strong>DispatchServletModule.java</strong></p>
+<ul>
+<li>Send cookie to client attached to  .nocache.js</li>
+</ul>
+<pre class="brush: java;">
+
+public class DispatchServletModule extends ServletModule {
+  @Override
+  public void configureServlets() {
+    bindConstant().annotatedWith(SecurityCookie.class).to(&quot;MYCOOKIE&quot;);
+    filter(&quot;*.nocache.js&quot;).through(HttpSessionSecurityCookieFilter.class);
+    serve(&quot;/myapp/&quot; + ActionImpl.DEFAULT_SERVICE_NAME + &quot;*&quot;)
+        .with(DispatchServiceImpl.class);
+  }
+}
+</pre>
+<h4>appengine-web.xml</h4>
+<ul>
+<li>Aggressively cache index.html and *.cache.*</li>
+<li>I use gwt-math which puts some javascript files in /myapp/js/, this should be served statically</li>
+<li>Don&#8217;t cache *.nocache.*</li>
+<li>*.gwt.rpc is required for gwt-rpc serialization</li>
+</ul>
+<pre class="brush: xml;">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;appengine-web-app xmlns=&quot;http://appengine.google.com/ns/1.0&quot;&gt;
+  &lt;application&gt;myapp&lt;/application&gt;
+  &lt;version&gt;...&lt;/version&gt;
+  &lt;static-files&gt;
+    &lt;include path=&quot;index.html&quot; expiration=&quot;30d&quot; /&gt;
+    &lt;include path=&quot;myapp/**.cache.*&quot; expiration=&quot;30d&quot; /&gt;
+    &lt;include path=&quot;myapp/js/*.js&quot; expiration=&quot;30d&quot; /&gt;
+  &lt;/static-files&gt;
+  &lt;resource-files&gt;
+    &lt;include path=&quot;myapp/*.gwt.rpc&quot; /&gt;
+    &lt;include path=&quot;myapp/*.nocache.*&quot; /&gt;
+  &lt;/resource-files&gt;
+  &lt;precompilation-enabled&gt;true&lt;/precompilation-enabled&gt;
+&lt;/appengine-web-app&gt;
+</pre>
+<p>Using a combination of the above techniques has improved my application so that:</p>
+<ul>
+<li>Users get feedback almost instantly when they first browse to my application (about 0.4s according to Firebug)</li>
+<li>The security cookie is still provided to the client (Firecookie shows the cookie was sent to the client in the headers and saved when myapp.appspot.com/myapp/myapp.nocache.js was retrieved).</li>
+<li>Aggressive caching settings means that everything that it makes sense to cache, is cached.</li>
+</ul>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/241/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/241/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/241/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/241/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/241/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/241/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/241/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/241/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/241/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/241/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/241/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/241/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/241/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/241/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=241&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/09/29/how-i-made-my-gwtappengine-application-appear-to-load-quicker/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://0.gravatar.com/avatar/2b1c4a33bfed2f392e61fc5445d17c37?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">brendandoherty</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>We&#8217;re going to use Maven</title>
+		<link>http://arcbees.wordpress.com/2010/09/28/were-going-to-use-maven/</link>
+		<comments>http://arcbees.wordpress.com/2010/09/28/were-going-to-use-maven/#comments</comments>
+		<pubDate>Tue, 28 Sep 2010 15:33:12 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[ArcBees website]]></category>
+		<category><![CDATA[Development]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=252</guid>
+		<description><![CDATA[Well, we&#8217;re going to take a little longer to set up the project since we decided to use Maven ! Here are some words that Richard Allen posted on the Gwt-Platform group. This convinced us. We have a large codebase with many projects that share a large amount of code housed in other projects. I [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=252&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>Well, we&#8217;re going to take a little longer to set up the project since we decided to use Maven !</p>
+<p>Here are some words that Richard Allen posted on the Gwt-Platform group. This convinced us.</p>
+<blockquote><p>
+We have a large codebase with many projects that share a large amount of code housed in other projects. I used Ant for several years, but became frustrated with how much effort was required to maintain the whole build environment, and how I was regularly having to create custom solutions for things, like dependency management, that I felt should be the tool&#8217;s responsibility. I migrated all of our projects to Maven2 several years ago and have been very pleased. Maven is by no means perfect, so it will frustrate you at times. Maven lets you work at a higher level than Ant. Maven provides a lifecycle with phases such as compile, package, and integration-test, where as Ant provides low level tasks that you have to compose into the &#8220;phases&#8221; that Maven provides. Working at a higher level reduces your workload most of the time, but is a source of frustration when you need to work at a lower level. However, you can simply use the <a href="http://maven.apache.org/plugins/maven-antrun-plugin/">maven-antrun-plugin</a> to run a set of Ant tasks when you want to work at a low level. And you can always write your own plugins to do anything you want. You can also write plugins in Groovy, which we have found to be easier. BTW, Maven3 is adding some nice scripting capabilities.</p>
+<p>Maven has greatly reduced the overall maintenance of our build environment, as well as provided many features we didn&#8217;t have with Ant. Maven draws a lot of information from your POM files, and there&#8217;s much more to Maven than simply a build tool. Here are some of the benefits I believe you would derive from using Maven.</p>
+<ul>
+<li>Very powerful dependency management. Maven makes it easy to handle your dependencies on third-party libraries, as well as dependencies on other projects that you maintain. Tools like m2eclipse and the <a href="http://maven.apache.org/plugins/maven-dependency-plugin/">maven-dependency-plugin</a>, as well as the dependency reports generated by the <a href="http://maven.apache.org/plugins/maven-project-info-reports-plugin/">maven-project-info-reports-plugin</a> are invaluable when you want to see all your projects&#8217; dependencies, their versions, and the licenses for your third-party dependencies. The dependency reports are great for open source projects because they provide your users (or potential users) an easy way to see what your project depends on while being very simple for you to produce and maintain.</li>
+<li>Consistent project structure. Sure, you could devise your own project structure that you consistently used among all of your projects, but <a href="http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html">Maven already provides one that works well</a>, and anyone that has used Maven before will immediately understand your project layout. Like I said, we have many projects, and it&#8217;s great that our developers can switch between projects without having to learn something new about the build environment. I love it when open source projects that I use also use Maven, because I can immediately build their project or import it into Eclipse. If they use Ant, it&#8217;s a toss up. Some are easy to build and import, others aren&#8217;t. There is no consistency.</li>
+<li>Simple release management. I haven&#8217;t used Maven with Mercurial, but I see <a href="http://maven.apache.org/scm/mercurial.html">it supports it</a>. Having used Maven with Subversion, I know Maven makes it very simple to make a release of your project and publish it to a <a href="http://maven.apache.org/plugins/maven-release-plugin/">Maven repository for public access</a>, making your release process consistent and easy, as apposed to the error-prone process that many projects use. Maven&#8217;s release tools will ensure your code is committed to your source control and that your code passes all of its tests before making a release, and will automatically update the version numbers in the POM files for you. Additionally, you can create a report of changes from your <a href="http://maven.apache.org/plugins/maven-changelog- plugin/">source control system</a> and/or a report of the fixed issues from your issue management system, like JIRA, that went into the <a href="http://maven.apache.org/plugins/maven-changes-plugin/">release</a>.  This is where you start to see that Maven is a whole lot more than just a build tool.</li>
+<li>Simple integration with unit testing tools and static analysis tools. Maven makes it easy to run your unit tests and integration tests, generate test coverage reports, run static analysis tools such as Checkstyle, PMD, FindBugs, JavaNCSS, and JDepend, and publish those reports to a website. These tools can be helpful to gage the overall quality of your code.</li>
+<li>Simple reporting and website generation. I&#8217;ve already mentioned some Maven reporting capabilities, but Maven also has a general website generation tool. You can write a website in a wiki-like language and pull in all the reports that you generated. Some other reports that are important for projects to publish, which Maven makes easy, are Javadocs, <a href="http://maven.apache.org/plugins/maven- jxr-plugin/">browsable source code</a>, and information on the project&#8217;s license, mailing list, source code repository, issue tracking system, the Maven plugins used for building the project, and the list developers.</li>
+<li><a href="http://maven.apache.org/repository-management.html">Repository manager</a>. The concept that Maven uses of storing dependencies and associated metadata in a repository instead of a source control system is a huge benefit. You can use a repository manager to cache all third-party dependencies that you get from the Internet to provide your group a stable repository, deploy your own projects (and custom<br />
+Maven plugins) for other developers in your company to use, and even restrict what versions and libraries developers can pull into projects by making the build only get its dependencies from the repository manager.</li>
+<p>Now, as for using Maven with Eclipse, you have three options. You can use one of two Eclipse plugins, m2eclipse or <a href="http://www.eclipse.org/iam/">Eclipse IAM</a>, or you can use the <a href="http://maven.apache.org/plugins/maven-eclipse-plugin/">maven-eclipse-plugin</a> to generate Eclipse projects. I have never used Eclipse IAM. My experience with m2eclipse is that it is nice for a small set of projects, but if you have a large multi-project structure like we do, then m2elipse consumes too much resources. So, I install m2eclipse for some of its tools, like seeing a hierarchy of the Maven dependencies for a project, and autocomplete while editing a POM file, but I do not import our projects as Maven projects into Eclipse. Instead, I use the maven-eclipse-plugin to generate all the Eclipse projects, and then I import them as existing Eclipse projects. We use a hierarchical structure for multiple projects, which is what Maven suggests, and so all I have to do is point Eclipse at the top directory and it will find all of the generated projects. The only primary drawback to this approach, as apposed to using m2eclipse, is that you have to re-generate your Eclipse projects if you add or remove a dependency. However, the process is very fast, and you simply have to refresh a project that you have already imported. Some day, I expect m2eclipse or Eclipse IAM to be efficient enough to just use them.</p>
+<p>Hope that helps.</p>
+<p>-Richard
+</p></blockquote>
+<p>That was a great and complete answer to our question and thanks to him, we finally made our mind ! </p>
+<p>Thanks Richard and everyone else that took the time to answer either here or on Gwt-Platform group.</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/252/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/252/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/252/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/252/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/252/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/252/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/252/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/252/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/252/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/252/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/252/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/252/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/252/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/252/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=252&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/09/28/were-going-to-use-maven/feed/</wfw:commentRss>
+		<slash:comments>4</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>ArcBees website, development environment</title>
+		<link>http://arcbees.wordpress.com/2010/09/23/arcbees-website-development-environment/</link>
+		<comments>http://arcbees.wordpress.com/2010/09/23/arcbees-website-development-environment/#comments</comments>
+		<pubDate>Thu, 23 Sep 2010 20:19:46 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[ArcBees website]]></category>
+		<category><![CDATA[Development]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=224</guid>
+		<description><![CDATA[It&#8217;s been a while since we wrote about ArcBees website development and I think it&#8217;s time to show the little work we&#8217;ve done since the last post. As a reminder, we were at the stage to choose what our website should look like and we decided to go with this template: We also had to [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=224&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>It&#8217;s been a while since we wrote about ArcBees website development and I think it&#8217;s time to show the little work we&#8217;ve done since the last post. As a reminder, we were at the stage to choose what our website should look like and we decided to go with this template:<br />
+<a href="http://arcbees.files.wordpress.com/2010/09/web_arcbess_wip003b7_0.jpg"><img src="http://arcbees.files.wordpress.com/2010/09/web_arcbess_wip003b7_0.jpg?w=221&#038;h=300" alt="" title="web_arcbess_wip003B7_0" width="221" height="300" class="aligncenter size-medium wp-image-225" /></a></p>
+<p>We also had to set-up our development environment. We chose Eclipse as our primary IDE, bundled with the following plugins:</p>
+<ul>
+<li>Google web toolkit (Gwt 2.1M3, GAE 1.3.7)</li>
+<li>Mercurial Eclipse (1.6)</li>
+<li>Eclipse Checkstyle (5.1.1)</li>
+<li><strong>Maybe m2eclipse (0.10.0), see below</strong>
+</ul>
+<p>We were also thinking about using Eclipse maven plugin, but neither me or Philippe are comfortable enough with it to really see benefits of using it. Also, the majority of our user are Eclipse user and building a project for Maven without having a Maven project is not that difficult, we actually do it within Gwt-Platform. So, here&#8217;s my question to our reader, why should we use Maven ? Now that Gwt-Platform is also going to be <em>Mavenized</em>, why don&#8217;t we just do the same thing with Hive ? Knowing that we try to use minimal dependencies to other projects and that half of them don&#8217;t even have Maven support, will this be worth the time spent to learn this new environment ? We would really appreciate to get the input of Maven aficionados on this and wich environment to choose.</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/224/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/224/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/224/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/224/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/224/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/224/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/224/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/224/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/224/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/224/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/224/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/224/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/224/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/224/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=224&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/09/23/arcbees-website-development-environment/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+
+		<media:content url="http://arcbees.files.wordpress.com/2010/09/web_arcbess_wip003b7_0.jpg?w=221" medium="image">
+			<media:title type="html">web_arcbess_wip003B7_0</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Unit testing for dummies</title>
+		<link>http://arcbees.wordpress.com/2010/09/19/unit-testing-for-dummies/</link>
+		<comments>http://arcbees.wordpress.com/2010/09/19/unit-testing-for-dummies/#comments</comments>
+		<pubDate>Mon, 20 Sep 2010 03:36:22 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[Development]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=208</guid>
+		<description><![CDATA[Lately I asked one of the most generous Gwt-Platform contributors, Brendan Doherty, to write a small article about unit testing for dummies and, well, he didn&#8217;t really do what we had in mind. Still I think he said everything that needs to be said, judge for yourself: Watch as many videos as you can find [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=208&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>Lately I asked one of the most generous Gwt-Platform contributors, Brendan Doherty, to write a small article about unit testing for dummies and, well, he didn&#8217;t really do what we had in mind. Still I think he said everything that needs to be said, judge for yourself:</p>
+<blockquote>
+<ol>
+<li>Watch as many videos as you can find on youtube by Miško Hevery, as well as these <a href="http://misko.hevery.com/presentations/">presentations</a>.  I regularly listen to him when driving in my car.</li>
+<li>Read everything ever written on the <a href="http://googletesting.blogspot.com">Google Testing blog</a>.</li>
+<li>Read <a href="http://code.google.com/p/gwt-platform/wiki/UnitTesting">http://code.google.com/p/gwt-platform/wiki/UnitTesting</a> for information on how gwt-platform provides assistance when writing your presenter unit tests.</li>
+</ol>
+<p>Repeat until you are no longer a n00b.</p></blockquote>
+<p>While it&#8217;s not really a tutorial, there&#8217;s a lot of information, I&#8217;m sure a lot of you will find number one and two pretty instructive (and number three pretty useful!)</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/208/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/208/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/208/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/208/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/208/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/208/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/208/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/208/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/208/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/208/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/208/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/208/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/208/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/208/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=208&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/09/19/unit-testing-for-dummies/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>UiHandlers and supervising controller</title>
+		<link>http://arcbees.wordpress.com/2010/09/18/uihandlers-and-supervising-controlers/</link>
+		<comments>http://arcbees.wordpress.com/2010/09/18/uihandlers-and-supervising-controlers/#comments</comments>
+		<pubDate>Sat, 18 Sep 2010 19:42:40 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[Development]]></category>
+		<category><![CDATA[Gwt-Platform]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=163</guid>
+		<description><![CDATA[In our last post we told you how to reference your presenter (aka supervising controller) within your view in an elegant and simple way. However, we used a slightly provocative title that may lead you to think we are no longer doing MVP. Let&#8217;s get that out of the way: even though we added one [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=163&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>In <a href="http://arcbees.wordpress.com/2010/09/03/reversing-the-mvp-pattern-and-using-uihandler/">our last post</a> we told you how to reference your presenter (aka supervising controller) within your view in an elegant and simple way. However, we used a slightly provocative title that may lead you to think we are no longer doing MVP. Let&#8217;s get that out of the way: even though we added one arrow to the <a href="http://martinfowler.com/eaaDev/PassiveScreen.html">MVP diagram of Martin Fowler</a>, this new pattern will look and feel perfectly  MVP-esque to you. In fact, some people at Google <a href="http://googletesting.blogspot.com/2009/02/with-all-sport-drug-scandals-of-late.html">added this arrow</a> long before we did!</p>
+<p>What does it mean to you? It means your view is still dumb (sorry, <em>passive</em>, we don&#8217;t want to hurt her feelings) enough that you can often afford to test only your presenters. Really, the only thing you&#8217;ll notice is an important reduction in the number of smelly anonymous classes and your love story with UiBinder will blossom!</p>
+<p>That being said, we already told you <a href="http://arcbees.wordpress.com/2010/09/03/reversing-the-mvp-pattern-and-using-uihandler/">how to use the pattern</a> and even gave some tools to automate the process with Gwt-Platform. We decided not to use injection for connecting the presenter to the view, mostly because it would have caused an explosion in the number of class implementations. At that point we felt the user should probably make his own implementation to his liking, injecting a <em>Provider&lt;MyUiHandlers&gt;</em> if desired.</p>
+<p>Now let&#8217;s explain why we used this pattern and take a look at what is MVP:<br />
+<a href="http://arcbees.files.wordpress.com/2010/09/mvp.png"><img class="alignnone size-full wp-image-180" title="mvp" src="http://arcbees.files.wordpress.com/2010/09/mvp.png?w=312&#038;h=214" alt="" width="312" height="214" /></a><br />
+As you can see there&#8217;s a direct link between the view and the presenter used for forwarding events. We felt, while reading <a href="http://code.google.com/webtoolkit/articles/mvp-architecture-2.html">google mvp part 2</a>, that this pattern was doing exactly what we needed to clean things up: delegating events to the presenter.</p>
+<p>In the old approach, the view would let the presenter access either the real widgets (bad) or a simple interface such as&nbsp;<em>HasClickHandlers</em> (better). Then the presenter would bind a handler to this object and would be directly notified of any UI interaction. Since each one of these bindings require you to write a cumbersome anonymous class, a complex view would quickly generate a LOT of boiler plate in its presenter.</p>
+<p>Instead of doing this, the new approach lets you handle events directly in the view, mapping them to methods in the presenters. If you&#8217;re using a 1-to-1 mapping, this does not add any logic to your view. But where does the savings come from? Aren&#8217;t you simply moving all these anonymous classes to the view? This is where <em>@UiHandler</em> comes into play! This new annotation is a real boilerplate saver: it automatically binds a widget event to a method from the view class. The only thing left to do is to invoke the corresponding method in the presenter class.</p>
+<p>If reducing boilerplate is not a good enough reason for you, there is another important benefit of passing the presenter to the view. Hooked? Sorry, this will have to wait for a future post&#8230; Meanwhile, don&#8217;t hesitate to give us feedback or to propose subjects!</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/163/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/163/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/163/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/163/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/163/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/163/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/163/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/163/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/163/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/163/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/163/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/163/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/163/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/163/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=163&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/09/18/uihandlers-and-supervising-controlers/feed/</wfw:commentRss>
+		<slash:comments>0</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+
+		<media:content url="http://arcbees.files.wordpress.com/2010/09/mvp.png" medium="image">
+			<media:title type="html">mvp</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Reversing the MVP pattern and using @UiHandler</title>
+		<link>http://arcbees.wordpress.com/2010/09/03/reversing-the-mvp-pattern-and-using-uihandler/</link>
+		<comments>http://arcbees.wordpress.com/2010/09/03/reversing-the-mvp-pattern-and-using-uihandler/#comments</comments>
+		<pubDate>Fri, 03 Sep 2010 06:30:52 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[Development]]></category>
+		<category><![CDATA[Gwt-Platform]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=118</guid>
+		<description><![CDATA[EDIT: This post has been slightly edited to follow the new naming convention used in Gwt-Platform. Through usage, we have found that the second MVP pattern proposed by Google could save us a lot of tedious anonymous classes. This approach mainly consists of creating an interface that your presenter implements and which lets your view [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=118&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p><strong>EDIT: This post has been slightly edited to follow the new naming convention used in Gwt-Platform.</strong></p>
+<p>Through usage, we have found that the second MVP pattern proposed by <a href="http://code.google.com/webtoolkit/articles/mvp-architecture-2.html">Google</a> could save us a lot of tedious anonymous classes. This approach mainly consists of creating an interface that your presenter implements and which lets your view access some of its methods. This technique can be readily used with Gwt-Platform, but it is lacking documentation. So now is the time to explain it properly!</p>
+<p>The first thing you&#8217;ll notice is that the latest version of GWTP introduces some interfaces and abstract classes that makes it easy for you to use this pattern: </p>
+<ul>
+<li>The <em>HasUiHandlers</em> interface is used to indicate that your view participates in the pattern. A view that implements this interface needs to have <em>uiHandlers</em>, that is, a set of methods it can use to initiate complex actions in the presenter.</li>
+<li><em>UiHandlers</em>  is a marker interface used to define your controls, you inherit from it and define all the methods your view will need to use.</li>
+<li>The abstract class <em>ViewWithUiHandlers</em> inherits from <em>ViewImpl</em> and is the straightforward implementation of <em>HasUiHandlers</em>. Your view can inherit from it to save you some typing.</li>
+<li>The abstract class <em>PopupViewWithUiHandlers</em> is the same as the precedent but inherits from <em>PopupViewImpl</em>. Use it for your dialogs that participate in the pattern.</li>
+</ul>
+<p>Now don&#8217;t be confused by all these tools. You&#8217;ll see that using the pattern is quite straightforward.  First you need to create an interface that extends <em>UiHandlers</em> and add all the methods your view needs to call. We usually call that interface <em>MyUiHandlers</em> and place it inside the view to keep things organized:</p>
+<pre class="brush: java;">
+public interface MyUiHandlers extends UiHandlers {
+  void onSave();
+}
+</pre>
+<p>Your presenter then needs to implement this interface:</p>
+<pre class="brush: java;">
+public class ExamplePresenter extends Presenter&lt;ExamplePresenter.MyView, ExamplePresenter.MyProxy&gt;
+    implements MyUiHandlers {
+  ...
+  @Override
+  public void onSave() {
+    doSomething();
+  }
+  ...
+}
+</pre>
+<p>Then you have to connect these controls to your view. This is done by letting <em>MyView</em> extend <em>HasUiHandlers</em> and by calling <em>setUiHandlers(impl)</em> within your presenter&#8217;s constructor to finalize the connection:</p>
+<pre class="brush: java;">
+public class ExamplePresenter extends Presenter&lt;ExamplePresenter.MyView, ExamplePresenter.MyProxy&gt; implements MyUiHandlers {
+  public interface MyView extends View, HasUiHandlers {
+  }
+
+  @Inject
+  ExamplePresenter(final EventBus eventBus, final MyView view, final MyProxy proxy) {
+    super(eventBus, view, proxy);
+    getView().setUiHandlers(this);
+  }
+  ...
+}
+</pre>
+<p>Be careful: since the view is instantiated before the presenter, the <em>setUiHandlers(impl)</em> method will be called after the view&#8217;s constructor has executed. This means you cannot refer to the presenter within your view&#8217;s constructor. Also, it&#8217;s important to call <em>setUiHandlers()</em> early, otherwise you might run into situations where your view needs to access a control when it doesn&#8217;t yet have access to them. Just to be on the safe side, you should probably check for <em>null</em> before invoking any control method. </p>
+<p>The last step is to let your view extends <em>ViewWithUiHandlers</em> or <em>PopupViewWithUiHandlers</em> instead of <em>ViewImpl</em> or <em>PopupViewImpl</em>. Then you&#8217;re ready to use your controls via <em>getUiHandlers()</em>. As a result, using the wonderful <em>@UiHandler</em> annotation is now very easy:</p>
+<pre class="brush: java;">
+public class ExampleView extends ViewWithControls&lt;ExampleView.MyUiHandlers&gt; implements MyView {
+  ...
+
+  @UiHandler(&quot;saveButton&quot;)
+  void onSaveButtonClicked(ClickEvent event) {
+    if (getUiHandlers() != null) {
+      getUiHandlers().onSave();
+    }
+  }
+</pre>
+<p>That&#8217;s it, you now have a powerful, easy to read and versatile way of using your MVP elements without giving more responsibilities to your view and without breaking the MVP pattern. Your presenter still does all the heavy lifting and your view is still pretty dumb so testing should be a breeze!</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/118/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/118/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/118/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/118/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/118/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/118/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/118/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/118/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/118/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/118/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/118/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/118/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/118/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/118/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=118&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/09/03/reversing-the-mvp-pattern-and-using-uihandler/feed/</wfw:commentRss>
+		<slash:comments>13</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Using @ProxyEvent</title>
+		<link>http://arcbees.wordpress.com/2010/08/31/using-proxyevent/</link>
+		<comments>http://arcbees.wordpress.com/2010/08/31/using-proxyevent/#comments</comments>
+		<pubDate>Tue, 31 Aug 2010 12:22:50 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[Development]]></category>
+		<category><![CDATA[Gwt-Platform]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=110</guid>
+		<description><![CDATA[A relatively recent feature of GWTP is @ProxyEvent, and at first glance it&#8217;s not obvious why it should be needed. This post explores how @ProxyEvent works and gives guidelines on when to use it and when to rely on the regular event registration mechanism. First, let&#8217;s look at some code that uses this annotation: public [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=110&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>A relatively recent feature of GWTP is <em>@ProxyEvent</em>, and at first glance it&#8217;s not obvious why it should be needed. This post explores how <em>@ProxyEvent</em> works and gives guidelines on when to use it and when to rely on the regular event registration mechanism. First, let&#8217;s look at some code that uses this annotation:</p>
+<pre class="brush: java;">
+public class MessagePresenter extends Presenter&lt;MessagePresenter.MyView, MessagePresenter.MyProxy&gt; implements ShowMessageHandler {
+  // ...
+  @ProxyEvent
+  @Override
+  public void onShowMessage(ShowMessageEvent event) {
+    getView().setMessage();
+    placeManager.revealPlace(new PlaceRequest(NameTokens.messagePage));
+  }
+}
+</pre>
+<p>The first thing that&#8217;s really important to understand is that, even though <em>@ProxyEvent</em> appears in your presenter, the handler registration occurs within the proxy. In this case, it means that whenever the proxy intercepts a <em>ShowMessageEvent</em> it will instantiate the <em>MessagePresenter</em> and call its <em>onShowMessage</em>. At that point, the presenter is not necessarily visible, so the method reveals it by navigating with <em>placeManager.revealPlace(&#8230;)</em>. If the presenter is not a place, you could also use <em>forceReveal()</em>. Be carfeul, however, since <em>forceReveal()</em> can lead to undesirable behavior when used on a place. </p>
+<p>So when should you use <em>@ProxyEvent</em>? Basically, you use it every time that an event should have the ability to &#8220;wake up&#8221; your presenter. That is, whenever the presenter should be notified of an event even before it is first instantiated. This is why the method marked with a <em>@ProxyEvent</em> will often contain a mechanism to reveal the presenter.</p>
+<p>These types of event handlers dramatically simplify the process of passing a large amount of information to a presenter before revealing it: bundle the information in the event, fire it, intercept it with a <em>@ProxyEvent</em>, and reveal the presenter inside the handler method.</p>
+<p>Ok enough theory, let&#8217;s expand the previous example. The following code uses an event we already discussed in <a href="http://arcbees.wordpress.com/2010/08/24/gwt-platform-event-best-practice/">Gwt-Platform event best practices</a>. The goal, now, is to navigate to <em>MessagePresenter</em> whenever the event is raised.</p>
+<pre class="brush: java;">
+public class MessagePresenter extends
+    Presenter&lt;MessagePresenter.MyView, MessagePresenter.MyProxy&gt; implements ShowMessageHandler {
+  @ProxyCodeSplit
+  @NameToken(NameTokens.messagePage)
+  public interface MyProxy extends ProxyPlace&lt;HomePresenter&gt; {}
+
+  public interface MyView extends View {
+    void setMessage(String message);
+  }
+
+  final private PlaceManager placeManager;
+
+  @Inject
+  MessagePresenter(EventBus eventBus, MyView view, MyProxy proxy, PlaceManager placeManager) {
+    super(eventBus, view, proxy);
+    this.placeManager = placeManager;
+  }
+
+  @ProxyEvent
+  @Override
+  public void onShowMessage(ShowMessageEvent event) {
+    getView().setMessage();
+
+    placeManager.revealPlace(new PlaceRequest(NameTokens.messagePage));
+  }
+
+  @Override
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, AppPresenter.TYPE_SetMainContent, this);
+  }
+}
+</pre>
+<p>Now every time a <em>MessageEvent</em> is fired, <em>MessagePresenter</em> will be shown. This works even though <em>@ProxyCodeSplit</em> loads this presenter asynchronously, and without having to couple presenters. The example below shows how <a href="http://code.google.com/p/puzzlebazar/">PuzzleBazar</a> uses a similar strategy to reveal its <em>LinkColumnPresenter</em> whenever it is needed:</p>
+<pre class="brush: java;">
+public class LinkColumnPresenter extends Presenter&lt;LinkColumnPresenter.MyView, LinkColumnPresenter.MyProxy&gt;
+implements RevealDefaultLinkColumnHandler {
+
+  public interface MyView extends View {}
+
+  @ProxyStandard
+  public interface MyProxy extends Proxy&lt;LinkColumnPresenter&gt; {}
+
+  @Inject
+  public LinkColumnPresenter(
+      final EventBus eventBus,
+      final MyView view,
+      final MyProxy proxy ) {
+    super(eventBus, view, proxy);
+  }
+
+  @Override
+  protected void revealInParent() {
+    RevealContentEvent.fire(this, SplitMainPresenter.TYPE_RevealSideBarContent, this);
+  }
+
+  @ProxyEvent
+  @Override
+  public void onRevealDefaultLinkColumn(RevealDefaultLinkColumnEvent event) {
+    forceReveal();
+  }
+}
+</pre>
+<p>Ok, so now that you know how to use <em>@ProxyEvent</em> you may wonder why you shouldn&#8217;t always use it! The truth is that, in most cases, there is not much harm in using it to listen to an event. Sometimes, however, it may instantiate a bunch of presenters too early, momentarily slowing down your application. For example, imagine the following:</p>
+<pre class="brush: java;">
+  // Bad example don't do this!
+  @ProxyEvent
+  @Override
+  public void onNavigation(NavigationEvent event) {
+    if (event.getRequest().getNameToken().equals(&quot;logout&quot;)) {
+      getView().setMessage( &quot;Logout in process...&quot; );
+    }
+  }
+</pre>
+<p>At first this may seem reasonable. However, it means your presenter will be instantiated as soon as a <em>NavigationEvent</em> is fired, even if this event has nothing to do with the &#8220;logout&#8221; place. If you have many such presenters, they will all be instantiated at once! In such cases, you probably want the presenter to register towards the handler in its <em>onBind</em> method:</p>
+<pre class="brush: java;">
+  // The right way
+  @Override
+  protected void onBind(NavigationEvent event) {
+    super.onBind();
+    addRegisteredHandler(NavigationEvent.getType(), this);
+  }
+  @Override
+  public void onNavigation(NavigationEvent navigationEvent) {
+      getView().setMessage( &quot;Logout in process...&quot; );
+  }
+</pre>
+<p>Another drawback of abusing <em>@ProxyEvent</em> is that it makes your proxy code bigger, and since all proxies need to be instantiated when your applications starts, this may increase the initial loading time. As a result the rule of thumb is to use <em>@ProxyEvent</em> whenever you need your presenter to &#8220;wake up&#8221; to an event, and to use <em>addRegisteredHandler</em> in your <em>onBind()</em> method for all other cases.</p>
+<p>I hope this helps you better understand that neat little feature of GWTP. If you need more information, you can always look at <a href="http://code.google.com/p/gwt-platform/wiki/GettingStarted?tm=6#Attaching_events_to_proxies">Gwt-Platform&#8217;s wiki</a>. See you soon!</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/110/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/110/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/110/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/110/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/110/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/110/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/110/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/110/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/110/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/110/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/110/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/110/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/110/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/110/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=110&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/08/31/using-proxyevent/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Who said we needed a designer ?</title>
+		<link>http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/</link>
+		<comments>http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/#comments</comments>
+		<pubDate>Fri, 27 Aug 2010 22:02:42 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[ArcBees website]]></category>
+		<category><![CDATA[Development]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=66</guid>
+		<description><![CDATA[Have you ever tried to build a web site that looks incredibly cool and modern by yourself? Some of you could probably pull it off, but unfortunately we live up to the good old programmer cliché and think of 3-way merges as having the best interface ever. So you probably don&#8217;t want us designing a [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=66&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>Have you ever tried to build a web site that looks incredibly cool and modern by yourself? Some of you could probably pull it off, but unfortunately we live up to the good old programmer cliché and think of 3-way merges as having the best interface ever. So you probably don&#8217;t want us designing a web page.</p>
+<p>A frequent choice, today, is to use design contests sites such as <a href="http://99designs.com/">99 designs</a>. However, we prefer to old fashioned way and work with a great graphic designer. In this case, we are fortunate to have a very talented friend who believes in this project and will gladly invest some of his time in it. Moreover, he understands what we&#8217;re trying to do (hint: not a typical webpage) and is really responsive to criticism. Up until now, we&#8217;ve been nothing but overwhelmed by what he produced!</p>
+<p>That&#8217;s why we wanted to write this post and send kudos out to <a href="mailto:info@dmarcotte.com">David Marcotte</a>! Our logo, this blog&#8217;s banner, and every original graphic content you will see on our website are his creation. We would really appreciate it if you could take 30 seconds to comment his work, or to tell us which of the following design is your favorite.<br />
+
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003a3/' title='web_arcbess_wip003A3'><img width="125" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003a3.jpg?w=125&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003A3" title="web_arcbess_wip003A3" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003b3/' title='web_arcbess_wip003B3'><img width="125" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003b3.jpg?w=125&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003B3" title="web_arcbess_wip003B3" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003c3/' title='web_arcbess_wip003C3'><img width="125" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003c3.jpg?w=125&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003C3" title="web_arcbess_wip003C3" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003a5/' title='web_arcbess_wip003A5'><img width="110" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003a52.jpg?w=110&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003A5" title="web_arcbess_wip003A5" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003b5/' title='web_arcbess_wip003B5'><img width="110" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003b5.jpg?w=110&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003B5" title="web_arcbess_wip003B5" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003b5a/' title='web_arcbess_wip003B5a'><img width="110" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003b5a.jpg?w=110&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003B5a" title="web_arcbess_wip003B5a" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003c5/' title='web_arcbess_wip003C5'><img width="110" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003c5.jpg?w=110&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003C5" title="web_arcbess_wip003C5" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003b6/' title='web_arcbess_wip003B6'><img width="110" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003b6.jpg?w=110&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003B6" title="web_arcbess_wip003B6" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003b7/' title='web_arcbess_wip003B7'><img width="110" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003b7.jpg?w=110&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003B7" title="web_arcbess_wip003B7" /></a>
+<a href='http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/web_arcbess_wip003b8/' title='web_arcbess_wip003B8'><img width="110" height="150" src="http://arcbees.files.wordpress.com/2010/08/web_arcbess_wip003b8.jpg?w=110&#038;h=150" class="attachment-thumbnail" alt="web_arcbess_wip003B8" title="web_arcbess_wip003B8" /></a>
+</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/66/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/66/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/66/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/66/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/66/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/66/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/66/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/66/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/66/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/66/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/66/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/66/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/66/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/66/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=66&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/08/27/who-said-that-we-needed-a-designer/feed/</wfw:commentRss>
+		<slash:comments>3</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Gwt-Platform event best practices</title>
+		<link>http://arcbees.wordpress.com/2010/08/24/gwt-platform-event-best-practice/</link>
+		<comments>http://arcbees.wordpress.com/2010/08/24/gwt-platform-event-best-practice/#comments</comments>
+		<pubDate>Tue, 24 Aug 2010 19:07:54 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[Development]]></category>
+		<category><![CDATA[Gwt-Platform]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=29</guid>
+		<description><![CDATA[As we worked through enhancing the way events were handled in Gwt-Platform, we came across one constatation, no common pattern was used or encouraged. This post addresses this issue and offers a little tutorial about how to create custom events in Gwt-Platform. First of all, an event contains two major parts: the Event class itself [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=29&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>As we worked through enhancing the way events were handled in Gwt-Platform, we came across one constatation, no common pattern was used or encouraged. This post addresses this issue and offers a little tutorial about how to create custom events in <em>Gwt-Platform</em>.</p>
+<p>First of all, an event contains two major parts: the <em>Event</em> class itself and an <em>Handler</em>. Those two parts can either sit in different files or be included in the same file, with the <em>Handler</em> nested inside the <em>Event</em>. The second approach is our favorite since <em>Handler</em> is an interface related to an event. Also, it can be done in a few lines and reduce the total number of files.</p>
+<p>Give that, here&#8217;s how we write our events:</p>
+<pre class="brush: java;">
+public class ShowMessageEvent extends
+    GwtEvent&lt;ShowMessageEvent.ShowMessageHandler&gt; {
+  public interface ShowMessageHandler extends EventHandler {
+    void onShowMessage(ShowMessageEvent event);
+  }
+
+  private static Type&lt;ShowMessageHandler&gt; TYPE = new Type&lt;ShowMessageHandler&gt;();
+
+  public static void fire(HasEventBus source, String message) {
+    if (TYPE != null) {
+      source.fireEvent(new ShowMessageEvent(message));
+    }
+  }
+
+  public static Type&lt;ShowMessageHandler&gt; getType() {
+    return TYPE;
+  }
+
+  private final String message;
+
+  public ShowMessageEvent(final String message) {
+    this.message = message;
+  }
+
+  @Override
+  public Type&lt;ShowMessageHandler&gt; getAssociatedType() {
+    return TYPE;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  @Override
+  protected void dispatch(ShowMessageHandler handler) {
+    handler.onShowMessage(this);
+  }
+}</pre>
+<p>Note here the static <em>fire</em> method. This is a convenient static factory method that let&#8217;s you fire an event without having to manually instantiate a <em>ShowMessageEvent</em> class. Using these methods is recommended rather than calling directly <em>fireEvent</em>. Also, the first parameter of this method is not the event bus itself, but rather the <em>source</em>. Passing in your presenter as the first parameter will make sure that the event is attached to the real source that triggered it. Using <em>HasEventBus</em> rather than GWT&#8217;s <em>HasHandlers</em> increases the type safety of GWTP, ensuring you never fire into a widget an event that was supposed to go on the bus.</p>
+<p>Now that we have all the scaffolding for the event, it&#8217;s time to figure out how to use it. In Gwt-Platform every presenter implements <em>HasEventBus</em> so they all have the ability to fire events. The best practice approach is to simply use the static fire method of your event. In the above example this would be <em>ShowMessageEvent.fire(this, &#8220;Hello world!&#8221;);</em>. Some situations will require you to fire events from an object that doesn&#8217;t have access to <em>fireEvent()</em>. In this case, the best practice is to inject the <em>EventBus</em>, implement <em>HasEventBus</em>, and relay the call to <em>fireEvent</em>:</p>
+<pre class="brush: java;">
+public abstract class MyCustomCallback&lt;T&gt; implements AsyncCallback&lt;T&gt;, HasEventBus {
+  @Inject
+  private static EventBus eventBus;
+
+  @Override
+  public void onFailure(Throwable caught) {
+    ShowMessageEvent.fire(this, &quot;Oops! Something went wrong!&quot;);
+  }
+
+  @Override
+  public void fireEvent(GwtEvent&lt;?&gt; event) {
+      eventBus.fireEvent(this, event);
+  }
+}
+</pre>
+<p>In this case we have used static injection to provide the <em>EventBus</em>. This is because <em>AsyncCallback</em> classes do not typically participate in dependency injection. If your class does participate in dependency injection then you should use constructor injection. The goal of this pattern is to ensure that event sources are correctly tracked. Since the callback implements <em>HasEventBus</em> it will set itself as the source of the event. More importantly, every class that extends this abstract class will be able to fire any event and set itself as the source.</p>
+<p>Now, how do we listen to events travelling on the bus? If you&#8217;re listening from a presenter, the prefered  way is to use <em>addRegisteredHandler(eventType, eventHandler);. </em>This method not only registers a handler on the event bus, it also makes sure that every registered handler is correctly unregistered when the presenter is unbound. If you are not within a presenter, inject the <em>EventBus</em> and call <em>eventBus.addHandler(eventType, eventHandler);</em>. It is customary to use an anonymous inner class as an <em>eventHandler</em>, for example:</p>
+<pre class="brush: java;">
+public abstract class MyPresenter extends PresenterImpl&lt;MyPresenter.MyView, MyPresenter.MyProxy&gt; {
+  ...
+  @Override
+  public void onBind() {
+    super.onBind();
+    addRegisteredHandler( ShowMessageEvent.getType(), new ShowMessageHandler() {
+          @Override
+          void onShowMessage(ShowMessageEvent event) {
+            getView().displayMessage( event.getMessage() );
+          }
+        } );
+  }
+}
+</pre>
+<p>But you can also use the following pattern:</p>
+<pre class="brush: java;">
+public abstract class MyPresenter extends PresenterImpl&lt;MyPresenter.MyView, MyPresenter.MyProxy&gt;
+    implements ShowMessageHandler {
+  ...
+  @Override
+  public void onBind() {
+    super.onBind();
+    addRegisteredHandler( ShowMessageEvent.getType(), this );
+  }
+
+  @Override
+  void onShowMessage(ShowMessageEvent event) {
+    getView().displayMessage( event.getMessage() );
+  }
+}
+</pre>
+<p>I hope this post will help you design your own events, but in any case feel free to leave comments or ask questions! In a future article we will discuss how you can automatically generate most of the boilerplate using GWTP&#8217;s annotation processing classes contributed by Brendan Doherty. We will also discuss the use of the <em>@ProxyEvent</em> annotation and how it differs from the events described above.</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/29/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/29/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/29/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/29/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/29/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/29/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/29/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/29/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/29/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/29/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/29/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/29/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/29/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/29/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=29&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/08/24/gwt-platform-event-best-practice/feed/</wfw:commentRss>
+		<slash:comments>2</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+	</item>
+		<item>
+		<title>Hive announcement</title>
+		<link>http://arcbees.wordpress.com/2010/08/21/hive-announcement/</link>
+		<comments>http://arcbees.wordpress.com/2010/08/21/hive-announcement/#comments</comments>
+		<pubDate>Sun, 22 Aug 2010 03:09:22 +0000</pubDate>
+		<dc:creator>Christian Goudreau</dc:creator>
+				<category><![CDATA[Corporate]]></category>
+
+		<guid isPermaLink="false">http://arcbees.wordpress.com/?p=45</guid>
+		<description><![CDATA[We are proud to announce the name of the CMS we&#8217;re going to develop while creating our new web page: Hive. Hive will be, at first, a complete showcase to demonstrate the power behind Gwt-Platform, the backbone of our web page. It will then evolve into a community driven open source CMS project also based [...]<img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=45&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></description>
+			<content:encoded><![CDATA[<p>We are proud to announce the name of the CMS we&#8217;re going to develop while creating our new web page: <strong>Hive</strong>. Hive will be, at first, a complete showcase to demonstrate the power behind Gwt-Platform, the backbone of our web page. It will then evolve into a community driven open source CMS project also based on Gwt-Platform and meant to run on App Engine. We hope the community will support this as much as it is already supporting Gwt-Platform. Don&#8217;t worry, it doesn&#8217;t mean we&#8217;ll scale down our work on Gwt-Platform. Quite the contrary! We&#8217;re sure this new large scale project will spawn new features in Gwt-Platform&#8230; One thing for sure, you will have a great example on which to base your next Gwt-Platform based app!</p>
+<p>Continue to support us and long live open source!</p>
+<br />  <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gocomments/arcbees.wordpress.com/45/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/comments/arcbees.wordpress.com/45/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godelicious/arcbees.wordpress.com/45/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/delicious/arcbees.wordpress.com/45/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gofacebook/arcbees.wordpress.com/45/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/facebook/arcbees.wordpress.com/45/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gotwitter/arcbees.wordpress.com/45/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/twitter/arcbees.wordpress.com/45/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/gostumble/arcbees.wordpress.com/45/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/stumble/arcbees.wordpress.com/45/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/godigg/arcbees.wordpress.com/45/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/digg/arcbees.wordpress.com/45/" /></a> <a rel="nofollow" href="http://feeds.wordpress.com/1.0/goreddit/arcbees.wordpress.com/45/"><img alt="" border="0" src="http://feeds.wordpress.com/1.0/reddit/arcbees.wordpress.com/45/" /></a> <img alt="" border="0" src="http://stats.wordpress.com/b.gif?host=arcbees.wordpress.com&amp;blog=15121479&amp;post=45&amp;subd=arcbees&amp;ref=&amp;feed=1" width="1" height="1" />]]></content:encoded>
+			<wfw:commentRss>http://arcbees.wordpress.com/2010/08/21/hive-announcement/feed/</wfw:commentRss>
+		<slash:comments>1</slash:comments>
+	
+		<media:content url="http://1.gravatar.com/avatar/de1c40bc51b622c67beddc651900ef38?s=96&#38;d=identicon&#38;r=G" medium="image">
+			<media:title type="html">christiangoudreau</media:title>
+		</media:content>
+	</item>
+	</channel>
+</rss>
