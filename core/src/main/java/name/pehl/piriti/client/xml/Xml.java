@@ -104,7 +104,7 @@ import com.google.gwt.i18n.client.NumberFormat;
  * <td>String</td>
  * <td>&lt;propertyname&gt;/text()</td>
  * <td>No format supported. If specified it is ignored.</td>
- * <td>No custom converter supported. If specified it is ignored.</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>Enums</td>

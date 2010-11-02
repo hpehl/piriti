@@ -62,7 +62,16 @@ public class StringPropertyHandler extends AbstractPropertyHandler
         writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
-        writer.write("%s = %s.stringValue();", propertyContext.getVariableNames().getValueVariable(), jsonString);
+        if (propertyContext.isCustomConverter())
+        {
+            writer.write("String %s = %s.stringValue();",
+                    propertyContext.getVariableNames().getValueAsStringVariable(), jsonString);
+            CodeGeneration.useConverterForReading(writer, propertyContext);
+        }
+        else
+        {
+            writer.write("%s = %s.stringValue();", propertyContext.getVariableNames().getValueVariable(), jsonString);
+        }
         writer.outdent();
         writer.write("}");
         writer.outdent();

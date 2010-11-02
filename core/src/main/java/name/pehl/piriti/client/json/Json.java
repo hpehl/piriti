@@ -74,7 +74,7 @@ import com.google.gwt.json.client.JSONString;
  * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
- * <td>Custom converter supported</td>
+ * <td>Custom converter supported (JSON data is expected to be a JSON string)</td>
  * </tr>
  * <tr>
  * <td>float, Float</td>
@@ -83,7 +83,7 @@ import com.google.gwt.json.client.JSONString;
  * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
- * <td>Custom converter supported</td>
+ * <td>Custom converter supported (JSON data is expected to be a JSON string)</td>
  * </tr>
  * <tr>
  * <td>int, Integer</td>
@@ -92,7 +92,7 @@ import com.google.gwt.json.client.JSONString;
  * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
- * <td>Custom converter supported</td>
+ * <td>Custom converter supported (JSON data is expected to be a JSON string)</td>
  * </tr>
  * <tr>
  * <td>long, Long</td>
@@ -101,7 +101,7 @@ import com.google.gwt.json.client.JSONString;
  * {@link JSONNumber}, otherwise the JSON data is expected to be a
  * {@link JSONString} and the format must be a valid number format as described
  * by {@link NumberFormat}</td>
- * <td>Custom converter supported</td>
+ * <td>Custom converter supported (JSON data is expected to be a JSON string)</td>
  * </tr>
  * <tr>
  * <td>short, Short</td>
@@ -113,7 +113,7 @@ import com.google.gwt.json.client.JSONString;
  * <td>String</td>
  * <td>&lt;propertyname&gt;</td>
  * <td>No format supported. If specified it is ignored.</td>
- * <td>No custom converter supported. If specified it is ignored.</td>
+ * <td>Custom converter supported</td>
  * </tr>
  * <tr>
  * <td>Enums</td>

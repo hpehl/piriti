@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.AbstractEnumPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
@@ -36,18 +37,15 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
         writer.indent();
         if (propertyContext.isCustomConverter())
         {
-            String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
-            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
-                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
-            writer.write("%s = %s.convert(%s, null);", propertyContext.getVariableNames().getValueVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable());
+            CodeGeneration.useConverterForReading(writer, propertyContext);
         }
         else
         {
             writer.write("try {");
             writer.indent();
             writer.write("%s = %s.valueOf(%s);", propertyContext.getVariableNames().getValueVariable(), propertyContext
-                    .getEnumType().getQualifiedSourceName(), propertyContext.getVariableNames().getValueAsStringVariable());
+                    .getEnumType().getQualifiedSourceName(), propertyContext.getVariableNames()
+                    .getValueAsStringVariable());
             writer.outdent();
             writer.write("}");
             writer.write("catch (IllegalArgumentException e1) {");

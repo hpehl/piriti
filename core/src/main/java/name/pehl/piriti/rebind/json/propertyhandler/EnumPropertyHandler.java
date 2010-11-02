@@ -68,11 +68,9 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
 
         if (propertyContext.isCustomConverter())
         {
-            String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
-            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
-                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
-            writer.write("%s = %s.convert(%s.stringValue(), null);", propertyContext.getVariableNames()
-                    .getValueVariable(), converterVariable, jsonString);
+            writer.write("String %s = %s.stringValue();",
+                    propertyContext.getVariableNames().getValueAsStringVariable(), jsonString);
+            CodeGeneration.useConverterForReading(writer, propertyContext);
         }
         else
         {

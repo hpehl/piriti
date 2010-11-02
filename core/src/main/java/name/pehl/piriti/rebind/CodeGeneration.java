@@ -200,6 +200,30 @@ public final class CodeGeneration
     }
 
 
+    // -------------------------------------------------------------- converter
+
+    public static void useConverterForReading(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
+        writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
+                .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
+        writer.write("%s = %s.convert(%s, %s);", propertyContext.getVariableNames().getValueVariable(),
+                converterVariable, propertyContext.getVariableNames().getValueAsStringVariable(),
+                propertyContext.getFormat() == null ? "null" : "\"" + propertyContext.getFormat() + "\"");
+    }
+
+
+    public static void useConverterForWriting(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        String converterVariable = propertyContext.getVariableNames().newVariableName("WriteConverter");
+        writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
+                .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
+        writer.write("%s.append(%s.serialize(%s, %s));", propertyContext.getVariableNames().getBuilderVariable(),
+                converterVariable, propertyContext.getVariableNames().getValueVariable(),
+                propertyContext.getFormat() == null ? "null" : "\"" + propertyContext.getFormat() + "\"");
+    }
+
+
     // ----------------------------------------------------------- misc methods
 
     /**
@@ -341,11 +365,7 @@ public final class CodeGeneration
         }
         if (propertyContext.isCustomConverter())
         {
-            String converterVariable = propertyContext.getVariableNames().newVariableName("WriteConverter");
-            writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
-                    .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
-            writer.write("%s.append(%s.serialize(%s, null));", propertyContext.getVariableNames().getBuilderVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueVariable());
+            useConverterForWriting(writer, propertyContext);
         }
         else
         {

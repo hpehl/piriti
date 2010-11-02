@@ -4,6 +4,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import name.pehl.piriti.client.gwttest.animal.JsonAnimalTest;
 import name.pehl.piriti.client.gwttest.animal.XmlAnimalTest;
+import name.pehl.piriti.client.gwttest.backandforth.JsonBackAndForthTest;
+import name.pehl.piriti.client.gwttest.backandforth.XmlBackAndForthTest;
 import name.pehl.piriti.client.gwttest.book.JsonBookTest;
 import name.pehl.piriti.client.gwttest.book.XmlBookTest;
 import name.pehl.piriti.client.gwttest.employee.XmlEmployeeTest;
@@ -31,6 +33,9 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
 
         suite.addTestSuite(JsonAnimalTest.class);
         suite.addTestSuite(XmlAnimalTest.class);
+
+        suite.addTestSuite(JsonBackAndForthTest.class);
+        suite.addTestSuite(XmlBackAndForthTest.class);
 
         suite.addTestSuite(JsonBookTest.class);
         suite.addTestSuite(XmlBookTest.class);

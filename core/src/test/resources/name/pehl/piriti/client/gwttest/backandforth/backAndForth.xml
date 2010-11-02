@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Please make sure that there are no line line breaks
+    in the elements. Otherwise the asserts will fail!
+ -->
+<backAndFourth>
+  <duration>4h</duration>
+  <date>tomorrow</date>
+  <maths>2</maths>
+  <name>Max Mustermann</name>
+</backAndFourth>

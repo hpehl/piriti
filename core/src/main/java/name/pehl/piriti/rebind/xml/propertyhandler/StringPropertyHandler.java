@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
@@ -42,8 +43,19 @@ public class StringPropertyHandler extends AbstractPropertyHandler
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("%s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames().getValueVariable(),
-                propertyContext.getVariableNames().getInputVariable(), propertyContext.getPath(), propertyContext.isStripWsnl());
+        if (propertyContext.isCustomConverter())
+        {
+            writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
+                    .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), propertyContext
+                    .getPath(), propertyContext.isStripWsnl());
+            CodeGeneration.useConverterForReading(writer, propertyContext);
+        }
+        else
+        {
+            writer.write("%s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames().getValueVariable(),
+                    propertyContext.getVariableNames().getInputVariable(), propertyContext.getPath(),
+                    propertyContext.isStripWsnl());
+        }
     }
 
 
