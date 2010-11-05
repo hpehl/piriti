@@ -1,6 +1,5 @@
 package name.pehl.piriti.client.converter;
 
-import com.google.inject.internal.Nullable;
 
 /**
  * Converter for boolean objects. Uses {@code Boolean.valueOf(value)} for the
@@ -24,7 +23,7 @@ public class BooleanConverter extends AbstractConverter<Boolean>
      *      java.lang.String)
      */
     @Override
-    public Boolean convert(@Nullable String value, @Nullable String format)
+    public Boolean convert(String value, String format)
     {
         if (isValid(value))
         {

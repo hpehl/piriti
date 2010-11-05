@@ -1,7 +1,6 @@
 package name.pehl.piriti.client.converter;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.inject.internal.Nullable;
 
 /**
  * Converter for long objects. Uses {@code Long.valueOf(value)} if no format is
@@ -25,7 +24,7 @@ public class LongConverter extends AbstractConverter<Long>
      *      java.lang.String)
      */
     @Override
-    public Long convert(@Nullable String value, @Nullable String format)
+    public Long convert(String value, String format)
     {
         if (isValid(value))
         {

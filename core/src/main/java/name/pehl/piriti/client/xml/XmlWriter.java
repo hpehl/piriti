@@ -2,8 +2,6 @@ package name.pehl.piriti.client.xml;
 
 import java.util.List;
 
-import com.google.inject.internal.Nullable;
-
 /**
  * Interface for serializing an instance of T or a list of Ts to an XML
  * document. Not yet implemented!
@@ -15,8 +13,8 @@ import com.google.inject.internal.Nullable;
  */
 public interface XmlWriter<T>
 {
-    String toXml(@Nullable List<T> models, String rootElement);
+    String toXml(List<T> models, String rootElement);
 
 
-    String toXml(@Nullable T model);
+    String toXml(T model);
 }

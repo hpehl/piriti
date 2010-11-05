@@ -6,8 +6,6 @@ import name.pehl.totoe.xml.client.Document;
 import name.pehl.totoe.xml.client.Element;
 import name.pehl.totoe.xml.client.XmlParseException;
 
-import com.google.inject.internal.Nullable;
-
 /**
  * Interface for converting an XML document / element to an instance of T or a
  * list of Ts. The implementation for this interface is generated using deferred
@@ -68,7 +66,7 @@ public interface XmlReader<T>
      * @throws XmlParseException
      *             if there's an error parsing the xml
      */
-    List<T> readList(@Nullable String xml) throws XmlParseException;
+    List<T> readList(String xml) throws XmlParseException;
 
 
     /**
@@ -81,7 +79,7 @@ public interface XmlReader<T>
      *         <code>null</code> if the {@code document} is {@code null} or the
      *         document has no root element.
      */
-    List<T> readList(@Nullable Document document);
+    List<T> readList(Document document);
 
 
     /**
@@ -96,7 +94,7 @@ public interface XmlReader<T>
      * @return A list of T instances with the mapped XML data or
      *         <code>null</code> if the {@code document} is {@code null}.
      */
-    List<T> readList(@Nullable Document document, String xpath);
+    List<T> readList(Document document, String xpath);
 
 
     /**
@@ -108,7 +106,7 @@ public interface XmlReader<T>
      * @return A list of T instances with the mapped XML data or null if the
      *         {@code element} is {@code null}.
      */
-    List<T> readList(@Nullable Element element);
+    List<T> readList(Element element);
 
 
     /**
@@ -123,7 +121,7 @@ public interface XmlReader<T>
      * @return A list of T instances with the mapped XML data or null if the
      *         {@code element} is {@code null}.
      */
-    List<T> readList(@Nullable Element element, String xpath);
+    List<T> readList(Element element, String xpath);
 
 
     // ------------------------------------------------------------ read single
@@ -149,7 +147,7 @@ public interface XmlReader<T>
      * @throws XmlParseException
      *             if there's an error parsing the xml
      */
-    T read(@Nullable String xml) throws XmlParseException;
+    T read(String xml) throws XmlParseException;
 
 
     /**
@@ -162,7 +160,7 @@ public interface XmlReader<T>
      *         {@code document} is {@code null} or the document has no root
      *         element.
      */
-    T read(@Nullable Document document);
+    T read(Document document);
 
 
     /**
@@ -174,7 +172,7 @@ public interface XmlReader<T>
      * @return An instance of T with the mapped XML data or {@code null} if the
      *         {@code element} is {@code null}.
      */
-    T read(@Nullable Element element);
+    T read(Element element);
 
 
     // ------------------------------------------------------------- references

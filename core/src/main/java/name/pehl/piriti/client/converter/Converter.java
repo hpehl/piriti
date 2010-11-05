@@ -1,6 +1,5 @@
 package name.pehl.piriti.client.converter;
 
-import com.google.inject.internal.Nullable;
 
 /**
  * Simple converter to convert strings into the specified type T and vice versa.
@@ -23,7 +22,7 @@ public interface Converter<T>
      * @return The converted type or <code>null</code> if a conversion is not
      *         possible
      */
-    T convert(@Nullable String value, @Nullable String format);
+    T convert(String value, String format);
 
 
     /**
@@ -36,5 +35,5 @@ public interface Converter<T>
      *            {@code null} if no format is supported
      * @return The serialized string or <code>null</code> if no value was given.
      */
-    String serialize(@Nullable T value, @Nullable String format);
+    String serialize(T value, String format);
 }

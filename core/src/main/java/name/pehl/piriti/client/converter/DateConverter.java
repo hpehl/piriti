@@ -3,7 +3,6 @@ package name.pehl.piriti.client.converter;
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.inject.internal.Nullable;
 
 /**
  * Converter for dates. Uses {@code DateTimeFormat#parse(String)} for the
@@ -34,7 +33,7 @@ public class DateConverter extends AbstractConverter<Date>
      *      java.lang.String)
      */
     @Override
-    public Date convert(@Nullable String value, @Nullable String format)
+    public Date convert(String value, String format)
     {
         if (isValid(value))
         {

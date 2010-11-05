@@ -1,6 +1,5 @@
 package name.pehl.piriti.client.converter;
 
-import com.google.inject.internal.Nullable;
 
 /**
  * Converter for byte objects. Uses {@code Byte.valueOf(value)} for the
@@ -24,7 +23,7 @@ public class ByteConverter extends AbstractConverter<Byte>
      *      java.lang.String)
      */
     @Override
-    public Byte convert(@Nullable String value, @Nullable String format)
+    public Byte convert(String value, String format)
     {
         if (isValid(value))
         {

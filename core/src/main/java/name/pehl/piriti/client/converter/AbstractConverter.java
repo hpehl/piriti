@@ -1,6 +1,5 @@
 package name.pehl.piriti.client.converter;
 
-import com.google.inject.internal.Nullable;
 
 /**
  * Base class for all converters with some common functionality.
@@ -18,7 +17,7 @@ public abstract class AbstractConverter<T> implements Converter<T>
      * @return {@code true} if the value is not {@code null} or empty,
      *         {@code false} otherwise
      */
-    protected boolean isValid(@Nullable String value)
+    protected boolean isValid(String value)
     {
         return value != null && value.trim().length() != 0;
     }

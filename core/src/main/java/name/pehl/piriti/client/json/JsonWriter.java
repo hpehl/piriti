@@ -2,8 +2,6 @@ package name.pehl.piriti.client.json;
 
 import java.util.List;
 
-import com.google.inject.internal.Nullable;
-
 /**
  * Interface for serializing an instance of T or a list of Ts to JSON data. The
  * implementation for this interface is generated using deferred binding. All
@@ -52,22 +50,22 @@ public interface JsonWriter<T>
      * </pre>
      * 
      * @param models
-     *            the list of Ts to serialize to JSON.
+     *            the list of Ts to serialize to JSON. May be <code>null</code>.
      * @param arrayKey
      *            the array key
      * @return JSON data for the list of Ts or <code>null</code> if
      *         {@code models} and/or {@code arrayKey} is <code>null</code>.
      */
-    String toJson(@Nullable List<T> models, String arrayKey);
+    String toJson(List<T> models, String arrayKey);
 
 
     /**
      * Generates JSON data for T according to the annotated properties in T.
      * 
      * @param model
-     *            the instance to serialize to JSON.
+     *            the instance to serialize to JSON. May be <code>null</code>.
      * @return JSON data for T or <code>null</code> if {@code model} is
      *         <code>null</code>.
      */
-    String toJson(@Nullable T model);
+    String toJson(T model);
 }

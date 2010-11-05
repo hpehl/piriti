@@ -1,6 +1,5 @@
 package name.pehl.piriti.client.converter;
 
-import com.google.inject.internal.Nullable;
 
 /**
  * Converter for character objects. Uses the first character of the value for
@@ -24,7 +23,7 @@ public class CharacterConverter extends AbstractConverter<Character>
      *      java.lang.String)
      */
     @Override
-    public Character convert(@Nullable String value, @Nullable String format)
+    public Character convert(String value, String format)
     {
         if (value != null && value.length() > 0)
         {

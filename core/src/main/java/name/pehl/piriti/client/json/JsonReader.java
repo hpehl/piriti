@@ -5,7 +5,6 @@ import java.util.List;
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONObject;
-import com.google.inject.internal.Nullable;
 
 /**
  * Interface for converting JSON data to an instance of T or a list of Ts. The
@@ -96,7 +95,7 @@ public interface JsonReader<T>
      * @throws JSONException
      *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable String jsonString) throws JSONException;
+    List<T> readList(String jsonString) throws JSONException;
 
 
     /**
@@ -167,7 +166,7 @@ public interface JsonReader<T>
      * @throws JSONException
      *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable String jsonString, String arrayKey) throws JSONException;
+    List<T> readList(String jsonString, String arrayKey) throws JSONException;
 
 
     /**
@@ -217,7 +216,7 @@ public interface JsonReader<T>
      * @throws JSONException
      *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable JSONObject jsonObject) throws JSONException;
+    List<T> readList(JSONObject jsonObject) throws JSONException;
 
 
     /**
@@ -282,7 +281,7 @@ public interface JsonReader<T>
      * @throws JSONException
      *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable JSONObject jsonObject, String arrayKey) throws JSONException;
+    List<T> readList(JSONObject jsonObject, String arrayKey) throws JSONException;
 
 
     /**
@@ -319,7 +318,7 @@ public interface JsonReader<T>
      * @throws JSONException
      *             if the specified string represents no valid JSON data
      */
-    List<T> readList(@Nullable JSONArray jsonArray) throws JSONException;
+    List<T> readList(JSONArray jsonArray) throws JSONException;
 
 
     // ------------------------------------------------------------ read single
@@ -363,7 +362,7 @@ public interface JsonReader<T>
      * @throws JSONException
      *             if the specified string represents no valid JSON data
      */
-    T read(@Nullable String jsonString) throws JSONException;
+    T read(String jsonString) throws JSONException;
 
 
     /**
@@ -400,5 +399,5 @@ public interface JsonReader<T>
      * @throws JSONException
      *             if the specified string represents no valid JSON data
      */
-    T read(@Nullable JSONObject jsonObject) throws JSONException;
+    T read(JSONObject jsonObject) throws JSONException;
 }

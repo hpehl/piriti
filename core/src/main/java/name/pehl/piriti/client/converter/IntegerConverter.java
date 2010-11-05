@@ -1,7 +1,6 @@
 package name.pehl.piriti.client.converter;
 
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.inject.internal.Nullable;
 
 /**
  * Converter for integer objects. Uses {@code Integer.valueOf(value)} if no
@@ -25,7 +24,7 @@ public class IntegerConverter extends AbstractConverter<Integer>
      *      java.lang.String)
      */
     @Override
-    public Integer convert(@Nullable String value, @Nullable String format)
+    public Integer convert(String value, String format)
     {
         if (isValid(value))
         {
