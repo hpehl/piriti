@@ -102,7 +102,7 @@
 
     <properties>
         <!-- Taoki & Totoe -->
-        <taoki.version>0.2.1</taoki.version>
+        <taoki.version>0.3</taoki.version>
         <totoe.version>0.2.1</totoe.version>
 
         <!-- GAE & GWT Stuff -->
