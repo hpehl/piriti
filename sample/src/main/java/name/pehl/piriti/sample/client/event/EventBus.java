@@ -1,6 +1,6 @@
 package name.pehl.piriti.sample.client.event;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.SimpleEventBus;
 
 /**
  * @author $Author$
@@ -10,21 +10,21 @@ import com.google.gwt.event.shared.HandlerManager;
 public class EventBus
 {
     private static EventBus instance = null;
-    private HandlerManager handlerManager;
+    private final SimpleEventBus eventBus;
 
 
     private EventBus()
     {
-        handlerManager = new HandlerManager(null);
+        eventBus = new SimpleEventBus();
     }
 
 
-    public static HandlerManager get()
+    public static SimpleEventBus get()
     {
         if (instance == null)
         {
             instance = new EventBus();
         }
-        return instance.handlerManager;
+        return instance.eventBus;
     }
 }
