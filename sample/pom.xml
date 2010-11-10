@@ -32,20 +32,8 @@
             <artifactId>taoki</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-servlet</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>aopalliance</groupId>
-            <artifactId>aopalliance</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt.inject</groupId>
-            <artifactId>gin</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restlet.gae</groupId>
@@ -141,13 +129,13 @@
                 <artifactId>gwt-maven-plugin</artifactId>
                 <configuration>
                     <logLevel>INFO</logLevel>
-                    <port>8888</port>
-                    <module>name.pehl.piriti.sample.PiritiSample</module>
                     <extraJvmArgs>-Xmx512m</extraJvmArgs>
                     <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
+                    <port>8888</port>
                     <runTarget>/index.html</runTarget>
-                    <webXml>war/WEB-INF/web.xml</webXml>
+                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
                     <gwtVersion>${gwt.version}</gwtVersion>
+                    <module>name.pehl.piriti.sample.PiritiSample</module>
                 </configuration>
                 <executions>
                     <execution>

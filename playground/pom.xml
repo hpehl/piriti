@@ -31,18 +31,6 @@
             <groupId>com.extjs</groupId>
             <artifactId>gxt</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>aopalliance</groupId>
-            <artifactId>aopalliance</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt.inject</groupId>
-            <artifactId>gin</artifactId>
-        </dependency>
     </dependencies>
     
     
@@ -67,8 +55,10 @@
                         <configuration>
                             <logLevel>INFO</logLevel>
                             <extraJvmArgs>-Xmx512m</extraJvmArgs>
-                            <manualMode>false</manualMode>
+                            <htmlunit>FF3,IE7</htmlunit>
+                            <mode>htmlunit</mode>
                             <productionMode>false</productionMode>
+                            <testTimeOut>300</testTimeOut>
                             <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.PlaygroundTest</module>
                             <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
@@ -82,8 +72,10 @@
                         <configuration>
                             <logLevel>INFO</logLevel>
                             <extraJvmArgs>-Xmx512m</extraJvmArgs>
-                            <manualMode>false</manualMode>
+                            <htmlunit>FF3,IE7</htmlunit>
+                            <mode>htmlunit</mode>
                             <productionMode>true</productionMode>
+                            <testTimeOut>300</testTimeOut>
                             <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.PlaygroundTest</module>
                             <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
