@@ -1,10 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <!--
-        $LastChangedBy: harald.pehl 
-        $LastChangedRevision: 137 $
-    -->
-    <modelVersion>4.0.0</modelVersion>
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 1418 $ -->
+
+
     <parent>
         <groupId>name.pehl.piriti</groupId>
         <artifactId>piriti-parent</artifactId>
@@ -12,6 +10,7 @@
     </parent>
 
 
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-core</artifactId>
     <name>Piriti Core</name>
 
@@ -46,13 +45,10 @@
                     <execution>
                         <id>(******** development mode ********)</id>
                         <configuration>
-                            <logLevel>INFO</logLevel>
-                            <extraJvmArgs>-Xmx512m</extraJvmArgs>
                             <htmlunit>FF3,IE7</htmlunit>
                             <mode>htmlunit</mode>
                             <productionMode>false</productionMode>
                             <testTimeOut>300</testTimeOut>
-                            <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.PiritiTest</module>
                             <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
                         </configuration>
@@ -63,13 +59,10 @@
                     <execution>
                         <id>(******** production mode ********)</id>
                         <configuration>
-                            <logLevel>INFO</logLevel>
-                            <extraJvmArgs>-Xmx512m</extraJvmArgs>
                             <htmlunit>FF3,IE7</htmlunit>
                             <mode>htmlunit</mode>
                             <productionMode>true</productionMode>
                             <testTimeOut>300</testTimeOut>
-                            <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.PiritiTest</module>
                             <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
                         </configuration>

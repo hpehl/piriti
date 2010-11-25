@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 137 $ -->
-    <modelVersion>4.0.0</modelVersion>
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 1418 $ -->
+
+
     <parent>
         <groupId>name.pehl.piriti</groupId>
         <artifactId>piriti-parent</artifactId>
         <version>0.6.2</version>
     </parent>
-
-
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-sample</artifactId>
     <name>Piriti Sample</name>
     <packaging>war</packaging>
@@ -111,7 +111,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>2.1-beta-1</version>
                 <configuration>
                     <webResources>
                         <resource>
@@ -128,13 +127,10 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
                 <configuration>
-                    <logLevel>INFO</logLevel>
-                    <extraJvmArgs>-Xmx512m</extraJvmArgs>
                     <server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
                     <port>8888</port>
                     <runTarget>/index.html</runTarget>
                     <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-                    <gwtVersion>${gwt.version}</gwtVersion>
                     <module>name.pehl.piriti.sample.PiritiSample</module>
                 </configuration>
                 <executions>
@@ -186,6 +182,7 @@
                 </dependencies>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <configuration>
                     <goals>gae:deploy</goals>

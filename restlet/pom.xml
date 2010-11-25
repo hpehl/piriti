@@ -1,17 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <!--
-        $LastChangedBy: harald.pehl 
-        $LastChangedRevision: 137 $
-    -->
-    <modelVersion>4.0.0</modelVersion>
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 1418 $ -->
+
+
     <parent>
         <groupId>name.pehl.piriti</groupId>
         <artifactId>piriti-parent</artifactId>
         <version>0.6.2</version>
     </parent>
-
-
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-restlet</artifactId>
     <name>Piriti Restlet</name>
 
@@ -20,10 +17,6 @@
         <dependency>
             <groupId>name.pehl.piriti</groupId>
             <artifactId>piriti-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt.inject</groupId>
-            <artifactId>gin</artifactId>
         </dependency>
         <dependency>
             <groupId>org.restlet.gwt</groupId>

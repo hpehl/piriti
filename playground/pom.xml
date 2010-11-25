@@ -1,17 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <!--
-        $LastChangedBy: harald.pehl 
-        $LastChangedRevision: 137 $
-    -->
-    <modelVersion>4.0.0</modelVersion>
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 1418 $ -->
+
+
     <parent>
         <groupId>name.pehl.piriti</groupId>
         <artifactId>piriti-parent</artifactId>
         <version>0.6.2</version>
     </parent>
-
-
+    <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-playground</artifactId>
     <name>Piriti Playground</name>
     <description>Playground to test and fix bugs reported in the Piriti Group</description>
@@ -53,13 +50,10 @@
                     <execution>
                         <id>(******** development mode ********)</id>
                         <configuration>
-                            <logLevel>INFO</logLevel>
-                            <extraJvmArgs>-Xmx512m</extraJvmArgs>
                             <htmlunit>FF3,IE7</htmlunit>
                             <mode>htmlunit</mode>
                             <productionMode>false</productionMode>
                             <testTimeOut>300</testTimeOut>
-                            <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.PlaygroundTest</module>
                             <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
                         </configuration>
@@ -70,13 +64,10 @@
                     <execution>
                         <id>(******** production mode ********)</id>
                         <configuration>
-                            <logLevel>INFO</logLevel>
-                            <extraJvmArgs>-Xmx512m</extraJvmArgs>
                             <htmlunit>FF3,IE7</htmlunit>
                             <mode>htmlunit</mode>
                             <productionMode>true</productionMode>
                             <testTimeOut>300</testTimeOut>
-                            <gwtVersion>${gwt.version}</gwtVersion>
                             <module>name.pehl.piriti.PlaygroundTest</module>
                             <includes>name/pehl/piriti/PlaygroundTestSuite.java</includes>
                         </configuration>
