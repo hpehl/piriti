@@ -107,6 +107,7 @@
 
 
     <build>
+        <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -137,6 +138,8 @@
                     <execution>
                         <goals>
                             <goal>compile</goal>
+                            <goal>compile</goal>
+                            <goal>resources</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -153,6 +156,15 @@
                     <additionalProjectnatures>
                         <projectnature>com.google.appengine.eclipse.core.gaeNature</projectnature>
                     </additionalProjectnatures>
+                    <additionalConfig>
+                        <file>
+                            <name>.settings/com.google.gwt.eclipse.core.prefs</name>
+                            <content><![CDATA[
+eclipse.preferences.version=1
+entryPointModules=name.pehl.piriti.sample.PiritiSample
+                            ]]></content>
+                        </file>
+                    </additionalConfig>
                     <excludes>
                         <exclude>com.google.gwt:gwt-user</exclude>
                         <exclude>com.google.appengine:appengine-api-1.0-sdk</exclude>
