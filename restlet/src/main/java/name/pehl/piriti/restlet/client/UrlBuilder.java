@@ -167,8 +167,12 @@ public class UrlBuilder
             else
             {
                 setHost(hostAndContext.substring(0, index));
-                setContext(hostAndContext.substring(index + 1));
-                context = hostAndContext.substring(index + 1);
+                String c = hostAndContext.substring(index + 1);
+                if (c == null || c.length() == 0)
+                {
+                    c = "/";
+                }
+                setContext(c);
             }
         }
         catch (IllegalArgumentException e)
@@ -224,19 +228,19 @@ public class UrlBuilder
         // http://www.foo.com:8080/bar/baz
         if (module != null)
         {
-            url.append("/").append(module);
+            url.append(module).append("/");
         }
 
         // http://www.foo.com:8080/bar/baz/v1
         if (version != null)
         {
-            url.append("/").append(version);
+            url.append(version).append("/");
         }
 
         // http://www.foo.com:8080/bar/baz/v1/a/b/c
         for (String path : resourcePaths)
         {
-            url.append("/").append(path);
+            url.append(path).append("/");
         }
 
         // http://www.foo.com:8080/bar/baz/v1/a/b/c?k0=v0&k1=v1

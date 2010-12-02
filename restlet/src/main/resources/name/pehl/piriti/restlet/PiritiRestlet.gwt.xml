@@ -9,4 +9,9 @@
     <inherits name="org.restlet.JSON" />
     <inherits name="org.restlet.XML" />
     <inherits name="name.pehl.piriti.Piriti" />
+    
+    <source path="client">
+        <exclude name="StandaloneUrlBuilder.java"/>
+        <exclude name="UrlBuilderTest.java"/>
+    </source>
 </module>
