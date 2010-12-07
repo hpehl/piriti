@@ -44,10 +44,6 @@
             <id>pehl-parent</id>
             <url>http://pehl-parent.googlecode.com/svn/repository</url>
         </repository>
-        <repository>
-            <id>piriti</id>
-            <url>http://piriti.googlecode.com/svn/repository</url>
-        </repository>
     </repositories>
 
 
