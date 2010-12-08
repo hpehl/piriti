@@ -68,19 +68,17 @@ public final class CodeGeneration
 
     private static void assignFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
     {
-        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == propertyContext.getClazz()
-                .getPackage();
-        JField field = null;
-        if (samePackage)
+        JField field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName());
+        if (field == null)
         {
-            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.DEFAULT,
-                    Modifier.PROTECTED, Modifier.PUBLIC);
+            String reason = String.format("Cannot assign %s: No field found in %s.", propertyContext.getName(),
+                    propertyContext.getClazz().getQualifiedSourceName());
+            skipProperty(writer, propertyContext, reason);
         }
-        else
-        {
-            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.PUBLIC);
-        }
-        if (field != null && !field.isFinal())
+
+        JClassType enclosingType = field.getEnclosingType();
+        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == enclosingType.getPackage();
+        if (!field.isFinal() && (field.isPublic() || (samePackage && (field.isDefaultAccess() || field.isProtected()))))
         {
             writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
                     .getValueVariable());
@@ -146,19 +144,17 @@ public final class CodeGeneration
 
     private static void readFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
     {
-        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == propertyContext.getClazz()
-                .getPackage();
-        JField field = null;
-        if (samePackage)
+        JField field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName());
+        if (field == null)
         {
-            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.DEFAULT,
-                    Modifier.PROTECTED, Modifier.PUBLIC);
+            String reason = String.format("Cannot read %s: No accessible field found in %s.",
+                    propertyContext.getName(), propertyContext.getClazz().getQualifiedSourceName());
+            skipProperty(writer, propertyContext, reason);
         }
-        else
-        {
-            field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName(), Modifier.PUBLIC);
-        }
-        if (field != null)
+
+        JClassType enclosingType = field.getEnclosingType();
+        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == enclosingType.getPackage();
+        if (!field.isFinal() && (field.isPublic() || (samePackage && (field.isDefaultAccess() || field.isProtected()))))
         {
             writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
                     propertyContext.getName());
