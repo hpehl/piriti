@@ -52,7 +52,6 @@
         <module>gxt</module>
         <module>playground</module>
         <module>restlet</module>
-        <module>sample</module>
     </modules>
 
 
