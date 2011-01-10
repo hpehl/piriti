@@ -57,7 +57,7 @@ import com.google.gwt.http.client.URL;
  * </tr>
  * <tr>
  * <td>version</td>
- * <td>In case you eant to include a version identifier in your resources you
+ * <td>In case you meant to include a version identifier in your resources you
  * can specify it with this part. If specified, must not be null / empty.</td>
  * <td>nothing</td>
  * <td>r123, v4.2, 56</td>
@@ -108,8 +108,8 @@ public class UrlBuilder
     private String context = null;
     private String module;
     private String version = null;
-    private List<String> resourcePaths = new ArrayList<String>();
-    private Map<String, String[]> queryParams = new HashMap<String, String[]>();
+    private final List<String> resourcePaths = new ArrayList<String>();
+    private final Map<String, String[]> queryParams = new HashMap<String, String[]>();
 
 
     // ----------------------------------------------------------- constructors
