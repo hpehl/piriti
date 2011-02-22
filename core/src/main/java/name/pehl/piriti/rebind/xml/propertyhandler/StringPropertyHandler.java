@@ -43,7 +43,7 @@ public class StringPropertyHandler extends AbstractPropertyHandler
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (propertyContext.isCustomConverter())
+        if (propertyContext.useCustomConverter())
         {
             writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
                     .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), propertyContext

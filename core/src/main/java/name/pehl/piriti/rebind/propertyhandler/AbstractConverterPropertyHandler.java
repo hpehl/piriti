@@ -40,7 +40,7 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueAsStringVariable());
         writer.indent();
         String converterVariable = propertyContext.getVariableNames().newVariableName("ReadConverter");
-        if (propertyContext.isCustomConverter())
+        if (propertyContext.useCustomConverter())
         {
             writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
                     .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
@@ -94,7 +94,7 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
     {
         writer.write("String %s = null;", propertyContext.getVariableNames().getValueAsStringVariable());
         String converterVariable = propertyContext.getVariableNames().newVariableName("WriteConverter");
-        if (propertyContext.isCustomConverter())
+        if (propertyContext.useCustomConverter())
         {
             writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
                     .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());

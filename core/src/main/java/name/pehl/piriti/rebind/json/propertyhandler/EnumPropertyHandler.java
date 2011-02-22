@@ -66,7 +66,7 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
 
-        if (propertyContext.isCustomConverter())
+        if (propertyContext.useCustomConverter())
         {
             writer.write("String %s = %s.stringValue();",
                     propertyContext.getVariableNames().getValueAsStringVariable(), jsonString);

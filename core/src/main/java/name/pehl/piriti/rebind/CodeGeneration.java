@@ -78,7 +78,7 @@ public final class CodeGeneration
 
         JClassType enclosingType = field.getEnclosingType();
         boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == enclosingType.getPackage();
-        if (!field.isFinal() && (field.isPublic() || (samePackage && (field.isDefaultAccess() || field.isProtected()))))
+        if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
         {
             writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
                     .getValueVariable());
@@ -154,7 +154,7 @@ public final class CodeGeneration
 
         JClassType enclosingType = field.getEnclosingType();
         boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == enclosingType.getPackage();
-        if (!field.isFinal() && (field.isPublic() || (samePackage && (field.isDefaultAccess() || field.isProtected()))))
+        if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
         {
             writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
                     propertyContext.getName());
@@ -214,8 +214,8 @@ public final class CodeGeneration
         String converterVariable = propertyContext.getVariableNames().newVariableName("WriteConverter");
         writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
                 .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
-        writer.write("%s.append(%s.serialize(%s, %s));", propertyContext.getVariableNames().getBuilderVariable(),
-                converterVariable, propertyContext.getVariableNames().getValueVariable(),
+        writer.write("%s.append(%s.serialize(JsonUtils.escapeValue(%s), %s));", propertyContext.getVariableNames()
+                .getBuilderVariable(), converterVariable, propertyContext.getVariableNames().getValueVariable(),
                 propertyContext.getFormat() == null ? "null" : "\"" + propertyContext.getFormat() + "\"");
     }
 
@@ -350,27 +350,24 @@ public final class CodeGeneration
      * 
      * @param writer
      * @param propertyContext
-     * @param quote
+     * @param asString
      *            Whether to quote the value.
      */
-    public static void appendJsonValue(IndentedWriter writer, PropertyContext propertyContext, boolean quote)
+    public static void appendJsonValue(IndentedWriter writer, PropertyContext propertyContext, boolean asString)
     {
-        if (propertyContext.isCustomConverter() || quote)
-        {
-            writer.write("%s.append(\"\\\"\");", propertyContext.getVariableNames().getBuilderVariable());
-        }
-        if (propertyContext.isCustomConverter())
+        if (propertyContext.useCustomConverter())
         {
             useConverterForWriting(writer, propertyContext);
+        }
+        else if (asString)
+        {
+            writer.write("%s.append(JsonUtils.escapeValue(%s));", propertyContext.getVariableNames()
+                    .getBuilderVariable(), propertyContext.getVariableNames().getValueVariable());
         }
         else
         {
             writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
                     .getVariableNames().getValueVariable());
-        }
-        if (propertyContext.isCustomConverter() || quote)
-        {
-            writer.write("%s.append(\"\\\"\");", propertyContext.getVariableNames().getBuilderVariable());
         }
     }
 }

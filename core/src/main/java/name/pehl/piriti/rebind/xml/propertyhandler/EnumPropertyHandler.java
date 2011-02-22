@@ -35,7 +35,7 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
                 .getPath(), propertyContext.isStripWsnl());
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueAsStringVariable());
         writer.indent();
-        if (propertyContext.isCustomConverter())
+        if (propertyContext.useCustomConverter())
         {
             CodeGeneration.useConverterForReading(writer, propertyContext);
         }

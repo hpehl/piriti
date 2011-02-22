@@ -49,6 +49,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createImports(writer);
+        writer.write("import com.google.gwt.core.client.JsonUtils;");
         writer.write("import com.google.gwt.json.client.*;");
         writer.write("import name.pehl.piriti.client.json.*;");
         writer.write("import name.pehl.totoe.json.client.*;");

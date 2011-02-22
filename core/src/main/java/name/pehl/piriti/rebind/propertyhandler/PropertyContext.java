@@ -161,7 +161,7 @@ public class PropertyContext
 
     public boolean isGxt()
     {
-        Set<JClassType> hierarchy = clazz.getFlattenedSupertypeHierarchy();
+        Set<? extends JClassType> hierarchy = clazz.getFlattenedSupertypeHierarchy();
         if (hierarchy != null)
         {
             for (JClassType h : hierarchy)
@@ -324,7 +324,7 @@ public class PropertyContext
     public boolean isReader()
     {
         boolean reader = false;
-        Set<JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
+        Set<? extends JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
         if (hierarchy != null)
         {
             for (JClassType h : hierarchy)
@@ -348,7 +348,7 @@ public class PropertyContext
     public boolean isWriter()
     {
         boolean writer = false;
-        Set<JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
+        Set<? extends JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
         if (hierarchy != null)
         {
             for (JClassType h : hierarchy)
@@ -426,7 +426,7 @@ public class PropertyContext
     }
 
 
-    public boolean isCustomConverter()
+    public boolean useCustomConverter()
     {
         return converter != null && !NoopConverter.class.equals(converter);
     }

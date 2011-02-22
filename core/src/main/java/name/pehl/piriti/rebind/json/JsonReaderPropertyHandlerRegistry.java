@@ -54,7 +54,7 @@ public class JsonReaderPropertyHandlerRegistry extends JsonPropertyHandlerRegist
             // the type is int, long, float or double use the converter to
             // convert the value, which is expected to be a string!
             JType fieldType = propertyContext.getType();
-            if ((propertyContext.getFormat() != null || propertyContext.isCustomConverter())
+            if ((propertyContext.getFormat() != null || propertyContext.useCustomConverter())
                     && (TypeUtils.isInteger(fieldType) || TypeUtils.isLong(fieldType) || TypeUtils.isFloat(fieldType) || TypeUtils
                             .isDouble(fieldType)))
             {
