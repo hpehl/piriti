@@ -14,7 +14,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.pehl.piriti</groupId>
     <artifactId>piriti-parent</artifactId>
-    <version>0.6.3</version>
+    <version>0.6.4</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
     <description>Annotation based JSON and XML mapper for GWT</description>
@@ -72,6 +72,14 @@
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-assistedinject</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
         </dependency>
         <dependency>
             <groupId>aopalliance</groupId>

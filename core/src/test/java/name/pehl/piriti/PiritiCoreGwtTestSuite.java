@@ -2,21 +2,21 @@ package name.pehl.piriti;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.client.gwttest.animal.JsonAnimalTest;
-import name.pehl.piriti.client.gwttest.animal.XmlAnimalTest;
-import name.pehl.piriti.client.gwttest.backandforth.JsonBackAndForthTest;
-import name.pehl.piriti.client.gwttest.backandforth.XmlBackAndForthTest;
-import name.pehl.piriti.client.gwttest.book.JsonBookTest;
-import name.pehl.piriti.client.gwttest.book.XmlBookTest;
-import name.pehl.piriti.client.gwttest.employee.XmlEmployeeTest;
-import name.pehl.piriti.client.gwttest.fat.JsonFatGlobalItemTest;
-import name.pehl.piriti.client.gwttest.fat.XmlFatGlobalItemTest;
-import name.pehl.piriti.client.gwttest.lotteryticket.LotteryTicketTest;
-import name.pehl.piriti.client.gwttest.shop.JsonShopTest;
-import name.pehl.piriti.client.gwttest.shop.XmlShopTest;
-import name.pehl.piriti.client.gwttest.simple.JsonAmoebaReaderTest;
-import name.pehl.piriti.client.gwttest.simple.JsonAmoebaWriterTest;
-import name.pehl.piriti.client.gwttest.simple.XmlAmoebaReaderTest;
+import name.pehl.piriti.client.gwttest.constraints.JsonAmoebaReaderTest;
+import name.pehl.piriti.client.gwttest.constraints.JsonAmoebaWriterTest;
+import name.pehl.piriti.client.gwttest.constraints.XmlAmoebaReaderTest;
+import name.pehl.piriti.client.gwttest.converter.JsonBackAndForthTest;
+import name.pehl.piriti.client.gwttest.converter.XmlBackAndForthTest;
+import name.pehl.piriti.client.gwttest.external.JsonShopTest;
+import name.pehl.piriti.client.gwttest.external.XmlShopTest;
+import name.pehl.piriti.client.gwttest.inheritance.JsonAnimalTest;
+import name.pehl.piriti.client.gwttest.inheritance.XmlAnimalTest;
+import name.pehl.piriti.client.gwttest.namespaces.LotteryTicketTest;
+import name.pehl.piriti.client.gwttest.references.JsonBookTest;
+import name.pehl.piriti.client.gwttest.references.XmlBookTest;
+import name.pehl.piriti.client.gwttest.references.id.XmlEmployeeTest;
+import name.pehl.piriti.client.gwttest.types.JsonFatGlobalItemTest;
+import name.pehl.piriti.client.gwttest.types.XmlFatGlobalItemTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
