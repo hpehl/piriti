@@ -1,0 +1,4 @@
+{
+  "data": "A \"quoted\" string with \u00fbnicode, control characters like \n\t\r and a slash: \"\\\"",
+  "converterData": "A \"quoted\" string with \u00fbnicode, control characters like \n\t\r and a slash: \"\\\"",
+}

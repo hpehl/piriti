@@ -69,6 +69,18 @@ public class SkinnyNestedItem
 
     @Json
     @Xml
+    public java.sql.Date sqlDate;
+
+    @Json
+    @Xml
+    public java.sql.Time time;
+
+    @Json
+    @Xml
+    public java.sql.Timestamp timestamp;
+
+    @Json
+    @Xml
     public Amount amount;
 
     @Json

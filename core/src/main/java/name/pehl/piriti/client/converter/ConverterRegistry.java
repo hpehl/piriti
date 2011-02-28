@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.converter;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,12 +12,15 @@ import java.util.Map;
  * <li>Boolean.class --> {@link BooleanConverter}
  * <li>Byte.class --> {@link ByteConverter}
  * <li>Character.class --> {@link CharacterConverter}
- * <li>Date.class --> {@link DateConverter}
+ * <li>java.util.Date.class --> {@link DateConverter}
+ * <li>java.sql.Date.class --> {@link SqlDateConverter}
  * <li>Double.class --> {@link DoubleConverter}
  * <li>Float.class --> {@link FloatConverter}
  * <li>Integer.class --> {@link IntegerConverter}
  * <li>Long.class --> {@link LongConverter}
  * <li>Short.class --> {@link ShortConverter}
+ * <li>Time.class --> {@link TimeConverter}
+ * <li>Timestamp.class --> {@link TimestampConverter}
  * </ul>
  * 
  * @author $LastChangedBy: harald.pehl $
@@ -43,12 +48,15 @@ public final class ConverterRegistry
      * <li>Boolean.class --> {@link BooleanConverter}
      * <li>Byte.class --> {@link ByteConverter}
      * <li>Character.class --> {@link CharacterConverter}
-     * <li>Date.class --> {@link DateConverter}
+     * <li>java.util.Date.class --> {@link DateConverter}
+     * <li>java.sql.Date.class --> {@link SqlDateConverter}
      * <li>Double.class --> {@link DoubleConverter}
      * <li>Float.class --> {@link FloatConverter}
      * <li>Integer.class --> {@link IntegerConverter}
      * <li>Long.class --> {@link LongConverter}
      * <li>Short.class --> {@link ShortConverter}
+     * <li>Time.class --> {@link TimeConverter}
+     * <li>Timestamp.class --> {@link TimestampConverter}
      * </ul>
      */
     private void registerDefaultConverter()
@@ -57,11 +65,14 @@ public final class ConverterRegistry
         register(Byte.class, new ByteConverter());
         register(Character.class, new CharacterConverter());
         register(Date.class, new DateConverter());
+        register(java.sql.Date.class, new SqlDateConverter());
         register(Double.class, new DoubleConverter());
         register(Float.class, new FloatConverter());
         register(Integer.class, new IntegerConverter());
         register(Long.class, new LongConverter());
         register(Short.class, new ShortConverter());
+        register(Time.class, new TimeConverter());
+        register(Timestamp.class, new TimestampConverter());
     }
 
 

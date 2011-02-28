@@ -361,7 +361,7 @@ public final class CodeGeneration
         }
         else if (asString)
         {
-            writer.write("%s.append(JsonUtils.escapeValue(%s));", propertyContext.getVariableNames()
+            writer.write("%s.append(JsonUtils.escapeValue(String.valueOf(%s)));", propertyContext.getVariableNames()
                     .getBuilderVariable(), propertyContext.getVariableNames().getValueVariable());
         }
         else

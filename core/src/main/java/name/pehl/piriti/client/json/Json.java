@@ -28,9 +28,10 @@ import com.google.gwt.json.client.JSONString;
  * which is used to parse / serialize the JSON data to / from the properties
  * type.
  * <p>
- * The annotation must be placed on a field in the POJO or must be part of the
- * {@code @}{@link JsonMappings} annotation. When placed on a field and the
- * field is not accessible, Piriti tries to use setters / getters instead.
+ * The annotation can be placed either on the POJO, single fields or must be
+ * part of the {@code @}{@link JsonMappings} annotation. When placed on a field
+ * and the field is not accessible, Piriti tries to use setters / getters
+ * instead.
  * <p>
  * The following types are supported:
  * <table border="1" cellspacing="2" cellpadding="2">
@@ -162,7 +163,7 @@ import com.google.gwt.json.client.JSONString;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.FIELD)
+@Target({ElementType.TYPE, ElementType.FIELD})
 public @interface Json
 {
     /**

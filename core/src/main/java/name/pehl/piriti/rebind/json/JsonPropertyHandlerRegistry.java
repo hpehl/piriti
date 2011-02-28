@@ -1,5 +1,7 @@
 package name.pehl.piriti.rebind.json;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -68,6 +70,9 @@ public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegi
      * <ul>
      * <li>char, Character
      * <li>Date
+     * <li>java.sql.Date
+     * <li>Time
+     * <li>Timestamp
      * </ul>
      * <li>{@linkplain StringPropertyHandler}
      * <ul>
@@ -115,6 +120,9 @@ public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegi
         registry.put(JPrimitiveType.CHAR.getQualifiedSourceName(), handler);
         registry.put(JPrimitiveType.CHAR.getQualifiedBoxedSourceName(), handler);
         registry.put(Date.class.getName(), handler);
+        registry.put(java.sql.Date.class.getName(), handler);
+        registry.put(Time.class.getName(), handler);
+        registry.put(Timestamp.class.getName(), handler);
 
         // String
         handler = newStringFieldHandler();

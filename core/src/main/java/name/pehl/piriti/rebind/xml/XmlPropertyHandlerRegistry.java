@@ -1,7 +1,10 @@
 package name.pehl.piriti.rebind.xml;
 
-import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.*;
+import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.ID;
+import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.IDREF;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -58,11 +61,14 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
      * <li>Byte
      * <li>Character
      * <li>Date
+     * <li>java.sql.Date
      * <li>Double
      * <li>Float
      * <li>Integer
      * <li>Long
      * <li>Short
+     * <li>Time
+     * <li>Timestamp
      * </ul>
      * <li>{@linkplain StringPropertyHandler}
      * <ul>
@@ -91,11 +97,14 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
         registry.put(Byte.class.getName(), handler);
         registry.put(Character.class.getName(), handler);
         registry.put(Date.class.getName(), handler);
+        registry.put(java.sql.Date.class.getName(), handler);
         registry.put(Double.class.getName(), handler);
         registry.put(Float.class.getName(), handler);
         registry.put(Integer.class.getName(), handler);
         registry.put(Long.class.getName(), handler);
         registry.put(Short.class.getName(), handler);
+        registry.put(Time.class.getName(), handler);
+        registry.put(Timestamp.class.getName(), handler);
 
         // String
         handler = newStringFieldHandler();

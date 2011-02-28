@@ -59,6 +59,9 @@ public abstract class AbstractFatGlobalItemTest extends AbstractPiritiTest
         assertEquals('a', fgi.characterPrimitive);
         assertEquals('b', fgi.characterObject.charValue());
         assertDate(MY_BIRTHDAY, fgi.date);
+        assertDate(MY_SQL_BIRTHDAY, fgi.sqlDate);
+        assertEquals(TIMESTAMP, fgi.timestamp);
+        assertEquals(TIME, fgi.time);
         assertEquals(Amount.THREE, fgi.amount);
         assertEquals(4.5, fgi.doublePrimitive, .05);
         assertEquals(6.7, fgi.doubleObject.doubleValue(), .05);
@@ -198,6 +201,9 @@ public abstract class AbstractFatGlobalItemTest extends AbstractPiritiTest
         assertEquals('a', sni.characterPrimitive);
         assertEquals('b', sni.characterObject.charValue());
         assertDate(MY_BIRTHDAY, sni.date);
+        assertDate(MY_SQL_BIRTHDAY, sni.sqlDate);
+        assertEquals(TIMESTAMP, sni.timestamp);
+        assertEquals(TIME, sni.time);
         assertEquals(Amount.THREE, sni.amount);
         assertEquals(4.5, sni.doublePrimitive, .05);
         assertEquals(6.7, sni.doubleObject.doubleValue(), .05);
