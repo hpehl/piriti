@@ -49,8 +49,9 @@
 
     <modules>
         <module>core</module>
+        <!-- Deactivated as current GXT 2.2.0 is not compatible with GWT 2.2.0 
         <module>gxt</module>
-        <module>playground</module>
+        <module>playground</module> -->
         <module>restlet</module>
     </modules>
 

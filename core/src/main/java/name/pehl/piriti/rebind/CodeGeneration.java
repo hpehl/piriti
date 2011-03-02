@@ -214,9 +214,22 @@ public final class CodeGeneration
         String converterVariable = propertyContext.getVariableNames().newVariableName("WriteConverter");
         writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
                 .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
-        writer.write("%s.append(%s.serialize(JsonUtils.escapeValue(%s), %s));", propertyContext.getVariableNames()
-                .getBuilderVariable(), converterVariable, propertyContext.getVariableNames().getValueVariable(),
-                propertyContext.getFormat() == null ? "null" : "\"" + propertyContext.getFormat() + "\"");
+        // TODO Check JsonUtils.escape() parameter for null!
+        String convertedValue = propertyContext.getVariableNames().newVariableName("ConvertedValue");
+        writer.write("String %s = %s.serialize(%s, %s);", convertedValue, converterVariable, propertyContext
+                .getVariableNames().getValueVariable(), propertyContext.getFormat() == null ? "null" : "\""
+                + propertyContext.getFormat() + "\"");
+        writer.write("if (%s != null) {", convertedValue);
+        writer.indent();
+        writer.write("%s.append(JsonUtils.escapeValue(%s));", propertyContext.getVariableNames().getBuilderVariable(),
+                convertedValue);
+        writer.outdent();
+        writer.write("}");
+        writer.write("else {");
+        writer.indent();
+        writer.write("%s.append(\"null\");", propertyContext.getVariableNames().getBuilderVariable());
+        writer.outdent();
+        writer.write("}");
     }
 
 
