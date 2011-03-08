@@ -260,6 +260,16 @@
       "1",
       "2"
     ],
+    "arrayListOfStrings": [
+      "0",
+      "1",
+      "2"
+    ],
+    "linkedListOfStrings": [
+      "0",
+      "1",
+      "2"
+    ],
     "listOfSkinnyNestedItems": [
       {
         "booleanPrimitive": true,
@@ -343,6 +353,21 @@
       2
     ],
     "setOfStrings": [
+      "0",
+      "1",
+      "2"
+    ],
+    "hashSetOfStrings": [
+      "0",
+      "1",
+      "2"
+    ],
+    "linkedHashSetOfStrings": [
+      "0",
+      "1",
+      "2"
+    ],
+    "treeSetOfStrings": [
       "0",
       "1",
       "2"
@@ -704,6 +729,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -787,6 +822,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -1107,6 +1157,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -1190,6 +1250,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -1510,6 +1585,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -1593,6 +1678,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -2002,6 +2102,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -2085,6 +2195,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -2405,6 +2530,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -2488,6 +2623,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -2808,6 +2958,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -2891,6 +3051,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -3057,6 +3232,16 @@
     2
   ],
   "listOfStrings": [
+    "0",
+    "1",
+    "2"
+  ],
+  "arrayListOfStrings": [
+    "0",
+    "1",
+    "2"
+  ],
+  "linkedListOfStrings": [
     "0",
     "1",
     "2"
@@ -3300,6 +3485,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -3383,6 +3578,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -3703,6 +3913,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -3786,6 +4006,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -4106,6 +4341,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -4189,6 +4434,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -4355,6 +4615,21 @@
     2
   ],
   "setOfStrings": [
+    "0",
+    "1",
+    "2"
+  ],
+  "hashSetOfStrings": [
+    "0",
+    "1",
+    "2"
+  ],
+  "linkedHashSetOfStrings": [
+    "0",
+    "1",
+    "2"
+  ],
+  "treeSetOfStrings": [
     "0",
     "1",
     "2"
@@ -4598,6 +4873,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -4681,6 +4966,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -5001,6 +5301,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -5084,6 +5394,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"
@@ -5404,6 +5729,16 @@
         "1",
         "2"
       ],
+      "arrayListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedListOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
       "listOfSkinnyNestedItems": [
         {
           "booleanPrimitive": true,
@@ -5487,6 +5822,21 @@
         2
       ],
       "setOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "hashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "linkedHashSetOfStrings": [
+        "0",
+        "1",
+        "2"
+      ],
+      "treeSetOfStrings": [
         "0",
         "1",
         "2"

@@ -13,30 +13,37 @@
         <product id="tym">
             <name>Tyhmian</name>
             <price>0.5</price>
+            <available>true</available>
         </product>
         <product id="ros">
             <name>Rosemary</name>
             <price>0.75</price>
+            <available>true</available>
         </product>
         <product id="ons">
             <name>Onions</name>
             <price>1.5</price>
+            <available>true</available>
         </product>
         <product id="crt">
             <name>Carrots</name>
             <price>2</price>
+            <available>true</available>
         </product>
         <product id="grl">
             <name>Garlic</name>
             <price>2.5</price>
+            <available>true</available>
         </product>
         <product id="pts">
             <name>Potatoes</name>
             <price>3</price>
+            <available>true</available>
         </product>
         <product id="lft">
             <name>Lamb Fillet</name>
             <price>10</price>
+            <available>true</available>
         </product>
     </products>
 

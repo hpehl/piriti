@@ -150,6 +150,16 @@ public abstract class AbstractFatGlobalItemTest extends AbstractPiritiTest
         {
             assertEquals(String.valueOf(i), fgi.listOfStrings.get(i));
         }
+        assertEquals(SIZE, fgi.arrayListOfStrings.size());
+        for (int i = 0; i < SIZE; i++)
+        {
+            assertEquals(String.valueOf(i), fgi.arrayListOfStrings.get(i));
+        }
+        assertEquals(SIZE, fgi.linkedListOfStrings.size());
+        for (int i = 0; i < SIZE; i++)
+        {
+            assertEquals(String.valueOf(i), fgi.linkedListOfStrings.get(i));
+        }
         if (withNestedFatGlobalItems)
         {
             assertFatGlobalItems(fgi.listOfFatGlobalItems, false);
@@ -173,6 +183,15 @@ public abstract class AbstractFatGlobalItemTest extends AbstractPiritiTest
         assertEquals(SIZE, fgi.setOfStrings.size());
         fgi.setOfStrings.removeAll(setOfStringsFixture);
         assertTrue(fgi.setOfStrings.isEmpty());
+        assertEquals(SIZE, fgi.hashSetOfStrings.size());
+        fgi.hashSetOfStrings.removeAll(setOfStringsFixture);
+        assertTrue(fgi.hashSetOfStrings.isEmpty());
+        assertEquals(SIZE, fgi.linkedHashSetOfStrings.size());
+        fgi.linkedHashSetOfStrings.removeAll(setOfStringsFixture);
+        assertTrue(fgi.linkedHashSetOfStrings.isEmpty());
+        assertEquals(SIZE, fgi.treeSetOfStrings.size());
+        fgi.treeSetOfStrings.removeAll(setOfStringsFixture);
+        assertTrue(fgi.treeSetOfStrings.isEmpty());
         if (withNestedFatGlobalItems)
         {
             assertFatGlobalItems(fgi.setOfFatGlobalItems, false);

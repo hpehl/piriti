@@ -86,7 +86,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         if (collectionImplementation == null)
         {
             // the field type is already an implementation
-            collectionImplementation = propertyContext.getType().getParameterizedQualifiedSourceName();
+            collectionImplementation = propertyContext.getType().getQualifiedSourceName();
         }
         writer.write("%s = new %s<%s>();", propertyContext.getVariableNames().getValueVariable(),
                 collectionImplementation, parameterType.getQualifiedSourceName());

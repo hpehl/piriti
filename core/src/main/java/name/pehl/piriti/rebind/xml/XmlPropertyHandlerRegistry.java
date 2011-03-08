@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,7 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
      * <li>LinkedList
      * <li>Set
      * <li>HashSet
+     * <li>LinkedHashSet
      * <li>SortedSet
      * <li>TreeSet
      * </ul>
@@ -118,6 +120,7 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
         registry.put(LinkedList.class.getName(), handler);
         registry.put(Set.class.getName(), handler);
         registry.put(HashSet.class.getName(), handler);
+        registry.put(LinkedHashSet.class.getName(), handler);
         registry.put(SortedSet.class.getName(), handler);
         registry.put(TreeSet.class.getName(), handler);
     }

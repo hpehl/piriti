@@ -18,7 +18,8 @@
                 "product": {
                     "id": "tym",
                     "name": "Tyhmian",
-                    "price": 0.5
+                    "price": 0.5,
+                    "available": true
                 },
                 "amount": 1
             },
@@ -26,7 +27,8 @@
                 "product": {
                     "id": "lft",
                     "name": "Lamb Fillet",
-                    "price": 10
+                    "price": 10,
+                    "available": true
                 },
                 "amount": 2
             },
@@ -34,7 +36,8 @@
                 "product": {
                     "id": "crt",
                     "name": "Carrots",
-                    "price": 2
+                    "price": 2,
+                    "available": true
                 },
                 "amount": 7
             },
@@ -42,7 +45,8 @@
                 "product": {
                     "id": "pts",
                     "name": "Potatoes",
-                    "price": 3
+                    "price": 3,
+                    "available": true
                 },
                 "amount": 6
             },
@@ -50,7 +54,8 @@
                 "product": {
                     "id": "ons",
                     "name": "Onions",
-                    "price": 1.5
+                    "price": 1.5,
+                    "available": true
                 },
                 "amount": 3
             },
@@ -58,7 +63,8 @@
                 "product": {
                     "id": "grl",
                     "name": "Garlic",
-                    "price": 2.5
+                    "price": 2.5,
+                    "available": true
                 },
                 "amount": 4
             },
@@ -66,7 +72,8 @@
                 "product": {
                     "id": "ros",
                     "name": "Rosemary",
-                    "price": 0.75
+                    "price": 0.75,
+                    "available": true
                 },
                 "amount": 5
             }
@@ -76,37 +83,44 @@
         {
             "id": "tym",
             "name": "Tyhmian",
-            "price": 0.5
+            "price": 0.5,
+            "available": true
         },
         {
             "id": "ros",
             "name": "Rosemary",
-            "price": 0.75
+            "price": 0.75,
+            "available": true
         },
         {
             "id": "ons",
             "name": "Onions",
-            "price": 1.5
+            "price": 1.5,
+            "available": true
         },
         {
             "id": "crt",
             "name": "Carrots",
-            "price": 2
+            "price": 2,
+            "available": true
         },
         {
             "id": "grl",
             "name": "Garlic",
-            "price": 2.5
+            "price": 2.5,
+            "available": true
         },
         {
             "id": "pts",
             "name": "Potatoes",
-            "price": 3
+            "price": 3,
+            "available": true
         },
         {
             "id": "lft",
             "name": "Lamb Fillet",
-            "price": 10
+            "price": 10,
+            "available": true
         }
     ]
 }

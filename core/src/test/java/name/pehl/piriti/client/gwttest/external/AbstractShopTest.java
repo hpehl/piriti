@@ -67,5 +67,6 @@ public abstract class AbstractShopTest extends AbstractPiritiTest
         assertEquals("tym", product.getId());
         assertEquals("Tyhmian", product.getName());
         assertEquals(.5, product.getPrice(), .01);
+        assertTrue(product.isAvailable());
     }
 }

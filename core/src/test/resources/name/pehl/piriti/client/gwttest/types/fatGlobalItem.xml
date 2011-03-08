@@ -242,6 +242,12 @@
         <listOfStrings>0</listOfStrings>
         <listOfStrings>1</listOfStrings>
         <listOfStrings>2</listOfStrings>
+        <arrayListOfStrings>0</arrayListOfStrings>
+        <arrayListOfStrings>1</arrayListOfStrings>
+        <arrayListOfStrings>2</arrayListOfStrings>
+        <linkedListOfStrings>0</linkedListOfStrings>
+        <linkedListOfStrings>1</linkedListOfStrings>
+        <linkedListOfStrings>2</linkedListOfStrings>
         <listOfSkinnyNestedItems>
             <skinnyNestedItem>
                 <booleanPrimitive>true</booleanPrimitive>
@@ -322,6 +328,15 @@
         <setOfStrings>0</setOfStrings>
         <setOfStrings>1</setOfStrings>
         <setOfStrings>2</setOfStrings>
+        <hashSetOfStrings>0</hashSetOfStrings>
+        <hashSetOfStrings>1</hashSetOfStrings>
+        <hashSetOfStrings>2</hashSetOfStrings>
+        <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+        <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+        <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+        <treeSetOfStrings>0</treeSetOfStrings>
+        <treeSetOfStrings>1</treeSetOfStrings>
+        <treeSetOfStrings>2</treeSetOfStrings>
         <setOfSkinnyNestedItems>
             <skinnyNestedItem>
                 <booleanPrimitive>true</booleanPrimitive>
@@ -647,6 +662,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -727,6 +748,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -1018,6 +1048,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -1098,6 +1134,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -1389,6 +1434,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -1469,6 +1520,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -1842,6 +1902,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -1922,6 +1988,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -2213,6 +2288,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -2293,6 +2374,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -2584,6 +2674,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -2664,6 +2760,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -2820,6 +2925,12 @@
     <listOfStrings>0</listOfStrings>
     <listOfStrings>1</listOfStrings>
     <listOfStrings>2</listOfStrings>
+    <arrayListOfStrings>0</arrayListOfStrings>
+    <arrayListOfStrings>1</arrayListOfStrings>
+    <arrayListOfStrings>2</arrayListOfStrings>
+    <linkedListOfStrings>0</linkedListOfStrings>
+    <linkedListOfStrings>1</linkedListOfStrings>
+    <linkedListOfStrings>2</linkedListOfStrings>
     <listOfFatGlobalItems>
         <fatGlobalItem>
             <booleanPrimitive>true</booleanPrimitive>
@@ -3037,6 +3148,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -3117,6 +3234,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -3408,6 +3534,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -3488,6 +3620,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -3779,6 +3920,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -3859,6 +4006,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -4015,6 +4171,15 @@
     <setOfStrings>0</setOfStrings>
     <setOfStrings>1</setOfStrings>
     <setOfStrings>2</setOfStrings>
+    <hashSetOfStrings>0</hashSetOfStrings>
+    <hashSetOfStrings>1</hashSetOfStrings>
+    <hashSetOfStrings>2</hashSetOfStrings>
+    <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+    <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+    <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+    <treeSetOfStrings>0</treeSetOfStrings>
+    <treeSetOfStrings>1</treeSetOfStrings>
+    <treeSetOfStrings>2</treeSetOfStrings>
     <setOfFatGlobalItems>
         <fatGlobalItem>
             <booleanPrimitive>true</booleanPrimitive>
@@ -4232,6 +4397,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -4312,6 +4483,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -4603,6 +4783,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -4683,6 +4869,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -4974,6 +5169,12 @@
             <listOfStrings>0</listOfStrings>
             <listOfStrings>1</listOfStrings>
             <listOfStrings>2</listOfStrings>
+            <arrayListOfStrings>0</arrayListOfStrings>
+            <arrayListOfStrings>1</arrayListOfStrings>
+            <arrayListOfStrings>2</arrayListOfStrings>
+            <linkedListOfStrings>0</linkedListOfStrings>
+            <linkedListOfStrings>1</linkedListOfStrings>
+            <linkedListOfStrings>2</linkedListOfStrings>
             <listOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>
@@ -5054,6 +5255,15 @@
             <setOfStrings>0</setOfStrings>
             <setOfStrings>1</setOfStrings>
             <setOfStrings>2</setOfStrings>
+            <hashSetOfStrings>0</hashSetOfStrings>
+            <hashSetOfStrings>1</hashSetOfStrings>
+            <hashSetOfStrings>2</hashSetOfStrings>
+            <linkedHashSetOfStrings>0</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>1</linkedHashSetOfStrings>
+            <linkedHashSetOfStrings>2</linkedHashSetOfStrings>
+            <treeSetOfStrings>0</treeSetOfStrings>
+            <treeSetOfStrings>1</treeSetOfStrings>
+            <treeSetOfStrings>2</treeSetOfStrings>
             <setOfSkinnyNestedItems>
                 <skinnyNestedItem>
                     <booleanPrimitive>true</booleanPrimitive>

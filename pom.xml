@@ -49,9 +49,8 @@
 
     <modules>
         <module>core</module>
-        <!-- Deactivated as current GXT 2.2.0 is not compatible with GWT 2.2.0 
         <module>gxt</module>
-        <module>playground</module> -->
+        <module>playground</module>
         <module>restlet</module>
     </modules>
 
@@ -135,4 +134,20 @@
             </plugin>
         </plugins>
     </build>
+    
+    
+    <profiles>
+        <!-- 
+            Contains only the modules which are compatible with GWT 2.2.0. 
+            As GXT 2.2.0 is *not* GWT 2.2.0 compatible all modules with 
+            GXT dependencies are excluded in this profile 
+        -->
+        <profile>
+            <id>gwt2.2</id>
+            <modules>
+                <module>core</module>
+                <module>restlet</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

@@ -5,9 +5,9 @@ import name.pehl.piriti.client.json.JsonMappings;
 import name.pehl.piriti.client.json.JsonReader;
 import name.pehl.piriti.client.json.JsonWriter;
 import name.pehl.piriti.client.xml.Xml;
-import name.pehl.piriti.client.xml.XmlMappings;
 import name.pehl.piriti.client.xml.XmlId;
 import name.pehl.piriti.client.xml.XmlIdRef;
+import name.pehl.piriti.client.xml.XmlMappings;
 import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.client.xml.XmlWriter;
 
@@ -40,7 +40,8 @@ public class ShopReader
     @JsonMappings({
         @Json(property = "id"), 
         @Json(property = "name"), 
-        @Json(property = "price")})
+        @Json(property = "price"),
+        @Json(property = "available")})
     public interface ProductJsonReader extends JsonReader<Product> {}
     public static final ProductJsonReader PRODUCT_JSON_READER = GWT.create(ProductJsonReader.class);
 
@@ -77,7 +78,8 @@ public class ShopReader
     @JsonMappings({
         @Json(property = "id"), 
         @Json(property = "name"), 
-        @Json(property = "price")})
+        @Json(property = "price"),
+        @Json(property = "available")})
     public interface ProductJsonWriter extends JsonWriter<Product> {}
     public static final ProductJsonWriter PRODUCT_JSON_WRITER = GWT.create(ProductJsonWriter.class);
 
@@ -116,7 +118,8 @@ public class ShopReader
         id = @XmlId(property = "id"), 
         value = {
             @Xml(property = "name"), 
-            @Xml(property = "price")})
+            @Xml(property = "price"),
+            @Xml(property = "available")})
     public interface ProductXmlReader extends XmlReader<Product> {}
     public static final ProductXmlReader PRODUCT_XML_READER = GWT.create(ProductXmlReader.class);
 
@@ -155,7 +158,8 @@ public class ShopReader
         id = @XmlId(property = "id"), 
         value = {
             @Xml(property = "name"), 
-            @Xml(property = "price")})
+            @Xml(property = "price"),
+            @Xml(property = "available")})
     public interface ProductXmlWriter extends XmlWriter<Product> {}
     public static final ProductXmlWriter PRODUCT_XML_WRITER = GWT.create(ProductXmlWriter.class);
 

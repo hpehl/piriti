@@ -16,7 +16,9 @@ import name.pehl.piriti.client.gwttest.namespaces.LotteryTicketTest;
 import name.pehl.piriti.client.gwttest.references.JsonBookTest;
 import name.pehl.piriti.client.gwttest.references.XmlBookTest;
 import name.pehl.piriti.client.gwttest.references.id.XmlEmployeeTest;
+import name.pehl.piriti.client.gwttest.types.JsonBooleansTest;
 import name.pehl.piriti.client.gwttest.types.JsonFatGlobalItemTest;
+import name.pehl.piriti.client.gwttest.types.XmlBooleansTest;
 import name.pehl.piriti.client.gwttest.types.XmlFatGlobalItemTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
@@ -45,6 +47,8 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
 
         suite.addTestSuite(XmlEmployeeTest.class);
 
+        suite.addTestSuite(JsonBooleansTest.class);
+        suite.addTestSuite(XmlBooleansTest.class);
         suite.addTestSuite(JsonFatGlobalItemTest.class);
         suite.addTestSuite(XmlFatGlobalItemTest.class);
 

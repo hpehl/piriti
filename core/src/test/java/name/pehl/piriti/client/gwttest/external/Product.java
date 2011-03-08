@@ -2,13 +2,15 @@ package name.pehl.piriti.client.gwttest.external;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision:
+ *          1454 $
  */
 public class Product
 {
     private String id;
     private String name;
     private double price;
+    private boolean available;
 
 
     public String getId()
@@ -44,5 +46,17 @@ public class Product
     public void setPrice(double price)
     {
         this.price = price;
+    }
+
+
+    public boolean isAvailable()
+    {
+        return available;
+    }
+
+
+    public void setAvailable(boolean available)
+    {
+        this.available = available;
     }
 }

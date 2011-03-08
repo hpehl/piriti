@@ -8,7 +8,6 @@ import com.google.gwt.resources.client.TextResource;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 1454 $
  */
-
 public interface RefugeeResources extends ClientBundle
 {
     // -------------------------------------------------------------- constants

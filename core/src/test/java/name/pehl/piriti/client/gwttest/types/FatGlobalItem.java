@@ -1,10 +1,15 @@
 package name.pehl.piriti.client.gwttest.types;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import name.pehl.piriti.client.json.Json;
 import name.pehl.piriti.client.json.JsonReader;
@@ -233,6 +238,14 @@ public class FatGlobalItem
     public List<String> listOfStrings;
 
     @Json
+    @Xml
+    public ArrayList<String> arrayListOfStrings;
+
+    @Json
+    @Xml
+    public LinkedList<String> linkedListOfStrings;
+
+    @Json
     @Xml("listOfFatGlobalItems/fatGlobalItem")
     public List<FatGlobalItem> listOfFatGlobalItems;
 
@@ -268,6 +281,18 @@ public class FatGlobalItem
     @Json
     @Xml
     public Set<String> setOfStrings;
+
+    @Json
+    @Xml
+    public HashSet<String> hashSetOfStrings;
+
+    @Json
+    @Xml
+    public LinkedHashSet<String> linkedHashSetOfStrings;
+
+    @Json
+    @Xml
+    public TreeSet<String> treeSetOfStrings;
 
     @Json
     @Xml("setOfFatGlobalItems/fatGlobalItem")

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -250,6 +251,7 @@ public final class TypeUtils
      * <li>LinkedList
      * <li>Set
      * <li>HashSet
+     * <li>LinkedHashSet
      * <li>SortedSet
      * <li>TreeSet
      * </ul>
@@ -266,6 +268,7 @@ public final class TypeUtils
                 || LinkedList.class.getName().equals(type.getQualifiedSourceName())
                 || Set.class.getName().equals(type.getQualifiedSourceName())
                 || HashSet.class.getName().equals(type.getQualifiedSourceName())
+                || LinkedHashSet.class.getName().equals(type.getQualifiedSourceName())
                 || SortedSet.class.getName().equals(type.getQualifiedSourceName())
                 || TreeSet.class.getName().equals(type.getQualifiedSourceName()))
         {
