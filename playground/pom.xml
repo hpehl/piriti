@@ -40,7 +40,7 @@
                 <configuration>
                     <excludes>
                         <exclude>name/pehl/piriti/PlaygroundTestSuite.java</exclude>
-                        <exclude>name/pehl/piriti/client/gwttest/**/*Test.java</exclude>
+                        <exclude>name/pehl/piriti/client/**/*Test.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
