@@ -39,7 +39,7 @@
                 <configuration>
                     <excludes>
                         <exclude>name/pehl/piriti/gxt/PiritiGxtGwtTestSuite.java</exclude>
-                        <exclude>name/pehl/piriti/gxt/client/gwttest/**/*Test.java</exclude>
+                        <exclude>name/pehl/piriti/gxt/client/**/*Test.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
