@@ -2,5 +2,6 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
 <module>
     <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 138 $ -->
+    <inherits name="com.google.gwt.user.User" />
     <inherits name="name.pehl.piriti.PiritiTest" />
 </module>
