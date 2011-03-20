@@ -4,6 +4,6 @@
     <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 138 $ -->
     <inherits name="org.restlet.Restlet" />
     <inherits name="org.restlet.XML" />
-    <inherits name="name.pehl.piriti.json.JSON" />
     <inherits name="name.pehl.piriti.restlet.Restlet" />
+    <inherits name="name.pehl.piriti.xml.XML" />
 </module>
