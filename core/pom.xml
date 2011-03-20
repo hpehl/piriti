@@ -6,7 +6,7 @@
     <parent>
         <groupId>name.pehl.piriti</groupId>
         <artifactId>piriti-parent</artifactId>
-        <version>0.6.4</version>
+        <version>0.7.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-core</artifactId>
@@ -31,8 +31,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>name/pehl/piriti/PiritiCoreGwtTestSuite.java</exclude>
-                        <exclude>name/pehl/piriti/client/gwttest/**/*Test.java</exclude>
+                        <exclude>name/pehl/piriti/PiritiCoreGwtTestSuite*.java</exclude>
+                        <exclude>name/pehl/piriti/client/**/*Test.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>

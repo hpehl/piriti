@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
-import name.pehl.piriti.client.converter.Converter;
-import name.pehl.piriti.client.converter.ConverterRegistry;
+import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.ConverterRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;

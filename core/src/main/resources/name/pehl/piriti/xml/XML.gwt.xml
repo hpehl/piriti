@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
+<module>
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 138 $ -->
+    <inherits name="com.google.gwt.inject.Inject" />
+    <inherits name="com.google.gwt.user.User" />
+    <inherits name="com.google.gwt.xml.XML" />
+    <inherits name="name.pehl.piriti.converter.Converter" />
+    <inherits name="name.pehl.piriti.property.Property" />
+    <inherits name="name.pehl.totoe.xml.XmlParser" />
+
+    <!-- Generator for XmlReader -->
+    <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">
+        <when-type-assignable class="name.pehl.piriti.xml.client.XmlReader" />
+    </generate-with>
+
+    <!-- Generator for XmlWriter -->
+    <generate-with class="name.pehl.piriti.rebind.xml.XmlWriterGenerator">
+        <when-type-assignable class="name.pehl.piriti.xml.client.XmlWriter" />
+    </generate-with>
+</module>

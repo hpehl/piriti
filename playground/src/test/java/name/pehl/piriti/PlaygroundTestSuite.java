@@ -2,8 +2,8 @@ package name.pehl.piriti;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.client.gwttest.arcbees.BlogItemTest;
-import name.pehl.piriti.client.gwttest.ticketgoose.TicketgooseTest;
+import name.pehl.piriti.client.arcbees.BlogItemTest;
+import name.pehl.piriti.client.ticketgoose.TicketgooseTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 

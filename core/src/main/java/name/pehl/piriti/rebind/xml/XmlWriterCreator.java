@@ -1,9 +1,9 @@
 package name.pehl.piriti.rebind.xml;
 
-import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;

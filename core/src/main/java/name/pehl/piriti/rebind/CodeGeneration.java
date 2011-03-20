@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind;
 
-import name.pehl.piriti.client.property.NoopPropertyGetter;
-import name.pehl.piriti.client.property.NoopPropertySetter;
+import name.pehl.piriti.property.client.NoopPropertyGetter;
+import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;

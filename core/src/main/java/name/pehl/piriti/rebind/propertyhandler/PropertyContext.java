@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import name.pehl.piriti.client.converter.Converter;
-import name.pehl.piriti.client.converter.NoopConverter;
-import name.pehl.piriti.client.json.JsonReader;
-import name.pehl.piriti.client.json.JsonWriter;
-import name.pehl.piriti.client.property.PropertyGetter;
-import name.pehl.piriti.client.property.PropertySetter;
-import name.pehl.piriti.client.xml.XmlReader;
-import name.pehl.piriti.client.xml.XmlWriter;
+import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.NoopConverter;
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.property.client.PropertyGetter;
+import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;

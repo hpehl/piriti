@@ -8,10 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import name.pehl.piriti.client.xml.Xml;
-import name.pehl.piriti.client.xml.XmlMappings;
-import name.pehl.piriti.client.xml.XmlReader;
-import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -20,6 +16,10 @@ import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.rebind.propertyhandler.VariableNames;
+import name.pehl.piriti.xml.client.Xml;
+import name.pehl.piriti.xml.client.XmlMappings;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -60,9 +60,9 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     protected void createImports(IndentedWriter writer) throws UnableToCompleteException
     {
         super.createImports(writer);
-        writer.write("import name.pehl.piriti.client.xml.*;");
+        writer.write("import name.pehl.piriti.xml.client.*;");
         writer.write("import name.pehl.totoe.xml.client.*;");
-        writer.write("import static name.pehl.piriti.client.xml.XmlReader.*;");
+        // writer.write("import static name.pehl.piriti.xml.client.XmlReader.*;");
     }
 
 
@@ -78,7 +78,7 @@ public abstract class AbstractXmlCreator extends AbstractCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         super.createConstructorBody(writer);
-        writer.write("this.xmlRegistry = PiritiGinjector.INJECTOR.getXmlRegistry();");
+        writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
         writer.write("this.xmlRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
     }
 

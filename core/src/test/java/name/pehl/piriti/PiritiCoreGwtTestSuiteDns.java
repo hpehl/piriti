@@ -2,7 +2,7 @@ package name.pehl.piriti;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.client.gwttest.namespaces.LotteryTicketDnsTest;
+import name.pehl.piriti.client.namespaces.LotteryTicketDnsTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 

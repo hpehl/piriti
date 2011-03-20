@@ -1,8 +1,8 @@
 package name.pehl.piriti.rebind.xml;
 
-import name.pehl.piriti.client.xml.XmlReader;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.AbstractGenerator;
+import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;

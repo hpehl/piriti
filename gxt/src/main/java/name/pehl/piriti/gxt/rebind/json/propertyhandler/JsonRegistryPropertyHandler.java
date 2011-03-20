@@ -1,7 +1,7 @@
 package name.pehl.piriti.gxt.rebind.json.propertyhandler;
 
-import name.pehl.piriti.client.json.JsonReader;
-import name.pehl.piriti.gxt.client.json.JsonModelReader;
+import name.pehl.piriti.gxt.json.client.JsonModelReader;
+import name.pehl.piriti.json.client.JsonReader;
 
 /**
  * {@link PropertyHandler} implementation for types with an own {@link JsonReader}.

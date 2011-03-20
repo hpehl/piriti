@@ -1,6 +1,6 @@
 package name.pehl.piriti.rebind.json;
 
-import name.pehl.piriti.client.json.JsonWriter;
+import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.AbstractGenerator;
 

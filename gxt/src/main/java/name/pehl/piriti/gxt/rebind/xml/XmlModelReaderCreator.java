@@ -3,11 +3,11 @@ package name.pehl.piriti.gxt.rebind.xml;
 import java.util.HashMap;
 import java.util.Map;
 
-import name.pehl.piriti.client.property.NoopPropertyGetter;
-import name.pehl.piriti.client.property.NoopPropertySetter;
-import name.pehl.piriti.gxt.client.xml.Xml;
-import name.pehl.piriti.gxt.client.xml.XmlMappings;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
+import name.pehl.piriti.gxt.xml.client.Xml;
+import name.pehl.piriti.gxt.xml.client.XmlMappings;
+import name.pehl.piriti.property.client.NoopPropertyGetter;
+import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;

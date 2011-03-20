@@ -3,12 +3,12 @@ package name.pehl.piriti.gxt.rebind.json;
 import java.util.HashMap;
 import java.util.Map;
 
-import name.pehl.piriti.client.property.NoopPropertyGetter;
-import name.pehl.piriti.client.property.NoopPropertySetter;
-import name.pehl.piriti.gxt.client.json.Json;
-import name.pehl.piriti.gxt.client.json.JsonMappings;
-import name.pehl.piriti.gxt.client.json.JsonModelReader;
+import name.pehl.piriti.gxt.json.client.Json;
+import name.pehl.piriti.gxt.json.client.JsonMappings;
+import name.pehl.piriti.gxt.json.client.JsonModelReader;
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
+import name.pehl.piriti.property.client.NoopPropertyGetter;
+import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.json.JsonReaderCreator;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;

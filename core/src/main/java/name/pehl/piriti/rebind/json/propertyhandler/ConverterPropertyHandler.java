@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
-import name.pehl.piriti.client.converter.Converter;
-import name.pehl.piriti.client.converter.ConverterRegistry;
+import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.ConverterRegistry;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.json.JsonPathUtils;

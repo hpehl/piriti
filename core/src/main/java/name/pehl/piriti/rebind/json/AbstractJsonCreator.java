@@ -8,10 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import name.pehl.piriti.client.json.Json;
-import name.pehl.piriti.client.json.JsonMappings;
-import name.pehl.piriti.client.json.JsonReader;
-import name.pehl.piriti.client.json.JsonWriter;
+import name.pehl.piriti.json.client.Json;
+import name.pehl.piriti.json.client.JsonMappings;
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -51,7 +51,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
         super.createImports(writer);
         writer.write("import com.google.gwt.core.client.JsonUtils;");
         writer.write("import com.google.gwt.json.client.*;");
-        writer.write("import name.pehl.piriti.client.json.*;");
+        writer.write("import name.pehl.piriti.json.client.*;");
         writer.write("import name.pehl.totoe.json.client.*;");
     }
 
@@ -68,7 +68,7 @@ public abstract class AbstractJsonCreator extends AbstractCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         super.createConstructorBody(writer);
-        writer.write("this.jsonRegistry = PiritiGinjector.INJECTOR.getJsonRegistry();");
+        writer.write("this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();");
         writer.write("this.jsonRegistry.register(%s.class, this);", modelType.getQualifiedSourceName());
     }
 

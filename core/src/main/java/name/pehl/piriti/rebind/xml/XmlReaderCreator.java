@@ -5,12 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import name.pehl.piriti.client.converter.NoopConverter;
-import name.pehl.piriti.client.xml.Xml;
-import name.pehl.piriti.client.xml.XmlId;
-import name.pehl.piriti.client.xml.XmlIdRef;
-import name.pehl.piriti.client.xml.XmlMappings;
-import name.pehl.piriti.client.xml.XmlReader;
+import name.pehl.piriti.converter.client.NoopConverter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -22,6 +17,11 @@ import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler;
+import name.pehl.piriti.xml.client.Xml;
+import name.pehl.piriti.xml.client.XmlId;
+import name.pehl.piriti.xml.client.XmlIdRef;
+import name.pehl.piriti.xml.client.XmlMappings;
+import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;

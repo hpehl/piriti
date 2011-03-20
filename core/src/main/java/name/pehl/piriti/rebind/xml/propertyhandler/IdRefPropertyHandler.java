@@ -1,13 +1,13 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
-import name.pehl.piriti.client.xml.XmlReader;
-import name.pehl.piriti.client.xml.XmlWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;

@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
-import name.pehl.piriti.client.json.JsonReader;
-import name.pehl.piriti.client.json.JsonWriter;
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.json.JsonPathUtils;

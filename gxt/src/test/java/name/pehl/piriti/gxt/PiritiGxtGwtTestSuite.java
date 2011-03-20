@@ -2,14 +2,14 @@ package name.pehl.piriti.gxt;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import name.pehl.piriti.gxt.client.gwttest.external.JsonShopTest;
-import name.pehl.piriti.gxt.client.gwttest.external.XmlShopTest;
-import name.pehl.piriti.gxt.client.gwttest.inheritance.JsonAnimalTest;
-import name.pehl.piriti.gxt.client.gwttest.inheritance.XmlAnimalTest;
-import name.pehl.piriti.gxt.client.gwttest.references.JsonBookTest;
-import name.pehl.piriti.gxt.client.gwttest.references.XmlBookTest;
-import name.pehl.piriti.gxt.client.gwttest.types.JsonFatGlobalItemTest;
-import name.pehl.piriti.gxt.client.gwttest.types.XmlFatGlobalItemTest;
+import name.pehl.piriti.gxt.client.external.JsonShopTest;
+import name.pehl.piriti.gxt.client.external.XmlShopTest;
+import name.pehl.piriti.gxt.client.inheritance.JsonAnimalTest;
+import name.pehl.piriti.gxt.client.inheritance.XmlAnimalTest;
+import name.pehl.piriti.gxt.client.references.JsonBookTest;
+import name.pehl.piriti.gxt.client.references.XmlBookTest;
+import name.pehl.piriti.gxt.client.types.JsonFatGlobalItemTest;
+import name.pehl.piriti.gxt.client.types.XmlFatGlobalItemTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
