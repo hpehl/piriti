@@ -4,10 +4,11 @@ import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.ConverterRegistry;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.json.client.JSONString;
@@ -36,7 +37,7 @@ public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         boolean valid = super.isValid(writer, propertyContext);
-        if (valid && propertyContext.isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        if (valid && propertyContext.getTypeContext().isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
         {
             CodeGeneration.skipProperty(writer, propertyContext,
                     "JSONPath expressions are not supported by this JsonWriter");
@@ -54,9 +55,10 @@ public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
-        super.readInput(writer, propertyContext);
+        super.readInput(writer, propertyContext, propertyHandlerRegistry);
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -99,7 +101,8 @@ public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writeValueAsString(writer, propertyContext);
         writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueAsStringVariable());

@@ -6,12 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import name.pehl.piriti.converter.client.Converter;
-import name.pehl.piriti.converter.client.NoopConverter;
-import name.pehl.piriti.property.client.NoopPropertyGetter;
-import name.pehl.piriti.property.client.NoopPropertySetter;
-import name.pehl.piriti.property.client.PropertyGetter;
-import name.pehl.piriti.property.client.PropertySetter;
+import name.pehl.piriti.commons.client.Mapping;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
@@ -157,75 +152,8 @@ import com.google.gwt.i18n.client.NumberFormat;
 @Target({ElementType.TYPE, ElementType.FIELD})
 public @interface Xml
 {
-    /**
-     * The order in which the properties are processed. Default to
-     * {@link Integer#MAX_VALUE} which means the property will appear last.
-     * 
-     * @return
-     */
-    int order() default Integer.MAX_VALUE;
+    Mapping[] value();
 
-
-    /**
-     * The properties name. Only needed if the property cannot be annotated
-     * direclty and this annotation is used inside {@link XmlMappings}.
-     */
-    String property() default "";
-
-
-    /**
-     * An XPath expression to select the XML data. Defaults to "" which means
-     * that the properties name is taken as a base for the XPath expression.
-     * 
-     * @return
-     */
-    String value() default "";
-
-
-    /**
-     * The format to use when converting the XML data to the properties type.
-     * Defaults to "".
-     * 
-     * @return
-     */
-    String format() default "";
-
-
-    /**
-     * If <code>true</code> white spaces and new lines are stripped from the
-     * selected XPath value. Defaults to <code>true</code>.
-     * 
-     * @return
-     */
-    boolean stripWsnl() default true;
-
-
-    /**
-     * A custom converter which is used for the parsing and serialization of the
-     * XML data. Defaults to {@link NoopConverter}, which means no custom
-     * converter should be used.
-     * 
-     * @return
-     */
-    Class<? extends Converter<?>> converter() default NoopConverter.class;
-
-
-    /**
-     * A custom property getter for reading the property. Defaults to
-     * {@link NoopPropertyGetter} which means that the property is read using
-     * the field or a getter.
-     * 
-     * @return
-     */
-    Class<? extends PropertyGetter<?, ?>> getter() default NoopPropertyGetter.class;
-
-
-    /**
-     * A custom property setter for setting the property. Defaults to
-     * {@link NoopPropertySetter} which means that the property is set using the
-     * field or a setter.
-     * 
-     * @return
-     */
-    Class<? extends PropertySetter<?, ?>> setter() default NoopPropertySetter.class;
+    // Class<? extends InstanceCreator<?, ?>> createWith() default
+    // NoopInstanceCreator.class;
 }

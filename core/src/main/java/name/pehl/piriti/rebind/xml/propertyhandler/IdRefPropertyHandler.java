@@ -5,7 +5,6 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 

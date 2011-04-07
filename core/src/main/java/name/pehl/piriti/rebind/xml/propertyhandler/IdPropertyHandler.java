@@ -1,7 +1,6 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 

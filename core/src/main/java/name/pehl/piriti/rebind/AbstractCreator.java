@@ -1,11 +1,8 @@
 package name.pehl.piriti.rebind;
 
 import java.io.PrintWriter;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
@@ -13,7 +10,6 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
 
 /**
  * Base class for creating deferred binding implementations. This class contains
@@ -26,61 +22,103 @@ public abstract class AbstractCreator
 {
     // -------------------------------------------------------- private members
 
-    protected final GeneratorContext context;
-    protected final JClassType interfaceType;
+    protected final GeneratorContext generatorContext;
+    protected final VariableNames variableNames;
+    protected final TypeContext typeContext;
+    protected final TypeProcessor typeProcessor;
+    protected final PropertyHandlerRegistry propertyHandlerRegistry;
     protected final String implName;
     protected final TreeLogger logger;
-    protected final JClassType modelType;
-    protected final PropertyHandlerRegistry handlerRegistry;
 
 
     // ----------------------------------------------------------- constructors
 
-    public AbstractCreator(GeneratorContext context, JClassType interfaceType, String implName, String readerClassname,
+    public AbstractCreator(GeneratorContext generatorContext, JClassType rwType, String implName, String rwClassname,
             TreeLogger logger) throws UnableToCompleteException
     {
-        this.context = context;
-        this.interfaceType = interfaceType;
-        this.implName = implName;
-        this.logger = logger;
-        this.handlerRegistry = setupFieldHandlerRegistry();
-
-        // Check for possible misuse 'GWT.create(XmlReader.class)'
-        JClassType xmlReaderItself = context.getTypeOracle().findType(readerClassname);
-        if (xmlReaderItself.equals(interfaceType))
+        // Check for possible misuse:
+        // GWT.create(XmlReader.class)
+        JClassType rwInterface = generatorContext.getTypeOracle().findType(rwClassname);
+        if (rwInterface.equals(rwType))
         {
             die("You must use a subtype of {0} in GWT.create(). E.g.,\n"
                     + "  interface ModelReader extends {0}<Model> {}\n  GWT.create(ModelReader.class);");
         }
 
-        JClassType[] xmlReaderTypes = interfaceType.getImplementedInterfaces();
-        if (xmlReaderTypes.length == 0)
+        // Check for right interface:
+        // interface FooReader extends JsonReader<Foo> {}
+        JClassType[] rwTypes = rwType.getImplementedInterfaces();
+        if (rwTypes.length == 0)
         {
-            die("No implemented interfaces for %s", interfaceType.getName());
+            die("No implemented interfaces for %s", rwType.getName());
         }
-        JClassType xmlReaderType = xmlReaderTypes[0];
 
-        // Check type parameter
-        JClassType[] typeArgs = xmlReaderType.isParameterized().getTypeArgs();
-        if (typeArgs.length != 1)
+        // Look for the type parameter
+        JClassType type = null;
+        for (JClassType t : rwTypes)
         {
-            die("One model type parameters is required for %s", xmlReaderType.getName());
+            if (t.getQualifiedSourceName().equals(rwInterface.getQualifiedSourceName()))
+            {
+                JClassType[] typeArgs = t.isParameterized().getTypeArgs();
+                if (typeArgs.length != 1)
+                {
+                    die("One type parameter is required for %s", t.getName());
+                }
+                type = typeArgs[0];
+                break;
+            }
         }
-        this.modelType = typeArgs[0];
+        if (type == null)
+        {
+            die("No type parameter found in %s", (Object[]) rwTypes);
+        }
+
+        // initialize
+        this.generatorContext = generatorContext;
+        this.variableNames = setupVariableNames();
+        this.typeContext = new TypeContext(generatorContext.getTypeOracle(), rwType, type, variableNames);
+        this.typeProcessor = setupTypeProcessor();
+        this.propertyHandlerRegistry = setupPropertyHandlerRegistry();
+        this.implName = implName;
+        this.logger = logger;
+
+        // collect properties
+        this.typeProcessor.process(typeContext);
     }
 
 
     /**
-     * Method to setup the field handler registry used in this creator.
+     * Method to setup the {@link VariableNames} used in this creator,
+     * 
+     * @return the {@link VariableNames} used in this creator,
      */
-    protected abstract PropertyHandlerRegistry setupFieldHandlerRegistry();
+    protected abstract VariableNames setupVariableNames();
+
+
+    /**
+     * Method to setup the {@link TypeProcessor} used in this creator,
+     * 
+     * @return an instane of {@link DefaultTypeProcessor}
+     */
+    protected TypeProcessor setupTypeProcessor()
+    {
+        return new DefaultTypeProcessor();
+    }
+
+
+    /**
+     * Method to setup the {@link PropertyHandlerRegistry} used in this creator.
+     * 
+     * @return the {@link PropertyHandlerRegistry} used in this creator.
+     */
+    protected abstract PropertyHandlerRegistry setupPropertyHandlerRegistry();
 
 
     // --------------------------------------------------------- create methods
 
     /**
-     * Creates the code for the reader implementation. Therefore the following
-     * methods are called:
+     * Creates the code for the reader / writer implementation. Therefore the
+     * following methods are called:
      * <ol>
      * <li>{@link #createPackage(IndentedWriter)}
      * <li>{@link #createImports(IndentedWriter)}
@@ -91,7 +129,8 @@ public abstract class AbstractCreator
      */
     public void create() throws UnableToCompleteException
     {
-        PrintWriter printWriter = context.tryCreate(logger, interfaceType.getPackage().getName(), implName);
+        PrintWriter printWriter = generatorContext.tryCreate(logger, typeContext.getRwType().getPackage().getName(),
+                implName);
         if (printWriter != null)
         {
             IndentedWriter writer = new IndentedWriter(printWriter);
@@ -105,7 +144,7 @@ public abstract class AbstractCreator
             createClass(writer);
             writer.newline();
 
-            context.commit(logger, printWriter);
+            generatorContext.commit(logger, printWriter);
         }
     }
 
@@ -118,7 +157,7 @@ public abstract class AbstractCreator
      */
     protected void createPackage(IndentedWriter writer) throws UnableToCompleteException
     {
-        String packageName = interfaceType.getPackage().getName();
+        String packageName = typeContext.getRwType().getPackage().getName();
         if (packageName.length() > 0)
         {
             writer.write("package %s;", packageName);
@@ -146,7 +185,8 @@ public abstract class AbstractCreator
 
 
     /**
-     * Creates the reader class. Therefore the following methods are called:
+     * Creates the reader / writer class. Therefore the following methods are
+     * called:
      * <ol>
      * <li>{@link #createMemberVariables(IndentedWriter)}
      * <li>{@link #createConstructor(IndentedWriter)}
@@ -158,7 +198,7 @@ public abstract class AbstractCreator
      */
     protected void createClass(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public class %s implements %s {", implName, interfaceType.getQualifiedSourceName());
+        writer.write("public class %s implements %s {", implName, typeContext.getRwType().getQualifiedSourceName());
         writer.indent();
 
         createMemberVariables(writer);
@@ -181,6 +221,7 @@ public abstract class AbstractCreator
      * 
      * <pre>
      * private ConverterRegistry converterRegistry;
+     * private Map&lt;String, T&gt; idMap;
      * </pre>
      * 
      * @param writer
@@ -188,6 +229,7 @@ public abstract class AbstractCreator
     protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private ConverterRegistry converterRegistry;");
+        writer.write("private Map<String,%s> idMap;", typeContext.getType().getQualifiedSourceName());
     }
 
 
@@ -214,6 +256,7 @@ public abstract class AbstractCreator
      * 
      * <pre>
      * this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
+     * this.idMap = new HashMap&lt;String, T&gt;();
      * </pre>
      * 
      * @param writer
@@ -221,6 +264,7 @@ public abstract class AbstractCreator
     protected void createConstructorBody(IndentedWriter writer)
     {
         writer.write("this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();");
+        writer.write("this.idMap = new HashMap<String,%s>();", typeContext.getType().getQualifiedSourceName());
     }
 
 
@@ -233,52 +277,51 @@ public abstract class AbstractCreator
     protected abstract void createMethods(IndentedWriter writer) throws UnableToCompleteException;
 
 
-    protected abstract void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler,
-            PropertyContext fieldContext, boolean hasNext) throws UnableToCompleteException;
-
-
-    // --------------------------------------------------------- helper methods
+    // ---------------------------------------------- type / properties methods
 
     /**
-     * Returns all fields from the specified type <b>and</b> all of its
-     * supertypes that are marked with the specified annotation. Returns an
-     * empty array if no annotated fields were found.
+     * Iterates over {@link TypeContext#getProperties()}. For each
+     * {@link PropertyContext} a {@link PropertyHandler} is searched in the
+     * {@link PropertyHandlerRegistry}. If found and
+     * {@link PropertyHandler#isValid(IndentedWriter, PropertyContext)} ==
+     * <code>true</code>,
+     * {@link #handleProperty(IndentedWriter, PropertyHandler, PropertyContext, boolean)}
+     * is called.
      * 
-     * @param <T>
-     * @param type
-     * @param annotationClass
-     * @return
+     * @param writer
+     * @throws UnableToCompleteException
      */
-    protected <T extends Annotation> JField[] findAnnotatedFields(JClassType type, Class<T> annotationClass)
+    protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
-        List<JField> fields = new ArrayList<JField>();
-        collectFields(type, fields, annotationClass);
-        return fields.toArray(new JField[] {});
-    }
-
-
-    private <T extends Annotation> void collectFields(JClassType type, List<JField> fields, Class<T> annotationClass)
-    {
-        // Superclass first please!
-        if (type == null)
+        int counter = 0;
+        for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
         {
-            return;
-        }
-        collectFields(type.getSuperclass(), fields, annotationClass);
-
-        JField[] allFields = type.getFields();
-        if (allFields != null)
-        {
-            for (JField field : allFields)
+            PropertyContext propertyContext = iter.next();
+            PropertyHandler propertyHandler = propertyHandlerRegistry.findPropertyHandler(propertyContext);
+            if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
-                if (field.isAnnotationPresent(annotationClass))
-                {
-                    fields.add(field);
-                }
+                writer.newline();
+                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
+                counter++;
             }
         }
     }
 
+
+    /**
+     * Concrete creators must implement this method to handle one property.
+     * 
+     * @param writer
+     * @param propertyHandler
+     * @param propertyContext
+     * @param hasNext
+     * @throws UnableToCompleteException
+     */
+    protected abstract void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
+            PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException;
+
+
+    // --------------------------------------------------------- helper methods
 
     /**
      * Post an error message and halt processing. This method always throws an

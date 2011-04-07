@@ -2,10 +2,11 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -31,7 +32,7 @@ public class StringPropertyHandler extends AbstractPropertyHandler
     @Override
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (propertyContext.isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        if (propertyContext.getTypeContext().isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
         {
             CodeGeneration.skipProperty(writer, propertyContext,
                     "JSONPath expressions are not supported by this JsonWriter");
@@ -46,12 +47,14 @@ public class StringPropertyHandler extends AbstractPropertyHandler
      * 
      * @param writer
      * @param propertyContext
+     * @param propertyHandlerRegistry
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
         writer.write("if (%s != null) {", jsonValue);
@@ -89,7 +92,8 @@ public class StringPropertyHandler extends AbstractPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();

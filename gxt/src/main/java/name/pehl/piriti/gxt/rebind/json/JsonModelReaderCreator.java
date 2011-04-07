@@ -10,11 +10,11 @@ import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.json.JsonReaderCreator;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
-import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -39,7 +39,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
 
 
     @Override
-    protected PropertyHandlerRegistry setupFieldHandlerRegistry()
+    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
     {
         return new JsonModelReaderPropertyHandlerRegistry();
     }
@@ -67,11 +67,11 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
             JClassType fieldType = getFieldType(jsonField);
             String jsonPath = calculateJsonPath(jsonField);
             VariableNames variableNames = new VariableNames("jsonObject", "value" + counter, "jsonBuilder");
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
-                    modelType, fieldType, jsonField.property(), jsonPath, jsonField.format(), false,
+            PropertyContext fieldContext = new PropertyContext(generatorContext.getTypeOracle(), propertyHandlerRegistry, readerWriterType,
+                    pojoType, fieldType, jsonField.property(), jsonPath, jsonField.format(), false,
                     jsonField.converter(), null, NoopPropertyGetter.class, NoopPropertySetter.class, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, jsonField.typeVariable());
-            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
+            PropertyHandler fieldHandler = propertyHandlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
@@ -87,7 +87,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
         Map<String, Json> properties = new HashMap<String, Json>();
 
         // Step 1: Add all JsonField annotations from the interfaceType
-        JsonMappings interfaceTypeFields = interfaceType.getAnnotation(JsonMappings.class);
+        JsonMappings interfaceTypeFields = readerWriterType.getAnnotation(JsonMappings.class);
         if (interfaceTypeFields != null)
         {
             Json[] annotations = interfaceTypeFields.value();
@@ -99,7 +99,7 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
 
         // Step 2: Add all JsonField annotations from the modelType. If
         // there's already an entry from step 1, it will be overwritten!
-        collectModelTypeFields(modelType, properties);
+        collectModelTypeFields(pojoType, properties);
 
         return properties.values().toArray(new Json[] {});
     }
@@ -134,12 +134,12 @@ public class JsonModelReaderCreator extends JsonReaderCreator implements ModelRe
         JClassType fieldType = null;
         if (jsonField.array())
         {
-            JClassType componentType = context.getTypeOracle().findType(jsonField.type().getName());
-            fieldType = context.getTypeOracle().getArrayType(componentType);
+            JClassType componentType = generatorContext.getTypeOracle().findType(jsonField.type().getName());
+            fieldType = generatorContext.getTypeOracle().getArrayType(componentType);
         }
         else
         {
-            fieldType = context.getTypeOracle().findType(jsonField.type().getName());
+            fieldType = generatorContext.getTypeOracle().findType(jsonField.type().getName());
         }
         if (fieldType == null)
         {

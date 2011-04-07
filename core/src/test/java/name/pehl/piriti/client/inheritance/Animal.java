@@ -1,22 +1,18 @@
 package name.pehl.piriti.client.inheritance;
 
-import name.pehl.piriti.json.client.Json;
-import name.pehl.piriti.xml.client.Xml;
+import name.pehl.piriti.commons.client.Order;
+import name.pehl.piriti.property.client.Getter;
+import name.pehl.piriti.property.client.Setter;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision:
+ *          1478 $
  */
 // @formatter:off
 public abstract class Animal
 {
-    @Json(order = 3, getter = NameGetter.class, setter = NameSetter.class) 
-    @Xml(order = 3, getter = NameGetter.class, setter = NameSetter.class)
-    String name;
-    
-    @Json(order = 2) @Xml(order = 2) 
-    int legs;
-    
-    @Json(order = 1) @Xml(order = 1) 
-    double intelligence;
+    @Order(3) @Getter(NameGetter.class) @Setter(NameSetter.class) String name;
+    @Order(2) int legs;
+    @Order(1) double intelligence;
 }

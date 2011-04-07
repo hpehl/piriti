@@ -5,6 +5,7 @@
     <inherits name="com.google.gwt.inject.Inject" />
     <inherits name="com.google.gwt.json.JSON" />
     <inherits name="com.google.gwt.user.User" />
+    <inherits name="name.pehl.piriti.commons.Commons" />
     <inherits name="name.pehl.piriti.converter.Converter" />
     <inherits name="name.pehl.piriti.property.Property" />
     <inherits name="name.pehl.totoe.json.JsonParser" />

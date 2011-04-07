@@ -4,10 +4,11 @@ import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -35,7 +36,7 @@ public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         boolean valid = super.isValid(writer, propertyContext);
-        if (valid && propertyContext.isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        if (valid && propertyContext.getTypeContext().isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
         {
             CodeGeneration.skipProperty(writer, propertyContext,
                     "JSONPath expressions are not supported by this JsonWriter");
@@ -55,7 +56,8 @@ public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         String readerVariable = startReader(writer, propertyContext, "jsonRegistry",
                 propertyContext.getClassOrInterfaceType());
@@ -90,7 +92,8 @@ public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();

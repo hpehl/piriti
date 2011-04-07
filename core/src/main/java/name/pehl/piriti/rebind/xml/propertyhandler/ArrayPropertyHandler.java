@@ -1,11 +1,12 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
+import name.pehl.piriti.rebind.TypeContext;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -31,7 +32,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext)
+            throws UnableToCompleteException
     {
         JArrayType arrayType = propertyContext.getArrayType();
         JType componentType = arrayType.getComponentType();
@@ -40,7 +42,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         {
             try
             {
-                componentType = propertyContext.getTypeOracle().getType(
+                componentType = propertyContext.getTypeContext().getTypeOracle().getType(
                         primitiveComponentType.getQualifiedBoxedSourceName());
             }
             catch (NotFoundException e)
@@ -62,6 +64,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         // TODO Implement usage of setters
         VariableNames variableNames = new VariableNames(nestedElementVariable, nestedValueVariable, propertyContext
                 .getVariableNames().getBuilderVariable());
+        TypeContext nestedTypeContext = new TypeContext(typeContext.getTypeOracle(), arrayType, arrayType)
         PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
                 propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
                 componentType, propertyContext.getName(), nestedXpath, propertyContext.getFormat(),

@@ -1,8 +1,9 @@
 package name.pehl.piriti.rebind.xml;
 
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -18,12 +19,19 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public class XmlWriterCreator extends AbstractXmlCreator
 {
-    // ----------------------------------------------------------- constructors
+    // --------------------------------------------------------- initialization
 
     public XmlWriterCreator(GeneratorContext context, JClassType interfaceType, String implName,
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
+    }
+
+
+    @Override
+    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
+    {
+        return null;
     }
 
 
@@ -44,8 +52,8 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
     protected void writeList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toXml(List<%s> models, String rootElement) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("public String toXml(List<%s> models, String rootElement) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String xml = null;");
         writer.write("if (models != null && rootElement != null) {");
@@ -54,7 +62,7 @@ public class XmlWriterCreator extends AbstractXmlCreator
         writer.write("xmlBuilder.append(\"<\");");
         writer.write("xmlBuilder.append(rootElement);");
         writer.write("xmlBuilder.append(\">\");");
-        writer.write("for (%s model : models) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("for (%s model : models) {", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String xmlValue = toXml(model);");
         writer.write("if (xmlValue != null) {");
@@ -78,7 +86,7 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
     protected void writeSingle(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toXml(%s model) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public String toXml(%s model) {", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String xml = null;");
         writer.write("if (model != null) {");
@@ -108,7 +116,7 @@ public class XmlWriterCreator extends AbstractXmlCreator
         fieldHandler.declare(writer, fieldContext);
         fieldHandler.readProperty(writer, fieldContext);
         fieldHandler.markupStart(writer, fieldContext);
-        fieldHandler.writeValue(writer, fieldContext);
+        fieldHandler.writeValue(writer, fieldContext, propertyHandlerRegistry);
         fieldHandler.markupEnd(writer, fieldContext);
     }
 }

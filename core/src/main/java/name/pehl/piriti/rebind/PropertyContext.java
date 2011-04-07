@@ -1,18 +1,14 @@
-package name.pehl.piriti.rebind.propertyhandler;
+package name.pehl.piriti.rebind;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.NoopConverter;
-import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
-import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.xml.client.XmlReader;
-import name.pehl.piriti.xml.client.XmlWriter;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.ReferenceType;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
@@ -21,12 +17,11 @@ import com.google.gwt.core.ext.typeinfo.JEnumType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
-import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
  * Class which contains information needed to generate code for the evaluation,
- * conversion and assignment of a property. An instance of this class is passed
- * to the {@link PropertyHandler}.
+ * conversion and assignment of one property. An instance of this class is
+ * passed to the {@link PropertyHandler}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
@@ -35,10 +30,7 @@ public class PropertyContext
 {
     // -------------------------------------------------------- private members
 
-    private final TypeOracle typeOracle;
-    private final PropertyHandlerRegistry handlerRegistry;
-    private final JClassType readerOrWriter;
-    private final JClassType clazz;
+    private final TypeContext typeContext;
     private final JType type;
     private final JPrimitiveType primitiveType;
     private final String name;
@@ -46,9 +38,9 @@ public class PropertyContext
     private final String format;
     private final boolean stripWsnl;
     private final Class<? extends Converter<?>> converter;
-    private final ReferenceType referenceType;
     private final Class<? extends PropertyGetter<?, ?>> getter;
     private final Class<? extends PropertySetter<?, ?>> setter;
+    private final ReferenceType referenceType;
     private final VariableNames variableNames;
     private final Map<String, Object> metadata;
 
@@ -58,14 +50,8 @@ public class PropertyContext
     /**
      * Construct a new instance of this class
      * 
-     * @param typeOracle
-     *            The type oracle from the GWT generator API
-     * @param handlerRegistry
-     *            The handler registry for {@link PropertyHandler} lookup
-     * @param readerOrWriter
-     *            The type of the reader or writer interface
-     * @param clazz
-     *            The type of the class
+     * @param typeContext
+     *            The type context this property belongs to
      * @param type
      *            The property type itself
      * @param name
@@ -74,38 +60,33 @@ public class PropertyContext
      *            The path information for the mapping
      * @param format
      *            The format
-     * @param converter
-     *            A custom converter
      * @param stripWsnl
      *            Whether to strip whitespace and newlines from the input
-     * @param referenceType
-     *            The refereence type.
+     * @param converter
+     *            A custom converter
      * @param getter
      *            A custom property getter
      * @param setter
      *            A custom property setter
+     * @param referenceType
+     *            The refereence type.
      * @param variableNames
      *            Contains various variable names
      * @throws UnableToCompleteException
      */
-    public PropertyContext(TypeOracle typeOracle, PropertyHandlerRegistry handlerRegistry, JClassType readerOrWriter,
-            JClassType clazz, JType type, String name, String path, String format, boolean stripWsnl,
-            Class<? extends Converter<?>> converter, ReferenceType referenceType,
-            Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
-            VariableNames variableNames) throws UnableToCompleteException
+    public PropertyContext(TypeContext typeContext, JType type, String name, String path, String format,
+            boolean stripWsnl, Class<? extends Converter<?>> converter, Class<? extends PropertyGetter<?, ?>> getter,
+            Class<? extends PropertySetter<?, ?>> setter, ReferenceType referenceType, VariableNames variableNames)
+            throws UnableToCompleteException
     {
-        // Types
-        this.typeOracle = typeOracle;
-        this.handlerRegistry = handlerRegistry;
-        this.readerOrWriter = readerOrWriter;
-        this.clazz = clazz;
+        this.typeContext = typeContext;
         JPrimitiveType primitiveType = type.isPrimitive();
         if (primitiveType != null) // isPrimitive() is not yet available!
         {
             try
             {
                 // Use the boxed type for primitives
-                this.type = typeOracle.getType(primitiveType.getQualifiedBoxedSourceName());
+                this.type = typeContext.getTypeOracle().getType(primitiveType.getQualifiedBoxedSourceName());
                 this.primitiveType = primitiveType;
             }
             catch (NotFoundException e)
@@ -119,7 +100,7 @@ public class PropertyContext
             this.primitiveType = null;
         }
 
-        // Name, path, format and converter
+        // Name, path, order, format, stripWsnl and converter
         this.name = name;
         this.path = path;
         if (format == null || format.length() == 0)
@@ -134,9 +115,9 @@ public class PropertyContext
         this.converter = converter;
 
         // Reference type, property stuff, variable names and metadata
-        this.referenceType = referenceType;
         this.getter = getter;
         this.setter = setter;
+        this.referenceType = referenceType;
         this.variableNames = variableNames;
         this.metadata = new HashMap<String, Object>();
     }
@@ -144,35 +125,84 @@ public class PropertyContext
 
     // --------------------------------------------------------- object methods
 
+    /**
+     * Based on name and path
+     * 
+     * @return
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode()
+    {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (path == null ? 0 : path.hashCode());
+        return result;
+    }
+
+
+    /**
+     * Based on name and path
+     * 
+     * @param obj
+     * @return
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        PropertyContext other = (PropertyContext) obj;
+        if (name == null)
+        {
+            if (other.name != null)
+            {
+                return false;
+            }
+        }
+        else if (!name.equals(other.name))
+        {
+            return false;
+        }
+        if (path == null)
+        {
+            if (other.path != null)
+            {
+                return false;
+            }
+        }
+        else if (!path.equals(other.path))
+        {
+            return false;
+        }
+        return true;
+    }
+
+
     @Override
     public String toString()
     {
-        StringBuilder builder = new StringBuilder().append(type.getParameterizedQualifiedSourceName()).append(" ")
-                .append(name).append(", path=\"").append(path).append("\"");
+        StringBuilder builder = new StringBuilder().append("PropertyContext [")
+                .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name).append(", path=\"")
+                .append(path).append("\"");
         if (format != null)
         {
             builder.append(", format=\"").append(format).append("\"");
         }
+        builder.append("]");
         return builder.toString();
-    }
-
-
-    // -------------------------------------- methods related to the class type
-
-    public boolean isGxt()
-    {
-        Set<? extends JClassType> hierarchy = clazz.getFlattenedSupertypeHierarchy();
-        if (hierarchy != null)
-        {
-            for (JClassType h : hierarchy)
-            {
-                if (h.getQualifiedSourceName().equals("com.extjs.gxt.ui.client.data.Model"))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 
@@ -298,80 +328,9 @@ public class PropertyContext
 
     // ------------------------------------------------------------- properties
 
-    public TypeOracle getTypeOracle()
+    public TypeContext getTypeContext()
     {
-        return typeOracle;
-    }
-
-
-    public PropertyHandlerRegistry getHandlerRegistry()
-    {
-        return handlerRegistry;
-    }
-
-
-    public JClassType getReaderOrWriter()
-    {
-        return readerOrWriter;
-    }
-
-
-    /**
-     * @return <code>true</code> if {@link #getReaderOrWriter()} references a
-     *         {@link JsonReader} or {@link XmlReader}, <code>false</code>
-     *         otherwise.
-     */
-    public boolean isReader()
-    {
-        boolean reader = false;
-        Set<? extends JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
-        if (hierarchy != null)
-        {
-            for (JClassType h : hierarchy)
-            {
-                if (h.getQualifiedSourceName().equals(JsonReader.class.getName())
-                        || h.getQualifiedSourceName().equals(XmlReader.class.getName()))
-                {
-                    return true;
-                }
-            }
-        }
-        return reader;
-    }
-
-
-    /**
-     * @return <code>true</code> if {@link #getReaderOrWriter()} references a
-     *         {@link JsonWriter} or {@link XmlWriter}, <code>false</code>
-     *         otherwise.
-     */
-    public boolean isWriter()
-    {
-        boolean writer = false;
-        Set<? extends JClassType> hierarchy = readerOrWriter.getFlattenedSupertypeHierarchy();
-        if (hierarchy != null)
-        {
-            for (JClassType h : hierarchy)
-            {
-                if (h.getQualifiedSourceName().equals(JsonWriter.class.getName())
-                        || h.getQualifiedSourceName().equals(XmlWriter.class.getName()))
-                {
-                    return true;
-                }
-            }
-        }
-        return writer;
-    }
-
-
-    /**
-     * The type of the properties class.
-     * 
-     * @return the type of the properties class.
-     */
-    public JClassType getClazz()
-    {
-        return clazz;
+        return typeContext;
     }
 
 
@@ -432,12 +391,6 @@ public class PropertyContext
     }
 
 
-    public ReferenceType getReferenceType()
-    {
-        return referenceType;
-    }
-
-
     public Class<? extends PropertyGetter<?, ?>> getGetter()
     {
         return getter;
@@ -447,6 +400,12 @@ public class PropertyContext
     public Class<? extends PropertySetter<?, ?>> getSetter()
     {
         return setter;
+    }
+
+
+    public ReferenceType getReferenceType()
+    {
+        return referenceType;
     }
 
 

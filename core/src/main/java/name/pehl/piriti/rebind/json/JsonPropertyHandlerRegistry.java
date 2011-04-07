@@ -15,6 +15,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.json.propertyhandler.ArrayPropertyHandler;
 import name.pehl.piriti.rebind.json.propertyhandler.BooleanPropertyHandler;
 import name.pehl.piriti.rebind.json.propertyhandler.CollectionPropertyHandler;
@@ -29,7 +31,8 @@ import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
- * {@link PropertyHandlerRegistry} used by the {@link JsonWriterCreator}.
+ * {@link PropertyHandlerRegistry} used for {@link JsonReader}s and
+ * {@link JsonWriter}s.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 136 $

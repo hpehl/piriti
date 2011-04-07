@@ -10,10 +10,10 @@ import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
-import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 import name.pehl.piriti.rebind.xml.XmlReaderCreator;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -37,7 +37,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
 
 
     @Override
-    protected PropertyHandlerRegistry setupFieldHandlerRegistry()
+    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
     {
         return new XmlModelPropertyHandlerRegistry();
     }
@@ -63,11 +63,11 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
             JClassType fieldType = getFieldType(xmlField);
             String xpath = calculateXpath(fieldType, xmlField);
             VariableNames variableNames = new VariableNames("element", "value" + counter, "xmlBuilder");
-            PropertyContext fieldContext = new PropertyContext(context.getTypeOracle(), handlerRegistry, interfaceType,
-                    modelType, fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
+            PropertyContext fieldContext = new PropertyContext(generatorContext.getTypeOracle(), propertyHandlerRegistry, readerWriterType,
+                    pojoType, fieldType, xmlField.property(), xpath, xmlField.format(), xmlField.stripWsnl(),
                     xmlField.converter(), null, NoopPropertyGetter.class, NoopPropertySetter.class, variableNames);
             fieldContext.addMetadata(TYPE_VARIABLE, xmlField.typeVariable());
-            PropertyHandler fieldHandler = handlerRegistry.findPropertyHandler(fieldContext);
+            PropertyHandler fieldHandler = propertyHandlerRegistry.findPropertyHandler(fieldContext);
             if (fieldHandler != null && fieldHandler.isValid(writer, fieldContext))
             {
                 writer.newline();
@@ -83,7 +83,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
         Map<String, Xml> properties = new HashMap<String, Xml>();
 
         // Step 1: Add all XmlField annotations from the interfaceType
-        XmlMappings interfaceTypeFields = interfaceType.getAnnotation(XmlMappings.class);
+        XmlMappings interfaceTypeFields = readerWriterType.getAnnotation(XmlMappings.class);
         if (interfaceTypeFields != null)
         {
             Xml[] annotations = interfaceTypeFields.value();
@@ -95,7 +95,7 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
 
         // Step 2: Add all XmlField annotations from the modelType. If
         // there's already an entry from step 1, it will be overwritten!
-        collectModelTypeFields(modelType, properties);
+        collectModelTypeFields(pojoType, properties);
 
         return properties.values().toArray(new Xml[] {});
     }
@@ -130,12 +130,12 @@ public class XmlModelReaderCreator extends XmlReaderCreator implements ModelRead
         JClassType fieldType = null;
         if (xmlField.array())
         {
-            JClassType componentType = context.getTypeOracle().findType(xmlField.type().getName());
-            fieldType = context.getTypeOracle().getArrayType(componentType);
+            JClassType componentType = generatorContext.getTypeOracle().findType(xmlField.type().getName());
+            fieldType = generatorContext.getTypeOracle().getArrayType(componentType);
         }
         else
         {
-            fieldType = context.getTypeOracle().findType(xmlField.type().getName());
+            fieldType = generatorContext.getTypeOracle().findType(xmlField.type().getName());
         }
         if (fieldType == null)
         {

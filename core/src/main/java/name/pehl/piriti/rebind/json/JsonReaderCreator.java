@@ -3,7 +3,7 @@ package name.pehl.piriti.rebind.json;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
@@ -22,37 +22,21 @@ public class JsonReaderCreator extends AbstractJsonCreator
 {
     // --------------------------------------------------------- initialization
 
-    public JsonReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
-            String readerClassname, TreeLogger logger) throws UnableToCompleteException
+    public JsonReaderCreator(GeneratorContext generatorContext, JClassType rwType, String implName, String rwClassname,
+            TreeLogger logger) throws UnableToCompleteException
     {
-        super(context, interfaceType, implName, readerClassname, logger);
+        super(generatorContext, rwType, implName, rwClassname, logger);
     }
 
 
     @Override
-    protected PropertyHandlerRegistry setupFieldHandlerRegistry()
+    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
     {
         return new JsonReaderPropertyHandlerRegistry();
     }
 
 
     // --------------------------------------------------------- create methods
-
-    @Override
-    protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
-    {
-        super.createMemberVariables(writer);
-        writer.write("private Map<String,%s> idMap;", modelType.getQualifiedSourceName());
-    }
-
-
-    @Override
-    protected void createConstructorBody(IndentedWriter writer)
-    {
-        super.createConstructorBody(writer);
-        writer.write("this.idMap = new HashMap<String,%s>();", modelType.getQualifiedSourceName());
-    }
-
 
     @Override
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
@@ -81,7 +65,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         internalRead(writer);
         writer.newline();
 
-        CodeGeneration.idRef(writer, modelType);
+        CodeGeneration.idRef(writer, typeContext.getType());
     }
 
 
@@ -89,9 +73,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void readListFromStringUsingFirstKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(String jsonString) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
         writer.write("JSONObject jsonObject = new JsonParser().parse(jsonString);");
@@ -107,7 +92,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
-        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
         writer.outdent();
         writer.write("}");
@@ -127,10 +112,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void readListFromStringUsingNamedKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(String jsonString, String arrayKey) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(String jsonString, String arrayKey) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
         writer.write("JSONObject jsonObject = new JsonParser().parse(jsonString);");
@@ -144,7 +129,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
-        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
         writer.outdent();
         writer.write("}");
@@ -164,10 +149,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void readListFromJsonObjectUsingFirstKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(JSONObject jsonObject) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(JSONObject jsonObject) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("Set<String> keys = jsonObject.keySet();");
@@ -180,7 +165,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
-        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
         writer.outdent();
         writer.write("}");
@@ -198,10 +183,10 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void readListFromJsonObjectUsingNamedKey(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(JSONObject jsonObject, String arrayKey) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(JSONObject jsonObject, String arrayKey) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("if (jsonObject != null) {");
         writer.indent();
         writer.write("if (arrayKey != null) {");
@@ -212,7 +197,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONArray jsonArray = jsonValue.isArray();");
         writer.write("if (jsonArray != null) {");
         writer.indent();
-        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("models = readList(jsonArray);");
         writer.outdent();
         writer.write("}");
@@ -230,12 +215,13 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void readListFromJsonArray(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public List<%s> readList(JSONArray jsonArray) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public List<%s> readList(JSONArray jsonArray) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("List<%s> models = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("List<%s> models = null;", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("if (jsonArray != null) {");
         writer.indent();
-        writer.write("models = new ArrayList<%s>();", modelType.getParameterizedQualifiedSourceName());
+        writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.write("int size = jsonArray.size();");
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
@@ -245,10 +231,11 @@ public class JsonReaderCreator extends AbstractJsonCreator
         writer.write("JSONObject currentJsonObject = currentJsonValue.isObject();");
         writer.write("if (currentJsonObject != null) {");
         writer.indent();
-        writer.write("%s model = internalRead(currentJsonObject);", modelType.getParameterizedQualifiedSourceName());
-        writer.write("if (model != null) {");
+        writer.write("%s %s = internalRead(currentJsonObject);", typeContext.getType()
+                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInstanceVariable());
+        writer.write("if (%s != null) {", typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("models.add(model);");
+        writer.write("models.add(%s);", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -269,20 +256,21 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void readFromString(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public %s read(String jsonString) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public %s read(String jsonString) {", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("%s %s = null;", typeContext.getType().getParameterizedQualifiedSourceName(), typeContext
+                .getVariableNames().getInstanceVariable());
         writer.write("if (jsonString != null && jsonString.trim().length() != 0) {");
         writer.indent();
         writer.write("JSONObject jsonObject = new JsonParser().parse(jsonString);");
         writer.write("if (jsonObject != null) {");
         writer.indent();
-        writer.write("model = internalRead(jsonObject);");
+        writer.write("%s = internalRead(jsonObject);", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        writer.write("return model;");
+        writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
     }
@@ -290,15 +278,17 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void readFromJsonObject(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public %s read(JSONObject jsonObject) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public %s read(JSONObject jsonObject) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s model = null;", modelType.getParameterizedQualifiedSourceName());
+        writer.write("%s %s = null;", typeContext.getType().getParameterizedQualifiedSourceName(), typeContext
+                .getVariableNames().getInstanceVariable());
         writer.write("if (jsonObject != null) {");
         writer.indent();
-        writer.write("model = internalRead(jsonObject);");
+        writer.write("%s = internalRead(jsonObject);", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
-        writer.write("return model;");
+        writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
     }
@@ -308,12 +298,14 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %s internalRead(JSONObject jsonObject) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("private %s internalRead(JSONObject jsonObject) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%1$s model = new %1$s();", modelType.getParameterizedQualifiedSourceName());
+        // TODO Use InstanceCreator<T, C> if specified
+        writer.write("%1$s %2$s = new %1$s();", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInstanceVariable());
         handleProperties(writer);
-        writer.write("return model;");
+        writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
     }
@@ -322,12 +314,12 @@ public class JsonReaderCreator extends AbstractJsonCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
-            boolean hasNext) throws UnableToCompleteException
+    protected void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
+            PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.comment(writer, fieldContext);
-        fieldHandler.declare(writer, fieldContext);
-        fieldHandler.readInput(writer, fieldContext);
-        fieldHandler.assign(writer, fieldContext);
+        propertyHandler.comment(writer, propertyContext);
+        propertyHandler.declare(writer, propertyContext);
+        propertyHandler.readInput(writer, propertyContext, propertyHandlerRegistry);
+        propertyHandler.assign(writer, propertyContext);
     }
 }

@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -57,8 +58,10 @@ public interface PropertyHandler
      * 
      * @param writer
      * @param propertyContext
+     * @param propertyHandlerRegistry
      */
-    void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
+    void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException;
 
 
     /**
@@ -101,9 +104,11 @@ public interface PropertyHandler
      * 
      * @param writer
      * @param propertyContext
+     * @param propertyHandlerRegistry
      * @throws UnableToCompleteException
      */
-    void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
+    void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException;
 
 
     /**

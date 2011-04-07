@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
@@ -28,7 +28,7 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
 
     @Override
-    protected PropertyHandlerRegistry setupFieldHandlerRegistry()
+    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
     {
         return new JsonWriterPropertyHandlerRegistry();
     }
@@ -51,8 +51,8 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
     protected void writeList(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toJson(List<%s> models, String arrayKey) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("public String toJson(List<%s> models, String arrayKey) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String json = null;");
         writer.write("if (models != null && arrayKey != null) {");
@@ -61,11 +61,12 @@ public class JsonWriterCreator extends AbstractJsonCreator
         writer.write("jsonBuilder.append(\"{\\\"\");");
         writer.write("jsonBuilder.append(arrayKey);");
         writer.write("jsonBuilder.append(\"\\\":[\");");
-        writer.write("for (Iterator<%s> iter = models.iterator(); iter.hasNext(); ) {",
-                modelType.getParameterizedQualifiedSourceName());
+        writer.write("for (Iterator<%s> iter = models.iterator(); iter.hasNext(); ) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("%s model = iter.next();", modelType.getParameterizedQualifiedSourceName());
-        writer.write("String jsonValue = toJson(model);");
+        writer.write("%s %s = iter.next();", typeContext.getType().getParameterizedQualifiedSourceName(), typeContext
+                .getVariableNames().getInstanceVariable());
+        writer.write("String jsonValue = toJson(%s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("if (jsonValue != null) {");
         writer.indent();
         writer.write("jsonBuilder.append(jsonValue);");
@@ -90,15 +91,17 @@ public class JsonWriterCreator extends AbstractJsonCreator
 
     protected void writeSingle(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toJson(%s model) {", modelType.getParameterizedQualifiedSourceName());
+        writer.write("public String toJson(%s %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
         writer.write("String json = null;");
-        writer.write("if (model != null) {");
+        writer.write("if (%s != null) {", typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
         writer.write("StringBuilder jsonBuilder = new StringBuilder();");
         writer.write("jsonBuilder.append(\"{\");");
 
-        // This creates all FieldHandler / FieldContexts and calls handleField()
+        // This creates all FieldHandler / FieldContexts and calls
+        // handleProperty()
         // in a loop
         handleProperties(writer);
 
@@ -115,18 +118,18 @@ public class JsonWriterCreator extends AbstractJsonCreator
     // ---------------------------------------------------- overwritten methods
 
     @Override
-    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
-            boolean hasNext) throws UnableToCompleteException
+    protected void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
+            PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.comment(writer, fieldContext);
-        fieldHandler.declare(writer, fieldContext);
-        fieldHandler.readProperty(writer, fieldContext);
-        fieldHandler.markupStart(writer, fieldContext);
-        fieldHandler.writeValue(writer, fieldContext);
-        fieldHandler.markupEnd(writer, fieldContext);
+        propertyHandler.comment(writer, propertyContext);
+        propertyHandler.declare(writer, propertyContext);
+        propertyHandler.readProperty(writer, propertyContext);
+        propertyHandler.markupStart(writer, propertyContext);
+        propertyHandler.writeValue(writer, propertyContext, propertyHandlerRegistry);
+        propertyHandler.markupEnd(writer, propertyContext);
         if (hasNext)
         {
-            writer.write("%s.append(\",\");", fieldContext.getVariableNames().getBuilderVariable());
+            writer.write("%s.append(\",\");", propertyContext.getVariableNames().getBuilderVariable());
         }
     }
 }

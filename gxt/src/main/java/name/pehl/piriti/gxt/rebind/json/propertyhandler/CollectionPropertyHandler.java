@@ -2,7 +2,7 @@ package name.pehl.piriti.gxt.rebind.json.propertyhandler;
 
 import name.pehl.piriti.gxt.rebind.ModelReaderConstants;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -18,22 +18,22 @@ public class CollectionPropertyHandler extends name.pehl.piriti.rebind.json.prop
         implements ModelReaderConstants
 {
     @Override
-    public void declare(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("%s<%s> %s = null;", fieldContext.getType().getQualifiedSourceName(),
-                getTypeVariable(fieldContext).getParameterizedQualifiedSourceName(), fieldContext.getVariableNames()
-                        .getValueVariable());
+        writer.write("%s<%s> %s = null;", propertyContext.getType().getQualifiedSourceName(),
+                getTypeVariable(propertyContext).getParameterizedQualifiedSourceName(), propertyContext
+                        .getVariableNames().getValueVariable());
     }
 
 
     @Override
-    protected JClassType getTypeVariable(PropertyContext fieldContext)
+    protected JClassType getTypeVariable(PropertyContext propertyContext)
     {
         JClassType typeVariable = null;
-        Class<?> typeVariableClass = fieldContext.getMetadata(TYPE_VARIABLE);
+        Class<?> typeVariableClass = propertyContext.getMetadata(TYPE_VARIABLE);
         if (typeVariableClass != null && !Void.class.equals(typeVariableClass))
         {
-            typeVariable = fieldContext.getTypeOracle().findType(typeVariableClass.getName());
+            typeVariable = propertyContext.getTypeContext().getTypeOracle().findType(typeVariableClass.getName());
         }
         return typeVariable;
     }

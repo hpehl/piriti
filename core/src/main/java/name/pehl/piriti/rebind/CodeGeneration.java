@@ -3,8 +3,6 @@ package name.pehl.piriti.rebind;
 import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
-import name.pehl.piriti.rebind.propertyhandler.VariableNames;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -45,9 +43,9 @@ public final class CodeGeneration
     {
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        if (propertyContext.getSetter() == NoopPropertySetter.class)
+        if (propertyContext.getSetter() == null || propertyContext.getSetter() == NoopPropertySetter.class)
         {
-            if (propertyContext.isGxt())
+            if (propertyContext.getTypeContext().isGxt())
             {
                 assignGxt(writer, propertyContext);
             }
@@ -68,16 +66,16 @@ public final class CodeGeneration
 
     private static void assignFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
     {
-        JField field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName());
+        JField field = TypeUtils.findField(propertyContext.getTypeContext().getType(), propertyContext.getName());
         if (field == null)
         {
             String reason = String.format("Cannot assign %s: No field found in %s.", propertyContext.getName(),
-                    propertyContext.getClazz().getQualifiedSourceName());
+                    propertyContext.getTypeContext().getType().getQualifiedSourceName());
             skipProperty(writer, propertyContext, reason);
         }
 
         JClassType enclosingType = field.getEnclosingType();
-        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == enclosingType.getPackage();
+        boolean samePackage = propertyContext.getTypeContext().getRwType().getPackage() == enclosingType.getPackage();
         if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
         {
             writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
@@ -90,13 +88,13 @@ public final class CodeGeneration
                     .getType();
             if (samePackage)
             {
-                setter = TypeUtils.findSetter(propertyContext.getClazz(), propertyContext.getName(), parameter,
-                        Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
+                setter = TypeUtils.findSetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
+                        parameter, Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
             }
             else
             {
-                setter = TypeUtils.findSetter(propertyContext.getClazz(), propertyContext.getName(), parameter,
-                        Modifier.PUBLIC);
+                setter = TypeUtils.findSetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
+                        parameter, Modifier.PUBLIC);
             }
             if (setter != null)
             {
@@ -105,7 +103,7 @@ public final class CodeGeneration
             else
             {
                 String reason = String.format("Cannot assign %s: No accessible field or setter found in %s.",
-                        propertyContext.getName(), propertyContext.getClazz().getQualifiedSourceName());
+                        propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
                 skipProperty(writer, propertyContext, reason);
             }
         }
@@ -123,9 +121,9 @@ public final class CodeGeneration
 
     public static void readField(IndentedWriter writer, PropertyContext propertyContext)
     {
-        if (propertyContext.getGetter() == NoopPropertyGetter.class)
+        if (propertyContext.getGetter() == null || propertyContext.getGetter() == NoopPropertyGetter.class)
         {
-            if (propertyContext.isGxt())
+            if (propertyContext.getTypeContext().isGxt())
             {
                 readGxt(writer, propertyContext);
             }
@@ -144,16 +142,16 @@ public final class CodeGeneration
 
     private static void readFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
     {
-        JField field = TypeUtils.findField(propertyContext.getClazz(), propertyContext.getName());
+        JField field = TypeUtils.findField(propertyContext.getTypeContext().getType(), propertyContext.getName());
         if (field == null)
         {
             String reason = String.format("Cannot read %s: No accessible field found in %s.",
-                    propertyContext.getName(), propertyContext.getClazz().getQualifiedSourceName());
+                    propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
             skipProperty(writer, propertyContext, reason);
         }
 
         JClassType enclosingType = field.getEnclosingType();
-        boolean samePackage = propertyContext.getReaderOrWriter().getPackage() == enclosingType.getPackage();
+        boolean samePackage = propertyContext.getTypeContext().getRwType().getPackage() == enclosingType.getPackage();
         if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
         {
             writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
@@ -166,13 +164,13 @@ public final class CodeGeneration
                     .getType();
             if (samePackage)
             {
-                getter = TypeUtils.findGetter(propertyContext.getClazz(), propertyContext.getName(), returnType,
-                        Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
+                getter = TypeUtils.findGetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
+                        returnType, Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
             }
             else
             {
-                getter = TypeUtils.findGetter(propertyContext.getClazz(), propertyContext.getName(), returnType,
-                        Modifier.PUBLIC);
+                getter = TypeUtils.findGetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
+                        returnType, Modifier.PUBLIC);
             }
             if (getter != null)
             {
@@ -182,7 +180,7 @@ public final class CodeGeneration
             else
             {
                 String reason = String.format("Cannot read %s: No accessible field or setter found in %s.",
-                        propertyContext.getName(), propertyContext.getClazz().getQualifiedSourceName());
+                        propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
                 skipProperty(writer, propertyContext, reason);
             }
         }

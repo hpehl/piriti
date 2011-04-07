@@ -4,7 +4,6 @@ import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.ConverterRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import com.google.gwt.core.ext.UnableToCompleteException;

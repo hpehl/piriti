@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind.propertyhandler;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.ConverterRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 
@@ -19,12 +20,12 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      * Returns always <code>true</code>.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      * @return always <code>true</code>
      * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         return true;
     }
@@ -34,7 +35,8 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      * {@inheritDoc}
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         readInputAsString(writer, propertyContext);
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueAsStringVariable());
@@ -75,9 +77,9 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      * {@link PropertyContext#getValueAsStringVariable()}.
      * 
      * @param writer
-     * @param fieldContext
+     * @param propertyContext
      */
-    protected abstract void readInputAsString(IndentedWriter writer, PropertyContext fieldContext);
+    protected abstract void readInputAsString(IndentedWriter writer, PropertyContext propertyContext);
 
 
     /**
@@ -88,6 +90,7 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
      * used.
      * 
      * @param writer
+     * @param typeContext
      * @param propertyContext
      */
     protected void writeValueAsString(IndentedWriter writer, PropertyContext propertyContext)
@@ -109,8 +112,9 @@ public abstract class AbstractConverterPropertyHandler extends AbstractPropertyH
         writer.indent();
         if (propertyContext.getFormat() != null)
         {
-            writer.write("%s = %s.serialize(%s, \"%s\");", propertyContext.getVariableNames().getValueAsStringVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueVariable(), propertyContext.getFormat());
+            writer.write("%s = %s.serialize(%s, \"%s\");", propertyContext.getVariableNames()
+                    .getValueAsStringVariable(), converterVariable, propertyContext.getVariableNames()
+                    .getValueVariable(), propertyContext.getFormat());
         }
         else
         {

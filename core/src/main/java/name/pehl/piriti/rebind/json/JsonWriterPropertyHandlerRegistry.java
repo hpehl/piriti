@@ -1,6 +1,6 @@
 package name.pehl.piriti.rebind.json;
 
-import name.pehl.piriti.rebind.propertyhandler.PropertyContext;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
@@ -24,18 +24,19 @@ public class JsonWriterPropertyHandlerRegistry extends JsonPropertyHandlerRegist
      * <li>If no field handler return {@link #newRegistryFieldHandler()}
      * </ol>
      * 
-     * @param fieldContext
+     * @param propertyContext
      * @return
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry#findPropertyHandler(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
-    public PropertyHandler findPropertyHandler(PropertyContext fieldContext)
+    @Override
+    public PropertyHandler findPropertyHandler(PropertyContext propertyContext)
     {
         PropertyHandler handler = null;
-        if (fieldContext.isEnum())
+        if (propertyContext.isEnum())
         {
             handler = newEnumFieldHandler();
         }
-        else if (fieldContext.isArray())
+        else if (propertyContext.isArray())
         {
             handler = newArrayFieldHandler();
         }
@@ -43,7 +44,7 @@ public class JsonWriterPropertyHandlerRegistry extends JsonPropertyHandlerRegist
         {
             // Ask the registry for all other stuff (basic types,
             // collections, maps, ...)
-            handler = registry.get(fieldContext.getType().getQualifiedSourceName());
+            handler = registry.get(propertyContext.getType().getQualifiedSourceName());
             if (handler == null)
             {
                 // Delegate to the JsonRegistry to resolve other mapped
