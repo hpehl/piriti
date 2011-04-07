@@ -6,8 +6,8 @@ package name.pehl.piriti.converter.client;
  * {@link name.pehl.piriti.xml.client.Xml#converter()}.
  * 
  * @author $Author$
- * @version $Date$ $Revision:
- *          1097 $
+ * @version $Date$ $Revision: 1097
+ *          $
  */
 public class NoopConverter implements Converter<Object>
 {

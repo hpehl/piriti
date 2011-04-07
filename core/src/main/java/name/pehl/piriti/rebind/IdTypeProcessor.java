@@ -7,19 +7,17 @@ import name.pehl.piriti.commons.client.Id;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JField;
 
-public class IdTypeProcessor
-extends AbstractTypeProcessor
+public class IdTypeProcessor extends AbstractTypeProcessor
 {
     @SuppressWarnings("unchecked")
     public IdTypeProcessor()
     {
-        super(new Class[] { Id.class }, null);
+        super(new Class[] {Id.class}, null);
     }
-    
-    
+
+
     @Override
-    protected void processFields(TypeContext typeContext, List<JField> fields)
-    throws UnableToCompleteException
+    protected void processFields(TypeContext typeContext, List<JField> fields) throws UnableToCompleteException
     {
         if (fields.size() > 1)
         {

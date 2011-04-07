@@ -31,15 +31,14 @@ import com.google.gwt.core.ext.typeinfo.JField;
  * <p>
  * The following fields are skipped by this {@link TypeProcessor}
  * <ul>
- * <li>Fields of <code>stopAt</code> and its superclasses
+ * <li>Fields which are defined in <code>skipTypes</code>
  * <li>Fields which are annotated with any of <code>skipAnnotations</code>
  * </ul>
  * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public abstract class AbstractTypeProcessor
-implements TypeProcessor
+public abstract class AbstractTypeProcessor implements TypeProcessor
 {
     private TypeProcessor next;
     private Set<? extends JClassType> skipTypes;
@@ -47,7 +46,8 @@ implements TypeProcessor
     private final Set<Class<? extends Annotation>> skipAnnotations;
 
 
-    public AbstractTypeProcessor(Class<? extends Annotation>[] includeAnnotations, Class<? extends Annotation>[] skipAnnotations)
+    public AbstractTypeProcessor(Class<? extends Annotation>[] includeAnnotations,
+            Class<? extends Annotation>[] skipAnnotations)
     {
         this.includeAnnotations = new HashSet<Class<? extends Annotation>>();
         if (includeAnnotations != null)
@@ -68,8 +68,7 @@ implements TypeProcessor
      * @see name.pehl.piriti.rebind.TypeProcessor#process(name.pehl.piriti.rebind.TypeContext)
      */
     @Override
-    public final void process(TypeContext typeContext)
-    throws UnableToCompleteException
+    public final void process(TypeContext typeContext) throws UnableToCompleteException
     {
         skipTypes = typeContext.getStopAt().getFlattenedSupertypeHierarchy();
         List<JField> fields = new ArrayList<JField>();
@@ -80,8 +79,8 @@ implements TypeProcessor
             next.process(typeContext);
         }
     }
-    
-    
+
+
     @Override
     public TypeProcessor setNext(TypeProcessor processor)
     {
@@ -110,10 +109,10 @@ implements TypeProcessor
         {
             return;
         }
-        
+
         // Superclass first please
         collectFields(type.getSuperclass(), fields);
-        
+
         // Collect fields
         JField[] currentFields = type.getFields();
         if (currentFields != null)
@@ -204,17 +203,17 @@ implements TypeProcessor
 
 
     protected PropertyContext createPropertyContext(TypeContext typeContext, JField field, VariableNames variableNames)
-    throws UnableToCompleteException
+            throws UnableToCompleteException
     {
         String path = getPath(field);
         String format = getFormat(field);
         WhitespaceHandling whitespaceHandling = getWhitespaceHandling(field);
         // TODO Use order: int order = getOrder(field);
-        Class<? extends Converter<? >> converter = getConverter(field);
-        Class<? extends PropertyGetter<? , ? >> getter = getGetter(field);
-        Class<? extends PropertySetter<? , ? >> setter = getSetter(field);
+        Class<? extends Converter<?>> converter = getConverter(field);
+        Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
+        Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
         PropertyContext propertyContext = new PropertyContext(typeContext, field.getType(), field.getName(), path,
-            format, whitespaceHandling, converter, getter, setter, null, variableNames);
+                format, whitespaceHandling, converter, getter, setter, null, variableNames);
         return propertyContext;
     }
 
@@ -267,9 +266,9 @@ implements TypeProcessor
     }
 
 
-    protected Class<? extends Converter<? >> getConverter(JField field)
+    protected Class<? extends Converter<?>> getConverter(JField field)
     {
-        Class<? extends Converter<? >> converter = null;
+        Class<? extends Converter<?>> converter = null;
         Convert convertAnno = field.getAnnotation(Convert.class);
         if (convertAnno != null)
         {
@@ -279,9 +278,9 @@ implements TypeProcessor
     }
 
 
-    protected Class<? extends PropertyGetter<? , ? >> getGetter(JField field)
+    protected Class<? extends PropertyGetter<?, ?>> getGetter(JField field)
     {
-        Class<? extends PropertyGetter<? , ? >> getter = null;
+        Class<? extends PropertyGetter<?, ?>> getter = null;
         Getter getterAnno = field.getAnnotation(Getter.class);
         if (getterAnno != null)
         {
@@ -291,9 +290,9 @@ implements TypeProcessor
     }
 
 
-    protected Class<? extends PropertySetter<? , ? >> getSetter(JField field)
+    protected Class<? extends PropertySetter<?, ?>> getSetter(JField field)
     {
-        Class<? extends PropertySetter<? , ? >> setter = null;
+        Class<? extends PropertySetter<?, ?>> setter = null;
         Setter setterAnno = field.getAnnotation(Setter.class);
         if (setterAnno != null)
         {

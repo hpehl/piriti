@@ -76,7 +76,7 @@ public abstract class AbstractCreator
         // initialize
         this.generatorContext = generatorContext;
         this.variableNames = setupVariableNames();
-        this.typeContext = new TypeContext(generatorContext.getTypeOracle(), rwType, type, variableNames);
+        this.typeContext = new TypeContext(generatorContext.getTypeOracle(), type, rwType, variableNames);
         this.typeProcessor = setupTypeProcessor();
         this.propertyHandlerRegistry = setupPropertyHandlerRegistry();
         this.implName = implName;

@@ -1,8 +1,8 @@
 package name.pehl.piriti.client.types;
 
 /**
- * @author $LastChangedBy: harald.pehl $ 
- * @version $LastChangedRevision: 131 $ 
+ * @author $LastChangedBy: harald.pehl $
+ * @version $LastChangedRevision: 131 $
  */
 public enum Amount
 {

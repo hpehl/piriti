@@ -3,8 +3,9 @@ package name.pehl.piriti.rebind.json;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * @author $Author:$
- * @version $Date:$ $Revision:$
+ * @author $Author$
+ * @version $Date$ $Revision:
+ *          1224 $
  */
 public final class JsonPathUtils
 {

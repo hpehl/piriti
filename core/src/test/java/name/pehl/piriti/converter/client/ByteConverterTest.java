@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * @author $LastChangedBy: harald.pehl $ 
- * @version $LastChangedRevision: 19 $ 
+ * @author $LastChangedBy: harald.pehl $
+ * @version $LastChangedRevision: 19 $
  */
 public class ByteConverterTest
 {

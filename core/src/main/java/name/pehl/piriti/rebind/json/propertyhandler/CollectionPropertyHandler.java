@@ -58,7 +58,8 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
-        // The nested property context is created *without* a path. The nested property
+        // The nested property context is created *without* a path. The nested
+        // property
         // handler must take care of this!
         JClassType parameterType = getTypeVariable(propertyContext);
         PropertyContext nestedPropertyContext = propertyContext.createNested(parameterType, null);
@@ -87,7 +88,8 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
         writer.write("JSONValue %s = jsonArray.get(i);", nestedPropertyContext.getVariableNames().getInputVariable());
-        writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedPropertyContext.getVariableNames().getInputVariable());
+        writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedPropertyContext.getVariableNames()
+                .getInputVariable());
         writer.indent();
         nestedHandler.comment(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
@@ -120,7 +122,8 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
     public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
-        // The nested property context is created *without* a path. The nested property
+        // The nested property context is created *without* a path. The nested
+        // property
         // handler must take care of this!
         JClassType parameterType = getTypeVariable(propertyContext);
         PropertyContext nestedPropertyContext = propertyContext.createNested(parameterType, null);

@@ -76,8 +76,9 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
                 throw new UnableToCompleteException();
             }
         }
-        
-        // The nested property context is created *without* a path. The nested property
+
+        // The nested property context is created *without* a path. The nested
+        // property
         // handler must take care of this!
         String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
         PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
@@ -99,7 +100,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
         writer.write("JSONValue %s = jsonArray.get(i);", nestedPropertyContext.getVariableNames().getInputVariable());
-        writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedPropertyContext.getVariableNames().getInputVariable());
+        writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedPropertyContext.getVariableNames()
+                .getInputVariable());
         writer.indent();
         nestedHandler.comment(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
@@ -168,7 +170,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
             }
         }
 
-        // The nested property context is created *without* a path. The nested property
+        // The nested property context is created *without* a path. The nested
+        // property
         // handler must take care of this!
         PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
         PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);

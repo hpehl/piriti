@@ -1,6 +1,5 @@
 package name.pehl.piriti.converter.client;
 
-
 /**
  * Converter for boolean objects. Uses {@code Boolean.valueOf(value)} for the
  * conversion.

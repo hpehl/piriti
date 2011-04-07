@@ -1,6 +1,5 @@
 package name.pehl.piriti.converter.client;
 
-
 /**
  * Converter for character objects. Uses the first character of the value for
  * the conversion.

@@ -3,6 +3,8 @@ package name.pehl.piriti.rebind;
 import java.util.HashSet;
 import java.util.Set;
 
+import name.pehl.piriti.commons.client.CreateWith;
+import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.MapUpTo;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
@@ -24,50 +26,69 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 public class TypeContext
 {
     // -------------------------------------------------------- private members
-    
+
     private final TypeOracle typeOracle;
-    private final JClassType rwType;
     private final JClassType type;
+    private final JClassType rwType;
+    private Class<? extends InstanceCreator<?, ?>> instanceCreator;
     private JClassType stopAt;
+    private final Set<PropertyContext> properties;
     private PropertyContext id;
     private final Set<PropertyContext> references;
-    private final Set<PropertyContext> properties;
     private final VariableNames variableNames;
 
 
     // ----------------------------------------------------------- constructors
-    
+
     /**
      * Construct a new instance of this class
      * 
-     * @param typeOracle The type oracle from the GWT generator API
-     * @param rwType The type of the reader or writer interface
-     * @param type The type of the class
+     * @param typeOracle
+     *            The type oracle from the GWT generator API
+     * @param type
+     *            The type of the class
+     * @param rwType
+     *            The type of the reader or writer interface
      * @throws UnableToCompleteException
      */
-    public TypeContext(TypeOracle typeOracle, JClassType rwType, JClassType type, VariableNames variableNames)
-    throws UnableToCompleteException
+    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType, VariableNames variableNames)
+            throws UnableToCompleteException
     {
         this.typeOracle = typeOracle;
-        this.rwType = rwType;
         this.type = type;
-        
+        this.rwType = rwType;
+
         this.variableNames = variableNames;
         this.references = new HashSet<PropertyContext>();
         this.properties = new HashSet<PropertyContext>();
-        
-        this.stopAt = null;
+
+        // For instanceCreator and stopAt evaluate
+        // 1. the type and
+        // 2. the rwType
         try
         {
-            MapUpTo upTo = this.rwType.getAnnotation(MapUpTo.class);
-            if (upTo != null)
+            this.instanceCreator = null;
+            CreateWith createWith = this.type.getAnnotation(CreateWith.class);
+            if (createWith != null)
             {
-                this.stopAt = this.typeOracle.getType(upTo.value().getName()).getSuperclass();
+                this.instanceCreator = createWith.value();
             }
-            upTo = this.type.getAnnotation(MapUpTo.class);
-            if (upTo != null)
+            createWith = this.rwType.getAnnotation(CreateWith.class);
+            if (createWith != null)
             {
-                this.stopAt = this.typeOracle.getType(upTo.value().getName()).getSuperclass();
+                this.instanceCreator = createWith.value();
+            }
+
+            this.stopAt = null;
+            MapUpTo mapUpTo = this.type.getAnnotation(MapUpTo.class);
+            if (mapUpTo != null)
+            {
+                this.stopAt = this.typeOracle.getType(mapUpTo.value().getName()).getSuperclass();
+            }
+            mapUpTo = this.rwType.getAnnotation(MapUpTo.class);
+            if (mapUpTo != null)
+            {
+                this.stopAt = this.typeOracle.getType(mapUpTo.value().getName()).getSuperclass();
             }
             if (this.stopAt == null)
             {
@@ -79,27 +100,26 @@ public class TypeContext
             throw new UnableToCompleteException();
         }
     }
-    
-    
-    public TypeContext clone(VariableNames variableNames)
-    throws UnableToCompleteException
+
+
+    public TypeContext clone(VariableNames variableNames) throws UnableToCompleteException
     {
-        return new TypeContext(this.typeOracle, this.rwType, this.type, variableNames);
+        return new TypeContext(this.typeOracle, this.type, this.rwType, variableNames);
     }
 
 
     // --------------------------------------------------------- object methods
-    
+
     @Override
     public String toString()
     {
         return new StringBuilder().append("TypeContext [").append(rwType.getParameterizedQualifiedSourceName())
-        .append(" for ").append(type.getParameterizedQualifiedSourceName()).append("]").toString();
+                .append(" for ").append(type.getParameterizedQualifiedSourceName()).append("]").toString();
     }
 
 
     // -------------------------------------- methods related to the class type
-    
+
     public boolean isGxt()
     {
         Set<? extends JClassType> hierarchy = type.getFlattenedSupertypeHierarchy();
@@ -118,7 +138,7 @@ public class TypeContext
 
 
     // ------------------------------------------------------------ collections
-    
+
     public void addReference(PropertyContext propertyContext)
     {
         references.add(propertyContext);
@@ -132,62 +152,10 @@ public class TypeContext
 
 
     // ------------------------------------------------------------- properties
-    
+
     public TypeOracle getTypeOracle()
     {
         return typeOracle;
-    }
-
-
-    public JClassType getRwType()
-    {
-        return rwType;
-    }
-
-
-    /**
-     * @return <code>true</code> if {@link #getRwType()} references a
-     * {@link JsonReader} or {@link XmlReader}, <code>false</code> otherwise.
-     */
-    public boolean isReader()
-    {
-        boolean reader = false;
-        Set<? extends JClassType> hierarchy = rwType.getFlattenedSupertypeHierarchy();
-        if (hierarchy != null)
-        {
-            for (JClassType h : hierarchy)
-            {
-                if (h.getQualifiedSourceName().equals(JsonReader.class.getName())
-                    || h.getQualifiedSourceName().equals(XmlReader.class.getName()))
-                {
-                    return true;
-                }
-            }
-        }
-        return reader;
-    }
-
-
-    /**
-     * @return <code>true</code> if {@link #getRwType()} references a
-     * {@link JsonWriter} or {@link XmlWriter}, <code>false</code> otherwise.
-     */
-    public boolean isWriter()
-    {
-        boolean writer = false;
-        Set<? extends JClassType> hierarchy = rwType.getFlattenedSupertypeHierarchy();
-        if (hierarchy != null)
-        {
-            for (JClassType h : hierarchy)
-            {
-                if (h.getQualifiedSourceName().equals(JsonWriter.class.getName())
-                    || h.getQualifiedSourceName().equals(XmlWriter.class.getName()))
-                {
-                    return true;
-                }
-            }
-        }
-        return writer;
     }
 
 
@@ -200,8 +168,68 @@ public class TypeContext
     {
         return type;
     }
-    
-    
+
+
+    public JClassType getRwType()
+    {
+        return rwType;
+    }
+
+
+    /**
+     * @return <code>true</code> if {@link #getRwType()} references a
+     *         {@link JsonReader} or {@link XmlReader}, <code>false</code>
+     *         otherwise.
+     */
+    public boolean isReader()
+    {
+        boolean reader = false;
+        Set<? extends JClassType> hierarchy = rwType.getFlattenedSupertypeHierarchy();
+        if (hierarchy != null)
+        {
+            for (JClassType h : hierarchy)
+            {
+                if (h.getQualifiedSourceName().equals(JsonReader.class.getName())
+                        || h.getQualifiedSourceName().equals(XmlReader.class.getName()))
+                {
+                    return true;
+                }
+            }
+        }
+        return reader;
+    }
+
+
+    /**
+     * @return <code>true</code> if {@link #getRwType()} references a
+     *         {@link JsonWriter} or {@link XmlWriter}, <code>false</code>
+     *         otherwise.
+     */
+    public boolean isWriter()
+    {
+        boolean writer = false;
+        Set<? extends JClassType> hierarchy = rwType.getFlattenedSupertypeHierarchy();
+        if (hierarchy != null)
+        {
+            for (JClassType h : hierarchy)
+            {
+                if (h.getQualifiedSourceName().equals(JsonWriter.class.getName())
+                        || h.getQualifiedSourceName().equals(XmlWriter.class.getName()))
+                {
+                    return true;
+                }
+            }
+        }
+        return writer;
+    }
+
+
+    public Class<? extends InstanceCreator<?, ?>> getInstanceCreator()
+    {
+        return instanceCreator;
+    }
+
+
     public JClassType getStopAt()
     {
         return stopAt;

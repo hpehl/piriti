@@ -5,7 +5,8 @@ import name.pehl.piriti.property.client.PropertyGetter;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision:
+ *          1478 $
  */
 public class NameGetter implements PropertyGetter<Animal, String>
 {

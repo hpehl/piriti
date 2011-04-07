@@ -29,7 +29,8 @@ public class XmlRegistryPropertyHandler extends AbstractRegistryPropertyHandler
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        String readerVariable = startReader(writer, propertyContext, "xmlRegistry", propertyContext.getClassOrInterfaceType());
+        String readerVariable = startReader(writer, propertyContext, "xmlRegistry",
+                propertyContext.getClassOrInterfaceType());
 
         writer.write("Node nestedNode = %s.selectNode(\"%s\");", propertyContext.getVariableNames().getInputVariable(),
                 propertyContext.getPath());

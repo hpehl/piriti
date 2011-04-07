@@ -2,7 +2,8 @@ package name.pehl.piriti.client.external;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision:
+ *          1478 $
  */
 public class OrderItem
 {

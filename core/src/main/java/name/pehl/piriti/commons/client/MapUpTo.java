@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface MapUpTo 
+public @interface MapUpTo
 {
     Class<?> value() default Object.class;
 }

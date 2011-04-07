@@ -1,6 +1,5 @@
 package name.pehl.piriti.converter.client;
 
-
 /**
  * Simple converter to convert strings into the specified type T and vice versa.
  * 

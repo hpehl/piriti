@@ -40,12 +40,12 @@ public interface LotteryTicketResources extends ClientBundle
 
     @Source("lotteryTicketNs.xml")
     public TextResource lotteryTicketNs();
-    
-    
+
+
     @Source("lotteryTicketDns.xml")
     public TextResource lotteryTicketDns();
-    
-    
+
+
     @Source("lotteryTicketNns.xml")
     public TextResource lotteryTicketNns();
 

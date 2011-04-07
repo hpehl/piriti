@@ -86,8 +86,8 @@ public class PropertyAnnotation<T extends Annotation>
     {
         return annotation;
     }
-    
-    
+
+
     public int getOrder()
     {
         return order;

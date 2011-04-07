@@ -5,7 +5,8 @@ import name.pehl.piriti.property.client.PropertySetter;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision:
+ *          1478 $
  */
 public class NameSetter implements PropertySetter<Animal, String>
 {

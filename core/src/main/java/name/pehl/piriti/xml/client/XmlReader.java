@@ -11,11 +11,11 @@ import name.pehl.totoe.xml.client.XmlParseException;
 /**
  * Interface for converting an XML document / element to an instance of T or a
  * list of Ts. The implementation for this interface is generated using deferred
- * binding. All properties of T which are annotated with {@link Xml},
- * {@link Id} or {@link IdRef} are handled by the generated XmlReader
- * implementation. If the XPath expression behind {@link Xml} returns some data
- * != null the relevant property is assigned with the converted value, otherwise
- * the property remains unchanged.
+ * binding. All properties of T which are annotated with {@link Xml}, {@link Id}
+ * or {@link IdRef} are handled by the generated XmlReader implementation. If
+ * the XPath expression behind {@link Xml} returns some data != null the
+ * relevant property is assigned with the converted value, otherwise the
+ * property remains unchanged.
  * <p>
  * The setup of the XmlReader is inspired by the UiBinder and is typically
  * specified as an inner class:

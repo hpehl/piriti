@@ -1,6 +1,5 @@
 package name.pehl.piriti.converter.client;
 
-
 /**
  * Base class for all converters with some common functionality.
  * 

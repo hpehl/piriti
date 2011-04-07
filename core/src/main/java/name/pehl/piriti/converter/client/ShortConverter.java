@@ -1,6 +1,5 @@
 package name.pehl.piriti.converter.client;
 
-
 /**
  * Converter for short objects. Uses {@code Short.valueOf(value)} for the
  * conversion.

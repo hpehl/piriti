@@ -1,6 +1,5 @@
 package name.pehl.piriti.client.inheritance;
 
-
 /**
  * @author $Author$
  * @version $Revision$

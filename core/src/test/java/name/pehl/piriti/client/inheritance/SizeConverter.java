@@ -4,7 +4,8 @@ import name.pehl.piriti.converter.client.Converter;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision$
+ * @version $Date$ $Revision:
+ *          1478 $
  */
 public class SizeConverter implements Converter<Size>
 {

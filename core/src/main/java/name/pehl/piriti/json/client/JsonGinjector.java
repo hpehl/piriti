@@ -1,6 +1,5 @@
 package name.pehl.piriti.json.client;
 
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
