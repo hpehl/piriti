@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.NoopConverter;
-import name.pehl.piriti.json.client.JsonMappings;
 import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;

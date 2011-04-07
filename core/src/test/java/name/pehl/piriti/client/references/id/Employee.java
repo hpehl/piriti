@@ -2,9 +2,9 @@ package name.pehl.piriti.client.references.id;
 
 import java.util.List;
 
+import name.pehl.piriti.commons.client.Id;
+import name.pehl.piriti.commons.client.IdRef;
 import name.pehl.piriti.xml.client.Xml;
-import name.pehl.piriti.xml.client.XmlId;
-import name.pehl.piriti.xml.client.XmlIdRef;
 import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.client.GWT;
@@ -26,20 +26,20 @@ public class Employee
 
     // ------------------------------------------------------------------- data
 
-    @XmlId
+    @Id
     String id;
 
     @Xml
     String name;
 
-    @XmlIdRef("boss/@ref")
+    @IdRef("boss/@ref")
     Employee boss;
 
-    @XmlIdRef("team/member/@ref")
+    @IdRef("team/member/@ref")
     List<Employee> team;
 
     @Xml
-    @XmlIdRef("department/@ref")
+    @IdRef("department/@ref")
     Department department;
 
 

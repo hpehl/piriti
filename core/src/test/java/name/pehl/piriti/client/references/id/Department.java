@@ -1,8 +1,8 @@
 package name.pehl.piriti.client.references.id;
 
+import name.pehl.piriti.commons.client.Id;
+import name.pehl.piriti.commons.client.IdRef;
 import name.pehl.piriti.xml.client.Xml;
-import name.pehl.piriti.xml.client.XmlId;
-import name.pehl.piriti.xml.client.XmlIdRef;
 import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.client.GWT;
@@ -24,13 +24,13 @@ public class Department
 
     // ------------------------------------------------------------------- data
 
-    @XmlId
+    @Id
     String id;
 
     @Xml
     String name;
 
-    @XmlIdRef("employees/@members")
+    @IdRef("employees/@members")
     Employee[] employees;
 
 

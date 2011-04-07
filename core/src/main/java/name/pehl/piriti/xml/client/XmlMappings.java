@@ -6,6 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import name.pehl.piriti.commons.client.Id;
+import name.pehl.piriti.commons.client.IdRef;
+
 /**
  * Annotation which can be used in case the POJOs properties cannot be annotated
  * direclty. The annotation has to be placed at the interface which extends
@@ -38,11 +41,11 @@ public @interface XmlMappings
     String NO_ID = "This is a special no-id-marker. Do not use for real IDs!";
 
 
-    XmlId id() default @XmlId(NO_ID);
+    Id id() default @Id(NO_ID);
 
 
     Xml[] value();
 
 
-    XmlIdRef[] references() default {};
+    IdRef[] references() default {};
 }

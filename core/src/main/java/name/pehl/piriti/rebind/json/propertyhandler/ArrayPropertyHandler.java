@@ -3,8 +3,6 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.TypeContext;
-import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
@@ -78,19 +76,11 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
                 throw new UnableToCompleteException();
             }
         }
-        String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
-        String nestedJsonValueVariable = propertyContext.getVariableNames().newVariableName("NestedJsonValue");
-        String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
-        // The field context is created *without* a path. The nested field
+        
+        // The nested property context is created *without* a path. The nested property
         // handler must take care of this!
-        VariableNames nestedVariableNames = new VariableNames(nestedValueVariable, nestedJsonValueVariable,
-                propertyContext.getVariableNames().getBuilderVariable());
-        TypeContext nestedTypeContext = new TypeContext(propertyContext.getTypeContext().getTypeOracle(),
-                propertyContext.getTypeContext().getRwType(), propertyContext.getTypeContext().getType(),
-                nestedVariableNames);
-        PropertyContext nestedPropertyContext = new PropertyContext(nestedTypeContext, componentType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
-                propertyContext.getGetter(), propertyContext.getSetter(), null, nestedVariableNames);
+        String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
+        PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
         PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
@@ -108,8 +98,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
                 valueVariableAsList);
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
-        writer.write("JSONValue %s = jsonArray.get(i);", nestedJsonValueVariable);
-        writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedJsonValueVariable);
+        writer.write("JSONValue %s = jsonArray.get(i);", nestedPropertyContext.getVariableNames().getInputVariable());
+        writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedPropertyContext.getVariableNames().getInputVariable());
         writer.indent();
         nestedHandler.comment(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
@@ -178,18 +168,9 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
             }
         }
 
-        String nestedJsonValueVariable = propertyContext.getVariableNames().newVariableName("NestedJsonValue");
-        String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
-        // The field context is created *without* a path. The nested field
+        // The nested property context is created *without* a path. The nested property
         // handler must take care of this!
-        VariableNames nestedVariableNames = new VariableNames(nestedValueVariable, nestedJsonValueVariable,
-                propertyContext.getVariableNames().getBuilderVariable());
-        TypeContext nestedTypeContext = new TypeContext(propertyContext.getTypeContext().getTypeOracle(),
-                propertyContext.getTypeContext().getRwType(), propertyContext.getTypeContext().getType(),
-                nestedVariableNames);
-        PropertyContext nestedPropertyContext = new PropertyContext(nestedTypeContext, componentType,
-                propertyContext.getName(), null, propertyContext.getFormat(), false, propertyContext.getConverter(),
-                propertyContext.getGetter(), propertyContext.getSetter(), null, nestedVariableNames);
+        PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
         PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {

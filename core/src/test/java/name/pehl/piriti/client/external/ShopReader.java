@@ -1,12 +1,12 @@
 package name.pehl.piriti.client.external;
 
+import name.pehl.piriti.commons.client.Id;
+import name.pehl.piriti.commons.client.IdRef;
 import name.pehl.piriti.json.client.Json;
 import name.pehl.piriti.json.client.JsonMappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.Xml;
-import name.pehl.piriti.xml.client.XmlId;
-import name.pehl.piriti.xml.client.XmlIdRef;
 import name.pehl.piriti.xml.client.XmlMappings;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
@@ -107,7 +107,7 @@ public class ShopReader
     public static final ShopXmlReader SHOP_XML_READER = GWT.create(ShopXmlReader.class);
 
     @XmlMappings(
-        id = @XmlId(property = "id", value = "id/text()"), 
+        id = @Id(property = "id", value = "id/text()"), 
         value = {
             @Xml(property = "firstname"),
             @Xml(property = "surname")})
@@ -115,7 +115,7 @@ public class ShopReader
     public static final CustomerXmlReader CUSTOMER_XML_READER = GWT.create(CustomerXmlReader.class);
 
     @XmlMappings(
-        id = @XmlId(property = "id"), 
+        id = @Id(property = "id"), 
         value = {
             @Xml(property = "name"), 
             @Xml(property = "price"),
@@ -127,13 +127,13 @@ public class ShopReader
         value = {
             @Xml(property = "date", value = "@date", format = "dd.MM.yyyy"),
             @Xml(property = "items", value = "items/item")}, 
-        references = @XmlIdRef(property = "customer", value = "customer/@ref"))
+        references = @IdRef(property = "customer", value = "customer/@ref"))
     public interface OrderXmlReader extends XmlReader<Order> {}
     public static final OrderXmlReader ORDER_XML_READER = GWT.create(OrderXmlReader.class);
 
     @XmlMappings(
         value = @Xml(property = "amount", value = "@amount"), 
-        references = @XmlIdRef(property = "product", value = "@ref"))
+        references = @IdRef(property = "product", value = "@ref"))
     public interface OrderItemXmlReader extends XmlReader<OrderItem> {}
     public static final OrderItemXmlReader ORDER_ITEM_XML_READER = GWT.create(OrderItemXmlReader.class);
 
@@ -147,7 +147,7 @@ public class ShopReader
     public static final ShopXmlWriter SHOP_XML_WRITER = GWT.create(ShopXmlWriter.class);
 
     @XmlMappings(
-        id = @XmlId(property = "id", value = "id/text()"), 
+        id = @Id(property = "id", value = "id/text()"), 
         value = {
             @Xml(property = "firstname"),
             @Xml(property = "surname")})
@@ -155,7 +155,7 @@ public class ShopReader
     public static final CustomerXmlWriter CUSTOMER_XML_WRITER = GWT.create(CustomerXmlWriter.class);
 
     @XmlMappings(
-        id = @XmlId(property = "id"), 
+        id = @Id(property = "id"), 
         value = {
             @Xml(property = "name"), 
             @Xml(property = "price"),
@@ -167,13 +167,13 @@ public class ShopReader
         value = {
             @Xml(property = "date", value = "@date", format = "dd.MM.yyyy"),
             @Xml(property = "items", value = "items/item")}, 
-        references = @XmlIdRef(property = "customer", value = "customer/@ref"))
+        references = @IdRef(property = "customer", value = "customer/@ref"))
     public interface OrderXmlWriter extends XmlWriter<Order> {}
     public static final OrderXmlWriter ORDER_XML_WRITER = GWT.create(OrderXmlWriter.class);
 
     @XmlMappings(
         value = @Xml(property = "amount", value = "@amount"), 
-        references = @XmlIdRef(property = "product", value = "@ref"))
+        references = @IdRef(property = "product", value = "@ref"))
     public interface OrderItemXmlWriter extends XmlWriter<OrderItem> {}
     public static final OrderItemXmlWriter ORDER_ITEM_XML_WRITER = GWT.create(OrderItemXmlWriter.class);
 }

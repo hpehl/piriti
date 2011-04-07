@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind;
 import java.util.HashMap;
 import java.util.Map;
 
+import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.NoopConverter;
 import name.pehl.piriti.property.client.PropertyGetter;
@@ -29,55 +30,46 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
 public class PropertyContext
 {
     // -------------------------------------------------------- private members
-
+    
     private final TypeContext typeContext;
     private final JType type;
     private final JPrimitiveType primitiveType;
     private final String name;
     private final String path;
     private final String format;
-    private final boolean stripWsnl;
-    private final Class<? extends Converter<?>> converter;
-    private final Class<? extends PropertyGetter<?, ?>> getter;
-    private final Class<? extends PropertySetter<?, ?>> setter;
+    private final WhitespaceHandling whitespaceHandling;
+    private final Class<? extends Converter<? >> converter;
+    private final Class<? extends PropertyGetter<? , ? >> getter;
+    private final Class<? extends PropertySetter<? , ? >> setter;
     private final ReferenceType referenceType;
     private final VariableNames variableNames;
     private final Map<String, Object> metadata;
 
 
     // ----------------------------------------------------------- constructors
-
+    
     /**
      * Construct a new instance of this class
      * 
-     * @param typeContext
-     *            The type context this property belongs to
-     * @param type
-     *            The property type itself
-     * @param name
-     *            The name of the property
-     * @param path
-     *            The path information for the mapping
-     * @param format
-     *            The format
-     * @param stripWsnl
-     *            Whether to strip whitespace and newlines from the input
-     * @param converter
-     *            A custom converter
-     * @param getter
-     *            A custom property getter
-     * @param setter
-     *            A custom property setter
-     * @param referenceType
-     *            The refereence type.
-     * @param variableNames
-     *            Contains various variable names
+     * @param typeContext The type context this property belongs to
+     * @param type The property type itself
+     * @param name The name of the property
+     * @param path The path information for the mapping
+     * @param format The format
+     * @param whitespaceHandling Whether to strip whitespace and newlines from
+     * the input
+     * @param converter A custom converter
+     * @param getter A custom property getter
+     * @param setter A custom property setter
+     * @param referenceType The refereence type.
+     * @param variableNames Contains various variable names
      * @throws UnableToCompleteException
      */
     public PropertyContext(TypeContext typeContext, JType type, String name, String path, String format,
-            boolean stripWsnl, Class<? extends Converter<?>> converter, Class<? extends PropertyGetter<?, ?>> getter,
-            Class<? extends PropertySetter<?, ?>> setter, ReferenceType referenceType, VariableNames variableNames)
-            throws UnableToCompleteException
+        WhitespaceHandling whitespaceHandling, Class<? extends Converter<? >> converter,
+        Class<? extends PropertyGetter<? , ? >> getter, Class<? extends PropertySetter<? , ? >> setter,
+        ReferenceType referenceType, VariableNames variableNames)
+    throws UnableToCompleteException
     {
         this.typeContext = typeContext;
         JPrimitiveType primitiveType = type.isPrimitive();
@@ -99,7 +91,6 @@ public class PropertyContext
             this.type = type;
             this.primitiveType = null;
         }
-
         // Name, path, order, format, stripWsnl and converter
         this.name = name;
         this.path = path;
@@ -111,9 +102,8 @@ public class PropertyContext
         {
             this.format = format;
         }
-        this.stripWsnl = stripWsnl;
+        this.whitespaceHandling = whitespaceHandling;
         this.converter = converter;
-
         // Reference type, property stuff, variable names and metadata
         this.getter = getter;
         this.setter = setter;
@@ -123,8 +113,26 @@ public class PropertyContext
     }
 
 
-    // --------------------------------------------------------- object methods
+    // -------------------------------------------------- create nested context
+    
+    public PropertyContext createNested(JType type, String path) throws UnableToCompleteException
+    {
+        String nestedValueVariable = getVariableNames().newVariableName("NestedValue");
+        String nestedInputVariable = getVariableNames().newVariableName("NestedInput");
+        VariableNames nestedVariableNames = new VariableNames(nestedValueVariable, nestedInputVariable,
+                getVariableNames().getBuilderVariable());
 
+        TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
+
+        PropertyContext nested = new PropertyContext(nestedTypeContext, type,
+            getName(), path, getFormat(), getWhitespaceHandling(), getConverter(),
+            null, null, null, nestedVariableNames);
+        return nested;
+    }
+    
+    
+    // --------------------------------------------------------- object methods
+    
     /**
      * Based on name and path
      * 
@@ -164,7 +172,7 @@ public class PropertyContext
         {
             return false;
         }
-        PropertyContext other = (PropertyContext) obj;
+        PropertyContext other = (PropertyContext)obj;
         if (name == null)
         {
             if (other.name != null)
@@ -195,8 +203,8 @@ public class PropertyContext
     public String toString()
     {
         StringBuilder builder = new StringBuilder().append("PropertyContext [")
-                .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name).append(", path=\"")
-                .append(path).append("\"");
+        .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name).append(", path=\"").append(path)
+        .append("\"");
         if (format != null)
         {
             builder.append(", format=\"").append(format).append("\"");
@@ -207,12 +215,12 @@ public class PropertyContext
 
 
     // --------------------------------- methods related to the properties type
-
+    
     /**
      * Whether the properties type is primitive.
      * 
      * @return <code>true</code> if the properties type is primitive,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
     public boolean isPrimitive()
     {
@@ -236,8 +244,8 @@ public class PropertyContext
      * {@linkplain TypeUtils#isBasicType(JType) basic type}.
      * 
      * @return <code>true</code> if the properties type is either primitive or a
-     *         {@linkplain TypeUtils#isBasicType(JType) basic type},
-     *         <code>false</code> othewrwise.
+     * {@linkplain TypeUtils#isBasicType(JType) basic type}, <code>false</code>
+     * othewrwise.
      */
     public boolean isBasicType()
     {
@@ -249,7 +257,7 @@ public class PropertyContext
      * Whether the properties type is an enum.
      * 
      * @return <code>true</code> if the properties type is an enum,
-     *         <code>false</code> othwerwise.
+     * <code>false</code> othwerwise.
      */
     public boolean isEnum()
     {
@@ -272,7 +280,7 @@ public class PropertyContext
      * Whether the properties type is a class or interface.
      * 
      * @return <code>true</code> if the properties type is a class or interface,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
     public boolean isClassOrInterface()
     {
@@ -295,7 +303,7 @@ public class PropertyContext
      * Whether the properties type is an array.
      * 
      * @return <code>true</code> if the properties type is an array,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
     public boolean isArray()
     {
@@ -318,7 +326,7 @@ public class PropertyContext
      * Whether the properties type is a collection.
      * 
      * @return <code>true</code> if the properties type is a collection,
-     *         <code>false</code> otherwise.
+     * <code>false</code> otherwise.
      */
     public boolean isCollection()
     {
@@ -327,7 +335,7 @@ public class PropertyContext
 
 
     // ------------------------------------------------------------- properties
-
+    
     public TypeContext getTypeContext()
     {
         return typeContext;
@@ -373,13 +381,13 @@ public class PropertyContext
     }
 
 
-    public boolean isStripWsnl()
+    public WhitespaceHandling getWhitespaceHandling()
     {
-        return stripWsnl;
+        return whitespaceHandling;
     }
 
 
-    public Class<? extends Converter<?>> getConverter()
+    public Class<? extends Converter<? >> getConverter()
     {
         return converter;
     }
@@ -391,13 +399,13 @@ public class PropertyContext
     }
 
 
-    public Class<? extends PropertyGetter<?, ?>> getGetter()
+    public Class<? extends PropertyGetter<? , ? >> getGetter()
     {
         return getter;
     }
 
 
-    public Class<? extends PropertySetter<?, ?>> getSetter()
+    public Class<? extends PropertySetter<? , ? >> getSetter()
     {
         return setter;
     }
@@ -416,7 +424,7 @@ public class PropertyContext
 
 
     // --------------------------------------------------------------- metadata
-
+    
     public <T> void addMetadata(String key, T value)
     {
         metadata.put(key, value);
@@ -426,6 +434,6 @@ public class PropertyContext
     @SuppressWarnings("unchecked")
     public <T> T getMetadata(String key)
     {
-        return (T) metadata.get(key);
+        return (T)metadata.get(key);
     }
 }

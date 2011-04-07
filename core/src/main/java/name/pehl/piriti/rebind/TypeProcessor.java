@@ -3,7 +3,7 @@ package name.pehl.piriti.rebind;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * Interface for processing a {@link TypeContext}. Applies the
+ * Interface for processing and populating a {@link TypeContext}. Applies the
  * chain-of-responsibility pattern. After the last processor has finished, all
  * properties must be resolved (references and an id are optional).
  * <p>
@@ -29,7 +29,7 @@ public interface TypeProcessor
      * 
      * @param processor
      */
-    void setNext(TypeProcessor processor);
+    TypeProcessor setNext(TypeProcessor processor);
 
 
     /**
