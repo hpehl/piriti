@@ -15,5 +15,14 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Mappings
 {
+    String DEFAULT_ID_MARKER = "__DEFAULT_ID_MARKER__";
+
+
     Mapping[] value();
+
+
+    Mapping id() default @Mapping(DEFAULT_ID_MARKER);
+
+
+    Mapping[] idRefs() default {};
 }

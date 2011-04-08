@@ -24,12 +24,15 @@ public interface TypeProcessor
     void process(TypeContext context) throws UnableToCompleteException;
 
 
+    TypeProcessor getNext();
+
+
     /**
      * Sets the next processor
      * 
      * @param processor
      */
-    TypeProcessor setNext(TypeProcessor processor);
+    void setNext(TypeProcessor processor);
 
 
     /**

@@ -23,9 +23,7 @@ import name.pehl.piriti.property.client.PropertySetter;
 public @interface Mapping
 {
     /**
-     * The properties name. Only needed if the property cannot be annotated
-     * direclty and this annotation is used inside {@code @}{@link JsonMappings}
-     * .
+     * The properties name.
      */
     String value();
 
@@ -49,6 +47,9 @@ public @interface Mapping
      * @return
      */
     String format() default "";
+
+
+    WhitespaceHandling whitespace() default WhitespaceHandling.PRESERVE;
 
 
     /**

@@ -102,11 +102,10 @@ public abstract class AbstractCreator
      */
     protected TypeProcessor setupTypeProcessor()
     {
-        TypeProcessor defaultTypeProcessor = new DefaultTypeProcessor();
-        TypeProcessor idTypeProcessor = new IdTypeProcessor();
-        TypeProcessor idRefTypeProcessor = new IdRefTypeProcessor();
-        defaultTypeProcessor.setNext(idTypeProcessor.setNext(idRefTypeProcessor));
-        return defaultTypeProcessor;
+        TypeProcessor pojoTypeProcessor = new PojoTypeProcessor();
+        TypeProcessor rwTypeProcessor = new RwTypeProcessor();
+        pojoTypeProcessor.setNext(rwTypeProcessor);
+        return pojoTypeProcessor;
     }
 
 
