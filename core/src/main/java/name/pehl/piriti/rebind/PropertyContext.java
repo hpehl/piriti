@@ -6,6 +6,8 @@ import java.util.Map;
 import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.NoopConverter;
+import name.pehl.piriti.property.client.NoopPropertyGetter;
+import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
@@ -112,10 +114,11 @@ public class PropertyContext
             this.format = format;
         }
         this.whitespaceHandling = whitespaceHandling;
-        this.converter = converter;
+        this.converter = converter == NoopConverter.class ? null : converter;
+
         // Reference type, property stuff, variable names and metadata
-        this.getter = getter;
-        this.setter = setter;
+        this.getter = getter == NoopPropertyGetter.class ? null : getter;
+        this.setter = setter == NoopPropertySetter.class ? null : setter;
         this.referenceType = referenceType;
         this.variableNames = variableNames;
         this.metadata = new HashMap<String, Object>();
@@ -403,7 +406,7 @@ public class PropertyContext
 
     public boolean useCustomConverter()
     {
-        return converter != null && !NoopConverter.class.equals(converter);
+        return converter != null;
     }
 
 

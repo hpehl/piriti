@@ -68,27 +68,25 @@ public class TypeContext
         try
         {
             this.instanceCreator = null;
-            CreateWith createWith = this.type.getAnnotation(CreateWith.class);
-            if (createWith != null)
+            if (this.type.isAnnotationPresent(CreateWith.class))
             {
-                this.instanceCreator = createWith.value();
+                this.instanceCreator = this.type.getAnnotation(CreateWith.class).value();
             }
-            createWith = this.rwType.getAnnotation(CreateWith.class);
-            if (createWith != null)
+            if (this.rwType.isAnnotationPresent(CreateWith.class))
             {
-                this.instanceCreator = createWith.value();
+                this.instanceCreator = this.rwType.getAnnotation(CreateWith.class).value();
             }
 
             this.stopAt = null;
-            MapUpTo mapUpTo = this.type.getAnnotation(MapUpTo.class);
-            if (mapUpTo != null)
+            if (this.type.isAnnotationPresent(MapUpTo.class))
             {
-                this.stopAt = this.typeOracle.getType(mapUpTo.value().getName()).getSuperclass();
+                this.stopAt = this.typeOracle.getType(this.type.getAnnotation(MapUpTo.class).value().getName())
+                        .getSuperclass();
             }
-            mapUpTo = this.rwType.getAnnotation(MapUpTo.class);
-            if (mapUpTo != null)
+            if (this.rwType.isAnnotationPresent(MapUpTo.class))
             {
-                this.stopAt = this.typeOracle.getType(mapUpTo.value().getName()).getSuperclass();
+                this.stopAt = this.typeOracle.getType(this.rwType.getAnnotation(MapUpTo.class).value().getName())
+                        .getSuperclass();
             }
             if (this.stopAt == null)
             {

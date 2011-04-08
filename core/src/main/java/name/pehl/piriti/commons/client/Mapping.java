@@ -14,6 +14,9 @@ import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 
 /**
+ * Annotation used inside {@link Mappings} to specify the mapping of one
+ * property.
+ * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 82 $
  */

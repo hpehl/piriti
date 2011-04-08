@@ -7,6 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * Annotation for external mappings.
+ * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 82 $
  */

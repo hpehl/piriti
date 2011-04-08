@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to select an identifier for a POJO. The annotation can only be
- * specified for one property in the POJO. The properties type must be string.
+ * specified for one property in the POJOs hirarchy. The properties type must be
+ * string.
  * 
  * @see IdRef
  * @author $LastChangedBy: harald.pehl $
