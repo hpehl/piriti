@@ -1,6 +1,6 @@
 package name.pehl.piriti.client.escape;
 
-import name.pehl.piriti.json.client.Json;
+import name.pehl.piriti.converter.client.Convert;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.XmlReader;
@@ -29,6 +29,6 @@ public class Refugee
 
     // ------------------------------------------------------------------- data
 
-    @Json String data;
-    @Json(converter = DataConverter.class) String converterData;
+    String data;
+    @Convert(DataConverter.class) String converterData;
 }

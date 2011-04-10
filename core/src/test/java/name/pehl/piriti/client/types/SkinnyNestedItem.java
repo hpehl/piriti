@@ -2,10 +2,10 @@ package name.pehl.piriti.client.types;
 
 import java.util.Date;
 
-import name.pehl.piriti.json.client.Json;
+import name.pehl.piriti.commons.client.Format;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.xml.client.Xml;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -39,95 +39,30 @@ public class SkinnyNestedItem
 
     // -------------------------------------------------------- private members
 
-    @Json
-    @Xml
     public boolean booleanPrimitive;
-
-    @Json
-    @Xml
     public Boolean booleanObject;
-
-    @Json
-    @Xml
     public byte bytePrimitive;
-
-    @Json
-    @Xml
     public Byte byteObject;
-
-    @Json
-    @Xml
     public char characterPrimitive;
-
-    @Json
-    @Xml
     public Character characterObject;
-
-    @Json(format = "dd.MM.yyyy")
-    @Xml(format = "dd.MM.yyyy")
+    @Format("dd.MM.yyyy")
     public Date date;
-
-    @Json
-    @Xml
     public java.sql.Date sqlDate;
-
-    @Json
-    @Xml
     public java.sql.Time time;
-
-    @Json
-    @Xml
     public java.sql.Timestamp timestamp;
-
-    @Json
-    @Xml
     public Amount amount;
-
-    @Json
-    @Xml
     public double doublePrimitive;
-
-    @Json
-    @Xml
     public Double doubleObject;
-
-    @Json
-    @Xml
     public float floatPrimitive;
-
-    @Json
-    @Xml
     public Float floatObject;
-
-    @Json
-    @Xml
     public int integerPrimitive;
-
-    @Json
-    @Xml
     public Integer integerObject;
-
-    @Json
-    @Xml
     public long longPrimitive;
-
-    @Json
-    @Xml
     public Long longObject;
-
-    @Json
-    @Xml
     public short shortPrimitive;
-
-    @Json
-    @Xml
     public Short shortObject;
-
-    @Json
-    @Xml
     public String string;
-
-    @Json("customNameForStringAttribute")
-    @Xml("string/@attribute")
+    @Path("customNameForStringAttribute")
+    // @Path("string/@attribute")
     public String stringAttribute;
 }

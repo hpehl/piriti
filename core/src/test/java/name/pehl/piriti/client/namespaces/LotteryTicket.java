@@ -3,7 +3,8 @@ package name.pehl.piriti.client.namespaces;
 import java.util.Date;
 import java.util.List;
 
-import name.pehl.piriti.xml.client.Xml;
+import name.pehl.piriti.commons.client.Format;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -31,15 +32,16 @@ public class LotteryTicket
 
     // ------------------------------------------------------------------- data
 
-    @Xml(value = "@date", format = "dd.MM.yyyy")
+    @Path("@date")
+    @Format("dd.MM.yyyy")
     Date date;
 
-    @Xml("foo:player")
+    @Path("foo:player")
     Player player;
 
-    @Xml("numbers/@game")
+    @Path("numbers/@game")
     String game;
 
-    @Xml("numbers/number")
+    @Path("numbers/number")
     List<Integer> numbers;
 }

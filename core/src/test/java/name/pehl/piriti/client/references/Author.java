@@ -1,9 +1,8 @@
 package name.pehl.piriti.client.references;
 
-import name.pehl.piriti.json.client.Json;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.xml.client.Xml;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -35,7 +34,7 @@ public class Author
 
     // ------------------------------------------------------------------- data
 
-    @Json @Xml String firstname;
-    @Json @Xml String surname;
-    @Json @Xml("bestseller/book") Book bestseller;
+    String firstname;
+    String surname;
+    @Path("bestseller/book") Book bestseller;
 }

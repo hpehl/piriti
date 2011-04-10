@@ -26,5 +26,5 @@ public @interface Mappings
     Mapping id() default @Mapping(NO_ID);
 
 
-    Mapping[] idRefs() default {};
+    Mapping[] references() default {};
 }

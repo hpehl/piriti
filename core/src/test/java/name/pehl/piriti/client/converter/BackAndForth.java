@@ -2,10 +2,10 @@ package name.pehl.piriti.client.converter;
 
 import java.util.Date;
 
-import name.pehl.piriti.json.client.Json;
+import name.pehl.piriti.commons.client.Format;
+import name.pehl.piriti.converter.client.Convert;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.xml.client.Xml;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -37,21 +37,19 @@ public class BackAndForth
 
     // ------------------------------------------------------------------- data
 
-    @Json(converter = DurationConverter.class)
-    @Xml(converter = DurationConverter.class)
+    @Convert(DurationConverter.class)
     int duration;
     
-    @Json(converter = TomorrowConverter.class)
-    @Xml(converter = TomorrowConverter.class)
+    @Convert(TomorrowConverter.class)
     Date date;
     
-    @Json(converter = MathsConverter.class)
-    @Xml(converter = MathsConverter.class)
+    @Convert(MathsConverter.class)
     Maths maths;
     
-    @Json(converter = NameConverter.class, format = NameConverter.DE_EN)
-    @Xml(converter = NameConverter.class, format = NameConverter.DE_EN)
+    @Convert(NameConverter.class)
+    @Format(NameConverter.DE_EN)
     String name;
     
-    @Json(converter = DefaultValueConverter.class) int noConverter = 456;
+    @Convert(DefaultValueConverter.class) 
+    int noConverter = 456;
 }

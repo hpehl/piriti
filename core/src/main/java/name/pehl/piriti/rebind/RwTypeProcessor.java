@@ -57,7 +57,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                 variableNames = variableNames.next();
             }
 
-            Mapping[] idRefMappings = mappingsAnno.idRefs();
+            Mapping[] idRefMappings = mappingsAnno.references();
             for (Mapping idRefMapping : idRefMappings)
             {
                 PropertyContext propertyContext = createPropertyContext(typeContext, idRefMapping, IDREF, variableNames);

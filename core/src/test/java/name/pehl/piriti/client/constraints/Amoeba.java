@@ -1,9 +1,8 @@
 package name.pehl.piriti.client.constraints;
 
-import name.pehl.piriti.json.client.Json;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.xml.client.Xml;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -38,12 +37,9 @@ public class Amoeba
 
     // ------------------------------------------------------------------- data
 
-    @Json
-    @Xml
     String name;
 
-    @Json("__size__")
-    @Xml("__size__")
+    @Path("__size__")
     int size;
 
 

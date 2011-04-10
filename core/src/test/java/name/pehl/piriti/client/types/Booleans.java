@@ -1,9 +1,7 @@
 package name.pehl.piriti.client.types;
 
-import name.pehl.piriti.json.client.Json;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.xml.client.Xml;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -30,8 +28,8 @@ public class Booleans
     public static final BooleansXmlWriter XML_WRITER = GWT.create(BooleansXmlWriter.class);
     
     
-    @Json @Xml private boolean b1;
-    @Json @Xml public boolean b2;
+    private boolean b1;
+    public boolean b2;
 
 
     public boolean isB1()

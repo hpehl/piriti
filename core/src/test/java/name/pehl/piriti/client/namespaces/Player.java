@@ -1,6 +1,6 @@
 package name.pehl.piriti.client.namespaces;
 
-import name.pehl.piriti.xml.client.Xml;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -29,24 +29,24 @@ public class Player
 
     // ------------------------------------------------------------------- data
 
-    @Xml("@foo:gender")
+    @Path("@foo:gender")
     Gender gender;
 
-    @Xml("@age")
+    @Path("@age")
     int age;
 
-    @Xml("foo:firstname/text()")
+    @Path("foo:firstname/text()")
     String firstname;
 
-    @Xml("foo:surname/text()")
+    @Path("foo:surname/text()")
     String surname;
 
-    @Xml("bar:address/text()")
+    @Path("bar:address/text()")
     String address;
 
-    @Xml("bar:address/@bar:type")
+    @Path("bar:address/@bar:type")
     String addressType;
 
-    @Xml("bar:address/@foo:valid")
+    @Path("bar:address/@foo:valid")
     boolean validAddress;
 }

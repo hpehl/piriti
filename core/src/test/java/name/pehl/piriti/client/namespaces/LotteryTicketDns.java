@@ -5,7 +5,8 @@ import static name.pehl.piriti.client.namespaces.LotteryTicketResources.DNS_PREF
 import java.util.Date;
 import java.util.List;
 
-import name.pehl.piriti.xml.client.Xml;
+import name.pehl.piriti.commons.client.Format;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -33,15 +34,16 @@ public class LotteryTicketDns
 
     // ------------------------------------------------------------------- data
 
-    @Xml(value = "@date", format = "dd.MM.yyyy")
+    @Path("@date")
+    @Format("dd.MM.yyyy")
     Date date;
 
-    @Xml("foo:player")
+    @Path("foo:player")
     Player player;
 
-    @Xml(DNS_PREFIX + ":numbers/@game")
+    @Path(DNS_PREFIX + ":numbers/@game")
     String game;
 
-    @Xml(DNS_PREFIX + ":numbers/" + DNS_PREFIX + ":number")
+    @Path(DNS_PREFIX + ":numbers/" + DNS_PREFIX + ":number")
     List<Integer> numbers;
 }

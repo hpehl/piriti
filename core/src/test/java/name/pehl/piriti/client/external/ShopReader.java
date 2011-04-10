@@ -1,13 +1,9 @@
 package name.pehl.piriti.client.external;
 
-import name.pehl.piriti.commons.client.Id;
-import name.pehl.piriti.commons.client.IdRef;
-import name.pehl.piriti.json.client.Json;
-import name.pehl.piriti.json.client.JsonMappings;
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.xml.client.Xml;
-import name.pehl.piriti.xml.client.XmlMappings;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -23,157 +19,157 @@ public class ShopReader
 {
     // ----------------------------------------------------------- json readers
 
-    @JsonMappings({
-        @Json(property = "customers"), 
-        @Json(property = "products"), 
-        @Json(property = "order")})
+    @Mappings({
+        @Mapping("customers"), 
+        @Mapping("products"), 
+        @Mapping("order")})
     public interface ShopJsonReader extends JsonReader<Shop> {}
     public static final ShopJsonReader SHOP_JSON_READER = GWT.create(ShopJsonReader.class);
 
-    @JsonMappings({
-        @Json(property = "id"), 
-        @Json(property = "firstname"), 
-        @Json(property = "surname")})
+    @Mappings({
+        @Mapping("id"), 
+        @Mapping("firstname"), 
+        @Mapping("surname")})
     public interface CustomerJsonReader extends JsonReader<Customer> {}
     public static final CustomerJsonReader CUSTOMER_JSON_READER = GWT.create(CustomerJsonReader.class);
 
-    @JsonMappings({
-        @Json(property = "id"), 
-        @Json(property = "name"), 
-        @Json(property = "price"),
-        @Json(property = "available")})
+    @Mappings({
+        @Mapping("id"), 
+        @Mapping("name"), 
+        @Mapping("price"),
+        @Mapping("available")})
     public interface ProductJsonReader extends JsonReader<Product> {}
     public static final ProductJsonReader PRODUCT_JSON_READER = GWT.create(ProductJsonReader.class);
 
-    @JsonMappings({
-        @Json(property = "date", format = "dd.MM.yyyy"), 
-        @Json(property = "customer"),
-        @Json(property = "items")})
+    @Mappings({
+        @Mapping(value = "date", format = "dd.MM.yyyy"), 
+        @Mapping("customer"),
+        @Mapping("items")})
     public interface OrderJsonReader extends JsonReader<Order> {}
     public static final OrderJsonReader ORDER_JSON_READER = GWT.create(OrderJsonReader.class);
 
-    @JsonMappings({
-        @Json(property = "product"), 
-        @Json(property = "amount")})
+    @Mappings({
+        @Mapping("product"), 
+        @Mapping("amount")})
     public interface OrderItemJsonReader extends JsonReader<OrderItem> {}
     public static final OrderItemJsonReader ORDER_ITEM_JSON_READER = GWT.create(OrderItemJsonReader.class);
 
 
     // ----------------------------------------------------------- json writers
 
-    @JsonMappings({
-        @Json(property = "customers"), 
-        @Json(property = "products"), 
-        @Json(property = "order")})
+    @Mappings({
+        @Mapping("customers"), 
+        @Mapping("products"), 
+        @Mapping("order")})
     public interface ShopJsonWriter extends JsonWriter<Shop> {}
     public static final ShopJsonWriter SHOP_JSON_WRITER = GWT.create(ShopJsonWriter.class);
 
-    @JsonMappings({
-        @Json(property = "id"), 
-        @Json(property = "firstname"), 
-        @Json(property = "surname")})
+    @Mappings({
+        @Mapping("id"), 
+        @Mapping("firstname"), 
+        @Mapping("surname")})
     public interface CustomerJsonWriter extends JsonWriter<Customer> {}
     public static final CustomerJsonWriter CUSTOMER_JSON_WRITER = GWT.create(CustomerJsonWriter.class);
 
-    @JsonMappings({
-        @Json(property = "id"), 
-        @Json(property = "name"), 
-        @Json(property = "price"),
-        @Json(property = "available")})
+    @Mappings({
+        @Mapping("id"), 
+        @Mapping("name"), 
+        @Mapping("price"),
+        @Mapping("available")})
     public interface ProductJsonWriter extends JsonWriter<Product> {}
     public static final ProductJsonWriter PRODUCT_JSON_WRITER = GWT.create(ProductJsonWriter.class);
 
-    @JsonMappings({
-        @Json(property = "date", format = "dd.MM.yyyy"), 
-        @Json(property = "customer"),
-        @Json(property = "items")})
+    @Mappings({
+        @Mapping(value = "date", format = "dd.MM.yyyy"), 
+        @Mapping("customer"),
+        @Mapping("items")})
     public interface OrderJsonWriter extends JsonWriter<Order> {}
     public static final OrderJsonWriter ORDER_JSON_WRITER = GWT.create(OrderJsonWriter.class);
 
-    @JsonMappings({
-        @Json(property = "product"), 
-        @Json(property = "amount")})
+    @Mappings({
+        @Mapping("product"), 
+        @Mapping("amount")})
     public interface OrderItemJsonWriter extends JsonWriter<OrderItem> {}
     public static final OrderItemJsonWriter ORDER_ITEM_JSON_WRITER = GWT.create(OrderItemJsonWriter.class);
 
     
     // ------------------------------------------------------------ xml readers
 
-    @XmlMappings({
-        @Xml(property = "customers", value = "customers/customer"),
-        @Xml(property = "products", value = "products/product"), 
-        @Xml(property = "order")})
+    @Mappings({
+        @Mapping(value = "customers", path = "customers/customer"),
+        @Mapping(value = "products", path = "products/product"), 
+        @Mapping("order")})
     public interface ShopXmlReader extends XmlReader<Shop> {}
     public static final ShopXmlReader SHOP_XML_READER = GWT.create(ShopXmlReader.class);
 
-    @XmlMappings(
-        id = @Id(property = "id", value = "id/text()"), 
+    @Mappings(
+        id = @Mapping(value = "id", path = "id/text()"), 
         value = {
-            @Xml(property = "firstname"),
-            @Xml(property = "surname")})
+            @Mapping("firstname"),
+            @Mapping("surname")})
     public interface CustomerXmlReader extends XmlReader<Customer> {}
     public static final CustomerXmlReader CUSTOMER_XML_READER = GWT.create(CustomerXmlReader.class);
 
-    @XmlMappings(
-        id = @Id(property = "id"), 
+    @Mappings(
+        id = @Mapping("id"), 
         value = {
-            @Xml(property = "name"), 
-            @Xml(property = "price"),
-            @Xml(property = "available")})
+            @Mapping("name"), 
+            @Mapping("price"),
+            @Mapping("available")})
     public interface ProductXmlReader extends XmlReader<Product> {}
     public static final ProductXmlReader PRODUCT_XML_READER = GWT.create(ProductXmlReader.class);
 
-    @XmlMappings(
+    @Mappings(
         value = {
-            @Xml(property = "date", value = "@date", format = "dd.MM.yyyy"),
-            @Xml(property = "items", value = "items/item")}, 
-        references = @IdRef(property = "customer", value = "customer/@ref"))
+            @Mapping(value = "date", path = "@date", format = "dd.MM.yyyy"),
+            @Mapping(value = "items", path = "items/item")}, 
+        references = @Mapping(value = "customer", path = "customer/@ref"))
     public interface OrderXmlReader extends XmlReader<Order> {}
     public static final OrderXmlReader ORDER_XML_READER = GWT.create(OrderXmlReader.class);
 
-    @XmlMappings(
-        value = @Xml(property = "amount", value = "@amount"), 
-        references = @IdRef(property = "product", value = "@ref"))
+    @Mappings(
+        value = @Mapping(value = "amount", path = "@amount"), 
+        references = @Mapping(value = "product", path = "@ref"))
     public interface OrderItemXmlReader extends XmlReader<OrderItem> {}
     public static final OrderItemXmlReader ORDER_ITEM_XML_READER = GWT.create(OrderItemXmlReader.class);
 
     // ------------------------------------------------------------ xml writers
 
-    @XmlMappings({
-        @Xml(property = "customers", value = "customers/customer"),
-        @Xml(property = "products", value = "products/product"), 
-        @Xml(property = "order")})
+    @Mappings({
+        @Mapping(value = "customers", path = "customers/customer"),
+        @Mapping(value = "products", path = "products/product"), 
+        @Mapping("order")})
     public interface ShopXmlWriter extends XmlWriter<Shop> {}
     public static final ShopXmlWriter SHOP_XML_WRITER = GWT.create(ShopXmlWriter.class);
 
-    @XmlMappings(
-        id = @Id(property = "id", value = "id/text()"), 
+    @Mappings(
+        id = @Mapping(value = "id", path = "id/text()"), 
         value = {
-            @Xml(property = "firstname"),
-            @Xml(property = "surname")})
+            @Mapping("firstname"),
+            @Mapping("surname")})
     public interface CustomerXmlWriter extends XmlWriter<Customer> {}
     public static final CustomerXmlWriter CUSTOMER_XML_WRITER = GWT.create(CustomerXmlWriter.class);
 
-    @XmlMappings(
-        id = @Id(property = "id"), 
+    @Mappings(
+        id = @Mapping("id"), 
         value = {
-            @Xml(property = "name"), 
-            @Xml(property = "price"),
-            @Xml(property = "available")})
+            @Mapping("name"), 
+            @Mapping("price"),
+            @Mapping("available")})
     public interface ProductXmlWriter extends XmlWriter<Product> {}
     public static final ProductXmlWriter PRODUCT_XML_WRITER = GWT.create(ProductXmlWriter.class);
 
-    @XmlMappings(
+    @Mappings(
         value = {
-            @Xml(property = "date", value = "@date", format = "dd.MM.yyyy"),
-            @Xml(property = "items", value = "items/item")}, 
-        references = @IdRef(property = "customer", value = "customer/@ref"))
+            @Mapping(value = "date", path = "@date", format = "dd.MM.yyyy"),
+            @Mapping(value = "items", path = "items/item")}, 
+        references = @Mapping(value = "customer", path = "customer/@ref"))
     public interface OrderXmlWriter extends XmlWriter<Order> {}
     public static final OrderXmlWriter ORDER_XML_WRITER = GWT.create(OrderXmlWriter.class);
 
-    @XmlMappings(
-        value = @Xml(property = "amount", value = "@amount"), 
-        references = @IdRef(property = "product", value = "@ref"))
+    @Mappings(
+        value = @Mapping(value = "amount", path = "@amount"), 
+        references = @Mapping(value= "product", path = "@ref"))
     public interface OrderItemXmlWriter extends XmlWriter<OrderItem> {}
     public static final OrderItemXmlWriter ORDER_ITEM_XML_WRITER = GWT.create(OrderItemXmlWriter.class);
 }

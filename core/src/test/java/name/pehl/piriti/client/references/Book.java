@@ -2,10 +2,9 @@ package name.pehl.piriti.client.references;
 
 import java.util.List;
 
-import name.pehl.piriti.json.client.Json;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.xml.client.Xml;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -37,14 +36,14 @@ public class Book
 
     // ------------------------------------------------------------------- data
 
-    @Json @Xml String isbn;
-    @Json @Xml int pages;
-    @Json @Xml String title;
-    @Json @Xml Author author;
-    @Json @Xml("reviews/review") List<String> reviews;
-    @Json @Xml("related/book") List<Book> related;
+    String isbn;
+    int pages;
+    String title;
+    Author author;
+    @Path("reviews/review") List<String> reviews;
+    @Path("related/book") List<Book> related;
     
-    @Json("@.related[2].extraInfo") 
-    @Xml("//related/book[3]/extraInfo/text()") 
+    @Path("@.related[2].extraInfo") 
+//    @Path("//related/book[3]/extraInfo/text()") 
     String extraInfoOfLastRelatedBook;
 }

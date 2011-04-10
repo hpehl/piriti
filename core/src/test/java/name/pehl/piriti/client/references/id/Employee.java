@@ -4,7 +4,7 @@ import java.util.List;
 
 import name.pehl.piriti.commons.client.Id;
 import name.pehl.piriti.commons.client.IdRef;
-import name.pehl.piriti.xml.client.Xml;
+import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.client.GWT;
@@ -29,17 +29,18 @@ public class Employee
     @Id
     String id;
 
-    @Xml
     String name;
 
-    @IdRef("boss/@ref")
+    @IdRef
+    @Path("boss/@ref")
     Employee boss;
 
-    @IdRef("team/member/@ref")
+    @IdRef
+    @Path("team/member/@ref")
     List<Employee> team;
 
-    @Xml
-    @IdRef("department/@ref")
+    @IdRef
+    @Path("department/@ref")
     Department department;
 
 
