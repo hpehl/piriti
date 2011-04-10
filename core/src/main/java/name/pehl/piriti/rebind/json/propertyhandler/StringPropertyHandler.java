@@ -8,6 +8,7 @@ import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -18,6 +19,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public class StringPropertyHandler extends AbstractPropertyHandler
 {
+    public StringPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>false</code> if this property context is used with a writer
      * and a JSONPath expression is used,

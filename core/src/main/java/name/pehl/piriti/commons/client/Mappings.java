@@ -17,13 +17,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Mappings
 {
-    String DEFAULT_ID_MARKER = "__DEFAULT_ID_MARKER__";
+    String NO_ID = "This is a special no-id-marker. Do not use for real IDs!";
 
 
     Mapping[] value();
 
 
-    Mapping id() default @Mapping(DEFAULT_ID_MARKER);
+    Mapping id() default @Mapping(NO_ID);
 
 
     Mapping[] idRefs() default {};

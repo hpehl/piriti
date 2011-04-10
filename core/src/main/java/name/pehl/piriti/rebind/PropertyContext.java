@@ -13,6 +13,7 @@ import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.ReferenceType;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -29,7 +30,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public class PropertyContext
+public class PropertyContext extends LogFacade
 {
     // -------------------------------------------------------- private members
 
@@ -80,8 +81,11 @@ public class PropertyContext
     public PropertyContext(TypeContext typeContext, JType type, String name, String path, String format,
             WhitespaceHandling whitespaceHandling, Class<? extends Converter<?>> converter,
             Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
-            ReferenceType referenceType, VariableNames variableNames) throws UnableToCompleteException
+            ReferenceType referenceType, VariableNames variableNames, TreeLogger logger)
+            throws UnableToCompleteException
     {
+        super(logger);
+
         this.typeContext = typeContext;
         JPrimitiveType primitiveType = type.isPrimitive();
         if (primitiveType != null) // isPrimitive() is not yet available!
@@ -137,7 +141,7 @@ public class PropertyContext
         TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
 
         PropertyContext nested = new PropertyContext(nestedTypeContext, type, getName(), path, getFormat(),
-                getWhitespaceHandling(), getConverter(), null, null, null, nestedVariableNames);
+                getWhitespaceHandling(), getConverter(), null, null, null, nestedVariableNames, logger);
         return nested;
     }
 

@@ -9,10 +9,10 @@ import com.google.gwt.json.client.JSONObject;
 /**
  * Interface for converting JSON data to an instance of T or a list of Ts. The
  * implementation for this interface is generated using deferred binding. All
- * properties of T which are annotated with {@link Json} are handled by the
- * generated JsonReader implementation. If the path expression behind
- * {@link Json} returns some data != null the relevant property is assigned with
- * the converted value, otherwise the property remains unchanged.
+ * properties of T are handled by the generated JsonReader implementation. If
+ * the path expression behind {@link Json} returns some data != null the
+ * relevant property is assigned with the converted value, otherwise the
+ * property remains unchanged.
  * <p>
  * The setup of the JsonReader is inspired by the UiBinder and is typically
  * specified as an inner class:
@@ -23,7 +23,7 @@ import com.google.gwt.json.client.JSONObject;
  *     interface Reader extends JsonReader&lt;ModalGirlfriendMediator&gt; {}
  *     public static final Reader JSON_READER = GWT.create(Reader.class);
  *     
- *     // The properties of this POJO annotated with {@code @}Json.
+ *     // The properties of this POJO 
  * }
  * </pre>
  * 

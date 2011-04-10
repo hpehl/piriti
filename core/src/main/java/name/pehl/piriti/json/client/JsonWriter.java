@@ -5,8 +5,7 @@ import java.util.List;
 /**
  * Interface for serializing an instance of T or a list of Ts to JSON data. The
  * implementation for this interface is generated using deferred binding. All
- * properties of T which are annotated with {@link Json} are handled by the
- * generated JsonWriter implementation.
+ * properties of T are handled by the generated JsonWriter implementation.
  * <p>
  * Null values in T are generated into the resulting JSON data.
  * <p>
@@ -19,7 +18,7 @@ import java.util.List;
  *     interface Writer extends JsonWriter&lt;RunnableMessageContext&gt; {}
  *     public static final Writer JSON_WRITER = GWT.create(Writer.class);
  *     
- *     // The properties of this POJO annotated with {@code @}Json.
+ *     // The properties of this POJO
  * }
  * </pre>
  * 

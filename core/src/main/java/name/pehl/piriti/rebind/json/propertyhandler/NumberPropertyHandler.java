@@ -8,6 +8,7 @@ import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
@@ -19,6 +20,12 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
  */
 public class NumberPropertyHandler extends AbstractPropertyHandler
 {
+    public NumberPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>true</code> if the field type is short, Short, int,
      * Integer, long, Long, float, Float, double or Double, <code>false</code>

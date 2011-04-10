@@ -14,12 +14,19 @@ import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.propertyhandler.ReferenceType;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 public class RwTypeProcessor extends AbstractTypeProcessor
 {
+    public RwTypeProcessor(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     @Override
     protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes, VariableNames variableNames)
             throws UnableToCompleteException
@@ -40,7 +47,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             }
 
             Mapping idMapping = mappingsAnno.id();
-            if (!idMapping.value().equals(Mappings.DEFAULT_ID_MARKER))
+            if (!idMapping.value().equals(Mappings.NO_ID))
             {
                 PropertyContext propertyContext = createPropertyContext(typeContext, idMapping, ID, variableNames);
                 if (propertyContext != null)
@@ -78,7 +85,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Class<? extends PropertyGetter<?, ?>> getter = mapping.getter();
             Class<? extends PropertySetter<?, ?>> setter = mapping.setter();
             propertyContext = new PropertyContext(typeContext, field.getType(), field.getName(), path, format,
-                    whitespaceHandling, converter, getter, setter, null, variableNames);
+                    whitespaceHandling, converter, getter, setter, null, variableNames, logger);
         }
         else
         {

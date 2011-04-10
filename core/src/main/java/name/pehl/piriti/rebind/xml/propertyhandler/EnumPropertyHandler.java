@@ -1,10 +1,14 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
+import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.AbstractEnumPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -17,6 +21,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public class EnumPropertyHandler extends AbstractEnumPropertyHandler
 {
+    public EnumPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * TODO Javadoc
      * 
@@ -27,11 +37,12 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
                 .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), propertyContext
-                .getPath(), propertyContext.isStripWsnl());
+                .getPath(), propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueAsStringVariable());
         writer.indent();
         if (propertyContext.useCustomConverter())
@@ -73,7 +84,8 @@ public class EnumPropertyHandler extends AbstractEnumPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }

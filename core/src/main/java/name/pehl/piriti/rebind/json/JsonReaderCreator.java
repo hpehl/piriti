@@ -32,7 +32,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
     @Override
     protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
     {
-        return new JsonReaderPropertyHandlerRegistry();
+        return new JsonReaderPropertyHandlerRegistry(logger);
     }
 
 

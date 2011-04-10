@@ -1,11 +1,14 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -17,6 +20,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public class XmlRegistryPropertyHandler extends AbstractRegistryPropertyHandler
 {
+    public XmlRegistryPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * TODO Javadoc
      * 
@@ -27,7 +36,8 @@ public class XmlRegistryPropertyHandler extends AbstractRegistryPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         String readerVariable = startReader(writer, propertyContext, "xmlRegistry",
                 propertyContext.getClassOrInterfaceType());
@@ -53,7 +63,8 @@ public class XmlRegistryPropertyHandler extends AbstractRegistryPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }

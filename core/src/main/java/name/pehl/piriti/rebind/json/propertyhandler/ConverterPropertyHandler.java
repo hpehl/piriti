@@ -10,6 +10,7 @@ import name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.json.client.JSONString;
 
@@ -22,6 +23,12 @@ import com.google.gwt.json.client.JSONString;
  */
 public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
 {
+    public ConverterPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>false</code> if this property context is used with a writer
      * and a JSONPath expression is used,

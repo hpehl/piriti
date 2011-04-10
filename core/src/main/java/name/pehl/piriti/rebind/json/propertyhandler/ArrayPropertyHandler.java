@@ -8,6 +8,7 @@ import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
@@ -22,6 +23,12 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  */
 public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
 {
+    public ArrayPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>false</code> if this property context is used with a writer
      * and a JSONPath expression is used,
@@ -78,8 +85,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         }
 
         // The nested property context is created *without* a path. The nested
-        // property
-        // handler must take care of this!
+        // property handler must take care of this!
         String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
         PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
         PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);

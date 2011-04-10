@@ -4,7 +4,7 @@ import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
 
 /**
- * Gin module to bind the default implementation for {@link JsonRegistry}.
+ * Gin module to bind the {@link JsonRegistry}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $

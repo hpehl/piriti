@@ -1,7 +1,9 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -11,6 +13,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public class IdPropertyHandler extends StringPropertyHandler
 {
+    public IdPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     @Override
     public void assign(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {

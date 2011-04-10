@@ -5,6 +5,7 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JType;
 
@@ -16,6 +17,12 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public abstract class AbstractArrayPropertyHandler extends AbstractPropertyHandler
 {
+    public AbstractArrayPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>false</code> if the properties type is no array, or if the
      * component type is another array, collection or map, <code>true</code>

@@ -17,6 +17,7 @@ import java.util.TreeSet;
 
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.rebind.LogFacade;
 import name.pehl.piriti.rebind.json.propertyhandler.ArrayPropertyHandler;
 import name.pehl.piriti.rebind.json.propertyhandler.BooleanPropertyHandler;
 import name.pehl.piriti.rebind.json.propertyhandler.CollectionPropertyHandler;
@@ -28,6 +29,7 @@ import name.pehl.piriti.rebind.json.propertyhandler.StringPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 
 /**
@@ -37,7 +39,7 @@ import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 136 $
  */
-public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegistry
+public abstract class JsonPropertyHandlerRegistry extends LogFacade implements PropertyHandlerRegistry
 {
     protected Map<String, PropertyHandler> registry;
 
@@ -46,8 +48,9 @@ public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegi
      * Construct a new instance of this class and registers the initial field
      * handlers.
      */
-    public JsonPropertyHandlerRegistry()
+    public JsonPropertyHandlerRegistry(TreeLogger logger)
     {
+        super(logger);
         registry = new HashMap<String, PropertyHandler>();
         registerInitialPropertyHandlers();
     }
@@ -149,48 +152,48 @@ public abstract class JsonPropertyHandlerRegistry implements PropertyHandlerRegi
 
     protected PropertyHandler newBooleanFieldHandler()
     {
-        return new BooleanPropertyHandler();
+        return new BooleanPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newNumberFieldHandler()
     {
-        return new NumberPropertyHandler();
+        return new NumberPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newConverterFieldHandler()
     {
-        return new ConverterPropertyHandler();
+        return new ConverterPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newStringFieldHandler()
     {
-        return new StringPropertyHandler();
+        return new StringPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newEnumFieldHandler()
     {
-        return new EnumPropertyHandler();
+        return new EnumPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newArrayFieldHandler()
     {
-        return new ArrayPropertyHandler();
+        return new ArrayPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newCollectionFieldHandler()
     {
-        return new CollectionPropertyHandler();
+        return new CollectionPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newRegistryFieldHandler()
     {
-        return new JsonRegistryPropertyHandler();
+        return new JsonRegistryPropertyHandler(logger);
     }
 }

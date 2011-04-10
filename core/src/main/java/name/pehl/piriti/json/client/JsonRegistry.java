@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * A registry for {@linkplain JsonReader}s and {@linkplain JsonWriter}s. All
  * readers and writers are registered against this registry. Thereby references
- * between POJOs can be mapped.
+ * between POJOs can be resolved.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 8 $

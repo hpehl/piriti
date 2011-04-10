@@ -4,7 +4,6 @@ import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.VariableNames;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -25,13 +24,6 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             String rwClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(generatorContext, rwType, implName, rwClassname, logger);
-    }
-
-
-    @Override
-    protected VariableNames setupVariableNames()
-    {
-        return new VariableNames("jsonObject", "value", "jsonBuilder");
     }
 
 

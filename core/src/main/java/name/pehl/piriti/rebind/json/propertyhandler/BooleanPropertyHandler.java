@@ -8,6 +8,7 @@ import name.pehl.piriti.rebind.json.JsonPathUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -17,6 +18,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public class BooleanPropertyHandler extends AbstractPropertyHandler
 {
+    public BooleanPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>true</code> if the field type is boolean or Boolean,
      * <code>false</code> otherwise.

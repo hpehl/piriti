@@ -2,8 +2,10 @@ package name.pehl.piriti.rebind.propertyhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.LogFacade;
 import name.pehl.piriti.rebind.PropertyContext;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -14,8 +16,14 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractPropertyHandler implements PropertyHandler
+public abstract class AbstractPropertyHandler extends LogFacade implements PropertyHandler
 {
+    public AbstractPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * {@inheritDoc}
      */

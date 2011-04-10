@@ -15,6 +15,7 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -33,6 +34,12 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
         interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
         interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
         interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
+    }
+
+
+    public AbstractCollectionPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
     }
 
 

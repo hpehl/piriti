@@ -4,6 +4,7 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -14,6 +15,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public abstract class AbstractEnumPropertyHandler extends AbstractPropertyHandler
 {
+    public AbstractEnumPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>true</code> if the field type is an enum,
      * <code>false</code> otherwise.

@@ -2,7 +2,7 @@ package name.pehl.piriti.rebind.xml;
 
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.VariableNames;
+import name.pehl.piriti.rebind.TypeProcessor;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -21,17 +21,20 @@ public abstract class AbstractXmlCreator extends AbstractCreator
 {
     // --------------------------------------------------------- initialization
 
-    public AbstractXmlCreator(GeneratorContext context, JClassType interfaceType, String implName,
-            String readerClassname, TreeLogger logger) throws UnableToCompleteException
+    public AbstractXmlCreator(GeneratorContext context, JClassType rwType, String implName, String rwClassname,
+            TreeLogger logger) throws UnableToCompleteException
     {
-        super(context, interfaceType, implName, readerClassname, logger);
+        super(context, rwType, implName, rwClassname, logger);
     }
 
 
     @Override
-    protected VariableNames setupVariableNames()
+    protected TypeProcessor setupTypeProcessor()
     {
-        return new VariableNames("element", "value", "xmlBuilder");
+        TypeProcessor pojoTypeProcessor = new XmlPojoTypeProcessor(logger);
+        TypeProcessor rwTypeProcessor = new XmlRwTypeProcessor(logger);
+        pojoTypeProcessor.setNext(rwTypeProcessor);
+        return pojoTypeProcessor;
     }
 
 

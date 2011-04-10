@@ -5,6 +5,7 @@ import name.pehl.piriti.converter.client.ConverterRegistry;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -16,6 +17,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public abstract class AbstractConverterPropertyHandler extends AbstractPropertyHandler
 {
+    public AbstractConverterPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns always <code>true</code>.
      * 

@@ -3,6 +3,7 @@ package name.pehl.piriti.rebind;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -10,15 +11,15 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public abstract class AbstractTypeProcessor implements TypeProcessor
+public abstract class AbstractTypeProcessor extends LogFacade implements TypeProcessor
 {
     private TypeProcessor next;
     private Set<? extends JClassType> skipTypes;
 
 
-    public AbstractTypeProcessor()
+    public AbstractTypeProcessor(TreeLogger logger)
     {
-        super();
+        super(logger);
         skipTypes = new HashSet<JClassType>();
     }
 

@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import name.pehl.piriti.rebind.LogFacade;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
@@ -30,13 +31,15 @@ import name.pehl.piriti.rebind.xml.propertyhandler.IdRefPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.StringPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 /**
  * {@link PropertyHandlerRegistry} used by the {@link XmlReaderCreator}.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
+public class XmlPropertyHandlerRegistry extends LogFacade implements PropertyHandlerRegistry
 {
     private final Map<String, PropertyHandler> registry;
 
@@ -45,8 +48,9 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
      * Construct a new instance of this class and registers the initial field
      * handlers.
      */
-    public XmlPropertyHandlerRegistry()
+    public XmlPropertyHandlerRegistry(TreeLogger logger)
     {
+        super(logger);
         registry = new HashMap<String, PropertyHandler>();
         registerInitialPropertyHandlers();
     }
@@ -190,48 +194,48 @@ public class XmlPropertyHandlerRegistry implements PropertyHandlerRegistry
 
     protected PropertyHandler newIdFieldHandler()
     {
-        return new IdPropertyHandler();
+        return new IdPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newIdRefFieldHandler()
     {
-        return new IdRefPropertyHandler();
+        return new IdRefPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newConverterFieldHandler()
     {
-        return new ConverterPropertyHandler();
+        return new ConverterPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newStringFieldHandler()
     {
-        return new StringPropertyHandler();
+        return new StringPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newEnumFieldHandler()
     {
-        return new EnumPropertyHandler();
+        return new EnumPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newArrayFieldHandler()
     {
-        return new ArrayPropertyHandler();
+        return new ArrayPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newCollectionFieldHandler()
     {
-        return new CollectionPropertyHandler();
+        return new CollectionPropertyHandler(logger);
     }
 
 
     protected PropertyHandler newRegistryFieldHandler()
     {
-        return new XmlRegistryPropertyHandler();
+        return new XmlRegistryPropertyHandler(logger);
     }
 }

@@ -5,6 +5,7 @@ import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
@@ -15,6 +16,12 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class JsonReaderPropertyHandlerRegistry extends JsonPropertyHandlerRegistry
 {
+    public JsonReaderPropertyHandlerRegistry(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Looks up a property handler based on the information provided in the
      * property context. The lookup logic is implemented like this:

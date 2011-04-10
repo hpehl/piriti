@@ -1,11 +1,14 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
+import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
@@ -16,6 +19,12 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  */
 public class StringPropertyHandler extends AbstractPropertyHandler
 {
+    public StringPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns always <code>true</code>.
      * 
@@ -41,20 +50,21 @@ public class StringPropertyHandler extends AbstractPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         if (propertyContext.useCustomConverter())
         {
             writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
                     .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), propertyContext
-                    .getPath(), propertyContext.isStripWsnl());
+                    .getPath(), propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
             CodeGeneration.useConverterForReading(writer, propertyContext);
         }
         else
         {
             writer.write("%s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames().getValueVariable(),
                     propertyContext.getVariableNames().getInputVariable(), propertyContext.getPath(),
-                    propertyContext.isStripWsnl());
+                    propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
         }
     }
 
@@ -67,7 +77,8 @@ public class StringPropertyHandler extends AbstractPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }

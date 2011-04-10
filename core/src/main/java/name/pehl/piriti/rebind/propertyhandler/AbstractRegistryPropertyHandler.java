@@ -4,6 +4,7 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -15,6 +16,12 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public abstract class AbstractRegistryPropertyHandler extends AbstractPropertyHandler
 {
+    public AbstractRegistryPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Returns <code>true</code> if the properties type is a class or interface,
      * <code>false</code> otherwise.

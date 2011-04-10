@@ -5,6 +5,8 @@ import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
 /**
+ * Ginjector for the {@link JsonRegistry}.
+ * 
  * @author $Author:$
  * @version $Date:$ $Revision:$
  */

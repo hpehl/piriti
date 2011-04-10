@@ -4,6 +4,8 @@ import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
+
 /**
  * {@link PropertyHandlerRegistry} used by the {@link JsonWriterCreator}.
  * 
@@ -12,6 +14,12 @@ import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
  */
 public class JsonWriterPropertyHandlerRegistry extends JsonPropertyHandlerRegistry
 {
+    public JsonWriterPropertyHandlerRegistry(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * Looks up a field handler based on the information provided in the field
      * context. The lookup logic is implemented like this:

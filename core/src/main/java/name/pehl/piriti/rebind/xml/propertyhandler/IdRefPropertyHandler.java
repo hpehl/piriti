@@ -1,13 +1,17 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
+import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -20,6 +24,12 @@ import com.google.gwt.core.ext.typeinfo.JType;
 public class IdRefPropertyHandler extends AbstractRegistryPropertyHandler
 {
     private static final String NESTED_TYPE = "nestedType";
+
+
+    public IdRefPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
 
 
     /**
@@ -62,14 +72,16 @@ public class IdRefPropertyHandler extends AbstractRegistryPropertyHandler
 
 
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         JClassType nestedType = propertyContext.getMetadata(NESTED_TYPE);
         String readerVariable = startReader(writer, propertyContext, "xmlRegistry", nestedType);
 
         String references = propertyContext.getVariableNames().newVariableName("References");
         writer.write("String[] %s = %s.selectValues(\"%s\", %s);", references, propertyContext.getVariableNames()
-                .getInputVariable(), propertyContext.getPath(), propertyContext.isStripWsnl());
+                .getInputVariable(), propertyContext.getPath(),
+                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
         writer.write("if (%s.length == 1) {", references);
         writer.indent();
         // If there's only one value it is expected that this value contains
@@ -145,7 +157,8 @@ public class IdRefPropertyHandler extends AbstractRegistryPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }

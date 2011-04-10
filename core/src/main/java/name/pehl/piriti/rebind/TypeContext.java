@@ -11,6 +11,7 @@ import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
@@ -23,7 +24,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class TypeContext
+public class TypeContext extends LogFacade
 {
     // -------------------------------------------------------- private members
 
@@ -49,11 +50,14 @@ public class TypeContext
      *            The type of the class
      * @param rwType
      *            The type of the reader or writer interface
+     * @param logger
      * @throws UnableToCompleteException
      */
-    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType, VariableNames variableNames)
-            throws UnableToCompleteException
+    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType, VariableNames variableNames,
+            TreeLogger logger) throws UnableToCompleteException
     {
+        super(logger);
+
         this.typeOracle = typeOracle;
         this.type = type;
         this.rwType = rwType;
@@ -102,7 +106,7 @@ public class TypeContext
 
     public TypeContext clone(VariableNames variableNames) throws UnableToCompleteException
     {
-        return new TypeContext(this.typeOracle, this.type, this.rwType, variableNames);
+        return new TypeContext(this.typeOracle, this.type, this.rwType, variableNames, logger);
     }
 
 

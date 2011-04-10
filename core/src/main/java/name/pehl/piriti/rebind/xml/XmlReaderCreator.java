@@ -5,7 +5,6 @@ import java.util.Iterator;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.TypeProcessor;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
@@ -28,28 +27,17 @@ public class XmlReaderCreator extends AbstractXmlCreator
 {
     // --------------------------------------------------------- initialization
 
-    public XmlReaderCreator(GeneratorContext context, JClassType interfaceType, String implName,
-            String readerClassname, TreeLogger logger) throws UnableToCompleteException
+    public XmlReaderCreator(GeneratorContext generatorContext, JClassType rwType, String implName, String rwClassname,
+            TreeLogger logger) throws UnableToCompleteException
     {
-        super(context, interfaceType, implName, readerClassname, logger);
-    }
-
-
-    /**
-     * @return an instance of {@link XmlTypeProcessor}
-     * @see name.pehl.piriti.rebind.AbstractCreator#setupTypeProcessor()
-     */
-    @Override
-    protected TypeProcessor setupTypeProcessor()
-    {
-        return new XmlTypeProcessor();
+        super(generatorContext, rwType, implName, rwClassname, logger);
     }
 
 
     @Override
     protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
     {
-        return new XmlPropertyHandlerRegistry();
+        return new XmlPropertyHandlerRegistry(logger);
     }
 
 

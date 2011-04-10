@@ -18,7 +18,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 136 $
  */
-public abstract class AbstractCreator
+public abstract class AbstractCreator extends LogFacade
 {
     // -------------------------------------------------------- private members
 
@@ -28,7 +28,6 @@ public abstract class AbstractCreator
     protected final TypeProcessor typeProcessor;
     protected final PropertyHandlerRegistry propertyHandlerRegistry;
     protected final String implName;
-    protected final TreeLogger logger;
 
 
     // ----------------------------------------------------------- constructors
@@ -36,6 +35,8 @@ public abstract class AbstractCreator
     public AbstractCreator(GeneratorContext generatorContext, JClassType rwType, String implName, String rwClassname,
             TreeLogger logger) throws UnableToCompleteException
     {
+        super(logger);
+
         // Check for possible misuse:
         // GWT.create(XmlReader.class)
         JClassType rwInterface = generatorContext.getTypeOracle().findType(rwClassname);
@@ -76,13 +77,12 @@ public abstract class AbstractCreator
         // initialize
         this.generatorContext = generatorContext;
         this.variableNames = setupVariableNames();
-        this.typeContext = new TypeContext(generatorContext.getTypeOracle(), type, rwType, variableNames);
+        this.typeContext = new TypeContext(generatorContext.getTypeOracle(), type, rwType, variableNames, logger);
         this.typeProcessor = setupTypeProcessor();
         this.propertyHandlerRegistry = setupPropertyHandlerRegistry();
         this.implName = implName;
-        this.logger = logger;
 
-        // collect properties
+        // collect properties, id and references
         this.typeProcessor.process(typeContext);
     }
 
@@ -92,7 +92,10 @@ public abstract class AbstractCreator
      * 
      * @return the {@link VariableNames} used in this creator,
      */
-    protected abstract VariableNames setupVariableNames();
+    protected VariableNames setupVariableNames()
+    {
+        return new VariableNames("value", "input", "builder");
+    }
 
 
     /**
@@ -102,8 +105,8 @@ public abstract class AbstractCreator
      */
     protected TypeProcessor setupTypeProcessor()
     {
-        TypeProcessor pojoTypeProcessor = new PojoTypeProcessor();
-        TypeProcessor rwTypeProcessor = new RwTypeProcessor();
+        TypeProcessor pojoTypeProcessor = new PojoTypeProcessor(logger);
+        TypeProcessor rwTypeProcessor = new RwTypeProcessor(logger);
         pojoTypeProcessor.setNext(rwTypeProcessor);
         return pojoTypeProcessor;
     }
@@ -322,28 +325,4 @@ public abstract class AbstractCreator
      */
     protected abstract void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
             PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException;
-
-
-    // --------------------------------------------------------- helper methods
-
-    /**
-     * Post an error message and halt processing. This method always throws an
-     * {@link UnableToCompleteException}
-     */
-    public void die(String message) throws UnableToCompleteException
-    {
-        logger.log(TreeLogger.ERROR, message);
-        throw new UnableToCompleteException();
-    }
-
-
-    /**
-     * Post an error message and halt processing. This method always throws an
-     * {@link UnableToCompleteException}
-     */
-    public void die(String message, Object... params) throws UnableToCompleteException
-    {
-        logger.log(TreeLogger.ERROR, String.format(message, params));
-        throw new UnableToCompleteException();
-    }
 }

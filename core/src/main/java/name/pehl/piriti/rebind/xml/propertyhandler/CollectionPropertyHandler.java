@@ -1,11 +1,13 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -17,6 +19,12 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
 {
+    public CollectionPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * TODO Javadoc
      * 
@@ -27,29 +35,20 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
-        JClassType parameterType = getTypeVariable(propertyContext);
-        String nestedElementVariable = propertyContext.getVariableNames().newVariableName("NestedElement");
-        String nestedElementsVariable = propertyContext.getVariableNames().newVariableName("NestedElements");
-        String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
         String nestedXpath = ".";
+        JClassType parameterType = getTypeVariable(propertyContext);
+        String nestedElementsVariable = propertyContext.getVariableNames().newVariableName("NestedElements");
         if (parameterType.isPrimitive() != null || TypeUtils.isBasicType(parameterType)
                 || parameterType.isEnum() != null)
         {
             nestedXpath += "/text()";
         }
-
-        // TODO Implement usage of setters
-        VariableNames variableNames = new VariableNames(nestedElementVariable, nestedValueVariable, propertyContext
-                .getVariableNames().getBuilderVariable());
-        PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
-                propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
-                parameterType, propertyContext.getName(), nestedXpath, propertyContext.getFormat(),
-                propertyContext.isStripWsnl(), propertyContext.getConverter(), null, propertyContext.getGetter(),
-                propertyContext.getSetter(), variableNames);
-        PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
-        if (!nestedHandler.isValid(writer, nestedFieldContext))
+        PropertyContext nestedPropertyContext = propertyContext.createNested(parameterType, nestedXpath);
+        PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
+        if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
             return;
         }
@@ -67,14 +66,15 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         }
         writer.write("%s = new %s<%s>();", propertyContext.getVariableNames().getValueVariable(),
                 collectionImplementation, parameterType.getQualifiedSourceName());
-        writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
+        writer.write("for (Element %s : %s) {", nestedPropertyContext.getVariableNames().getInputVariable(),
+                nestedElementsVariable);
         writer.indent();
-        nestedHandler.comment(writer, nestedFieldContext);
-        nestedHandler.declare(writer, nestedFieldContext);
-        nestedHandler.readInput(writer, nestedFieldContext);
-        writer.write("if (%s != null) {", nestedFieldContext.getVariableNames().getValueVariable());
+        nestedHandler.comment(writer, nestedPropertyContext);
+        nestedHandler.declare(writer, nestedPropertyContext);
+        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
+        writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("%s.add(%s);", propertyContext.getVariableNames().getValueVariable(), nestedFieldContext
+        writer.write("%s.add(%s);", propertyContext.getVariableNames().getValueVariable(), nestedPropertyContext
                 .getVariableNames().getValueVariable());
         writer.outdent();
         writer.write("}");
@@ -93,7 +93,8 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }

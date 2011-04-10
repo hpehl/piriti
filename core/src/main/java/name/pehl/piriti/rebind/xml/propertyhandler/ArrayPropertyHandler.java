@@ -2,12 +2,12 @@ package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.TypeContext;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
@@ -22,6 +22,12 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  */
 public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
 {
+    public ArrayPropertyHandler(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     /**
      * TODO Javadoc
      * 
@@ -32,8 +38,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext)
-            throws UnableToCompleteException
+    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         JArrayType arrayType = propertyContext.getArrayType();
         JType componentType = arrayType.getComponentType();
@@ -42,53 +48,44 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         {
             try
             {
-                componentType = propertyContext.getTypeContext().getTypeOracle().getType(
-                        primitiveComponentType.getQualifiedBoxedSourceName());
+                componentType = propertyContext.getTypeContext().getTypeOracle()
+                        .getType(primitiveComponentType.getQualifiedBoxedSourceName());
             }
             catch (NotFoundException e)
             {
                 throw new UnableToCompleteException();
             }
         }
-        String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
-        String nestedElementVariable = propertyContext.getVariableNames().newVariableName("NestedElement");
-        String nestedElementsVariable = propertyContext.getVariableNames().newVariableName("NestedElements");
-        String nestedValueVariable = propertyContext.getVariableNames().newVariableName("NestedValue");
         String nestedXpath = ".";
+        String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
+        String nestedElementsVariable = propertyContext.getVariableNames().newVariableName("NestedElements");
         if (componentType.isPrimitive() != null || TypeUtils.isBasicType(componentType)
                 || componentType.isEnum() != null)
         {
             nestedXpath += "/text()";
         }
-
-        // TODO Implement usage of setters
-        VariableNames variableNames = new VariableNames(nestedElementVariable, nestedValueVariable, propertyContext
-                .getVariableNames().getBuilderVariable());
-        TypeContext nestedTypeContext = new TypeContext(typeContext.getTypeOracle(), arrayType, arrayType)
-        PropertyContext nestedFieldContext = new PropertyContext(propertyContext.getTypeOracle(),
-                propertyContext.getHandlerRegistry(), propertyContext.getReaderOrWriter(), propertyContext.getClazz(),
-                componentType, propertyContext.getName(), nestedXpath, propertyContext.getFormat(),
-                propertyContext.isStripWsnl(), propertyContext.getConverter(), null, propertyContext.getGetter(),
-                propertyContext.getSetter(), variableNames);
-        PropertyHandler nestedHandler = propertyContext.getHandlerRegistry().findPropertyHandler(nestedFieldContext);
-        if (!nestedHandler.isValid(writer, nestedFieldContext))
+        PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, nestedXpath);
+        PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
+        if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
             return;
         }
+
         writer.write("List<Element> %s = filterElements(%s.selectNodes(\"%s\"));", nestedElementsVariable,
                 propertyContext.getVariableNames().getInputVariable(), propertyContext.getPath());
         writer.write("if (!%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
         writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", componentType.getParameterizedQualifiedSourceName(),
                 valueVariableAsList);
-        writer.write("for (Element %s : %s) {", nestedElementVariable, nestedElementsVariable);
+        writer.write("for (Element %s : %s) {", nestedPropertyContext.getVariableNames().getInputVariable(),
+                nestedElementsVariable);
         writer.indent();
-        nestedHandler.comment(writer, nestedFieldContext);
-        nestedHandler.declare(writer, nestedFieldContext);
-        nestedHandler.readInput(writer, nestedFieldContext);
-        writer.write("if (%s != null) {", nestedFieldContext.getVariableNames().getValueVariable());
+        nestedHandler.comment(writer, nestedPropertyContext);
+        nestedHandler.declare(writer, nestedPropertyContext);
+        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
+        writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("%s.add(%s);", valueVariableAsList, nestedFieldContext.getVariableNames().getValueVariable());
+        writer.write("%s.add(%s);", valueVariableAsList, nestedPropertyContext.getVariableNames().getValueVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -127,7 +124,8 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
+            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
         writer.write("// writeValue() NYI");
     }

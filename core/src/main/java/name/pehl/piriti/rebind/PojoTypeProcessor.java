@@ -28,12 +28,19 @@ import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.property.client.Setter;
 import name.pehl.piriti.rebind.propertyhandler.ReferenceType;
 
+import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 public class PojoTypeProcessor extends AbstractTypeProcessor
 {
+    public PojoTypeProcessor(TreeLogger logger)
+    {
+        super(logger);
+    }
+
+
     @Override
     @SuppressWarnings("unchecked")
     protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes, VariableNames variableNames)
@@ -173,7 +180,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
         Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
         PropertyContext propertyContext = new PropertyContext(typeContext, field.getType(), field.getName(), path,
-                format, whitespaceHandling, converter, getter, setter, referenceType, variableNames);
+                format, whitespaceHandling, converter, getter, setter, referenceType, variableNames, logger);
         return propertyContext;
     }
 
