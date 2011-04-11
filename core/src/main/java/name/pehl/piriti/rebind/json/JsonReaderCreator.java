@@ -298,8 +298,8 @@ public class JsonReaderCreator extends AbstractJsonCreator
 
     protected void internalRead(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %s internalRead(JSONObject jsonObject) {", typeContext.getType()
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %s internalRead(JSONObject %s) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInputVariable());
         writer.indent();
         // TODO Use InstanceCreator<T, C> if specified
         writer.write("%1$s %2$s = new %1$s();", typeContext.getType().getParameterizedQualifiedSourceName(),

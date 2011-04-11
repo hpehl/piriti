@@ -2,6 +2,8 @@ package name.pehl.piriti.rebind;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import name.pehl.piriti.commons.client.CreateWith;
 import name.pehl.piriti.commons.client.InstanceCreator;
@@ -26,6 +28,10 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  */
 public class TypeContext extends LogFacade
 {
+    // -------------------------------------------------------------- constants
+
+    private static int internalOrder = Integer.MAX_VALUE / 2;
+
     // -------------------------------------------------------- private members
 
     private final TypeOracle typeOracle;
@@ -33,7 +39,7 @@ public class TypeContext extends LogFacade
     private final JClassType rwType;
     private Class<? extends InstanceCreator<?, ?>> instanceCreator;
     private JClassType stopAt;
-    private final Set<PropertyContext> properties;
+    private final SortedSet<PropertyContext> properties;
     private PropertyContext id;
     private final Set<PropertyContext> references;
     private final VariableNames variableNames;
@@ -64,7 +70,7 @@ public class TypeContext extends LogFacade
 
         this.variableNames = variableNames;
         this.references = new HashSet<PropertyContext>();
-        this.properties = new HashSet<PropertyContext>();
+        this.properties = new TreeSet<PropertyContext>();
 
         // For instanceCreator and stopAt evaluate
         // 1. the type and
@@ -110,7 +116,13 @@ public class TypeContext extends LogFacade
     }
 
 
-    // --------------------------------------------------------- object methods
+    // ---------------------------------------------------------------- methods
+
+    public static int nextOrder()
+    {
+        return internalOrder++;
+    }
+
 
     @Override
     public String toString()

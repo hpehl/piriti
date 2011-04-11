@@ -34,11 +34,13 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         JClassType rwType = typeContext.getRwType();
         if (rwType.isAnnotationPresent(Mappings.class))
         {
+            int index = 0;
             Mappings mappingsAnno = rwType.getAnnotation(Mappings.class);
             Mapping[] mappings = mappingsAnno.value();
             for (Mapping mapping : mappings)
             {
-                PropertyContext propertyContext = createPropertyContext(typeContext, mapping, null, variableNames);
+                PropertyContext propertyContext = createPropertyContext(index++, typeContext, mapping, null,
+                        variableNames);
                 if (propertyContext != null)
                 {
                     typeContext.addProperty(propertyContext);
@@ -49,7 +51,8 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
-                PropertyContext propertyContext = createPropertyContext(typeContext, idMapping, ID, variableNames);
+                PropertyContext propertyContext = createPropertyContext(TypeContext.nextOrder(), typeContext,
+                        idMapping, ID, variableNames);
                 if (propertyContext != null)
                 {
                     typeContext.setId(propertyContext);
@@ -60,7 +63,8 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping[] idRefMappings = mappingsAnno.references();
             for (Mapping idRefMapping : idRefMappings)
             {
-                PropertyContext propertyContext = createPropertyContext(typeContext, idRefMapping, IDREF, variableNames);
+                PropertyContext propertyContext = createPropertyContext(TypeContext.nextOrder(), typeContext,
+                        idRefMapping, IDREF, variableNames);
                 if (propertyContext != null)
                 {
                     typeContext.addReference(propertyContext);
@@ -71,7 +75,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
     }
 
 
-    protected PropertyContext createPropertyContext(TypeContext typeContext, Mapping mapping,
+    protected PropertyContext createPropertyContext(int order, TypeContext typeContext, Mapping mapping,
             ReferenceType referenceType, VariableNames variableNames) throws UnableToCompleteException
     {
         PropertyContext propertyContext = null;
@@ -84,7 +88,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Class<? extends Converter<?>> converter = mapping.convert();
             Class<? extends PropertyGetter<?, ?>> getter = mapping.getter();
             Class<? extends PropertySetter<?, ?>> setter = mapping.setter();
-            propertyContext = new PropertyContext(typeContext, field.getType(), field.getName(), path, format,
+            propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(), path, format,
                     whitespaceHandling, converter, getter, setter, null, variableNames, logger);
         }
         else

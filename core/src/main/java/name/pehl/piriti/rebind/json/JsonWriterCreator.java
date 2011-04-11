@@ -57,10 +57,10 @@ public class JsonWriterCreator extends AbstractJsonCreator
         writer.write("String json = null;");
         writer.write("if (models != null && arrayKey != null) {");
         writer.indent();
-        writer.write("StringBuilder jsonBuilder = new StringBuilder();");
-        writer.write("jsonBuilder.append(\"{\\\"\");");
-        writer.write("jsonBuilder.append(arrayKey);");
-        writer.write("jsonBuilder.append(\"\\\":[\");");
+        writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\"{\\\"\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(arrayKey);", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\"\\\":[\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("for (Iterator<%s> iter = models.iterator(); iter.hasNext(); ) {", typeContext.getType()
                 .getParameterizedQualifiedSourceName());
         writer.indent();
@@ -69,18 +69,18 @@ public class JsonWriterCreator extends AbstractJsonCreator
         writer.write("String jsonValue = toJson(%s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("if (jsonValue != null) {");
         writer.indent();
-        writer.write("jsonBuilder.append(jsonValue);");
+        writer.write("%s.append(jsonValue);", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.write("if (iter.hasNext()) {");
         writer.indent();
-        writer.write("jsonBuilder.append(\",\");");
+        writer.write("%s.append(\",\");", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        writer.write("jsonBuilder.append(\"]}\");");
-        writer.write("json = jsonBuilder.toString();");
+        writer.write("%s.append(\"]}\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("json = %s.toString();", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -97,16 +97,16 @@ public class JsonWriterCreator extends AbstractJsonCreator
         writer.write("String json = null;");
         writer.write("if (%s != null) {", typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("StringBuilder jsonBuilder = new StringBuilder();");
-        writer.write("jsonBuilder.append(\"{\");");
+        writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\"{\");", typeContext.getVariableNames().getBuilderVariable());
 
         // This creates all FieldHandler / FieldContexts and calls
         // handleProperty()
         // in a loop
         handleProperties(writer);
 
-        writer.write("jsonBuilder.append(\"}\");");
-        writer.write("json = jsonBuilder.toString();");
+        writer.write("%s.append(\"}\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("json = %s.toString();", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();

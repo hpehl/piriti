@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +31,11 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public class PropertyContext extends LogFacade
+public class PropertyContext extends LogFacade implements Comparable<PropertyContext>
 {
     // -------------------------------------------------------- private members
 
+    private final int order;
     private final TypeContext typeContext;
     private final JType type;
     private final JPrimitiveType primitiveType;
@@ -54,6 +56,7 @@ public class PropertyContext extends LogFacade
     /**
      * Construct a new instance of this class
      * 
+     * @param order
      * @param typeContext
      *            The type context this property belongs to
      * @param type
@@ -78,7 +81,7 @@ public class PropertyContext extends LogFacade
      *            Contains various variable names
      * @throws UnableToCompleteException
      */
-    public PropertyContext(TypeContext typeContext, JType type, String name, String path, String format,
+    public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path, String format,
             WhitespaceHandling whitespaceHandling, Class<? extends Converter<?>> converter,
             Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
             ReferenceType referenceType, VariableNames variableNames, TreeLogger logger)
@@ -86,6 +89,7 @@ public class PropertyContext extends LogFacade
     {
         super(logger);
 
+        this.order = order;
         this.typeContext = typeContext;
         JPrimitiveType primitiveType = type.isPrimitive();
         if (primitiveType != null) // isPrimitive() is not yet available!
@@ -140,38 +144,24 @@ public class PropertyContext extends LogFacade
 
         TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
 
-        PropertyContext nested = new PropertyContext(nestedTypeContext, type, getName(), path, getFormat(),
-                getWhitespaceHandling(), getConverter(), null, null, null, nestedVariableNames, logger);
+        PropertyContext nested = new PropertyContext(TypeContext.nextOrder(), nestedTypeContext, type, getName(), path,
+                getFormat(), getWhitespaceHandling(), getConverter(), null, null, null, nestedVariableNames, logger);
         return nested;
     }
 
 
     // --------------------------------------------------------- object methods
 
-    /**
-     * Based on name and path
-     * 
-     * @return
-     * @see java.lang.Object#hashCode()
-     */
     @Override
     public int hashCode()
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (name == null ? 0 : name.hashCode());
-        result = prime * result + (path == null ? 0 : path.hashCode());
+        result = prime * result + order;
         return result;
     }
 
 
-    /**
-     * Based on name and path
-     * 
-     * @param obj
-     * @return
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
     @Override
     public boolean equals(Object obj)
     {
@@ -188,25 +178,7 @@ public class PropertyContext extends LogFacade
             return false;
         }
         PropertyContext other = (PropertyContext) obj;
-        if (name == null)
-        {
-            if (other.name != null)
-            {
-                return false;
-            }
-        }
-        else if (!name.equals(other.name))
-        {
-            return false;
-        }
-        if (path == null)
-        {
-            if (other.path != null)
-            {
-                return false;
-            }
-        }
-        else if (!path.equals(other.path))
+        if (order != other.order)
         {
             return false;
         }
@@ -215,9 +187,16 @@ public class PropertyContext extends LogFacade
 
 
     @Override
+    public int compareTo(PropertyContext o)
+    {
+        return order - o.order;
+    }
+
+
+    @Override
     public String toString()
     {
-        StringBuilder builder = new StringBuilder().append("PropertyContext [")
+        StringBuilder builder = new StringBuilder().append("PropertyContext [").append(order).append(": ")
                 .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name).append(", path=\"")
                 .append(path).append("\"");
         if (format != null)
@@ -450,5 +429,16 @@ public class PropertyContext extends LogFacade
     public <T> T getMetadata(String key)
     {
         return (T) metadata.get(key);
+    }
+
+    // ---------------------------------------------------------- inner classes
+
+    public static class PropertyContextOrder implements Comparator<PropertyContext>
+    {
+        @Override
+        public int compare(PropertyContext context1, PropertyContext context2)
+        {
+            return context1.order - context2.order;
+        }
     }
 }

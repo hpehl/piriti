@@ -2,7 +2,7 @@ package name.pehl.piriti.rebind.xml;
 
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.AbstractGenerator;
-import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -34,6 +34,6 @@ public class XmlWriterGenerator extends AbstractGenerator
     protected AbstractCreator createCreator(GeneratorContext context, JClassType interfaceType, String implName,
             TreeLogger logger) throws UnableToCompleteException
     {
-        return new XmlWriterCreator(context, interfaceType, implName, XmlReader.class.getCanonicalName(), logger);
+        return new XmlWriterCreator(context, interfaceType, implName, XmlWriter.class.getCanonicalName(), logger);
     }
 }

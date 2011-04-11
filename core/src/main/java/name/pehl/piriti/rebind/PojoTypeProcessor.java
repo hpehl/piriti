@@ -172,15 +172,15 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     protected PropertyContext createPropertyContext(TypeContext typeContext, JField field, ReferenceType referenceType,
             VariableNames variableNames) throws UnableToCompleteException
     {
+        int order = getOrder(field);
         String path = getPath(field);
         String format = getFormat(field);
         WhitespaceHandling whitespaceHandling = getWhitespaceHandling(field);
-        // TODO Use order: int order = getOrder(field);
         Class<? extends Converter<?>> converter = getConverter(field);
         Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
         Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
-        PropertyContext propertyContext = new PropertyContext(typeContext, field.getType(), field.getName(), path,
-                format, whitespaceHandling, converter, getter, setter, referenceType, variableNames, logger);
+        PropertyContext propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(),
+                path, format, whitespaceHandling, converter, getter, setter, referenceType, variableNames, logger);
         return propertyContext;
     }
 
@@ -223,7 +223,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
 
     protected int getOrder(JField field)
     {
-        int order = 0;
+        int order = TypeContext.nextOrder();
         Order orderAnno = field.getAnnotation(Order.class);
         if (orderAnno != null)
         {

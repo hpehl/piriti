@@ -1,5 +1,6 @@
 package name.pehl.piriti.client.constraints;
 
+import name.pehl.piriti.commons.client.Order;
 import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
@@ -23,11 +24,9 @@ public class Amoeba
 
     public interface AmoebaJsonReader extends JsonReader<Amoeba> {}
     public static final AmoebaJsonReader JSON_READER = GWT.create(AmoebaJsonReader.class);
-    // @formatter:on
 
     // ---------------------------------------------------- xml reader / writer
 
-    // @formatter:off
     public interface AmoebaXmlReader extends XmlReader<Amoeba> {}
     public static final AmoebaXmlReader XML_READER = GWT.create(AmoebaXmlReader.class);
 
@@ -37,8 +36,10 @@ public class Amoeba
 
     // ------------------------------------------------------------------- data
 
+    @Order(0)
     String name;
 
+    @Order(1)
     @Path("__size__")
     int size;
 

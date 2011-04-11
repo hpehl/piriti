@@ -11,8 +11,8 @@ public class VariableNames
     private static final String DEFAULT_INSTANCE_VARIABLE = "model";
 
     private final int index;
-    private final String instanceVariable;
     private final String valueVariable;
+    private final String instanceVariable;
     private final String inputVariable;
     private final String builderVariable;
 
@@ -26,9 +26,9 @@ public class VariableNames
     private VariableNames(int index, String instanceVariable, String valueVariable, String inputVariable,
             String builderVariable)
     {
-        this.index = 0;
+        this.index = index;
         this.instanceVariable = instanceVariable;
-        this.valueVariable = valueVariable + index;
+        this.valueVariable = valueVariable;
         this.inputVariable = inputVariable;
         this.builderVariable = builderVariable;
     }
@@ -48,7 +48,7 @@ public class VariableNames
 
     public String getValueVariable()
     {
-        return valueVariable;
+        return valueVariable + index;
     }
 
 

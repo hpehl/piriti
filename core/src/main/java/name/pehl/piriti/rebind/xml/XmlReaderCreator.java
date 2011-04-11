@@ -196,17 +196,20 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     protected void readFromElement(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public %s read(Element element) {", typeContext.getType().getParameterizedQualifiedSourceName());
+        writer.write("public %s read(Element %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInputVariable());
         writer.indent();
-        writer.write("if (element == null) {");
+        writer.write("if (%s == null) {", typeContext.getVariableNames().getInputVariable());
         writer.indent();
         writer.write("return null;");
         writer.outdent();
         writer.write("}");
-        writer.write("%s %s = readIds(element);", typeContext.getType().getParameterizedQualifiedSourceName(),
-                typeContext.getVariableNames().getInstanceVariable());
-        writer.write("readProperties(element, %s);", typeContext.getVariableNames().getInstanceVariable());
-        writer.write("readIdRefs(element, %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("%s %s = readIds(%s);", typeContext.getType().getParameterizedQualifiedSourceName(), typeContext
+                .getVariableNames().getInstanceVariable(), typeContext.getVariableNames().getInputVariable());
+        writer.write("readProperties(%s, %s);", typeContext.getVariableNames().getInputVariable(), typeContext
+                .getVariableNames().getInstanceVariable());
+        writer.write("readIdRefs(%s, %s);", typeContext.getVariableNames().getInputVariable(), typeContext
+                .getVariableNames().getInstanceVariable());
         writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
@@ -270,10 +273,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     protected void readProperties(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readProperties(Element element, %1$s $2$s) {", typeContext.getType()
-                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInstanceVariable());
+        writer.write("private %1$s readProperties(Element %2$s, %1$s %3$s) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInputVariable(), typeContext
+                .getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("if (element != null) {");
+        writer.write("if (%s != null) {", typeContext.getVariableNames().getInputVariable());
         writer.indent();
         handleProperties(writer);
         writer.outdent();
@@ -308,10 +312,10 @@ public class XmlReaderCreator extends AbstractXmlCreator
             validIdField = handler != null && handler.isValid(writer, propertyContext);
         }
 
-        writer.write("private %s readIds(Element element) {", typeContext.getType()
-                .getParameterizedQualifiedSourceName());
+        writer.write("private %s readIds(Element %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInputVariable());
         writer.indent();
-        writer.write("if (element != null) {");
+        writer.write("if (%s != null) {", typeContext.getVariableNames().getInputVariable());
         writer.indent();
         if (validIdField)
         {
@@ -390,10 +394,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     protected void readIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private %1$s readIdRefs(Element element, %1$s %2$s) {", typeContext.getType()
-                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInstanceVariable());
+        writer.write("private %1$s readIdRefs(Element %2$s, %1$s %3$s) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInputVariable(), typeContext
+                .getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("if (element != null) {");
+        writer.write("if (%s != null) {", typeContext.getVariableNames().getInputVariable());
         writer.indent();
         handleIdRefs(writer);
         writer.outdent();

@@ -21,17 +21,17 @@ public class XmlWriterCreator extends AbstractXmlCreator
 {
     // --------------------------------------------------------- initialization
 
-    public XmlWriterCreator(GeneratorContext context, JClassType interfaceType, String implName,
-            String readerClassname, TreeLogger logger) throws UnableToCompleteException
+    public XmlWriterCreator(GeneratorContext generatorContext, JClassType rwType, String implName, String rwClassname,
+            TreeLogger logger) throws UnableToCompleteException
     {
-        super(context, interfaceType, implName, readerClassname, logger);
+        super(generatorContext, rwType, implName, rwClassname, logger);
     }
 
 
     @Override
     protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
     {
-        return null;
+        return new XmlPropertyHandlerRegistry(logger);
     }
 
 
@@ -86,7 +86,8 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
     protected void writeSingle(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("public String toXml(%s model) {", typeContext.getType().getParameterizedQualifiedSourceName());
+        writer.write("public String toXml(%s %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
         writer.write("String xml = null;");
         writer.write("if (model != null) {");

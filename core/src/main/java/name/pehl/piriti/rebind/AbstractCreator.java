@@ -299,7 +299,6 @@ public abstract class AbstractCreator extends LogFacade
      */
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
-        int counter = 0;
         for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
         {
             PropertyContext propertyContext = iter.next();
@@ -308,7 +307,6 @@ public abstract class AbstractCreator extends LogFacade
             {
                 writer.newline();
                 handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
-                counter++;
             }
         }
     }
