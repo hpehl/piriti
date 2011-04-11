@@ -54,11 +54,10 @@ public abstract class AbstractTypeProcessor extends LogFacade implements TypePro
     public final void process(TypeContext typeContext) throws UnableToCompleteException
     {
         // prepare
-        VariableNames variableNames = typeContext.getVariableNames();
         skipTypes = typeContext.getStopAt().getFlattenedSupertypeHierarchy();
 
         // process
-        doProcess(typeContext, skipTypes, variableNames);
+        doProcess(typeContext, skipTypes);
 
         // next one please
         if (hasNext())
@@ -68,8 +67,8 @@ public abstract class AbstractTypeProcessor extends LogFacade implements TypePro
     }
 
 
-    protected abstract void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes2,
-            VariableNames variableNames) throws UnableToCompleteException;
+    protected abstract void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes)
+            throws UnableToCompleteException;
 
 
     protected boolean skipType(JClassType type)

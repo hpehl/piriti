@@ -2,7 +2,8 @@ package name.pehl.piriti.client.references;
 
 import java.util.List;
 
-import name.pehl.piriti.commons.client.Path;
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.XmlReader;
@@ -20,14 +21,18 @@ public class Book
 {
     // --------------------------------------------------- json reader / writer
 
-    public interface BookJsonWriter extends JsonWriter<Book> {}
-    public static final BookJsonWriter JSON_WRITER = GWT.create(BookJsonWriter.class);
-
+    @Mappings(@Mapping(value = "extraInfoOfLastRelatedBook", path = "@.related[2].extraInfo"))    
     public interface BookJsonReader extends JsonReader<Book> {}
     public static final BookJsonReader JSON_READER = GWT.create(BookJsonReader.class);
 
+    public interface BookJsonWriter extends JsonWriter<Book> {}
+    public static final BookJsonWriter JSON_WRITER = GWT.create(BookJsonWriter.class);
+    
     // ---------------------------------------------------- xml reader / writer
 
+    @Mappings({@Mapping(value = "reviews", path = "reviews/review"),
+        @Mapping(value = "related", path = "related/book"),
+        @Mapping(value = "extraInfoOfLastRelatedBook", path = "//related/book[3]/extraInfo/text()")})    
     public interface BookXmlReader extends XmlReader<Book> {}
     public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
 
@@ -40,10 +45,7 @@ public class Book
     int pages;
     String title;
     Author author;
-    @Path("reviews/review") List<String> reviews;
-    @Path("related/book") List<Book> related;
-    
-    @Path("@.related[2].extraInfo") 
-//    @Path("//related/book[3]/extraInfo/text()") 
+    List<String> reviews;
+    List<Book> related;
     String extraInfoOfLastRelatedBook;
 }

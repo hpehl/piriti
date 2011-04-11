@@ -7,7 +7,6 @@ import java.util.Set;
 
 import name.pehl.piriti.commons.client.Mapping;
 import name.pehl.piriti.commons.client.Mappings;
-import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.property.client.PropertyGetter;
@@ -28,7 +27,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
 
 
     @Override
-    protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes, VariableNames variableNames)
+    protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes)
             throws UnableToCompleteException
     {
         JClassType rwType = typeContext.getRwType();
@@ -39,74 +38,58 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping[] mappings = mappingsAnno.value();
             for (Mapping mapping : mappings)
             {
-                PropertyContext propertyContext = createPropertyContext(index++, typeContext, mapping, null,
-                        variableNames);
+                PropertyContext propertyContext = createPropertyContext(index++, typeContext, mapping, null);
                 if (propertyContext != null)
                 {
                     typeContext.addProperty(propertyContext);
                 }
-                variableNames = variableNames.next();
             }
 
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
                 PropertyContext propertyContext = createPropertyContext(TypeContext.nextOrder(), typeContext,
-                        idMapping, ID, variableNames);
+                        idMapping, ID);
                 if (propertyContext != null)
                 {
                     typeContext.setId(propertyContext);
                 }
-                variableNames = variableNames.next();
             }
 
             Mapping[] idRefMappings = mappingsAnno.references();
             for (Mapping idRefMapping : idRefMappings)
             {
                 PropertyContext propertyContext = createPropertyContext(TypeContext.nextOrder(), typeContext,
-                        idRefMapping, IDREF, variableNames);
+                        idRefMapping, IDREF);
                 if (propertyContext != null)
                 {
                     typeContext.addReference(propertyContext);
                 }
-                variableNames = variableNames.next();
             }
         }
     }
 
 
     protected PropertyContext createPropertyContext(int order, TypeContext typeContext, Mapping mapping,
-            ReferenceType referenceType, VariableNames variableNames) throws UnableToCompleteException
+            ReferenceType referenceType) throws UnableToCompleteException
     {
         PropertyContext propertyContext = null;
         JField field = typeContext.getType().getField(mapping.value());
         if (field != null)
         {
-            String path = getPath(field, mapping.path());
+            String path = mapping.path() != null ? mapping.path() : mapping.value();
             String format = mapping.format();
             WhitespaceHandling whitespaceHandling = mapping.whitespace();
             Class<? extends Converter<?>> converter = mapping.convert();
             Class<? extends PropertyGetter<?, ?>> getter = mapping.getter();
             Class<? extends PropertySetter<?, ?>> setter = mapping.setter();
             propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(), path, format,
-                    whitespaceHandling, converter, getter, setter, null, variableNames, logger);
+                    whitespaceHandling, converter, getter, setter, null, logger);
         }
         else
         {
             // TODO Warning / error?
         }
         return propertyContext;
-    }
-
-
-    protected String getPath(JField field, String annotationPath)
-    {
-        String path = field.getName();
-        Path pathAnno = field.getAnnotation(Path.class);
-        if (pathAnno != null)
-        {
-            path = pathAnno.value();
-        }
-        return path;
     }
 }

@@ -2,8 +2,8 @@ package name.pehl.piriti.rebind;
 
 /**
  * @author $Author$
- * @version $Date$ $Revision:
- *          1135 $
+ * @version $Date$ $Revision: 1135
+ *          $
  */
 public class VariableNames
 {
@@ -70,7 +70,7 @@ public class VariableNames
     }
 
 
-    public VariableNames next()
+    VariableNames next()
     {
         return new VariableNames(index + 1, instanceVariable, valueVariable, inputVariable, builderVariable);
     }

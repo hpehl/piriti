@@ -1,9 +1,11 @@
 package name.pehl.piriti.rebind;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import name.pehl.piriti.commons.client.CreateWith;
 import name.pehl.piriti.commons.client.InstanceCreator;
@@ -39,10 +41,10 @@ public class TypeContext extends LogFacade
     private final JClassType rwType;
     private Class<? extends InstanceCreator<?, ?>> instanceCreator;
     private JClassType stopAt;
-    private final SortedSet<PropertyContext> properties;
+    private final Map<String, PropertyContext> properties;
     private PropertyContext id;
-    private final Set<PropertyContext> references;
-    private final VariableNames variableNames;
+    private final Map<String, PropertyContext> references;
+    private VariableNames variableNames;
 
 
     // ----------------------------------------------------------- constructors
@@ -69,8 +71,8 @@ public class TypeContext extends LogFacade
         this.rwType = rwType;
 
         this.variableNames = variableNames;
-        this.references = new HashSet<PropertyContext>();
-        this.properties = new TreeSet<PropertyContext>();
+        this.references = new HashMap<String, PropertyContext>();
+        this.properties = new HashMap<String, PropertyContext>();
 
         // For instanceCreator and stopAt evaluate
         // 1. the type and
@@ -134,6 +136,21 @@ public class TypeContext extends LogFacade
 
     // -------------------------------------- methods related to the class type
 
+    public boolean isXml()
+    {
+        Set<? extends JClassType> hierarchy = rwType.getFlattenedSupertypeHierarchy();
+        for (JClassType type : hierarchy)
+        {
+            if (XmlReader.class.getName().equals(type.getQualifiedSourceName())
+                    || XmlWriter.class.getName().equals(type.getQualifiedSourceName()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public boolean isGxt()
     {
         Set<? extends JClassType> hierarchy = type.getFlattenedSupertypeHierarchy();
@@ -153,15 +170,28 @@ public class TypeContext extends LogFacade
 
     // ------------------------------------------------------------ collections
 
-    public void addReference(PropertyContext propertyContext)
+    public void addProperty(PropertyContext propertyContext)
     {
-        references.add(propertyContext);
+        properties.put(propertyContext.getName(), propertyContext);
+        variableNames = variableNames.next();
+        propertyContext.setVariableNames(variableNames);
     }
 
 
-    public void addProperty(PropertyContext propertyContext)
+    public void addReference(PropertyContext propertyContext)
     {
-        properties.add(propertyContext);
+        references.put(propertyContext.getName(), propertyContext);
+        variableNames = variableNames.next();
+        propertyContext.setVariableNames(variableNames);
+
+        // Prevent duplicate processing
+        removeProperty(propertyContext);
+    }
+
+
+    private PropertyContext removeProperty(PropertyContext propertyContext)
+    {
+        return properties.remove(propertyContext.getName());
     }
 
 
@@ -262,20 +292,29 @@ public class TypeContext extends LogFacade
     }
 
 
-    public void setId(PropertyContext id)
+    public void setId(PropertyContext propertyContext)
     {
-        this.id = id;
+        this.id = propertyContext;
+        variableNames = variableNames.next();
+        this.id.setVariableNames(variableNames);
+
+        // Prevent duplicate processing
+        removeProperty(propertyContext);
     }
 
 
-    public Set<PropertyContext> getProperties()
+    public List<PropertyContext> getProperties()
     {
-        return properties;
+        List<PropertyContext> ordered = new ArrayList<PropertyContext>(properties.values());
+        Collections.sort(ordered, new PropertyContext.PropertyContextOrder());
+        return ordered;
     }
 
 
-    public Set<PropertyContext> getReferences()
+    public List<PropertyContext> getReferences()
     {
-        return references;
+        List<PropertyContext> ordered = new ArrayList<PropertyContext>(references.values());
+        Collections.sort(ordered, new PropertyContext.PropertyContextOrder());
+        return ordered;
     }
 }

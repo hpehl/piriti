@@ -43,7 +43,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes, VariableNames variableNames)
+    protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes)
             throws UnableToCompleteException
     {
         // normal mappings
@@ -52,12 +52,11 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class, IdRef.class)));
         for (JField field : fields)
         {
-            PropertyContext propertyContext = createPropertyContext(typeContext, field, null, variableNames);
+            PropertyContext propertyContext = createPropertyContext(typeContext, field, null);
             if (propertyContext != null)
             {
                 typeContext.addProperty(propertyContext);
             }
-            variableNames = variableNames.next();
         }
 
         // id
@@ -72,12 +71,11 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             }
             else
             {
-                PropertyContext propertyContext = createPropertyContext(typeContext, idFields.get(0), ID, variableNames);
+                PropertyContext propertyContext = createPropertyContext(typeContext, idFields.get(0), ID);
                 if (propertyContext != null)
                 {
                     typeContext.setId(propertyContext);
                 }
-                variableNames = variableNames.next();
             }
         }
 
@@ -88,12 +86,11 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class)));
         for (JField field : idRefFields)
         {
-            PropertyContext propertyContext = createPropertyContext(typeContext, field, IDREF, variableNames);
+            PropertyContext propertyContext = createPropertyContext(typeContext, field, IDREF);
             if (propertyContext != null)
             {
                 typeContext.addReference(propertyContext);
             }
-            variableNames = variableNames.next();
         }
     }
 
@@ -169,8 +166,8 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     }
 
 
-    protected PropertyContext createPropertyContext(TypeContext typeContext, JField field, ReferenceType referenceType,
-            VariableNames variableNames) throws UnableToCompleteException
+    protected PropertyContext createPropertyContext(TypeContext typeContext, JField field, ReferenceType referenceType)
+            throws UnableToCompleteException
     {
         int order = getOrder(field);
         String path = getPath(field);
@@ -180,7 +177,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
         Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
         PropertyContext propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(),
-                path, format, whitespaceHandling, converter, getter, setter, referenceType, variableNames, logger);
+                path, format, whitespaceHandling, converter, getter, setter, referenceType, logger);
         return propertyContext;
     }
 

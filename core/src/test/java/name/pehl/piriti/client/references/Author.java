@@ -1,6 +1,7 @@
 package name.pehl.piriti.client.references;
 
-import name.pehl.piriti.commons.client.Path;
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.XmlReader;
@@ -26,6 +27,7 @@ public class Author
 
     // ---------------------------------------------------- xml reader / writer
 
+    @Mappings(@Mapping(value = "bestseller", path = "bestseller/book"))
     public interface AuthorXmlReader extends XmlReader<Author> {}
     public static final AuthorXmlReader XML_READER = GWT.create(AuthorXmlReader.class);
 
@@ -36,5 +38,5 @@ public class Author
 
     String firstname;
     String surname;
-    @Path("bestseller/book") Book bestseller;
+    Book bestseller;
 }

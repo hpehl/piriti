@@ -31,7 +31,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public class PropertyContext extends LogFacade implements Comparable<PropertyContext>
+public class PropertyContext extends LogFacade
 {
     // -------------------------------------------------------- private members
 
@@ -47,7 +47,7 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
     private final Class<? extends PropertyGetter<?, ?>> getter;
     private final Class<? extends PropertySetter<?, ?>> setter;
     private final ReferenceType referenceType;
-    private final VariableNames variableNames;
+    private VariableNames variableNames;
     private final Map<String, Object> metadata;
 
 
@@ -77,15 +77,12 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
      *            A custom property setter
      * @param referenceType
      *            The refereence type.
-     * @param variableNames
-     *            Contains various variable names
      * @throws UnableToCompleteException
      */
     public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path, String format,
             WhitespaceHandling whitespaceHandling, Class<? extends Converter<?>> converter,
             Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
-            ReferenceType referenceType, VariableNames variableNames, TreeLogger logger)
-            throws UnableToCompleteException
+            ReferenceType referenceType, TreeLogger logger) throws UnableToCompleteException
     {
         super(logger);
 
@@ -128,7 +125,6 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
         this.getter = getter == NoopPropertyGetter.class ? null : getter;
         this.setter = setter == NoopPropertySetter.class ? null : setter;
         this.referenceType = referenceType;
-        this.variableNames = variableNames;
         this.metadata = new HashMap<String, Object>();
     }
 
@@ -145,7 +141,8 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
         TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
 
         PropertyContext nested = new PropertyContext(TypeContext.nextOrder(), nestedTypeContext, type, getName(), path,
-                getFormat(), getWhitespaceHandling(), getConverter(), null, null, null, nestedVariableNames, logger);
+                getFormat(), getWhitespaceHandling(), getConverter(), null, null, null, logger);
+        nested.setVariableNames(nestedVariableNames);
         return nested;
     }
 
@@ -157,7 +154,8 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + order;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((type == null) ? 0 : type.hashCode());
         return result;
     }
 
@@ -178,18 +176,29 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
             return false;
         }
         PropertyContext other = (PropertyContext) obj;
-        if (order != other.order)
+        if (name == null)
+        {
+            if (other.name != null)
+            {
+                return false;
+            }
+        }
+        else if (!name.equals(other.name))
+        {
+            return false;
+        }
+        if (type == null)
+        {
+            if (other.type != null)
+            {
+                return false;
+            }
+        }
+        else if (!type.equals(other.type))
         {
             return false;
         }
         return true;
-    }
-
-
-    @Override
-    public int compareTo(PropertyContext o)
-    {
-        return order - o.order;
     }
 
 
@@ -365,6 +374,11 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
      */
     public String getPath()
     {
+        if (typeContext.isXml() && path.equals(name)
+                && (type.isPrimitive() != null || TypeUtils.isBasicType(type) || type.isEnum() != null))
+        {
+            return path + "/text()";
+        }
         return path;
     }
 
@@ -414,6 +428,12 @@ public class PropertyContext extends LogFacade implements Comparable<PropertyCon
     public VariableNames getVariableNames()
     {
         return variableNames;
+    }
+
+
+    void setVariableNames(VariableNames variableNames)
+    {
+        this.variableNames = variableNames;
     }
 
 

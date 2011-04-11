@@ -2,7 +2,6 @@ package name.pehl.piriti.rebind.xml;
 
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.TypeProcessor;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -25,16 +24,6 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             TreeLogger logger) throws UnableToCompleteException
     {
         super(context, rwType, implName, rwClassname, logger);
-    }
-
-
-    @Override
-    protected TypeProcessor setupTypeProcessor()
-    {
-        TypeProcessor pojoTypeProcessor = new XmlPojoTypeProcessor(logger);
-        TypeProcessor rwTypeProcessor = new XmlRwTypeProcessor(logger);
-        pojoTypeProcessor.setNext(rwTypeProcessor);
-        return pojoTypeProcessor;
     }
 
 
