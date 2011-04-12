@@ -113,7 +113,7 @@ public class XmlWriterCreator extends AbstractXmlCreator
     protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.comment(writer, fieldContext);
+        fieldHandler.log(writer, fieldContext);
         fieldHandler.declare(writer, fieldContext);
         fieldHandler.readProperty(writer, fieldContext);
         fieldHandler.markupStart(writer, fieldContext);

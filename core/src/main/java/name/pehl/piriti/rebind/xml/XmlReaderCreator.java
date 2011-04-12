@@ -292,7 +292,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
     protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
-        fieldHandler.comment(writer, fieldContext);
+        fieldHandler.log(writer, fieldContext);
         fieldHandler.declare(writer, fieldContext);
         fieldHandler.readInput(writer, fieldContext, propertyHandlerRegistry);
         fieldHandler.assign(writer, fieldContext);
@@ -319,7 +319,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.indent();
         if (validIdField)
         {
-            handler.comment(writer, idContext);
+            handler.log(writer, idContext);
             handler.declare(writer, idContext);
             handler.readInput(writer, idContext, propertyHandlerRegistry);
             writer.write("%s %s = this.idRef(%s);", typeContext.getType().getParameterizedQualifiedSourceName(),

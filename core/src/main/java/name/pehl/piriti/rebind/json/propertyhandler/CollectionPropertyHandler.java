@@ -98,7 +98,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedPropertyContext.getVariableNames()
                 .getInputVariable());
         writer.indent();
-        nestedHandler.comment(writer, nestedPropertyContext);
+        nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
         nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
         writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());
@@ -115,6 +115,20 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    /**
+     * Empty implementation!
+     * 
+     * @param writer
+     * @param propertyContext
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
+    {
     }
 
 
@@ -153,7 +167,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
                 parameterType.getQualifiedSourceName(), propertyContext.getVariableNames().getValueVariable());
         writer.indent();
 
-        nestedHandler.comment(writer, nestedPropertyContext);
+        nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
         // Replace nestedHandler.readField(writer, nestedFieldContext) with
         writer.write("%s = iter.next();", nestedPropertyContext.getVariableNames().getValueVariable());

@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind;
 
 import name.pehl.piriti.commons.client.WhitespaceHandling;
-import name.pehl.piriti.property.client.NoopPropertyGetter;
-import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
 
 import com.google.gwt.core.client.GWT;
@@ -44,7 +42,7 @@ public final class CodeGeneration
     {
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        if (propertyContext.getSetter() == null || propertyContext.getSetter() == NoopPropertySetter.class)
+        if (propertyContext.getSetter() == null)
         {
             if (propertyContext.getTypeContext().isGxt())
             {
@@ -120,9 +118,9 @@ public final class CodeGeneration
 
     // ------------------------------------------------------------- read field
 
-    public static void readField(IndentedWriter writer, PropertyContext propertyContext)
+    public static void readProperty(IndentedWriter writer, PropertyContext propertyContext)
     {
-        if (propertyContext.getGetter() == null || propertyContext.getGetter() == NoopPropertyGetter.class)
+        if (propertyContext.getGetter() == null)
         {
             if (propertyContext.getTypeContext().isGxt())
             {

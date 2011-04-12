@@ -28,21 +28,33 @@ public interface PropertyHandler
 
 
     /**
-     * Generated a comment containing the properties name, type and the relevant
-     * path
+     * Decides whether the handler supports a conversion. Note that this does
+     * not mean that the handler will also have a custom converter, it just says
+     * that it will support it.
+     * 
+     * @param writer
+     * @param propertyContext
+     * @return
+     * @throws UnableToCompleteException
+     */
+    boolean supportsConversion(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates logging information and code comments about the current
+     * property.
      * 
      * @param writer
      * @param propertyContext
      */
-    void comment(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
+    void log(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
 
 
     /**
      * Generates the variable declaration of
      * {@link PropertyContext#getValueVariable()}. The variable is used in the
      * remaining methods. The type of the variable will be
-     * <code>fieldContext.getFieldType().getParameterizedQualifiedSourceName()</code>
-     * .
+     * <code>propertyContext.getType().getParameterizedQualifiedSourceName()</code>
      * 
      * @param writer
      * @param propertyContext
@@ -53,8 +65,8 @@ public interface PropertyHandler
     // ------------------------------------------------- methods used in reader
 
     /**
-     * Generates the code for reading the input (JSON / XML), convert if
-     * necessary and assign it to {@link PropertyContext#getValueVariable()}.
+     * Generates the code for reading the input (JSON / XML) and assign it to
+     * {@link PropertyContext#getValueVariable()}.
      * 
      * @param writer
      * @param propertyContext

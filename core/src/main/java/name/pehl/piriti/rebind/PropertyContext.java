@@ -161,8 +161,8 @@ public class PropertyContext extends LogFacade
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((type == null) ? 0 : type.hashCode());
+        result = prime * result + (name == null ? 0 : name.hashCode());
+        result = prime * result + (type == null ? 0 : type.hashCode());
         return result;
     }
 
@@ -250,20 +250,6 @@ public class PropertyContext extends LogFacade
 
 
     /**
-     * Whether the properties type is either primitive or a
-     * {@linkplain TypeUtils#isBasicType(JType) basic type}.
-     * 
-     * @return <code>true</code> if the properties type is either primitive or a
-     *         {@linkplain TypeUtils#isBasicType(JType) basic type},
-     *         <code>false</code> othewrwise.
-     */
-    public boolean isBasicType()
-    {
-        return isPrimitive() || TypeUtils.isBasicType(type);
-    }
-
-
-    /**
      * Whether the properties type is an enum.
      * 
      * @return <code>true</code> if the properties type is an enum,
@@ -329,18 +315,6 @@ public class PropertyContext extends LogFacade
     public JArrayType getArrayType()
     {
         return type.isArray();
-    }
-
-
-    /**
-     * Whether the properties type is a collection.
-     * 
-     * @return <code>true</code> if the properties type is a collection,
-     *         <code>false</code> otherwise.
-     */
-    public boolean isCollection()
-    {
-        return TypeUtils.isCollection(type);
     }
 
 

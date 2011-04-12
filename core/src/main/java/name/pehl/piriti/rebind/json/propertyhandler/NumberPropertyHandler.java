@@ -124,6 +124,19 @@ public class NumberPropertyHandler extends AbstractPropertyHandler
     }
 
 
+    /**
+     * @param writer
+     * @param propertyContext
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        // TODO Implement me!
+    }
+
+
     @Override
     public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {

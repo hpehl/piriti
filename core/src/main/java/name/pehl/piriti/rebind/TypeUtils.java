@@ -219,26 +219,21 @@ public final class TypeUtils
     /**
      * Returns true if the type is
      * <ul>
-     * <li>boolean or Boolean
      * <li>byte or Byte
-     * <li>char or Character
-     * <li>Date
-     * <li>double or Double
-     * <li>float or Float
+     * <li>short or Short
      * <li>int or Integer
      * <li>long or Long
-     * <li>short or Short
-     * <li>String
+     * <li>float or Float
+     * <li>double or Double
      * </ul>
      * false otherwise.
      * 
      * @param type
      * @return
      */
-    public static boolean isBasicType(JType type)
+    public static boolean isNumeric(JType type)
     {
-        return isBoolean(type) || isByte(type) || isCharacter(type) || isDate(type) || isDouble(type) || isFloat(type)
-                || isInteger(type) || isLong(type) || isShort(type) || isString(type);
+        return isByte(type) || isShort(type) || isInteger(type) || isLong(type) || isFloat(type) || isDouble(type);
     }
 
 

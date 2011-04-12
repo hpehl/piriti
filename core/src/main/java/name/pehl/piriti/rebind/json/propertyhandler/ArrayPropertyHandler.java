@@ -109,7 +109,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         writer.write("if (%1$s != null && %1$s.isNull() == null) {", nestedPropertyContext.getVariableNames()
                 .getInputVariable());
         writer.indent();
-        nestedHandler.comment(writer, nestedPropertyContext);
+        nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
         nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
         writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());
@@ -198,7 +198,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         writer.write("for (int i = 0; i < %s.length; i++ ) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
 
-        nestedHandler.comment(writer, nestedPropertyContext);
+        nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
         // Replace nestedHandler.readField(writer, nestedFieldContext) with
         writer.write("%s = %s[i];", nestedPropertyContext.getVariableNames().getValueVariable(), propertyContext

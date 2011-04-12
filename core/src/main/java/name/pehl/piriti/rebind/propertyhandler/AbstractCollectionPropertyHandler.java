@@ -56,7 +56,7 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
     @Override
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (!propertyContext.isCollection())
+        if (!TypeUtils.isCollection(propertyContext.getType()))
         {
             CodeGeneration.skipProperty(writer, propertyContext, "Type is no collection");
             return false;
@@ -83,6 +83,20 @@ public abstract class AbstractCollectionPropertyHandler extends AbstractProperty
         // is in the registry (ugly - but it works)
         CodeGeneration.readerWriterInitialization(writer, parameterType);
         return true;
+    }
+
+
+    /**
+     * Empty implementation!
+     * 
+     * @param writer
+     * @param propertyContext
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
+    {
     }
 
 

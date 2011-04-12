@@ -207,6 +207,8 @@ public abstract class AbstractCreator extends LogFacade
         writer.write("public class %s implements %s {", implName, typeContext.getRwType().getQualifiedSourceName());
         writer.indent();
 
+        // TODO create java.util.Logger
+
         createMemberVariables(writer);
         writer.newline();
 

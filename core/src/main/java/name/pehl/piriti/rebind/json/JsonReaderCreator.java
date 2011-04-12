@@ -317,7 +317,7 @@ public class JsonReaderCreator extends AbstractJsonCreator
     protected void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
             PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException
     {
-        propertyHandler.comment(writer, propertyContext);
+        propertyHandler.log(writer, propertyContext);
         propertyHandler.declare(writer, propertyContext);
         propertyHandler.readInput(writer, propertyContext, propertyHandlerRegistry);
         propertyHandler.assign(writer, propertyContext);

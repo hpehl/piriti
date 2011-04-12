@@ -2,7 +2,6 @@ package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
@@ -41,11 +40,12 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         String nestedXpath = ".";
         JClassType parameterType = getTypeVariable(propertyContext);
         String nestedElementsVariable = propertyContext.getVariableNames().newVariableName("NestedElements");
-        if (parameterType.isPrimitive() != null || TypeUtils.isBasicType(parameterType)
-                || parameterType.isEnum() != null)
-        {
-            nestedXpath += "/text()";
-        }
+        // if (parameterType.isPrimitive() != null ||
+        // TypeUtils.isBasicType(parameterType)
+        // || parameterType.isEnum() != null)
+        // {
+        // nestedXpath += "/text()";
+        // }
         PropertyContext nestedPropertyContext = propertyContext.createNested(parameterType, nestedXpath);
         PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
@@ -69,7 +69,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         writer.write("for (Element %s : %s) {", nestedPropertyContext.getVariableNames().getInputVariable(),
                 nestedElementsVariable);
         writer.indent();
-        nestedHandler.comment(writer, nestedPropertyContext);
+        nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
         nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
         writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());

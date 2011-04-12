@@ -91,6 +91,20 @@ public class JsonRegistryPropertyHandler extends AbstractRegistryPropertyHandler
     }
 
 
+    /**
+     * Empty implementation
+     * 
+     * @param writer
+     * @param propertyContext
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
+
+
     @Override
     public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
