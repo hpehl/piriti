@@ -77,7 +77,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         JField field = typeContext.getType().getField(mapping.value());
         if (field != null)
         {
-            String path = mapping.path() != null ? mapping.path() : mapping.value();
+            String path = mapping.path();
             String format = mapping.format();
             WhitespaceHandling whitespaceHandling = mapping.whitespace();
             Class<? extends Converter<?>> converter = mapping.convert();

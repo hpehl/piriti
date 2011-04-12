@@ -184,11 +184,10 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
 
     protected String getPath(JField field)
     {
-        String path = field.getName();
-        Path pathAnno = field.getAnnotation(Path.class);
-        if (pathAnno != null)
+        String path = null;
+        if (field.isAnnotationPresent(Path.class))
         {
-            path = pathAnno.value();
+            path = field.getAnnotation(Path.class).value();
         }
         return path;
     }
@@ -197,10 +196,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     protected String getFormat(JField field)
     {
         String format = null;
-        Format formatAnno = field.getAnnotation(Format.class);
-        if (formatAnno != null)
+        if (field.isAnnotationPresent(Format.class))
         {
-            format = formatAnno.value();
+            format = field.getAnnotation(Format.class).value();
         }
         return format;
     }
@@ -209,10 +207,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     protected WhitespaceHandling getWhitespaceHandling(JField field)
     {
         WhitespaceHandling whitespaceHandling = REMOVE;
-        Whitespace whitespaceAnno = field.getAnnotation(Whitespace.class);
-        if (whitespaceAnno != null)
+        if (field.isAnnotationPresent(Whitespace.class))
         {
-            whitespaceHandling = whitespaceAnno.value();
+            whitespaceHandling = field.getAnnotation(Whitespace.class).value();
         }
         return whitespaceHandling;
     }
@@ -221,10 +218,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     protected int getOrder(JField field)
     {
         int order = TypeContext.nextOrder();
-        Order orderAnno = field.getAnnotation(Order.class);
-        if (orderAnno != null)
+        if (field.isAnnotationPresent(Order.class))
         {
-            order = orderAnno.value();
+            order = field.getAnnotation(Order.class).value();
         }
         return order;
     }
@@ -233,10 +229,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     protected Class<? extends Converter<?>> getConverter(JField field)
     {
         Class<? extends Converter<?>> converter = null;
-        Convert convertAnno = field.getAnnotation(Convert.class);
-        if (convertAnno != null)
+        if (field.isAnnotationPresent(Convert.class))
         {
-            converter = convertAnno.value();
+            converter = field.getAnnotation(Convert.class).value();
         }
         return converter;
     }
@@ -245,10 +240,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     protected Class<? extends PropertyGetter<?, ?>> getGetter(JField field)
     {
         Class<? extends PropertyGetter<?, ?>> getter = null;
-        Getter getterAnno = field.getAnnotation(Getter.class);
-        if (getterAnno != null)
+        if (field.isAnnotationPresent(Getter.class))
         {
-            getter = getterAnno.value();
+            getter = field.getAnnotation(Getter.class).value();
         }
         return getter;
     }
@@ -257,10 +251,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     protected Class<? extends PropertySetter<?, ?>> getSetter(JField field)
     {
         Class<? extends PropertySetter<?, ?>> setter = null;
-        Setter setterAnno = field.getAnnotation(Setter.class);
-        if (setterAnno != null)
+        if (field.isAnnotationPresent(Setter.class))
         {
-            setter = setterAnno.value();
+            setter = field.getAnnotation(Setter.class).value();
         }
         return setter;
     }

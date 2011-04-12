@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind;
 
+import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.rebind.json.JsonPathUtils;
@@ -260,6 +261,53 @@ public final class CodeGeneration
             {
                 writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
                         .getInputVariable(), propertyContext.getPath());
+            }
+        }
+        else
+        {
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
+        }
+        return jsonValue;
+    }
+
+
+    public static String gextOrSelectXml(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        String path = propertyContext.getPath();
+        if (path == null)
+        {
+
+        }
+        else
+        {
+
+        }
+
+        writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
+                .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), path,
+                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
+        writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
+                .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), path,
+                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
+        writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
+                .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), path,
+                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
+        writer.write("%s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames().getValueVariable(),
+                propertyContext.getVariableNames().getInputVariable(), path,
+                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
+
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (path != null)
+        {
+            if (JsonPathUtils.isJsonPath(path))
+            {
+                writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
+                        .getVariableNames().getInputVariable(), path);
+            }
+            else
+            {
+                writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                        .getInputVariable(), path);
             }
         }
         else

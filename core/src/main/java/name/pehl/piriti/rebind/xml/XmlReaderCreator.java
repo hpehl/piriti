@@ -305,11 +305,11 @@ public class XmlReaderCreator extends AbstractXmlCreator
     {
         boolean validIdField = false;
         PropertyHandler handler = null;
-        PropertyContext propertyContext = typeContext.getId();
-        if (propertyContext != null)
+        PropertyContext idContext = typeContext.getId();
+        if (idContext != null)
         {
-            handler = propertyHandlerRegistry.findPropertyHandler(propertyContext);
-            validIdField = handler != null && handler.isValid(writer, propertyContext);
+            handler = propertyHandlerRegistry.findPropertyHandler(idContext);
+            validIdField = handler != null && handler.isValid(writer, idContext);
         }
 
         writer.write("private %s readIds(Element %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
@@ -319,18 +319,18 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.indent();
         if (validIdField)
         {
-            handler.comment(writer, propertyContext);
-            handler.declare(writer, propertyContext);
-            handler.readInput(writer, propertyContext, propertyHandlerRegistry);
+            handler.comment(writer, idContext);
+            handler.declare(writer, idContext);
+            handler.readInput(writer, idContext, propertyHandlerRegistry);
             writer.write("%s %s = this.idRef(%s);", typeContext.getType().getParameterizedQualifiedSourceName(),
-                    typeContext.getVariableNames().getInstanceVariable(), propertyContext.getVariableNames()
+                    typeContext.getVariableNames().getInstanceVariable(), idContext.getVariableNames()
                             .getValueVariable());
             writer.write("if (%s == null) {", typeContext.getVariableNames().getInstanceVariable());
             writer.indent();
             // TODO Use InstanceCreator<T, C> if specified
             writer.write("%s = new %s();", typeContext.getVariableNames().getInstanceVariable(), typeContext.getType()
                     .getParameterizedQualifiedSourceName());
-            handler.assign(writer, propertyContext);
+            handler.assign(writer, idContext);
             writer.outdent();
             writer.write("}");
         }

@@ -109,7 +109,14 @@ public class PropertyContext extends LogFacade
         }
         // Name, path, order, format, stripWsnl and converter
         this.name = name;
-        this.path = path;
+        if (path == null || path.length() == 0)
+        {
+            this.path = null;
+        }
+        else
+        {
+            this.path = path;
+        }
         if (format == null || format.length() == 0)
         {
             this.format = null;
@@ -374,11 +381,6 @@ public class PropertyContext extends LogFacade
      */
     public String getPath()
     {
-        if (typeContext.isXml() && path.equals(name)
-                && (type.isPrimitive() != null || TypeUtils.isBasicType(type) || type.isEnum() != null))
-        {
-            return path + "/text()";
-        }
         return path;
     }
 

@@ -12,7 +12,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import name.pehl.piriti.commons.client.Format;
-import name.pehl.piriti.commons.client.Path;
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.XmlReader;
@@ -30,6 +31,7 @@ public class FatGlobalItem
     // ------------------------------------------------------------ json reader
 
     // @formatter:off
+    @Mappings(@Mapping(value = "stringAttribute", path = "customNameForStringAttribute"))
     public interface FatGlobalItemJsonReader extends JsonReader<FatGlobalItem> {}
     public static final FatGlobalItemJsonReader JSON_READER = GWT.create(FatGlobalItemJsonReader.class);
 
@@ -40,6 +42,15 @@ public class FatGlobalItem
     // ------------------------------------------------------------- xml reader
 
     // @formatter:off
+    @Mappings({@Mapping(value = "stringAttribute", path = "string/@attribute"),
+        @Mapping(value = "arrayOfFatGlobalItems", path = "arrayOfFatGlobalItems/fatGlobalItem"),
+        @Mapping(value = "arrayOfSkinnyNestedItems", path = "arrayOfSkinnyNestedItems/skinnyNestedItem"),
+        @Mapping(value = "collectionOfFatGlobalItems", path = "collectionOfFatGlobalItems/fatGlobalItem"),
+        @Mapping(value = "collectionOfSkinnyNestedItems", path = "collectionOfSkinnyNestedItems/skinnyNestedItem"),
+        @Mapping(value = "listOfFatGlobalItems", path = "listOfFatGlobalItems/fatGlobalItem"),
+        @Mapping(value = "listOfSkinnyNestedItems", path = "listOfSkinnyNestedItems/skinnyNestedItem"),
+        @Mapping(value = "setOfFatGlobalItems", path = "setOfFatGlobalItems/fatGlobalItem"),
+        @Mapping(value = "setOfSkinnyNestedItems", path = "setOfSkinnyNestedItems/skinnyNestedItem")})
     public interface FatGlobalItemXmlReader extends XmlReader<FatGlobalItem> {}
     public static final FatGlobalItemXmlReader XML_READER = GWT.create(FatGlobalItemXmlReader.class);
 
@@ -72,9 +83,6 @@ public class FatGlobalItem
     public short shortPrimitive;
     public Short shortObject;
     public String string;
-
-    @Path("customNameForStringAttribute")
-    // @Path("string/@attribute")
     public String stringAttribute;
 
     // --------------------------------------------------------- nested objects
@@ -87,9 +95,7 @@ public class FatGlobalItem
     public int[] arrayOfIntegerPrimitives;
     public Integer[] arrayOfIntegerObjects;
     public String[] arrayOfStrings;
-    @Path("arrayOfFatGlobalItems/fatGlobalItem")
     public FatGlobalItem[] arrayOfFatGlobalItems;
-    @Path("arrayOfSkinnyNestedItems/skinnyNestedItem")
     public SkinnyNestedItem[] arrayOfSkinnyNestedItems;
 
     // --------------------------------------------------------- invalid arrays
@@ -103,9 +109,7 @@ public class FatGlobalItem
 
     public Collection<Integer> collectionOfIntegerObjects;
     public Collection<String> collectionOfStrings;
-    @Path("collectionOfFatGlobalItems/fatGlobalItem")
     public Collection<FatGlobalItem> collectionOfFatGlobalItems;
-    @Path("collectionOfSkinnyNestedItems/skinnyNestedItem")
     public Collection<SkinnyNestedItem> collectionOfSkinnyNestedItems;
 
     // ---------------------------------------------------- invalid collections
@@ -121,9 +125,7 @@ public class FatGlobalItem
     public List<String> listOfStrings;
     public ArrayList<String> arrayListOfStrings;
     public LinkedList<String> linkedListOfStrings;
-    @Path("listOfFatGlobalItems/fatGlobalItem")
     public List<FatGlobalItem> listOfFatGlobalItems;
-    @Path("listOfSkinnyNestedItems/skinnyNestedItem")
     public List<SkinnyNestedItem> listOfSkinnyNestedItems;
 
     // ---------------------------------------------------------- invalid lists
@@ -140,9 +142,7 @@ public class FatGlobalItem
     public HashSet<String> hashSetOfStrings;
     public LinkedHashSet<String> linkedHashSetOfStrings;
     public TreeSet<String> treeSetOfStrings;
-    @Path("setOfFatGlobalItems/fatGlobalItem")
     public Set<FatGlobalItem> setOfFatGlobalItems;
-    @Path("setOfSkinnyNestedItems/skinnyNestedItem")
     public Set<SkinnyNestedItem> setOfSkinnyNestedItems;
 
     // ----------------------------------------------------------- invalid sets

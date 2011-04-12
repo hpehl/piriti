@@ -52,7 +52,7 @@ public @interface Mapping
     String format() default "";
 
 
-    WhitespaceHandling whitespace() default WhitespaceHandling.PRESERVE;
+    WhitespaceHandling whitespace() default WhitespaceHandling.REMOVE;
 
 
     /**

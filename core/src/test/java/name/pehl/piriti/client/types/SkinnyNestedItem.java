@@ -3,7 +3,8 @@ package name.pehl.piriti.client.types;
 import java.util.Date;
 
 import name.pehl.piriti.commons.client.Format;
-import name.pehl.piriti.commons.client.Path;
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.XmlReader;
@@ -20,6 +21,7 @@ public class SkinnyNestedItem
     // ------------------------------------------------------------ json reader
 
     // @formatter:off
+    @Mappings(@Mapping(value = "stringAttribute", path = "customNameForStringAttribute"))
     interface SkinnyNestedItemJsonReader extends JsonReader<SkinnyNestedItem> {}
     public static final SkinnyNestedItemJsonReader SOME_FANCY_JSON_NAME = GWT.create(SkinnyNestedItemJsonReader.class);
 
@@ -30,6 +32,7 @@ public class SkinnyNestedItem
     // ------------------------------------------------------------- xml reader
 
     // @formatter:off
+    @Mappings(@Mapping(value = "stringAttribute", path = "string/@attribute"))
     interface SkinnyNestedItemXmlReader extends XmlReader<SkinnyNestedItem> {}
     public static final SkinnyNestedItemXmlReader SOME_FANCY_XML_NAME = GWT.create(SkinnyNestedItemXmlReader.class);
 
@@ -62,7 +65,5 @@ public class SkinnyNestedItem
     public short shortPrimitive;
     public Short shortObject;
     public String string;
-    @Path("customNameForStringAttribute")
-    // @Path("string/@attribute")
     public String stringAttribute;
 }
