@@ -1,12 +1,8 @@
-package name.pehl.piriti.rebind.json.propertyhandler;
+package name.pehl.piriti.rebind.propertyhandler;
 
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.json.JsonUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -26,42 +22,13 @@ public class StringPropertyHandler extends AbstractPropertyHandler
 
 
     /**
-     * Returns <code>false</code> if this property context is used with a writer
-     * and a JSONPath expression is used,
-     * 
      * @param writer
      * @param propertyContext
-     * @return
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
      */
     @Override
-    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        if (propertyContext.getTypeContext().isWriter() && JsonUtils.isJsonPath(propertyContext.getPath()))
-        {
-            CodeGeneration.skipProperty(writer, propertyContext,
-                    "JSONPath expressions are not supported by this JsonWriter");
-            return false;
-        }
-        return true;
-    }
-
-
-    /**
-     * TODO Javadoc
-     * 
-     * @param writer
-     * @param propertyContext
-     * @param propertyHandlerRegistry
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
-     */
-    @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
         String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
         writer.write("if (%s != null) {", jsonValue);
@@ -72,35 +39,14 @@ public class StringPropertyHandler extends AbstractPropertyHandler
         writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
-        if (propertyContext.useCustomConverter())
-        {
-            writer.write("String %s = %s.stringValue();",
-                    propertyContext.getVariableNames().getValueAsStringVariable(), jsonString);
-            CodeGeneration.useConverterForReading(writer, propertyContext);
-        }
-        else
-        {
-            writer.write("%s = %s.stringValue();", propertyContext.getVariableNames().getValueVariable(), jsonString);
-        }
+        writer.write("String %s = %s.stringValue();", propertyContext.getVariableNames().getValueAsStringVariable(),
+                jsonString);
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-    }
-
-
-    /**
-     * @param writer
-     * @param propertyContext
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
-    @Override
-    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        // TODO Implement me!
     }
 
 

@@ -55,6 +55,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             PropertyContext propertyContext = createPropertyContext(typeContext, field, null);
             if (propertyContext != null)
             {
+                debug("Adding property %s to %s", propertyContext, typeContext);
                 typeContext.addProperty(propertyContext);
             }
         }
@@ -67,13 +68,15 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         {
             if (idFields.size() > 1)
             {
-                throw new UnableToCompleteException();
+                die("%s id mappings defined in the type hirarchy of %s. Only one id mapping is allowed!",
+                        idFields.size(), typeContext.getType().getParameterizedQualifiedSourceName());
             }
             else
             {
                 PropertyContext propertyContext = createPropertyContext(typeContext, idFields.get(0), ID);
                 if (propertyContext != null)
                 {
+                    debug("Settings id %s for %s", propertyContext, typeContext);
                     typeContext.setId(propertyContext);
                 }
             }
@@ -89,6 +92,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             PropertyContext propertyContext = createPropertyContext(typeContext, field, IDREF);
             if (propertyContext != null)
             {
+                debug("Adding reference %s to %s", propertyContext, typeContext);
                 typeContext.addReference(propertyContext);
             }
         }
@@ -136,12 +140,16 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     {
         if (field.isTransient() || field.isStatic())
         {
+            debug("Skipping %s field %s in %s", (field.isTransient() ? "transient" : "static"), field.getName(), field
+                    .getEnclosingType().getParameterizedQualifiedSourceName());
             return true;
         }
         for (Class<? extends Annotation> a : annotationsToSkip)
         {
             if (field.isAnnotationPresent(a))
             {
+                debug("Skipping field %s in %s as it is annotated with @%s", field.getName(), field.getEnclosingType()
+                        .getParameterizedQualifiedSourceName(), a.getClass().getName());
                 return true;
             }
         }
@@ -162,6 +170,8 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 return true;
             }
         }
+        debug("Skipping field %s in %s as it is not annotated with any of %s", field.getName(), field
+                .getEnclosingType().getParameterizedQualifiedSourceName(), mustHaveAnnotations);
         return false;
     }
 

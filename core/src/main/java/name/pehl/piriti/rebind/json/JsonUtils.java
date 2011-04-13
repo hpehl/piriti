@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
  * @version $Date$ $Revision:
  *          1224 $
  */
-public final class JsonPathUtils
+public final class JsonUtils
 {
     /**
      * JSONPath special characters.
@@ -20,7 +20,7 @@ public final class JsonPathUtils
      * Private constructor to ensure that the class acts as a true utility class
      * i.e. it isn't instantiable and extensible.
      */
-    private JsonPathUtils()
+    private JsonUtils()
     {
         super();
     }

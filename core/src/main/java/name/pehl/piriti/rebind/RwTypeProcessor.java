@@ -41,6 +41,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                 PropertyContext propertyContext = createPropertyContext(index++, typeContext, mapping, null);
                 if (propertyContext != null)
                 {
+                    debug("Adding property %s to %s", propertyContext, typeContext);
                     typeContext.addProperty(propertyContext);
                 }
             }
@@ -52,6 +53,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                         idMapping, ID);
                 if (propertyContext != null)
                 {
+                    debug("Settings id %s for %s", propertyContext, typeContext);
                     typeContext.setId(propertyContext);
                 }
             }
@@ -63,6 +65,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                         idRefMapping, IDREF);
                 if (propertyContext != null)
                 {
+                    debug("Adding reference %s to %s", propertyContext, typeContext);
                     typeContext.addReference(propertyContext);
                 }
             }
@@ -74,7 +77,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             ReferenceType referenceType) throws UnableToCompleteException
     {
         PropertyContext propertyContext = null;
-        JField field = typeContext.getType().getField(mapping.value());
+        JField field = TypeUtils.findField(typeContext.getType(), mapping.value());
         if (field != null)
         {
             String path = mapping.path();
@@ -88,7 +91,8 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         }
         else
         {
-            // TODO Warning / error?
+            die("Field %s cannot be found in type hirarchy of %s!", mapping.value(), typeContext.getType()
+                    .getParameterizedQualifiedSourceName());
         }
         return propertyContext;
     }

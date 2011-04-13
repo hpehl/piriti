@@ -19,6 +19,24 @@ public class LogFacade
     }
 
 
+    protected void debug(String message, Object... params)
+    {
+        logger.log(TreeLogger.DEBUG, String.format(message, params));
+    }
+
+
+    protected void info(String message, Object... params)
+    {
+        logger.log(TreeLogger.INFO, String.format(message, params));
+    }
+
+
+    protected void warn(String message, Object... params)
+    {
+        logger.log(TreeLogger.WARN, String.format(message, params));
+    }
+
+
     /**
      * Post an error message and halt processing. This method always throws an
      * {@link UnableToCompleteException}

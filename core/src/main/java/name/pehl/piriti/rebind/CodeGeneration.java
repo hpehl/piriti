@@ -1,15 +1,13 @@
 package name.pehl.piriti.rebind;
 
-import name.pehl.piriti.commons.client.WhitespaceHandling;
-import name.pehl.piriti.rebind.json.JsonPathUtils;
+import java.util.logging.Level;
 
-import com.google.gwt.core.client.GWT;
+import name.pehl.piriti.commons.client.WhitespaceHandling;
+import name.pehl.piriti.rebind.json.JsonUtils;
+
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
-import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameter;
-import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Contains utility method for the code generation
@@ -26,170 +24,6 @@ public final class CodeGeneration
      */
     private CodeGeneration()
     {
-    }
-
-
-    // ----------------------------------------------------- assignment methods
-
-    /**
-     * Writes the assignment based on {@link PropertyContext#getPropertyStyle()}
-     * . The assignement is only done if some value was read from JSON / XML.
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    public static void assign(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
-        writer.indent();
-        if (propertyContext.getSetter() == null)
-        {
-            if (propertyContext.getTypeContext().isGxt())
-            {
-                assignGxt(writer, propertyContext);
-            }
-            else
-            {
-                assignFieldOrSetter(writer, propertyContext);
-            }
-        }
-        else
-        {
-            writer.write("%1$s setter = GWT.create(%1$s.class);", propertyContext.getSetter().getName());
-            writer.write("setter.set(model, %s);", propertyContext.getVariableNames().getValueVariable());
-        }
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    private static void assignFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        JField field = TypeUtils.findField(propertyContext.getTypeContext().getType(), propertyContext.getName());
-        if (field == null)
-        {
-            String reason = String.format("Cannot assign %s: No field found in %s.", propertyContext.getName(),
-                    propertyContext.getTypeContext().getType().getQualifiedSourceName());
-            skipProperty(writer, propertyContext, reason);
-        }
-
-        JClassType enclosingType = field.getEnclosingType();
-        boolean samePackage = propertyContext.getTypeContext().getRwType().getPackage() == enclosingType.getPackage();
-        if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
-        {
-            writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
-                    .getValueVariable());
-        }
-        else
-        {
-            JMethod setter = null;
-            JType parameter = propertyContext.isPrimitive() ? propertyContext.getPrimitiveType() : propertyContext
-                    .getType();
-            if (samePackage)
-            {
-                setter = TypeUtils.findSetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        parameter, Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
-            }
-            else
-            {
-                setter = TypeUtils.findSetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        parameter, Modifier.PUBLIC);
-            }
-            if (setter != null)
-            {
-                writer.write("model.%s(%s);", setter.getName(), propertyContext.getVariableNames().getValueVariable());
-            }
-            else
-            {
-                String reason = String.format("Cannot assign %s: No accessible field or setter found in %s.",
-                        propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
-                skipProperty(writer, propertyContext, reason);
-            }
-        }
-    }
-
-
-    private static void assignGxt(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writer.write("model.set(\"%s\", %s);", propertyContext.getName(), propertyContext.getVariableNames()
-                .getValueVariable());
-    }
-
-
-    // ------------------------------------------------------------- read field
-
-    public static void readProperty(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        if (propertyContext.getGetter() == null)
-        {
-            if (propertyContext.getTypeContext().isGxt())
-            {
-                readGxt(writer, propertyContext);
-            }
-            else
-            {
-                readFieldOrSetter(writer, propertyContext);
-            }
-        }
-        else
-        {
-            writer.write("%1$s getter = GWT.create(%1$s.class);", propertyContext.getGetter().getName());
-            writer.write("%s = getter.get(model);", propertyContext.getVariableNames().getValueVariable());
-        }
-    }
-
-
-    private static void readFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        JField field = TypeUtils.findField(propertyContext.getTypeContext().getType(), propertyContext.getName());
-        if (field == null)
-        {
-            String reason = String.format("Cannot read %s: No accessible field found in %s.",
-                    propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
-            skipProperty(writer, propertyContext, reason);
-        }
-
-        JClassType enclosingType = field.getEnclosingType();
-        boolean samePackage = propertyContext.getTypeContext().getRwType().getPackage() == enclosingType.getPackage();
-        if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
-        {
-            writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
-                    propertyContext.getName());
-        }
-        else
-        {
-            JMethod getter = null;
-            JType returnType = propertyContext.isPrimitive() ? propertyContext.getPrimitiveType() : propertyContext
-                    .getType();
-            if (samePackage)
-            {
-                getter = TypeUtils.findGetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        returnType, Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
-            }
-            else
-            {
-                getter = TypeUtils.findGetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        returnType, Modifier.PUBLIC);
-            }
-            if (getter != null)
-            {
-                writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
-                        getter.getName());
-            }
-            else
-            {
-                String reason = String.format("Cannot read %s: No accessible field or setter found in %s.",
-                        propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
-                skipProperty(writer, propertyContext, reason);
-            }
-        }
-    }
-
-
-    private static void readGxt(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writer.write("%s = model.get(\"%s\");", propertyContext.getVariableNames().getValueVariable(),
-                propertyContext.getName());
     }
 
 
@@ -232,6 +66,17 @@ public final class CodeGeneration
 
     // ----------------------------------------------------------- misc methods
 
+    public static void log(IndentedWriter writer, Level level, String message, Object... params)
+    {
+        String formatedMessage = String.format(message, params);
+        writer.write("if (logger.isLoggable(%s)) {", level);
+        writer.indent();
+        writer.write("logger.log(%s, \"%s\");", level, formatedMessage);
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     /**
      * If {@link PropertyContext#getPath()} is not <code>null</code> get or
      * select data from the {@link VariableNames#getInputVariable()}, otherwise
@@ -250,7 +95,7 @@ public final class CodeGeneration
         String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
         if (propertyContext.getPath() != null)
         {
-            if (JsonPathUtils.isJsonPath(propertyContext.getPath()))
+            if (JsonUtils.isJsonPath(propertyContext.getPath()))
             {
                 writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
                         .getVariableNames().getInputVariable(), propertyContext.getPath());
@@ -269,7 +114,7 @@ public final class CodeGeneration
     }
 
 
-    public static String gextOrSelectXml(IndentedWriter writer, PropertyContext propertyContext)
+    public static String getOrSelectXml(IndentedWriter writer, PropertyContext propertyContext)
     {
         String path = propertyContext.getPath();
         if (path == null)
@@ -297,7 +142,7 @@ public final class CodeGeneration
         String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
         if (path != null)
         {
-            if (JsonPathUtils.isJsonPath(path))
+            if (JsonUtils.isJsonPath(path))
             {
                 writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
                         .getVariableNames().getInputVariable(), path);
@@ -364,23 +209,6 @@ public final class CodeGeneration
                     "new %1$s(); // if there are any reader definitions in %1$s, this ensures they are registered",
                     type.getParameterizedQualifiedSourceName());
         }
-    }
-
-
-    /**
-     * Generates code comments if a property was skipped (contains the reason
-     * why the field was skipped)
-     * 
-     * @param writer
-     * @param propertyContext
-     * @param reason
-     */
-    public static void skipProperty(IndentedWriter writer, PropertyContext propertyContext, String reason)
-    {
-        writer.write("// Skipping property %s", propertyContext);
-        writer.write("// " + reason);
-        GWT.log("Skipping property " + propertyContext, null);
-        GWT.log(reason, null);
     }
 
 

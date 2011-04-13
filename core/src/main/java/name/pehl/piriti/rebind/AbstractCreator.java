@@ -185,6 +185,8 @@ public abstract class AbstractCreator extends LogFacade
         writer.write("import java.util.List;");
         writer.write("import java.util.Map;");
         writer.write("import java.util.Set;");
+        writer.write("import static java.util.logging.Level.*;");
+        writer.write("import java.util.logging.Logger;");
         writer.write("import com.google.gwt.core.client.GWT;");
         writer.write("import name.pehl.piriti.converter.client.*;");
     }
@@ -207,7 +209,9 @@ public abstract class AbstractCreator extends LogFacade
         writer.write("public class %s implements %s {", implName, typeContext.getRwType().getQualifiedSourceName());
         writer.indent();
 
-        // TODO create java.util.Logger
+        writer.write("private static Logger logger = Logger.getLogger(\"%s\");", typeContext.getRwType()
+                .getQualifiedSourceName());
+        writer.newline();
 
         createMemberVariables(writer);
         writer.newline();
@@ -304,6 +308,7 @@ public abstract class AbstractCreator extends LogFacade
         for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
         {
             PropertyContext propertyContext = iter.next();
+            debug("Processing PropertyContext %s", propertyContext);
             PropertyHandler propertyHandler = propertyHandlerRegistry.findPropertyHandler(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {

@@ -3,7 +3,7 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.json.JsonPathUtils;
+import name.pehl.piriti.rebind.json.JsonUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
@@ -44,7 +44,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         boolean valid = super.isValid(writer, propertyContext);
-        if (valid && propertyContext.getTypeContext().isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        if (valid && propertyContext.getTypeContext().isWriter() && JsonUtils.isJsonPath(propertyContext.getPath()))
         {
             CodeGeneration.skipProperty(writer, propertyContext,
                     "JSONPath expressions are not supported by this JsonWriter");

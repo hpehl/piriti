@@ -4,7 +4,7 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.json.JsonPathUtils;
+import name.pehl.piriti.rebind.json.JsonUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
@@ -58,7 +58,7 @@ public class NumberPropertyHandler extends AbstractPropertyHandler
                     || type.getQualifiedSourceName().equals(Float.class.getName())
                     || type.getQualifiedSourceName().equals(Double.class.getName());
         }
-        if (propertyContext.getTypeContext().isWriter() && JsonPathUtils.isJsonPath(propertyContext.getPath()))
+        if (propertyContext.getTypeContext().isWriter() && JsonUtils.isJsonPath(propertyContext.getPath()))
         {
             CodeGeneration.skipProperty(writer, propertyContext,
                     "JSONPath expressions are not supported by this JsonWriter");
