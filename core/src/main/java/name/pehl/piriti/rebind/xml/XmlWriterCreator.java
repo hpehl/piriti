@@ -29,7 +29,7 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
 
     @Override
-    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
+    protected PropertyHandlerRegistry setupPropertyHandlerLookup()
     {
         return new XmlPropertyHandlerRegistry(logger);
     }

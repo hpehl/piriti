@@ -3,7 +3,9 @@ package name.pehl.piriti.rebind;
 import java.io.PrintWriter;
 import java.util.Iterator;
 
+import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -26,7 +28,7 @@ public abstract class AbstractCreator extends LogFacade
     protected final VariableNames variableNames;
     protected final TypeContext typeContext;
     protected final TypeProcessor typeProcessor;
-    protected final PropertyHandlerRegistry propertyHandlerRegistry;
+    protected final PropertyHandlerLookup propertyHandlerLookup;
     protected final String implName;
 
 
@@ -79,7 +81,7 @@ public abstract class AbstractCreator extends LogFacade
         this.variableNames = setupVariableNames();
         this.typeContext = new TypeContext(generatorContext.getTypeOracle(), type, rwType, variableNames, logger);
         this.typeProcessor = setupTypeProcessor();
-        this.propertyHandlerRegistry = setupPropertyHandlerRegistry();
+        this.propertyHandlerLookup = setupPropertyHandlerLookup();
         this.implName = implName;
 
         // collect properties, id and references
@@ -92,10 +94,7 @@ public abstract class AbstractCreator extends LogFacade
      * 
      * @return the {@link VariableNames} used in this creator,
      */
-    protected VariableNames setupVariableNames()
-    {
-        return new VariableNames("value", "input", "builder");
-    }
+    protected abstract VariableNames setupVariableNames();
 
 
     /**
@@ -113,11 +112,11 @@ public abstract class AbstractCreator extends LogFacade
 
 
     /**
-     * Method to setup the {@link PropertyHandlerRegistry} used in this creator.
+     * Method to setup the {@link PropertyHandlerLookup} used in this creator.
      * 
-     * @return the {@link PropertyHandlerRegistry} used in this creator.
+     * @return the {@link PropertyHandlerLookup} used in this creator.
      */
-    protected abstract PropertyHandlerRegistry setupPropertyHandlerRegistry();
+    protected abstract PropertyHandlerLookup setupPropertyHandlerLookup();
 
 
     // --------------------------------------------------------- create methods
@@ -222,6 +221,9 @@ public abstract class AbstractCreator extends LogFacade
         createMethods(writer);
         writer.newline();
 
+        idRef(writer);
+        writer.newline();
+
         writer.outdent();
         writer.write("}");
     }
@@ -289,6 +291,16 @@ public abstract class AbstractCreator extends LogFacade
     protected abstract void createMethods(IndentedWriter writer) throws UnableToCompleteException;
 
 
+    protected void idRef(IndentedWriter writer)
+    {
+        writer.write("public %s idRef(String id) {", typeContext.getType().getQualifiedSourceName());
+        writer.indent();
+        writer.write("return this.idMap.get(id);");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     // ---------------------------------------------- type / properties methods
 
     /**
@@ -308,12 +320,36 @@ public abstract class AbstractCreator extends LogFacade
         for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
         {
             PropertyContext propertyContext = iter.next();
-            debug("Processing PropertyContext %s", propertyContext);
-            PropertyHandler propertyHandler = propertyHandlerRegistry.findPropertyHandler(propertyContext);
+            debug("Processing property %s", propertyContext);
+            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
                 writer.newline();
                 handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
+            }
+            else
+            {
+                warn("No PropertyHandler found for property %s. Skip this property!", propertyContext);
+            }
+        }
+    }
+
+
+    protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
+    {
+        for (Iterator<PropertyContext> iter = typeContext.getReferences().iterator(); iter.hasNext();)
+        {
+            PropertyContext propertyContext = iter.next();
+            debug("Processing idref %s", propertyContext);
+            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+            if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
+            {
+                writer.newline();
+                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
+            }
+            else
+            {
+                warn("No PropertyHandler found for idref %s. Skip this property!", propertyContext);
             }
         }
     }
@@ -330,4 +366,29 @@ public abstract class AbstractCreator extends LogFacade
      */
     protected abstract void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
             PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException;
+
+
+    /**
+     * Generates code which instantiates the model either by calling the default
+     * no-arg constructor or by using an {@link InstanceCreator}.
+     * 
+     * @param writer
+     */
+    protected void newInstance(IndentedWriter writer)
+    {
+        if (typeContext.getInstanceCreator() != null)
+        {
+            String instanceCreatorVariable = typeContext.getVariableNames().getInstanceVariable() + "Creator";
+            writer.write("%$1s %$2s = GWT.create(%$1s.class);", typeContext.getInstanceCreator(),
+                    instanceCreatorVariable);
+            writer.write("%s %s = %s.newInstance(%s);", typeContext.getType().getParameterizedQualifiedSourceName(),
+                    typeContext.getVariableNames().getInstanceVariable(), instanceCreatorVariable, typeContext
+                            .getVariableNames().getInputVariable());
+        }
+        else
+        {
+            writer.write("%1$s %2$s = new %1$s();", typeContext.getType().getParameterizedQualifiedSourceName(),
+                    typeContext.getVariableNames().getInstanceVariable());
+        }
+    }
 }

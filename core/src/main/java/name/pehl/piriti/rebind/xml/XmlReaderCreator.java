@@ -6,7 +6,6 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler;
@@ -31,13 +30,6 @@ public class XmlReaderCreator extends AbstractXmlCreator
             TreeLogger logger) throws UnableToCompleteException
     {
         super(generatorContext, rwType, implName, rwClassname, logger);
-    }
-
-
-    @Override
-    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
-    {
-        return new XmlPropertyHandlerRegistry(logger);
     }
 
 
@@ -218,26 +210,6 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     // --------------------------------------------------------- helper methods
 
-    protected void helperMethods(IndentedWriter writer)
-    {
-        writer.write("private List<Element> filterElements(List<Node> nodes) {");
-        writer.indent();
-        writer.write("List<Element> elements = new ArrayList<Element>();");
-        writer.write("for (Node node : nodes) {");
-        writer.indent();
-        writer.write("if (node instanceof Element) {");
-        writer.indent();
-        writer.write("elements.add((Element) node);");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return elements;");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
     protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private List<%s> internalReadList(List<Element> elements) {", typeContext.getType()
@@ -288,13 +260,33 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
+    protected void helperMethods(IndentedWriter writer)
+    {
+        writer.write("private List<Element> filterElements(List<Node> nodes) {");
+        writer.indent();
+        writer.write("List<Element> elements = new ArrayList<Element>();");
+        writer.write("for (Node node : nodes) {");
+        writer.indent();
+        writer.write("if (node instanceof Element) {");
+        writer.indent();
+        writer.write("elements.add((Element) node);");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return elements;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     @Override
     protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
             boolean hasNext) throws UnableToCompleteException
     {
         fieldHandler.log(writer, fieldContext);
         fieldHandler.declare(writer, fieldContext);
-        fieldHandler.readInput(writer, fieldContext, propertyHandlerRegistry);
+        fieldHandler.readInput(writer, fieldContext, propertyHandlerLookup);
         fieldHandler.assign(writer, fieldContext);
     }
 
@@ -308,7 +300,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         PropertyContext idContext = typeContext.getId();
         if (idContext != null)
         {
-            handler = propertyHandlerRegistry.findPropertyHandler(idContext);
+            handler = propertyHandlerLookup.lookup(idContext);
             validIdField = handler != null && handler.isValid(writer, idContext);
         }
 
@@ -321,7 +313,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
         {
             handler.log(writer, idContext);
             handler.declare(writer, idContext);
-            handler.readInput(writer, idContext, propertyHandlerRegistry);
+            handler.readInput(writer, idContext, propertyHandlerLookup);
             writer.write("%s %s = this.idRef(%s);", typeContext.getType().getParameterizedQualifiedSourceName(),
                     typeContext.getVariableNames().getInstanceVariable(), idContext.getVariableNames()
                             .getValueVariable());
@@ -352,41 +344,16 @@ public class XmlReaderCreator extends AbstractXmlCreator
 
     protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
     {
-        int counter = 0;
         for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
         {
-            // TODO Change VariableNames to
-            // new VariableNames("element", "nestedValue" + counter,
-            // "xmlBuilder");
             PropertyContext propertyContext = iter.next();
-            PropertyHandler propertyHandler = propertyHandlerRegistry.findPropertyHandler(propertyContext);
+            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
             if ((propertyHandler instanceof XmlRegistryPropertyHandler
                     || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
                     && propertyHandler.isValid(writer, propertyContext))
             {
                 writer.newline();
                 handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
-                counter++;
-            }
-        }
-    }
-
-
-    protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
-    {
-        int counter = 0;
-        for (Iterator<PropertyContext> iter = typeContext.getReferences().iterator(); iter.hasNext();)
-        {
-            // TODO Change VariableNames to
-            // new VariableNames("element", "idRefValue" + counter,
-            // "xmlBuilder");
-            PropertyContext propertyContext = iter.next();
-            PropertyHandler fieldHandler = propertyHandlerRegistry.findPropertyHandler(propertyContext);
-            if (fieldHandler != null && fieldHandler.isValid(writer, propertyContext))
-            {
-                writer.newline();
-                handleProperty(writer, fieldHandler, propertyContext, iter.hasNext());
-                counter++;
             }
         }
     }

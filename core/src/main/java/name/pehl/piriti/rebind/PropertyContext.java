@@ -142,8 +142,8 @@ public class PropertyContext extends LogFacade
     {
         String nestedValueVariable = getVariableNames().newVariableName("NestedValue");
         String nestedInputVariable = getVariableNames().newVariableName("NestedInput");
-        VariableNames nestedVariableNames = new VariableNames(nestedValueVariable, nestedInputVariable,
-                getVariableNames().getBuilderVariable());
+        VariableNames nestedVariableNames = new VariableNames(nestedValueVariable, getVariableNames().getInputType(),
+                nestedInputVariable, getVariableNames().getBuilderVariable());
 
         TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
 

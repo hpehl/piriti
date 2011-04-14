@@ -13,22 +13,24 @@ public class VariableNames
     private final int index;
     private final String valueVariable;
     private final String instanceVariable;
+    private final String inputType;
     private final String inputVariable;
     private final String builderVariable;
 
 
-    public VariableNames(String valueVariable, String inputVariable, String builderVariable)
+    public VariableNames(String valueVariable, String inputType, String inputVariable, String builderVariable)
     {
-        this(0, DEFAULT_INSTANCE_VARIABLE, valueVariable, inputVariable, builderVariable);
+        this(0, DEFAULT_INSTANCE_VARIABLE, valueVariable, inputType, inputVariable, builderVariable);
     }
 
 
-    private VariableNames(int index, String instanceVariable, String valueVariable, String inputVariable,
-            String builderVariable)
+    private VariableNames(int index, String instanceVariable, String inputType, String valueVariable,
+            String inputVariable, String builderVariable)
     {
         this.index = index;
         this.instanceVariable = instanceVariable;
         this.valueVariable = valueVariable;
+        this.inputType = inputType;
         this.inputVariable = inputVariable;
         this.builderVariable = builderVariable;
     }
@@ -37,6 +39,12 @@ public class VariableNames
     public String getInstanceVariable()
     {
         return instanceVariable;
+    }
+
+
+    public String getInputType()
+    {
+        return inputType;
     }
 
 
@@ -72,6 +80,6 @@ public class VariableNames
 
     VariableNames next()
     {
-        return new VariableNames(index + 1, instanceVariable, valueVariable, inputVariable, builderVariable);
+        return new VariableNames(index + 1, instanceVariable, valueVariable, inputType, inputVariable, builderVariable);
     }
 }

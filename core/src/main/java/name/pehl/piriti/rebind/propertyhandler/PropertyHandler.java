@@ -70,10 +70,10 @@ public interface PropertyHandler
      * 
      * @param writer
      * @param propertyContext
-     * @param propertyHandlerRegistry
+     * @param propertyHandlerLookup
      */
-    void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException;
+    void readInput(IndentedWriter writer, PropertyContext propertyContext, PropertyHandlerLookup propertyHandlerLookup)
+            throws UnableToCompleteException;
 
 
     /**
@@ -116,11 +116,11 @@ public interface PropertyHandler
      * 
      * @param writer
      * @param propertyContext
-     * @param propertyHandlerRegistry
+     * @param propertyHandlerLookup
      * @throws UnableToCompleteException
      */
-    void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException;
+    void writeValue(IndentedWriter writer, PropertyContext propertyContext, PropertyHandlerLookup propertyHandlerLookup)
+            throws UnableToCompleteException;
 
 
     /**

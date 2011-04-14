@@ -13,9 +13,9 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class DefaultPropertyHandlerLookup extends LogFacade implements PropertyHandlerLookup
+public abstract class AbstractPropertyHandlerLookup extends LogFacade implements PropertyHandlerLookup
 {
-    public DefaultPropertyHandlerLookup(TreeLogger logger)
+    public AbstractPropertyHandlerLookup(TreeLogger logger)
     {
         super(logger);
     }
@@ -91,62 +91,32 @@ public class DefaultPropertyHandlerLookup extends LogFacade implements PropertyH
     }
 
 
-    protected PropertyHandler newIdHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newIdHandler();
 
 
-    protected PropertyHandler newIdRefHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newIdRefHandler();
 
 
-    protected PropertyHandler newBooleanHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newBooleanHandler();
 
 
-    protected PropertyHandler newNumericHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newNumericHandler();
 
 
-    protected PropertyHandler newCharacterHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newCharacterHandler();
 
 
-    protected PropertyHandler newStringHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newStringHandler();
 
 
-    protected PropertyHandler newEnumHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newEnumHandler();
 
 
-    protected PropertyHandler newArrayHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newArrayHandler();
 
 
-    protected PropertyHandler newCollectionHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newCollectionHandler();
 
 
-    protected PropertyHandler newDefaultHandler()
-    {
-        return null;
-    }
+    protected abstract PropertyHandler newDefaultHandler();
 }

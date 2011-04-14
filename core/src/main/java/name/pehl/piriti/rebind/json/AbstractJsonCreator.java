@@ -4,6 +4,8 @@ import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.json.propertyhandler.JsonPropertyHandlerLookup;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -24,6 +26,13 @@ public abstract class AbstractJsonCreator extends AbstractCreator
             String rwClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(generatorContext, rwType, implName, rwClassname, logger);
+    }
+
+
+    @Override
+    protected PropertyHandlerLookup setupPropertyHandlerLookup()
+    {
+        return new JsonPropertyHandlerLookup(logger);
     }
 
 

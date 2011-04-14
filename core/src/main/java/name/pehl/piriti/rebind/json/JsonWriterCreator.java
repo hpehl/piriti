@@ -3,7 +3,6 @@ package name.pehl.piriti.rebind.json;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -24,13 +23,6 @@ public class JsonWriterCreator extends AbstractJsonCreator
             String readerClassname, TreeLogger logger) throws UnableToCompleteException
     {
         super(context, interfaceType, implName, readerClassname, logger);
-    }
-
-
-    @Override
-    protected PropertyHandlerRegistry setupPropertyHandlerRegistry()
-    {
-        return new JsonWriterPropertyHandlerRegistry(logger);
     }
 
 
@@ -125,7 +117,7 @@ public class JsonWriterCreator extends AbstractJsonCreator
         propertyHandler.declare(writer, propertyContext);
         propertyHandler.readProperty(writer, propertyContext);
         propertyHandler.markupStart(writer, propertyContext);
-        propertyHandler.writeValue(writer, propertyContext, propertyHandlerRegistry);
+        propertyHandler.writeValue(writer, propertyContext, propertyHandlerLookup);
         propertyHandler.markupEnd(writer, propertyContext);
         if (hasNext)
         {

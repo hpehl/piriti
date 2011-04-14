@@ -1,6 +1,10 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
+import java.util.logging.Level;
+
 import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
@@ -8,13 +12,12 @@ import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.appengine.repackaged.org.json.JSONWriter;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 /**
- * Abstract base class for {@linkplain PropertyHandler}s with default
- * implementations and common code.
+ * Abstract base class for {@linkplain PropertyHandler}s used for JSON
+ * (de)serialization.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
@@ -42,13 +45,13 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
 
     /**
      * Returns <code>true</code> for {@linkplain JsonReader}s. For
-     * {@linkplain JSONWriter}s this method returns <code>true</code> if no
+     * {@linkplain JsonWriter}s this method returns <code>true</code> if no
      * JSONPath is used and <code>false</code> otherwise.
      * 
      * @param writer
      * @param propertyContext
      * @return <code>true</code> for {@linkplain JsonReader}s. For
-     *         {@linkplain JSONWriter}s this method returns <code>true</code> if
+     *         {@linkplain JsonWriter}s this method returns <code>true</code> if
      *         no JSONPath is used and <code>false</code> otherwise.
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
@@ -70,13 +73,6 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     }
 
 
-    /**
-     * Responsible to read the property as string and assigning it to
-     * {@link PropertyContext#getValueAsStringVariable()}.
-     * 
-     * @param writer
-     * @param propertyContext
-     */
     @Override
     protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
@@ -89,6 +85,8 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
         {
             if (isJsonPath(propertyContext.getPath()))
             {
+                CodeGeneration.log(writer, Level.FINE, "Using JSONPath \"%s\" to select json value",
+                        propertyContext.getPath());
                 writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
                         .getVariableNames().getInputVariable(), propertyContext.getPath());
             }

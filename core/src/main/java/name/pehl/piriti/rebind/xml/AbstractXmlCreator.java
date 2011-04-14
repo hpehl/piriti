@@ -2,6 +2,8 @@ package name.pehl.piriti.rebind.xml;
 
 import name.pehl.piriti.rebind.AbstractCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
+import name.pehl.piriti.rebind.xml.propertyhandler.XmlPropertyHandlerLookup;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -24,6 +26,13 @@ public abstract class AbstractXmlCreator extends AbstractCreator
             TreeLogger logger) throws UnableToCompleteException
     {
         super(context, rwType, implName, rwClassname, logger);
+    }
+
+
+    @Override
+    protected PropertyHandlerLookup setupPropertyHandlerLookup()
+    {
+        return new XmlPropertyHandlerLookup(logger);
     }
 
 
