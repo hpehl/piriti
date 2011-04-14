@@ -88,7 +88,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      * 
      * @param writer
      * @param propertyContext
-     * @param propertyHandlerRegistry
+     * @param propertyHandlerLookup
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.PropertyContext,
@@ -96,7 +96,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      */
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
         if (supportsConversion(writer, propertyContext))
         {
@@ -348,7 +348,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      * 
      * @param writer
      * @param propertyContext
-     * @param propertyHandlerRegistry
+     * @param propertyHandlerLookup
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#writeValue(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.PropertyContext,
@@ -356,7 +356,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      */
     @Override
     public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
         if (supportsConversion(writer, propertyContext))
         {
@@ -430,6 +430,9 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      * @param propertyContext
      */
     protected abstract void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext);
+
+
+    protected abstract String defaultValue();
 
 
     // --------------------------------------------------------- helper methods

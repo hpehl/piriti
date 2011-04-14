@@ -206,7 +206,7 @@ public final class CodeGeneration
         if (noargConstructor)
         {
             writer.write(
-                    "new %1$s(); // if there are any reader definitions in %1$s, this ensures they are registered",
+                    "new %1$s(); // if there are any reader / writer definitions in %1$s, this ensures they are registered",
                     type.getParameterizedQualifiedSourceName());
         }
     }

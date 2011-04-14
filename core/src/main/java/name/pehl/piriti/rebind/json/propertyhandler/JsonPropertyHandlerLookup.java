@@ -16,8 +16,7 @@ public class JsonPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     @Override
     protected PropertyHandler newIdHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new IdPropertyHandler(logger);
     }
 
 
@@ -32,24 +31,21 @@ public class JsonPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     @Override
     protected PropertyHandler newBooleanHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new BooleanPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newNumericHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new NumericPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newCharacterHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new CharacterPropertyHandler(logger);
     }
 
 
@@ -63,8 +59,7 @@ public class JsonPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     @Override
     protected PropertyHandler newEnumHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new EnumPropertyHandler(logger);
     }
 
 
@@ -87,8 +82,7 @@ public class JsonPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     @Override
     protected PropertyHandler newDefaultHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new DefaultPropertyHandler(logger);
     }
 
 }

@@ -2,8 +2,8 @@ package name.pehl.piriti.rebind;
 
 import static java.util.Arrays.asList;
 import static name.pehl.piriti.commons.client.WhitespaceHandling.REMOVE;
-import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.ID;
-import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.IDREF;
+import static name.pehl.piriti.rebind.ReferenceType.ID;
+import static name.pehl.piriti.rebind.ReferenceType.IDREF;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -26,7 +26,6 @@ import name.pehl.piriti.property.client.Getter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.property.client.Setter;
-import name.pehl.piriti.rebind.propertyhandler.ReferenceType;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;

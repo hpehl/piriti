@@ -14,9 +14,9 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractRegistryPropertyHandler extends AbstractPropertyHandler
+public abstract class AbstractDefaultPropertyHandler extends AbstractPropertyHandler
 {
-    public AbstractRegistryPropertyHandler(TreeLogger logger)
+    public AbstractDefaultPropertyHandler(TreeLogger logger)
     {
         super(logger);
     }
@@ -36,7 +36,7 @@ public abstract class AbstractRegistryPropertyHandler extends AbstractPropertyHa
     {
         if (!propertyContext.isClassOrInterface())
         {
-            CodeGeneration.skipProperty(writer, propertyContext, "Type is no class or interface");
+            skipProperty(writer, propertyContext, "Type is no class or interface");
             return false;
         }
         CodeGeneration.readerWriterInitialization(writer, propertyContext.getClassOrInterfaceType());

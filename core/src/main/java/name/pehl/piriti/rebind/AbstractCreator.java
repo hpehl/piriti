@@ -6,7 +6,6 @@ import java.util.Iterator;
 import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -275,7 +274,7 @@ public abstract class AbstractCreator extends LogFacade
      * 
      * @param writer
      */
-    protected void createConstructorBody(IndentedWriter writer)
+    protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();");
         writer.write("this.idMap = new HashMap<String,%s>();", typeContext.getType().getQualifiedSourceName());
@@ -306,7 +305,7 @@ public abstract class AbstractCreator extends LogFacade
     /**
      * Iterates over {@link TypeContext#getProperties()}. For each
      * {@link PropertyContext} a {@link PropertyHandler} is searched in the
-     * {@link PropertyHandlerRegistry}. If found and
+     * {@link PropertyHandlerLookup}. If found and
      * {@link PropertyHandler#isValid(IndentedWriter, PropertyContext)} ==
      * <code>true</code>,
      * {@link #handleProperty(IndentedWriter, PropertyHandler, PropertyContext, boolean)}
@@ -335,6 +334,18 @@ public abstract class AbstractCreator extends LogFacade
     }
 
 
+    /**
+     * Iterates over {@link TypeContext#getReferences()}. For each
+     * {@link PropertyContext} a {@link PropertyHandler} is searched in the
+     * {@link PropertyHandlerLookup}. If found and
+     * {@link PropertyHandler#isValid(IndentedWriter, PropertyContext)} ==
+     * <code>true</code>,
+     * {@link #handleProperty(IndentedWriter, PropertyHandler, PropertyContext, boolean)}
+     * is called.
+     * 
+     * @param writer
+     * @throws UnableToCompleteException
+     */
     protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
         for (Iterator<PropertyContext> iter = typeContext.getReferences().iterator(); iter.hasNext();)

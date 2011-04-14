@@ -1,12 +1,13 @@
 package name.pehl.piriti.rebind.propertyhandler;
 
-import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.ID;
-import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.IDREF;
+import static name.pehl.piriti.rebind.ReferenceType.ID;
+import static name.pehl.piriti.rebind.ReferenceType.IDREF;
 import name.pehl.piriti.rebind.LogFacade;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.TreeLogger;
+import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
@@ -46,6 +47,7 @@ public abstract class AbstractPropertyHandlerLookup extends LogFacade implements
     {
         PropertyHandler handler = null;
         JType type = propertyContext.getType();
+        JPrimitiveType primitiveType = propertyContext.getPrimitiveType();
 
         if (propertyContext.getReferenceType() == ID)
         {
@@ -55,15 +57,15 @@ public abstract class AbstractPropertyHandlerLookup extends LogFacade implements
         {
             handler = newIdRefHandler();
         }
-        else if (TypeUtils.isBoolean(type))
+        else if (TypeUtils.isBoolean(type) || TypeUtils.isBoolean(primitiveType))
         {
             handler = newBooleanHandler();
         }
-        else if (TypeUtils.isNumeric(type))
+        else if (TypeUtils.isNumeric(type) || TypeUtils.isNumeric(primitiveType))
         {
             handler = newNumericHandler();
         }
-        else if (TypeUtils.isCharacter(type))
+        else if (TypeUtils.isCharacter(type) || TypeUtils.isCharacter(primitiveType))
         {
             handler = newCharacterHandler();
         }

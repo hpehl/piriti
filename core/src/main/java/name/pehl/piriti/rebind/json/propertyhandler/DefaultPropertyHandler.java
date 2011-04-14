@@ -1,29 +1,28 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
-import name.pehl.piriti.converter.client.Converter;
-import name.pehl.piriti.converter.client.ConverterRegistry;
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.json.JsonUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractDefaultPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.json.client.JSONString;
 
 /**
- * {@link PropertyHandler} implementation which uses a {@link Converter} from
- * the {@link ConverterRegistry}.
+ * {@link PropertyHandler} implementation for types with an own
+ * {@link JsonReader}.
  * 
- * @author $LastChangedBy$
- * @version $LastChangedRevision$
+ * @author $LastChangedBy: harald.pehl $
+ * @version $LastChangedRevision: 139 $
  */
-public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
+public class DefaultPropertyHandler extends AbstractDefaultPropertyHandler
 {
-    public ConverterPropertyHandler(TreeLogger logger)
+    public DefaultPropertyHandler(TreeLogger logger)
     {
         super(logger);
     }
@@ -55,55 +54,61 @@ public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
 
 
     /**
+     * TODO Javadoc
+     * 
      * @param writer
      * @param propertyContext
      * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
+     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
-        super.readInput(writer, propertyContext, propertyHandlerRegistry);
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-    }
+        String readerVariable = startReader(writer, propertyContext, "jsonRegistry",
+                propertyContext.getClassOrInterfaceType());
 
-
-    /**
-     * Reads the string value using {@link JSONString#stringValue()}
-     * 
-     * @param writer
-     * @param propertyContext
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractConverterPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
-     */
-    @Override
-    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
-    {
         String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
         writer.indent();
-        String jsonString = propertyContext.getVariableNames().newVariableName("AsJsonString");
-        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
-        writer.write("if (%s != null) {", jsonString);
+        String jsonObject = propertyContext.getVariableNames().newVariableName("jsonObject");
+        writer.write("JSONObject %s = %s.isObject();", jsonObject, jsonValue);
+        writer.write("if (%s != null) {", jsonObject);
         writer.indent();
-        writer.write("String %s = %s.stringValue();", propertyContext.getVariableNames().getValueAsStringVariable(),
-                jsonString);
+        writer.write("%s = %s.read(%s);", propertyContext.getVariableNames().getValueVariable(), readerVariable,
+                jsonObject);
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+
+        endReaderWriter(writer);
+    }
+
+
+    /**
+     * Empty implementation
+     * 
+     * @param writer
+     * @param propertyContext
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
+    {
     }
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext fieldContext) throws UnableToCompleteException
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        CodeGeneration.appendJsonKey(writer, fieldContext);
+        CodeGeneration.appendJsonKey(writer, propertyContext);
     }
 
 
@@ -111,18 +116,18 @@ public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
     public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
     {
-        writeValueAsString(writer, propertyContext);
-        writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueAsStringVariable());
+        writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
         writer.write("%s.append(\"null\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.write("else {");
         writer.indent();
-        writer.write("%s.append(\"\\\"\");", propertyContext.getVariableNames().getBuilderVariable());
-        writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
-                .getVariableNames().getValueAsStringVariable());
-        writer.write("%s.append(\"\\\"\");", propertyContext.getVariableNames().getBuilderVariable());
+        String writerVariable = startWriter(writer, propertyContext, "jsonRegistry",
+                propertyContext.getClassOrInterfaceType());
+        writer.write("%s.append(%s.toJson(%s));", propertyContext.getVariableNames().getBuilderVariable(),
+                writerVariable, propertyContext.getVariableNames().getValueVariable());
+        endReaderWriter(writer);
         writer.outdent();
         writer.write("}");
     }
@@ -140,5 +145,19 @@ public class ConverterPropertyHandler extends AbstractConverterPropertyHandler
     @Override
     public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
+    }
+
+
+    @Override
+    protected String getReaderClassname()
+    {
+        return JsonReader.class.getName();
+    }
+
+
+    @Override
+    protected String getWriterClassname()
+    {
+        return JsonWriter.class.getName();
     }
 }

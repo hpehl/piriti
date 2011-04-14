@@ -12,7 +12,7 @@ import com.google.gwt.core.ext.TreeLogger;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class StringPropertyHandler extends AbstractJsonPropertyHandler
+public class StringPropertyHandler extends SingleValuePropertyHandler
 {
     public StringPropertyHandler(TreeLogger logger)
     {
@@ -20,14 +20,31 @@ public class StringPropertyHandler extends AbstractJsonPropertyHandler
     }
 
 
-    /**
-     * Empty implementation
-     * 
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputDirectly(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
     @Override
     protected void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
+        String jsonValue = getOrSelectJson(writer, propertyContext);
+        writer.write("if (%s != null) {", jsonValue);
+        writer.indent();
+        writer.write("if (%s.isNull() == null) {", jsonValue);
+        writer.indent();
+        String jsonString = propertyContext.getVariableNames().newVariableName("AsJsonString");
+        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
+        writer.write("if (%s != null) {", jsonString);
+        writer.indent();
+        writer.write("%s = %s.stringValue();", propertyContext.getVariableNames().getValueVariable(), jsonString);
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    @Override
+    protected String defaultValue()
+    {
+        return "null";
     }
 }

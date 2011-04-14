@@ -1,12 +1,11 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
-import java.util.logging.Level;
-
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
+import name.pehl.piriti.rebind.VariableNames;
+import name.pehl.piriti.rebind.json.JsonUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
@@ -22,7 +21,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandler
+public abstract class SingleValuePropertyHandler extends AbstractPropertyHandler
 {
     // -------------------------------------------------------------- constants
 
@@ -35,7 +34,7 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
 
     // ----------------------------------------------------------- constructors
 
-    public AbstractJsonPropertyHandler(TreeLogger logger)
+    public SingleValuePropertyHandler(TreeLogger logger)
     {
         super(logger);
     }
@@ -76,30 +75,7 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     @Override
     protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
-        // If there's a path then get the JSON value using this path,
-        // otherwise it is expected that the JSON value is the inputVariable
-        // itself (e.g. an array of strings has no path information for the
-        // array elements)
-        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
-        if (propertyContext.getPath() != null)
-        {
-            if (isJsonPath(propertyContext.getPath()))
-            {
-                CodeGeneration.log(writer, Level.FINE, "Using JSONPath \"%s\" to select json value",
-                        propertyContext.getPath());
-                writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
-                        .getVariableNames().getInputVariable(), propertyContext.getPath());
-            }
-            else
-            {
-                writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
-                        .getInputVariable(), propertyContext.getPath());
-            }
-        }
-        else
-        {
-            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
-        }
+        String jsonValue = getOrSelectJson(writer, propertyContext);
         writer.write("if (%s != null) {", jsonValue);
         writer.indent();
         writer.write("if (%s.isNull() == null) {", jsonValue);
@@ -138,8 +114,26 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     @Override
     protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
-        writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
-                .getVariableNames().getValueVariable());
+        if (propertyContext.getType().isPrimitive() == null)
+        {
+            // if null, append default value
+            writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
+            writer.indent();
+            writer.write("%s.append(\"%s\");", propertyContext.getVariableNames().getBuilderVariable(), defaultValue());
+            writer.outdent();
+            writer.write("}");
+            writer.write("else {");
+            writer.indent();
+            writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
+                    .getVariableNames().getValueVariable());
+            writer.outdent();
+            writer.write("}");
+        }
+        else
+        {
+            writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
+                    .getVariableNames().getValueVariable());
+        }
     }
 
 
@@ -168,5 +162,42 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     protected boolean isJsonPath(String path)
     {
         return StringUtils.containsAny(path, JSON_PATH_SYMBOLS);
+    }
+
+
+    /**
+     * If {@link PropertyContext#getPath()} is not <code>null</code> get or
+     * select data from the {@link VariableNames#getInputVariable()}, otherwise
+     * assign the json data to {@link VariableNames#getInputVariable()}.
+     * 
+     * @param writer
+     * @param propertyContext
+     * @return the variable name containing the json value.
+     */
+    protected String getOrSelectJson(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        // If there's a path then get the JSON value using this path,
+        // otherwise it is expected that the JSON value is the inputVariable
+        // itself (e.g. an array of strings has no path information for the
+        // array elements)
+        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        if (propertyContext.getPath() != null)
+        {
+            if (JsonUtils.isJsonPath(propertyContext.getPath()))
+            {
+                writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
+                        .getVariableNames().getInputVariable(), propertyContext.getPath());
+            }
+            else
+            {
+                writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
+                        .getInputVariable(), propertyContext.getPath());
+            }
+        }
+        else
+        {
+            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
+        }
+        return jsonValue;
     }
 }

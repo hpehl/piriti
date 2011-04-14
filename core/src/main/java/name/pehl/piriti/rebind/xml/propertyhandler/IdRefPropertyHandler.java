@@ -6,7 +6,7 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractDefaultPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
@@ -21,7 +21,7 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @version $Date$ $Revision: 421
  *          $
  */
-public class IdRefPropertyHandler extends AbstractRegistryPropertyHandler
+public class IdRefPropertyHandler extends AbstractDefaultPropertyHandler
 {
     private static final String NESTED_TYPE = "nestedType";
 

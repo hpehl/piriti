@@ -1,8 +1,9 @@
 package name.pehl.piriti.rebind.json;
 
+import name.pehl.piriti.rebind.AbstractWriterCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.VariableNames;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -15,7 +16,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy$
  * @version $LastChangedRevision$
  */
-public class JsonWriterCreator extends AbstractJsonCreator
+public class JsonWriterCreator extends AbstractWriterCreator
 {
     // --------------------------------------------------------- initialization
 
@@ -26,10 +27,48 @@ public class JsonWriterCreator extends AbstractJsonCreator
     }
 
 
+    @Override
+    protected VariableNames setupVariableNames()
+    {
+        return JsonUtils.newVariableNames();
+    }
+
+
+    @Override
+    protected PropertyHandlerLookup setupPropertyHandlerLookup()
+    {
+        return JsonUtils.newPropertyHandlerLookup(logger);
+    }
+
+
     // --------------------------------------------------------- create methods
 
     @Override
-    protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
+    protected void createImports(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createImports(writer);
+        JsonUtils.createImports(writer);
+    }
+
+
+    @Override
+    protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createMemberVariables(writer);
+        JsonUtils.createMemberVariables(writer);
+    }
+
+
+    @Override
+    protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createConstructorBody(writer);
+        JsonUtils.createConstructorBody(writer, typeContext);
+    }
+
+
+    @Override
+    protected void createWriterMethods(IndentedWriter writer) throws UnableToCompleteException
     {
         writeList(writer);
         writer.newline();
@@ -104,24 +143,5 @@ public class JsonWriterCreator extends AbstractJsonCreator
         writer.outdent();
         writer.write("return json;");
         writer.write("}");
-    }
-
-
-    // ---------------------------------------------------- overwritten methods
-
-    @Override
-    protected void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
-            PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException
-    {
-        propertyHandler.log(writer, propertyContext);
-        propertyHandler.declare(writer, propertyContext);
-        propertyHandler.readProperty(writer, propertyContext);
-        propertyHandler.markupStart(writer, propertyContext);
-        propertyHandler.writeValue(writer, propertyContext, propertyHandlerLookup);
-        propertyHandler.markupEnd(writer, propertyContext);
-        if (hasNext)
-        {
-            writer.write("%s.append(\",\");", propertyContext.getVariableNames().getBuilderVariable());
-        }
     }
 }

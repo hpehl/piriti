@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind.propertyhandler;
+package name.pehl.piriti.rebind;
 
 /**
  * Describes the type of reference type of one property mapped by

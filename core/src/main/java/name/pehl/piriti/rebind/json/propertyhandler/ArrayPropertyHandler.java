@@ -3,10 +3,9 @@ package name.pehl.piriti.rebind.json.propertyhandler;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.json.JsonUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler;
+import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -21,7 +20,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
+public class ArrayPropertyHandler extends SingleValuePropertyHandler
 {
     public ArrayPropertyHandler(TreeLogger logger)
     {
@@ -43,14 +42,23 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
     @Override
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        boolean valid = super.isValid(writer, propertyContext);
-        if (valid && propertyContext.getTypeContext().isWriter() && JsonUtils.isJsonPath(propertyContext.getPath()))
+        if (!super.isValid(writer, propertyContext))
         {
-            CodeGeneration.skipProperty(writer, propertyContext,
-                    "JSONPath expressions are not supported by this JsonWriter");
             return false;
         }
-        return valid;
+
+        JType componentType = propertyContext.getArrayType().getComponentType();
+        if (componentType.isArray() != null)
+        {
+            skipProperty(writer, propertyContext, "Multi-dimensional arrays are not supported");
+            return false;
+        }
+        if (TypeUtils.isCollection(componentType) || TypeUtils.isMap(componentType))
+        {
+            skipProperty(writer, propertyContext, "Arrays of collections / maps are not supported");
+            return false;
+        }
+        return true;
     }
 
 
@@ -59,14 +67,14 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
      * 
      * @param writer
      * @param propertyContext
-     * @param propertyHandlerRegistry
+     * @param propertyHandlerLookup
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
         JArrayType arrayType = propertyContext.getArrayType();
         JType componentType = arrayType.getComponentType();
@@ -88,7 +96,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         // property handler must take care of this!
         String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
         PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
-        PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
+        PropertyHandler nestedHandler = propertyHandlerLookup.findPropertyHandler(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
             return;
@@ -111,7 +119,7 @@ public class ArrayPropertyHandler extends AbstractArrayPropertyHandler
         writer.indent();
         nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
-        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
+        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerLookup);
         writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());
         writer.indent();
         writer.write("%s.add(%s);", valueVariableAsList, nestedPropertyContext.getVariableNames().getValueVariable());

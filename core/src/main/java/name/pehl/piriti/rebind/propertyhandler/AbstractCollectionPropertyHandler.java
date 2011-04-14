@@ -1,107 +1,59 @@
 package name.pehl.piriti.rebind.propertyhandler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
- * Abstract {@link PropertyHandler} for collections.
+ * {@link PropertyHandler} for arrays.
  * 
  * @author $LastChangedBy: harald.pehl $
- * @version $LastChangedRevision: 140 $
+ * @version $LastChangedRevision: 139 $
  */
 public abstract class AbstractCollectionPropertyHandler extends AbstractPropertyHandler
 {
-    public static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
-    static
-    {
-        interfaceToImplementation.put(Collection.class.getName(), ArrayList.class.getName());
-        interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
-        interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
-        interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
-    }
-
-
     public AbstractCollectionPropertyHandler(TreeLogger logger)
     {
         super(logger);
     }
 
 
+    protected abstract JType getElementType(PropertyContext propertyContext);
+
+
     /**
-     * Returns <code>false</code> if the properties type is no collection, if
-     * the collection has no type arguments or if the type argument of the
-     * collection is an array, collection or map, <code>true</code> otherwise.
+     * TODO Javadoc
      * 
      * @param writer
      * @param propertyContext
      * @return
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#isValid(name.pehl.piriti.rebind.propertyhandler.PropertyContext)
+     * @throws UnableToCompleteException
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (!TypeUtils.isCollection(propertyContext.getType()))
+        JType elementType = getElementType(propertyContext);
+        if (elementType == null)
         {
-            CodeGeneration.skipProperty(writer, propertyContext, "Type is no collection");
+            skipProperty(writer, propertyContext, "No element type found");
             return false;
         }
-        JClassType parameterType = getTypeVariable(propertyContext);
-        if (parameterType != null)
+        if (elementType.isArray() != null)
         {
-            if (parameterType.isArray() != null || TypeUtils.isCollection(parameterType)
-                    || TypeUtils.isMap(parameterType))
-            {
-                CodeGeneration.skipProperty(writer, propertyContext,
-                        "Nested arrays / collections / maps are not supported");
-                return false;
-            }
-        }
-        else
-        {
-            // collections and maps without type arguments are not
-            // supported!
-            CodeGeneration.skipProperty(writer, propertyContext, "Collection has no / invalid type argument");
+            skipProperty(writer, propertyContext, "Multi-dimensional arrays / collections are not supported");
             return false;
         }
-        // Initialize the parameter type to make sure the relevant reader
-        // is in the registry (ugly - but it works)
-        CodeGeneration.readerWriterInitialization(writer, parameterType);
+        if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
+        {
+            skipProperty(writer, propertyContext, "Arrays or collections of collections / maps are not supported");
+            return false;
+        }
         return true;
-    }
-
-
-    /**
-     * Empty implementation!
-     * 
-     * @param writer
-     * @param propertyContext
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
-    @Override
-    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    protected JClassType getTypeVariable(PropertyContext propertyContext)
-    {
-        return TypeUtils.getTypeVariable(propertyContext.getType());
     }
 }

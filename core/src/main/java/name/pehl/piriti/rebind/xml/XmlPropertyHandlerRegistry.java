@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind.xml;
 
-import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.ID;
-import static name.pehl.piriti.rebind.propertyhandler.ReferenceType.IDREF;
+import static name.pehl.piriti.rebind.ReferenceType.ID;
+import static name.pehl.piriti.rebind.ReferenceType.IDREF;
 
 import java.sql.Time;
 import java.sql.Timestamp;

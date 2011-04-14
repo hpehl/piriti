@@ -33,6 +33,7 @@ public abstract class AbstractReaderCreator extends AbstractCreator
     protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
     {
         createReaderMethods(writer);
+        writer.newline();
 
         readIds(writer);
         writer.newline();

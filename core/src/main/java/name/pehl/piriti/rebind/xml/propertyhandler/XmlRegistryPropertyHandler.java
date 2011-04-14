@@ -2,7 +2,7 @@ package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.propertyhandler.AbstractRegistryPropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.AbstractDefaultPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
 import name.pehl.piriti.xml.client.XmlReader;
@@ -18,7 +18,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlRegistryPropertyHandler extends AbstractRegistryPropertyHandler
+public class XmlRegistryPropertyHandler extends AbstractDefaultPropertyHandler
 {
     public XmlRegistryPropertyHandler(TreeLogger logger)
     {
