@@ -10,7 +10,7 @@ import com.google.gwt.core.ext.TreeLogger;
  * @version $Date$ $Revision: 364
  *          $
  */
-public class BooleanPropertyHandler extends SingleValuePropertyHandler
+public class BooleanPropertyHandler extends AbstractJsonPropertyHandler
 {
     public BooleanPropertyHandler(TreeLogger logger)
     {

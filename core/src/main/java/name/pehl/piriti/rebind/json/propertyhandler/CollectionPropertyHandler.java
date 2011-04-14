@@ -1,16 +1,25 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.json.JsonUtils;
-import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
+import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * {@link PropertyHandler} for collections.
@@ -18,36 +27,50 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
+public class CollectionPropertyHandler extends AbstractJsonPropertyHandler
 {
+    protected static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
+    static
+    {
+        interfaceToImplementation.put(Collection.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
+        interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
+    }
+
+
     public CollectionPropertyHandler(TreeLogger logger)
     {
         super(logger);
     }
 
 
-    /**
-     * Returns <code>false</code> if this property context is used with a writer
-     * and a JSONPath expression is used,
-     * 
-     * @param writer
-     * @param propertyContext
-     * @return
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
-     */
     @Override
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        boolean valid = super.isValid(writer, propertyContext);
-        if (valid && propertyContext.getTypeContext().isWriter() && JsonUtils.isJsonPath(propertyContext.getPath()))
+        JType elementType = getElementType(propertyContext);
+        if (elementType == null)
         {
-            CodeGeneration.skipProperty(writer, propertyContext,
-                    "JSONPath expressions are not supported by this JsonWriter");
+            skipProperty(writer, propertyContext, "No type parameter found");
             return false;
         }
-        return valid;
+        if (elementType.isArray() != null)
+        {
+            skipProperty(writer, propertyContext, "Collections of arrays are not supported");
+            return false;
+        }
+        if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
+        {
+            skipProperty(writer, propertyContext, "Collections of collections / maps are not supported");
+            return false;
+        }
+        return true;
+    }
+
+
+    protected JType getElementType(PropertyContext propertyContext) throws UnableToCompleteException
+    {
+        return TypeUtils.getTypeVariable(propertyContext.getType());
     }
 
 
@@ -56,23 +79,23 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
      * 
      * @param writer
      * @param propertyContext
-     * @param propertyHandlerRegistry
+     * @param propertyHandlerLookup
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
      *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
      */
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
         // The nested property context is created *without* a path. The nested
-        // property
-        // handler must take care of this!
-        JClassType parameterType = getTypeVariable(propertyContext);
-        PropertyContext nestedPropertyContext = propertyContext.createNested(parameterType, null);
-        PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
+        // property handler must take care of this!
+        JType elementType = getElementType(propertyContext);
+        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, null);
+        PropertyHandler nestedHandler = propertyHandlerLookup.lookup(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
+            warn("No PropertyHandler found for element type %s in %s", elementType, propertyContext);
             return;
         }
 
@@ -91,7 +114,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
             collectionImplementation = propertyContext.getType().getQualifiedSourceName();
         }
         writer.write("%s = new %s<%s>();", propertyContext.getVariableNames().getValueVariable(),
-                collectionImplementation, parameterType.getQualifiedSourceName());
+                collectionImplementation, elementType.getQualifiedSourceName());
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
         writer.write("JSONValue %s = jsonArray.get(i);", nestedPropertyContext.getVariableNames().getInputVariable());
@@ -100,7 +123,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         writer.indent();
         nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
-        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
+        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerLookup);
         writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());
         writer.indent();
         writer.write("%s.add(%s);", propertyContext.getVariableNames().getValueVariable(), nestedPropertyContext
@@ -118,39 +141,18 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
     }
 
 
-    /**
-     * Empty implementation!
-     * 
-     * @param writer
-     * @param propertyContext
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputAsString(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
-    @Override
-    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    @Override
-    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        CodeGeneration.appendJsonKey(writer, propertyContext);
-    }
-
-
     @Override
     public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
         // The nested property context is created *without* a path. The nested
-        // property
-        // handler must take care of this!
-        JClassType parameterType = getTypeVariable(propertyContext);
-        PropertyContext nestedPropertyContext = propertyContext.createNested(parameterType, null);
-        PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
+        // property handler must take care of this!
+        JType elementType = getElementType(propertyContext);
+        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, null);
+        PropertyHandler nestedHandler = propertyHandlerLookup.lookup(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
+            warn("No PropertyHandler found for element type %s in %s", elementType, propertyContext);
             return;
         }
 
@@ -164,7 +166,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         // Iterate over values
         writer.write("%s.append(\"[\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.write("for (Iterator<%s> iter = %s.iterator(); iter.hasNext(); ) {",
-                parameterType.getQualifiedSourceName(), propertyContext.getVariableNames().getValueVariable());
+                elementType.getQualifiedSourceName(), propertyContext.getVariableNames().getValueVariable());
         writer.indent();
 
         nestedHandler.log(writer, nestedPropertyContext);
@@ -173,7 +175,7 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         writer.write("%s = iter.next();", nestedPropertyContext.getVariableNames().getValueVariable());
         // No nestedHandler.markupStart(writer, nestedFieldContext); since we're
         // in an JSON array
-        nestedHandler.writeValue(writer, nestedPropertyContext, propertyHandlerRegistry);
+        nestedHandler.writeValue(writer, nestedPropertyContext, propertyHandlerLookup);
         // No nestedHandler.markupEnd(writer, nestedFieldContext); since we're
         // in an JSON array
 
@@ -187,20 +189,5 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
         writer.write("%s.append(\"]\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
-    }
-
-
-    /**
-     * Empty!
-     * 
-     * @param writer
-     * @param propertyContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
-     */
-    @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
     }
 }

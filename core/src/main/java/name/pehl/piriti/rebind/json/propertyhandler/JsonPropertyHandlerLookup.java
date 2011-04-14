@@ -66,16 +66,14 @@ public class JsonPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     @Override
     protected PropertyHandler newArrayHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new ArrayPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newCollectionHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new CollectionPropertyHandler(logger);
     }
 
 
@@ -84,5 +82,4 @@ public class JsonPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     {
         return new DefaultPropertyHandler(logger);
     }
-
 }

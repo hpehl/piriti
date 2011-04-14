@@ -100,18 +100,6 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
     }
 
 
-    /**
-     * Empty implementation
-     * 
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#readInputDirectly(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
-    @Override
-    protected void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
     @Override
     public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {

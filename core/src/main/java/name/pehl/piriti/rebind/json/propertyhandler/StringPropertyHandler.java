@@ -12,7 +12,7 @@ import com.google.gwt.core.ext.TreeLogger;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class StringPropertyHandler extends SingleValuePropertyHandler
+public class StringPropertyHandler extends AbstractJsonPropertyHandler
 {
     public StringPropertyHandler(TreeLogger logger)
     {
@@ -39,12 +39,5 @@ public class StringPropertyHandler extends SingleValuePropertyHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
-    }
-
-
-    @Override
-    protected String defaultValue()
-    {
-        return "null";
     }
 }

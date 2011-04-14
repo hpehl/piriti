@@ -155,21 +155,29 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     /**
      * Responsible to read the property as string and assigning it to
      * {@link PropertyContext#getValueAsStringVariable()}.
+     * <p>
+     * Empty implementation
      * 
      * @param writer
      * @param propertyContext
      */
-    protected abstract void readInputAsString(IndentedWriter writer, PropertyContext propertyContext);
+    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
 
 
     /**
      * Responsible to read the property direclty from the input without
      * conversion.
+     * <p>
+     * Empty implementation
      * 
      * @param writer
      * @param propertyContext
      */
-    protected abstract void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext);
+    protected void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
 
 
     // ----------------------------------------------------------------- assign
@@ -341,6 +349,18 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
 
     /**
+     * Empty implementation
+     * 
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupStart(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    {
+    }
+
+
+    /**
      * If conversion is supported a custom or registered converter is used to
      * convert the property to string.
      * <p>
@@ -416,23 +436,46 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
     /**
      * Responsible to write the property as string.
+     * <p>
+     * Empty implementation
      * 
      * @param writer
      * @param propertyContext
      */
-    protected abstract void writeValueAsString(IndentedWriter writer, PropertyContext propertyContext);
+    protected void writeValueAsString(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
 
 
     /**
      * Responsible to write the property directly (i.e. as the properties type).
+     * <p>
+     * Empty implementation
      * 
      * @param writer
      * @param propertyContext
      */
-    protected abstract void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext);
+    protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
 
 
-    protected abstract String defaultValue();
+    protected String defaultValue()
+    {
+        return "null";
+    }
+
+
+    /**
+     * Empty implementation
+     * 
+     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    {
+    }
 
 
     // --------------------------------------------------------- helper methods

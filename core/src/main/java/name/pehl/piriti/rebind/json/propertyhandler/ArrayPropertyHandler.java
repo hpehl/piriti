@@ -9,7 +9,6 @@ import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.NotFoundException;
@@ -20,7 +19,7 @@ import com.google.gwt.core.ext.typeinfo.NotFoundException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class ArrayPropertyHandler extends SingleValuePropertyHandler
+public class ArrayPropertyHandler extends AbstractJsonPropertyHandler
 {
     public ArrayPropertyHandler(TreeLogger logger)
     {
@@ -28,37 +27,27 @@ public class ArrayPropertyHandler extends SingleValuePropertyHandler
     }
 
 
-    /**
-     * Returns <code>false</code> if this property context is used with a writer
-     * and a JSONPath expression is used,
-     * 
-     * @param writer
-     * @param propertyContext
-     * @return
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.AbstractArrayPropertyHandler#isValid(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
-     */
     @Override
     public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        if (!super.isValid(writer, propertyContext))
-        {
-            return false;
-        }
-
-        JType componentType = propertyContext.getArrayType().getComponentType();
-        if (componentType.isArray() != null)
+        JType elementType = getElementType(propertyContext);
+        if (elementType.isArray() != null)
         {
             skipProperty(writer, propertyContext, "Multi-dimensional arrays are not supported");
             return false;
         }
-        if (TypeUtils.isCollection(componentType) || TypeUtils.isMap(componentType))
+        if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
         {
             skipProperty(writer, propertyContext, "Arrays of collections / maps are not supported");
             return false;
         }
         return true;
+    }
+
+
+    protected JType getElementType(PropertyContext propertyContext) throws UnableToCompleteException
+    {
+        return propertyContext.getArrayType().getComponentType();
     }
 
 
@@ -76,29 +65,29 @@ public class ArrayPropertyHandler extends SingleValuePropertyHandler
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        JArrayType arrayType = propertyContext.getArrayType();
-        JType componentType = arrayType.getComponentType();
-        JPrimitiveType primitiveComponentType = componentType.isPrimitive();
+        JType elementType = getElementType(propertyContext);
+        JPrimitiveType primitiveComponentType = elementType.isPrimitive();
         if (primitiveComponentType != null)
         {
             try
             {
-                componentType = propertyContext.getTypeContext().getTypeOracle()
+                elementType = propertyContext.getTypeContext().getTypeOracle()
                         .getType(primitiveComponentType.getQualifiedBoxedSourceName());
             }
             catch (NotFoundException e)
             {
-                throw new UnableToCompleteException();
+                die("No type found for %s", primitiveComponentType.getQualifiedBoxedSourceName());
             }
         }
 
         // The nested property context is created *without* a path. The nested
         // property handler must take care of this!
         String valueVariableAsList = propertyContext.getVariableNames().newVariableName("AsList");
-        PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
-        PropertyHandler nestedHandler = propertyHandlerLookup.findPropertyHandler(nestedPropertyContext);
+        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, null);
+        PropertyHandler nestedHandler = propertyHandlerLookup.lookup(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
+            warn("No PropertyHandler found for element type %s in %s", elementType, propertyContext);
             return;
         }
 
@@ -109,7 +98,7 @@ public class ArrayPropertyHandler extends SingleValuePropertyHandler
         writer.write("if (jsonArray != null) {");
         writer.indent();
         writer.write("int size = jsonArray.size();");
-        writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", componentType.getParameterizedQualifiedSourceName(),
+        writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", elementType.getParameterizedQualifiedSourceName(),
                 valueVariableAsList);
         writer.write("for (int i = 0; i < size; i++) {");
         writer.indent();
@@ -140,9 +129,9 @@ public class ArrayPropertyHandler extends SingleValuePropertyHandler
         else
         {
             writer.write("%s = new %s[%s.size()];", propertyContext.getVariableNames().getValueVariable(),
-                    componentType.getQualifiedSourceName(), valueVariableAsList);
+                    elementType.getQualifiedSourceName(), valueVariableAsList);
         }
-        writer.write("for(%s currentValue : %s) {", componentType.getQualifiedSourceName(), valueVariableAsList);
+        writer.write("for(%s currentValue : %s) {", elementType.getQualifiedSourceName(), valueVariableAsList);
         writer.indent();
         writer.write("%s[index] = currentValue;", propertyContext.getVariableNames().getValueVariable());
         writer.write("index++;");
@@ -158,39 +147,31 @@ public class ArrayPropertyHandler extends SingleValuePropertyHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        CodeGeneration.appendJsonKey(writer, propertyContext);
-    }
-
-
-    @Override
     public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        JArrayType arrayType = propertyContext.getArrayType();
-        JType componentType = arrayType.getComponentType();
-        JPrimitiveType primitiveComponentType = componentType.isPrimitive();
+        JType elementType = getElementType(propertyContext);
+        JPrimitiveType primitiveComponentType = elementType.isPrimitive();
         if (primitiveComponentType != null)
         {
             try
             {
-                componentType = propertyContext.getTypeContext().getTypeOracle()
+                elementType = propertyContext.getTypeContext().getTypeOracle()
                         .getType(primitiveComponentType.getQualifiedBoxedSourceName());
             }
             catch (NotFoundException e)
             {
-                throw new UnableToCompleteException();
+                die("No type found for %s", primitiveComponentType.getQualifiedBoxedSourceName());
             }
         }
 
         // The nested property context is created *without* a path. The nested
-        // property
-        // handler must take care of this!
-        PropertyContext nestedPropertyContext = propertyContext.createNested(componentType, null);
-        PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
+        // property handler must take care of this!
+        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, null);
+        PropertyHandler nestedHandler = propertyHandlerLookup.lookup(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
+            warn("No PropertyHandler found for element type %s in %s", elementType, propertyContext);
             return;
         }
 
@@ -213,7 +194,7 @@ public class ArrayPropertyHandler extends SingleValuePropertyHandler
                 .getVariableNames().getValueVariable());
         // No nestedHandler.markupStart(writer, nestedFieldContext); since we're
         // in an JSON array
-        nestedHandler.writeValue(writer, nestedPropertyContext, propertyHandlerRegistry);
+        nestedHandler.writeValue(writer, nestedPropertyContext, propertyHandlerLookup);
         // No nestedHandler.markupEnd(writer, nestedFieldContext); since we're
         // in an JSON array
 
@@ -227,21 +208,5 @@ public class ArrayPropertyHandler extends SingleValuePropertyHandler
         writer.write("%s.append(\"]\");", propertyContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
-    }
-
-
-    /**
-     * Empty!
-     * 
-     * @param writer
-     * @param typeContext
-     * @param propertyContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
-     */
-    @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
     }
 }

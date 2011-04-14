@@ -12,7 +12,7 @@ import com.google.gwt.core.ext.TreeLogger;
  * @version $Date$ $Revision: 364
  *          $
  */
-public class NumericPropertyHandler extends SingleValuePropertyHandler
+public class NumericPropertyHandler extends AbstractJsonPropertyHandler
 {
     public NumericPropertyHandler(TreeLogger logger)
     {

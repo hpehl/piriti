@@ -21,7 +21,7 @@ import com.google.gwt.core.ext.UnableToCompleteException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class SingleValuePropertyHandler extends AbstractPropertyHandler
+public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandler
 {
     // -------------------------------------------------------------- constants
 
@@ -34,7 +34,7 @@ public abstract class SingleValuePropertyHandler extends AbstractPropertyHandler
 
     // ----------------------------------------------------------- constructors
 
-    public SingleValuePropertyHandler(TreeLogger logger)
+    public AbstractJsonPropertyHandler(TreeLogger logger)
     {
         super(logger);
     }
@@ -134,18 +134,6 @@ public abstract class SingleValuePropertyHandler extends AbstractPropertyHandler
             writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
                     .getVariableNames().getValueVariable());
         }
-    }
-
-
-    /**
-     * Empty implementation
-     * 
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
-    @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
     }
 
 

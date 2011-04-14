@@ -14,7 +14,7 @@ import com.google.gwt.core.ext.TreeLogger;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class EnumPropertyHandler extends SingleValuePropertyHandler
+public class EnumPropertyHandler extends AbstractJsonPropertyHandler
 {
     public EnumPropertyHandler(TreeLogger logger)
     {
@@ -57,12 +57,5 @@ public class EnumPropertyHandler extends SingleValuePropertyHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
-    }
-
-
-    @Override
-    protected String defaultValue()
-    {
-        return "null";
     }
 }
