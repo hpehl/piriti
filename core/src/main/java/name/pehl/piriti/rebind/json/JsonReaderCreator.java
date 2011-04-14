@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.json;
 
+import java.util.Iterator;
 import java.util.logging.Level;
 
 import name.pehl.piriti.json.client.JsonReader;
@@ -8,6 +9,9 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.VariableNames;
+import name.pehl.piriti.rebind.json.propertyhandler.ArrayPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.CollectionPropertyHandler;
+import name.pehl.piriti.rebind.json.propertyhandler.DefaultPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
@@ -258,8 +262,8 @@ public class JsonReaderCreator extends AbstractReaderCreator
         writer.write("if (jsonArray != null) {");
         writer.indent();
         writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
-        writer.write("instanceContextHolders = new ArrayList<%s, JSONObject>();", typeContext.getType()
-                .getParameterizedQualifiedSourceName());
+        writer.write("instanceContextHolders = new ArrayList<InstanceContextHolder<%s, JSONObject>>();", typeContext
+                .getType().getParameterizedQualifiedSourceName());
 
         CodeGeneration.log(writer, Level.FINE, "First iteration over JSON array to create models and process IDs");
         writer.write("int size = jsonArray.size();");
@@ -276,7 +280,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
                         .getInstanceVariable());
         writer.write("if (%s != null) {", typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("instanceContextHolders.add(new InstanceContextHolder<%s, JSONObject>(%s, currentJsonObject);",
+        writer.write("instanceContextHolders.add(new InstanceContextHolder<%s, JSONObject>(%s, currentJsonObject));",
                 typeContext.getType().getParameterizedQualifiedSourceName(), typeContext.getVariableNames()
                         .getInstanceVariable());
         writer.write("models.add(%s);", typeContext.getVariableNames().getInstanceVariable());
@@ -372,7 +376,24 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    // ---------------------------------------------------- handle one property
+    // ------------------------------------------------------ handle properties
+
+    @Override
+    protected void handleIdsInNestedTypes(IndentedWriter writer) throws UnableToCompleteException
+    {
+        for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
+        {
+            PropertyContext propertyContext = iter.next();
+            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+            if ((propertyHandler instanceof DefaultPropertyHandler || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
+                    && propertyHandler.isValid(writer, propertyContext))
+            {
+                writer.newline();
+                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
+            }
+        }
+    }
+
 
     @Override
     protected void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,

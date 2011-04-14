@@ -25,11 +25,17 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
 {
     // -------------------------------------------------------------- constants
 
+    protected static final String COLLECTION_ELEMENT_PATH = "special path marker for nested PropertyHandler";
+
     /**
      * JSONPath special characters.
      */
     private static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(',
             ')',};
+
+    // -------------------------------------------------------- private members
+
+    protected String jsonValueVariable;
 
 
     // ----------------------------------------------------------- constructors
@@ -73,18 +79,28 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
 
 
     @Override
+    public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    {
+        super.declare(writer, propertyContext);
+        writer.write("String %s = null;", propertyContext.getVariableNames().getValueAsStringVariable());
+        jsonValueVariable = propertyContext.getVariableNames().newVariableName("AsJsonValue");
+        writer.write("JSONValue %s = null;", jsonValueVariable);
+    }
+
+
+    @Override
     protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
-        String jsonValue = getOrSelectJson(writer, propertyContext);
-        writer.write("if (%s != null) {", jsonValue);
+        getOrSelectJson(writer, propertyContext);
+        writer.write("if (%s != null) {", jsonValueVariable);
         writer.indent();
-        writer.write("if (%s.isNull() == null) {", jsonValue);
+        writer.write("if (%s.isNull() == null) {", jsonValueVariable);
         writer.indent();
         String jsonString = propertyContext.getVariableNames().newVariableName("AsJsonString");
-        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
+        writer.write("JSONString %s = %s.isString();", jsonString, jsonValueVariable);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
-        writer.write("String %s = %s.stringValue();", propertyContext.getVariableNames().getValueAsStringVariable(),
+        writer.write("%s = %s.stringValue();", propertyContext.getVariableNames().getValueAsStringVariable(),
                 jsonString);
         writer.outdent();
         writer.write("}");
@@ -99,7 +115,7 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
         writer.write("%s.append(\"\\\"%s\\\":\");", propertyContext.getVariableNames().getBuilderVariable(),
-                propertyContext.getPath());
+                propertyContext.getPathOrName());
     }
 
 
@@ -114,26 +130,8 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     @Override
     protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
-        if (propertyContext.getType().isPrimitive() == null)
-        {
-            // if null, append default value
-            writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
-            writer.indent();
-            writer.write("%s.append(\"%s\");", propertyContext.getVariableNames().getBuilderVariable(), defaultValue());
-            writer.outdent();
-            writer.write("}");
-            writer.write("else {");
-            writer.indent();
-            writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
-                    .getVariableNames().getValueVariable());
-            writer.outdent();
-            writer.write("}");
-        }
-        else
-        {
-            writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
-                    .getVariableNames().getValueVariable());
-        }
+        writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
+                .getVariableNames().getValueVariable());
     }
 
 
@@ -162,30 +160,24 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
      * @param propertyContext
      * @return the variable name containing the json value.
      */
-    protected String getOrSelectJson(IndentedWriter writer, PropertyContext propertyContext)
+    protected void getOrSelectJson(IndentedWriter writer, PropertyContext propertyContext)
     {
-        // If there's a path then get the JSON value using this path,
-        // otherwise it is expected that the JSON value is the inputVariable
-        // itself (e.g. an array of strings has no path information for the
-        // array elements)
-        String jsonValue = propertyContext.getVariableNames().newVariableName("AsJsonValue");
-        if (propertyContext.getPath() != null)
+        if (COLLECTION_ELEMENT_PATH.equals(propertyContext.getPath()))
         {
-            if (JsonUtils.isJsonPath(propertyContext.getPath()))
-            {
-                writer.write("JSONValue %s = JsonPath.select(%s, \"%s\");", jsonValue, propertyContext
-                        .getVariableNames().getInputVariable(), propertyContext.getPath());
-            }
-            else
-            {
-                writer.write("JSONValue %s = %s.get(\"%s\");", jsonValue, propertyContext.getVariableNames()
-                        .getInputVariable(), propertyContext.getPath());
-            }
+            writer.write("%s = %s;", jsonValueVariable, propertyContext.getVariableNames().getInputVariable());
         }
         else
         {
-            writer.write("JSONValue %s = %s;", jsonValue, propertyContext.getVariableNames().getInputVariable());
+            if (JsonUtils.isJsonPath(propertyContext.getPath()))
+            {
+                writer.write("%s = JsonPath.select(%s, \"%s\");", jsonValueVariable, propertyContext.getVariableNames()
+                        .getInputVariable(), propertyContext.getPath());
+            }
+            else
+            {
+                writer.write("%s = %s.get(\"%s\");", jsonValueVariable, propertyContext.getVariableNames()
+                        .getInputVariable(), propertyContext.getPathOrName());
+            }
         }
-        return jsonValue;
     }
 }

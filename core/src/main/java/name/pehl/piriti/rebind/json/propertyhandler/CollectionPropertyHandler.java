@@ -10,7 +10,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -91,7 +90,7 @@ public class CollectionPropertyHandler extends AbstractJsonPropertyHandler
         // The nested property context is created *without* a path. The nested
         // property handler must take care of this!
         JType elementType = getElementType(propertyContext);
-        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, null);
+        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, COLLECTION_ELEMENT_PATH);
         PropertyHandler nestedHandler = propertyHandlerLookup.lookup(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
@@ -99,10 +98,10 @@ public class CollectionPropertyHandler extends AbstractJsonPropertyHandler
             return;
         }
 
-        String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
-        writer.write("if (%s != null) {", jsonValue);
+        getOrSelectJson(writer, propertyContext);
+        writer.write("if (%s != null) {", jsonValueVariable);
         writer.indent();
-        writer.write("JSONArray jsonArray = %s.isArray();", jsonValue);
+        writer.write("JSONArray jsonArray = %s.isArray();", jsonValueVariable);
         writer.write("if (jsonArray != null) {");
         writer.indent();
         writer.write("int size = jsonArray.size();");

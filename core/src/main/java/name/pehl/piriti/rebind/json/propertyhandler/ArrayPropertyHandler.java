@@ -1,6 +1,5 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
-import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -91,10 +90,10 @@ public class ArrayPropertyHandler extends AbstractJsonPropertyHandler
             return;
         }
 
-        String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
-        writer.write("if (%s != null) {", jsonValue);
+        getOrSelectJson(writer, propertyContext);
+        writer.write("if (%s != null) {", jsonValueVariable);
         writer.indent();
-        writer.write("JSONArray jsonArray = %s.isArray();", jsonValue);
+        writer.write("JSONArray jsonArray = %s.isArray();", jsonValueVariable);
         writer.write("if (jsonArray != null) {");
         writer.indent();
         writer.write("int size = jsonArray.size();");

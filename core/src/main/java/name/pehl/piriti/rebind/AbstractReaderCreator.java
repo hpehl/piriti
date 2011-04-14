@@ -1,11 +1,6 @@
 package name.pehl.piriti.rebind;
 
-import java.util.Iterator;
-
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler;
 
 import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
@@ -90,20 +85,8 @@ public abstract class AbstractReaderCreator extends AbstractCreator
         {
             newInstance(writer);
         }
-
-        // handle IDs in nested models
-        for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
-        {
-            PropertyContext propertyContext = iter.next();
-            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-            if ((propertyHandler instanceof XmlRegistryPropertyHandler
-                    || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
-                    && propertyHandler.isValid(writer, propertyContext))
-            {
-                writer.newline();
-                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
-            }
-        }
+        // TODO Is this necessary? Currently this causes StackOverflowError!
+        // handleIdsInNestedTypes(writer);
 
         writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
@@ -112,6 +95,9 @@ public abstract class AbstractReaderCreator extends AbstractCreator
         writer.outdent();
         writer.write("}");
     }
+
+
+    protected abstract void handleIdsInNestedTypes(IndentedWriter writer) throws UnableToCompleteException;
 
 
     protected void readProperties(IndentedWriter writer) throws UnableToCompleteException

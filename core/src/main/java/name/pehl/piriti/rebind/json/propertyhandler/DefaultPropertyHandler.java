@@ -57,13 +57,13 @@ public class DefaultPropertyHandler extends AbstractJsonPropertyHandler
                 .getQualifiedSourceName());
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();
-        String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
-        writer.write("if (%s != null) {", jsonValue);
+        getOrSelectJson(writer, propertyContext);
+        writer.write("if (%s != null) {", jsonValueVariable);
         writer.indent();
-        writer.write("if (%s.isNull() == null) {", jsonValue);
+        writer.write("if (%s.isNull() == null) {", jsonValueVariable);
         writer.indent();
         String jsonObject = propertyContext.getVariableNames().newVariableName("jsonObject");
-        writer.write("JSONObject %s = %s.isObject();", jsonObject, jsonValue);
+        writer.write("JSONObject %s = %s.isObject();", jsonObject, jsonValueVariable);
         writer.write("if (%s != null) {", jsonObject);
         writer.indent();
         writer.write("%s = %s.read(%s);", propertyContext.getVariableNames().getValueVariable(), readerVariable,

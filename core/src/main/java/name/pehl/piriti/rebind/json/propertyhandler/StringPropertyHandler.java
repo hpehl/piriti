@@ -23,13 +23,12 @@ public class StringPropertyHandler extends AbstractJsonPropertyHandler
     @Override
     protected void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
-        String jsonValue = getOrSelectJson(writer, propertyContext);
-        writer.write("if (%s != null) {", jsonValue);
+        writer.write("if (%s != null) {", jsonValueVariable);
         writer.indent();
-        writer.write("if (%s.isNull() == null) {", jsonValue);
+        writer.write("if (%s.isNull() == null) {", jsonValueVariable);
         writer.indent();
         String jsonString = propertyContext.getVariableNames().newVariableName("AsJsonString");
-        writer.write("JSONString %s = %s.isString();", jsonString, jsonValue);
+        writer.write("JSONString %s = %s.isString();", jsonString, jsonValueVariable);
         writer.write("if (%s != null) {", jsonString);
         writer.indent();
         writer.write("%s = %s.stringValue();", propertyContext.getVariableNames().getValueVariable(), jsonString);
@@ -39,5 +38,13 @@ public class StringPropertyHandler extends AbstractJsonPropertyHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    @Override
+    protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        writer.write("%s.append(JsonUtils.escapeValue(%s));", propertyContext.getVariableNames().getBuilderVariable(),
+                propertyContext.getVariableNames().getValueVariable());
     }
 }

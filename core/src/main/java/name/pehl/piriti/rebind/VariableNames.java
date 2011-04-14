@@ -24,7 +24,7 @@ public class VariableNames
     }
 
 
-    private VariableNames(int index, String instanceVariable, String inputType, String valueVariable,
+    private VariableNames(int index, String instanceVariable, String valueVariable, String inputType,
             String inputVariable, String builderVariable)
     {
         this.index = index;

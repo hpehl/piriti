@@ -211,9 +211,12 @@ public class PropertyContext extends LogFacade
     @Override
     public String toString()
     {
-        StringBuilder builder = new StringBuilder().append("PropertyContext [").append(order).append(": ")
-                .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name).append(", path=\"")
-                .append(path).append("\"");
+        StringBuilder builder = new StringBuilder().append("PropertyContext [")
+                .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name);
+        if (path != null)
+        {
+            builder.append(", path=\"").append(path).append("\"");
+        }
         if (format != null)
         {
             builder.append(", format=\"").append(format).append("\"");
@@ -355,6 +358,12 @@ public class PropertyContext extends LogFacade
     public String getPath()
     {
         return path;
+    }
+
+
+    public String getPathOrName()
+    {
+        return path != null ? path : name;
     }
 
 

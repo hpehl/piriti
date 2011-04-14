@@ -28,19 +28,6 @@ public interface PropertyHandler
 
 
     /**
-     * Decides whether the handler supports a conversion. Note that this does
-     * not mean that the handler will also have a custom converter, it just says
-     * that it will support it.
-     * 
-     * @param writer
-     * @param propertyContext
-     * @return
-     * @throws UnableToCompleteException
-     */
-    boolean supportsConversion(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException;
-
-
-    /**
      * Generates logging information and code comments about the current
      * property.
      * 

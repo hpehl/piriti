@@ -54,7 +54,7 @@ public abstract class AbstractTypeProcessor extends LogFacade implements TypePro
     public final void process(TypeContext typeContext) throws UnableToCompleteException
     {
         // log
-        debug("Entering TypeProcessor %s - processing % s", getClass().getSimpleName(), typeContext);
+        debug("Entering TypeProcessor %s - processing %s", getClass().getSimpleName(), typeContext);
 
         // prepare
         skipTypes = typeContext.getStopAt().getFlattenedSupertypeHierarchy();

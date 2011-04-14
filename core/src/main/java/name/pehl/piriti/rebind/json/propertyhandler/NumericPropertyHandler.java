@@ -1,6 +1,5 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
-import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -23,13 +22,12 @@ public class NumericPropertyHandler extends AbstractJsonPropertyHandler
     @Override
     protected void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
-        String jsonValue = CodeGeneration.getOrSelectJson(writer, propertyContext);
-        writer.write("if (%s != null) {", jsonValue);
+        writer.write("if (%s != null) {", jsonValueVariable);
         writer.indent();
-        writer.write("if (%s.isNull() == null) {", jsonValue);
+        writer.write("if (%s.isNull() == null) {", jsonValueVariable);
         writer.indent();
         String jsonNumber = propertyContext.getVariableNames().newVariableName("AsJsonNumber");
-        writer.write("JSONNumber %s = %s.isNumber();", jsonNumber, jsonValue);
+        writer.write("JSONNumber %s = %s.isNumber();", jsonNumber, jsonValueVariable);
         writer.write("if (%s != null) {", jsonNumber);
         writer.indent();
         String doubleValue = propertyContext.getVariableNames().getValueVariable() + "AsDouble";
