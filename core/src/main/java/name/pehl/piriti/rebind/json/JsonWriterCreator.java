@@ -2,6 +2,7 @@ package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.rebind.AbstractWriterCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
+import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
@@ -143,5 +144,12 @@ public class JsonWriterCreator extends AbstractWriterCreator
         writer.outdent();
         writer.write("return json;");
         writer.write("}");
+    }
+
+
+    @Override
+    protected void writeSeperator(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        writer.write("%s.append(\",\");", propertyContext.getVariableNames().getBuilderVariable());
     }
 }

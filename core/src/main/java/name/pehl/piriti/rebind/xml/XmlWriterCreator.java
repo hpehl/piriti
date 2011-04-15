@@ -98,7 +98,7 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("String xmlValue = toXml(model);");
         writer.write("if (xmlValue != null) {");
         writer.indent();
-        writer.write("%s.append(xmlValue);");
+        writer.write("%s.append(xmlValue);", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();

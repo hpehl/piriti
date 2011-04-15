@@ -40,7 +40,12 @@ public abstract class AbstractWriterCreator extends AbstractCreator
         propertyHandler.markupEnd(writer, propertyContext);
         if (hasNext)
         {
-            writer.write("%s.append(\",\");", propertyContext.getVariableNames().getBuilderVariable());
+            writeSeperator(writer, propertyContext);
         }
+    }
+
+
+    protected void writeSeperator(IndentedWriter writer, PropertyContext propertyContext)
+    {
     }
 }
