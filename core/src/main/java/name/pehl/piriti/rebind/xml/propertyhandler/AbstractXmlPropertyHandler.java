@@ -1,10 +1,7 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
-import java.util.logging.Level;
-
 import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
@@ -30,7 +27,7 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
     /**
      * XPath special characters.
      */
-    private static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']', '/', '@',};
+    protected static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']', '/', '@',};
 
 
     // ----------------------------------------------------------- constructors
@@ -74,29 +71,19 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
 
 
     @Override
+    public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    {
+        super.declare(writer, propertyContext);
+        writer.write("String %s = null;", propertyContext.getVariableNames().getValueAsStringVariable());
+    }
+
+
+    @Override
     protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
-        if (propertyContext.getPath() != null)
-        {
-            CodeGeneration.log(writer, Level.FINE, "Using XPath \"%s\" to select xml value", propertyContext.getPath());
-            writer.write("String %s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames()
-                    .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), propertyContext
-                    .getPath(), propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
-        }
-        else
-        {
-            if (propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE)
-            {
-                writer.write("String %s = %s.getText();",
-                        propertyContext.getVariableNames().getValueAsStringVariable(), propertyContext
-                                .getVariableNames().getInputVariable());
-            }
-            else
-            {
-                writer.write("String %s = %s.getTextStripped();", propertyContext.getVariableNames()
-                        .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable());
-            }
-        }
+        writer.write("%s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames().getValueAsStringVariable(),
+                propertyContext.getVariableNames().getInputVariable(), propertyContext.getPathOrName(),
+                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
     }
 
 
@@ -121,7 +108,8 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
     @Override
     protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
-        CodeGeneration.log(writer, Level.WARNING, "writeValueDirectly() NYI");
+        writer.write("%s.append(%s);", propertyContext.getVariableNames().getBuilderVariable(), propertyContext
+                .getVariableNames().getValueVariable());
     }
 
 

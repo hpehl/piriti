@@ -1,15 +1,6 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
@@ -28,16 +19,6 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class CollectionPropertyHandler extends AbstractJsonPropertyHandler
 {
-    protected static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
-    static
-    {
-        interfaceToImplementation.put(Collection.class.getName(), ArrayList.class.getName());
-        interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
-        interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
-        interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
-    }
-
-
     public CollectionPropertyHandler(TreeLogger logger)
     {
         super(logger);
@@ -105,13 +86,8 @@ public class CollectionPropertyHandler extends AbstractJsonPropertyHandler
         writer.write("if (jsonArray != null) {");
         writer.indent();
         writer.write("int size = jsonArray.size();");
-        String collectionImplementation = interfaceToImplementation.get(propertyContext.getType().getErasedType()
-                .getQualifiedSourceName());
-        if (collectionImplementation == null)
-        {
-            // the field type is already an implementation
-            collectionImplementation = propertyContext.getType().getQualifiedSourceName();
-        }
+        String collectionImplementation = CodeGeneration.collectionImplementationFor(propertyContext.getType()
+                .getErasedType().getQualifiedSourceName());
         writer.write("%s = new %s<%s>();", propertyContext.getVariableNames().getValueVariable(),
                 collectionImplementation, elementType.getQualifiedSourceName());
         writer.write("for (int i = 0; i < size; i++) {");

@@ -6,6 +6,8 @@ import name.pehl.piriti.commons.client.Mapping;
 import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -28,14 +30,14 @@ public class Book
     
     // ---------------------------------------------------- xml reader / writer
 
-//    @Mappings({@Mapping(value = "reviews", path = "reviews/review"),
-//        @Mapping(value = "related", path = "related/book"),
-//        @Mapping(value = "extraInfoOfLastRelatedBook", path = "//related/book[3]/extraInfo/text()")})    
-//    public interface BookXmlReader extends XmlReader<Book> {}
-//    public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
-//
-//    public interface BookXmlWriter extends XmlWriter<Book> {}
-//    public static final BookXmlWriter XML_WRITER = GWT.create(BookXmlWriter.class);
+    @Mappings({@Mapping(value = "reviews", path = "reviews/review"),
+        @Mapping(value = "related", path = "related/book"),
+        @Mapping(value = "extraInfoOfLastRelatedBook", path = "//related/book[3]/extraInfo/text()")})    
+    public interface BookXmlReader extends XmlReader<Book> {}
+    public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
+
+    public interface BookXmlWriter extends XmlWriter<Book> {}
+    public static final BookXmlWriter XML_WRITER = GWT.create(BookXmlWriter.class);
 
     // ------------------------------------------------------------------- data
 

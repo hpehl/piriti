@@ -1,7 +1,11 @@
 package name.pehl.piriti.client.references;
 
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -23,12 +27,12 @@ public class Author
 
     // ---------------------------------------------------- xml reader / writer
 
-//    @Mappings(@Mapping(value = "bestseller", path = "bestseller/book"))
-//    public interface AuthorXmlReader extends XmlReader<Author> {}
-//    public static final AuthorXmlReader XML_READER = GWT.create(AuthorXmlReader.class);
-//
-//    public interface AuthorXmlWriter extends XmlWriter<Author> {}
-//    public static final AuthorXmlWriter XML_WRITER = GWT.create(AuthorXmlWriter.class);
+    @Mappings(@Mapping(value = "bestseller", path = "bestseller/book"))
+    public interface AuthorXmlReader extends XmlReader<Author> {}
+    public static final AuthorXmlReader XML_READER = GWT.create(AuthorXmlReader.class);
+
+    public interface AuthorXmlWriter extends XmlWriter<Author> {}
+    public static final AuthorXmlWriter XML_WRITER = GWT.create(AuthorXmlWriter.class);
 
     // ------------------------------------------------------------------- data
 

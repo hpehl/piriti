@@ -1,9 +1,9 @@
 package name.pehl.piriti.rebind.xml;
 
+import name.pehl.piriti.rebind.AbstractWriterCreator;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.VariableNames;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -17,7 +17,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlWriterCreator extends AbstractXmlCreator
+public class XmlWriterCreator extends AbstractWriterCreator
 {
     // --------------------------------------------------------- initialization
 
@@ -29,16 +29,47 @@ public class XmlWriterCreator extends AbstractXmlCreator
 
 
     @Override
-    protected PropertyHandlerRegistry setupPropertyHandlerLookup()
+    protected VariableNames setupVariableNames()
     {
-        return new XmlPropertyHandlerRegistry(logger);
+        return XmlUtils.newVariableNames();
+    }
+
+
+    @Override
+    protected PropertyHandlerLookup setupPropertyHandlerLookup()
+    {
+        return XmlUtils.newPropertyHandlerLookup(logger);
     }
 
 
     // --------------------------------------------------------- create methods
 
     @Override
-    protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
+    protected void createImports(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createImports(writer);
+        XmlUtils.createImports(writer);
+    }
+
+
+    @Override
+    protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createMemberVariables(writer);
+        XmlUtils.createMemberVariables(writer);
+    }
+
+
+    @Override
+    protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createConstructorBody(writer);
+        XmlUtils.createConstructorBody(writer, typeContext);
+    }
+
+
+    @Override
+    protected void createWriterMethods(IndentedWriter writer) throws UnableToCompleteException
     {
         writeList(writer);
         writer.newline();
@@ -104,20 +135,5 @@ public class XmlWriterCreator extends AbstractXmlCreator
         writer.outdent();
         writer.write("return xml;");
         writer.write("}");
-    }
-
-
-    // ---------------------------------------------------- overwritten methods
-
-    @Override
-    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
-            boolean hasNext) throws UnableToCompleteException
-    {
-        fieldHandler.log(writer, fieldContext);
-        fieldHandler.declare(writer, fieldContext);
-        fieldHandler.readProperty(writer, fieldContext);
-        fieldHandler.markupStart(writer, fieldContext);
-        fieldHandler.writeValue(writer, fieldContext, propertyHandlerRegistry);
-        fieldHandler.markupEnd(writer, fieldContext);
     }
 }

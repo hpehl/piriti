@@ -1,14 +1,17 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
+import java.util.logging.Level;
+
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.propertyhandler.AbstractCollectionPropertyHandler;
+import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * {@link PropertyHandler} for collections.
@@ -16,7 +19,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
+public class CollectionPropertyHandler extends AbstractXmlPropertyHandler
 {
     public CollectionPropertyHandler(TreeLogger logger)
     {
@@ -24,30 +27,44 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
     }
 
 
-    /**
-     * TODO Javadoc
-     * 
-     * @param writer
-     * @param propertyContext
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.xml.propertyhandler.ConverterPropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyContext)
-     */
+    @Override
+    public boolean isValid(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    {
+        JType elementType = getElementType(propertyContext);
+        if (elementType == null)
+        {
+            skipProperty(writer, propertyContext, "No type parameter found");
+            return false;
+        }
+        if (elementType.isArray() != null)
+        {
+            skipProperty(writer, propertyContext, "Collections of arrays are not supported");
+            return false;
+        }
+        if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
+        {
+            skipProperty(writer, propertyContext, "Collections of collections / maps are not supported");
+            return false;
+        }
+        return true;
+    }
+
+
+    protected JType getElementType(PropertyContext propertyContext) throws UnableToCompleteException
+    {
+        return TypeUtils.getTypeVariable(propertyContext.getType());
+    }
+
+
     @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
         String nestedXpath = ".";
-        JClassType parameterType = getTypeVariable(propertyContext);
+        JType elementType = getElementType(propertyContext);
         String nestedElementsVariable = propertyContext.getVariableNames().newVariableName("NestedElements");
-        // if (parameterType.isPrimitive() != null ||
-        // TypeUtils.isBasicType(parameterType)
-        // || parameterType.isEnum() != null)
-        // {
-        // nestedXpath += "/text()";
-        // }
-        PropertyContext nestedPropertyContext = propertyContext.createNested(parameterType, nestedXpath);
-        PropertyHandler nestedHandler = propertyHandlerRegistry.findPropertyHandler(nestedPropertyContext);
+        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, nestedXpath);
+        PropertyHandler nestedHandler = propertyHandlerLookup.lookup(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {
             return;
@@ -57,21 +74,16 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
                 propertyContext.getVariableNames().getInputVariable(), propertyContext.getPath());
         writer.write("if (!%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
-        String collectionImplementation = interfaceToImplementation.get(propertyContext.getType().getErasedType()
-                .getQualifiedSourceName());
-        if (collectionImplementation == null)
-        {
-            // the field type is already an implementation
-            collectionImplementation = propertyContext.getType().getQualifiedSourceName();
-        }
+        String collectionImplementation = CodeGeneration.collectionImplementationFor(propertyContext.getType()
+                .getErasedType().getQualifiedSourceName());
         writer.write("%s = new %s<%s>();", propertyContext.getVariableNames().getValueVariable(),
-                collectionImplementation, parameterType.getQualifiedSourceName());
+                collectionImplementation, elementType.getQualifiedSourceName());
         writer.write("for (Element %s : %s) {", nestedPropertyContext.getVariableNames().getInputVariable(),
                 nestedElementsVariable);
         writer.indent();
         nestedHandler.log(writer, nestedPropertyContext);
         nestedHandler.declare(writer, nestedPropertyContext);
-        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerRegistry);
+        nestedHandler.readInput(writer, nestedPropertyContext, propertyHandlerLookup);
         writer.write("if (%s != null) {", nestedPropertyContext.getVariableNames().getValueVariable());
         writer.indent();
         writer.write("%s.add(%s);", propertyContext.getVariableNames().getValueVariable(), nestedPropertyContext
@@ -86,23 +98,9 @@ public class CollectionPropertyHandler extends AbstractCollectionPropertyHandler
 
 
     @Override
-    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        writer.write("// markupStart() NYI");
-    }
-
-
-    @Override
     public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerRegistry propertyHandlerRegistry) throws UnableToCompleteException
+            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        writer.write("// writeValue() NYI");
-    }
-
-
-    @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        writer.write("// markupEnd() NYI");
+        CodeGeneration.log(writer, Level.WARNING, "writeValue() NYI");
     }
 }

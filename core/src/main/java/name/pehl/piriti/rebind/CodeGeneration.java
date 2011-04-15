@@ -1,5 +1,14 @@
 package name.pehl.piriti.rebind;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -17,6 +26,18 @@ import com.google.gwt.core.ext.typeinfo.JParameter;
  */
 public final class CodeGeneration
 {
+    // -------------------------------------------------------------- constants
+
+    protected static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
+    static
+    {
+        interfaceToImplementation.put(Collection.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
+        interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
+    }
+
+
     /**
      * Private constructor to ensure that the class acts as a true utility class
      * i.e. it isn't instantiable and extensible.
@@ -27,6 +48,18 @@ public final class CodeGeneration
 
 
     // ----------------------------------------------------------- misc methods
+
+    public static String collectionImplementationFor(String classname)
+    {
+        String impl = interfaceToImplementation.get(classname);
+        if (impl != null)
+        {
+            return impl;
+        }
+        // It's assumed that classname is already an implementation!
+        return classname;
+    }
+
 
     public static void log(IndentedWriter writer, Level level, String message, Object... params)
     {

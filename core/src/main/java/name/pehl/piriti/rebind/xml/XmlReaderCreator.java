@@ -1,14 +1,18 @@
 package name.pehl.piriti.rebind.xml;
 
 import java.util.Iterator;
+import java.util.logging.Level;
 
+import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
+import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 import name.pehl.piriti.rebind.xml.propertyhandler.ArrayPropertyHandler;
 import name.pehl.piriti.rebind.xml.propertyhandler.CollectionPropertyHandler;
-import name.pehl.piriti.rebind.xml.propertyhandler.XmlRegistryPropertyHandler;
+import name.pehl.piriti.rebind.xml.propertyhandler.DefaultPropertyHandler;
 import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -22,7 +26,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 139 $
  */
-public class XmlReaderCreator extends AbstractXmlCreator
+public class XmlReaderCreator extends AbstractReaderCreator
 {
     // --------------------------------------------------------- initialization
 
@@ -33,10 +37,48 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
+    @Override
+    protected VariableNames setupVariableNames()
+    {
+        return XmlUtils.newVariableNames();
+    }
+
+
+    @Override
+    protected PropertyHandlerLookup setupPropertyHandlerLookup()
+    {
+        return XmlUtils.newPropertyHandlerLookup(logger);
+    }
+
+
     // --------------------------------------------------------- create methods
 
     @Override
-    protected void createMethods(IndentedWriter writer) throws UnableToCompleteException
+    protected void createImports(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createImports(writer);
+        XmlUtils.createImports(writer);
+    }
+
+
+    @Override
+    protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createMemberVariables(writer);
+        XmlUtils.createMemberVariables(writer);
+    }
+
+
+    @Override
+    protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
+    {
+        super.createConstructorBody(writer);
+        XmlUtils.createConstructorBody(writer, typeContext);
+    }
+
+
+    @Override
+    public void createReaderMethods(IndentedWriter writer) throws UnableToCompleteException
     {
         readListFromString(writer);
         writer.newline();
@@ -53,28 +95,16 @@ public class XmlReaderCreator extends AbstractXmlCreator
         readListFromElementUsingXpath(writer);
         writer.newline();
 
-        readFromString(writer);
+        readList(writer);
         writer.newline();
 
-        readFromDocument(writer);
+        readSingleFromString(writer);
         writer.newline();
 
-        readFromElement(writer);
+        readSingleFromDocument(writer);
         writer.newline();
 
-        internalReadList(writer);
-        writer.newline();
-
-        readIds(writer);
-        writer.newline();
-
-        readProperties(writer);
-        writer.newline();
-
-        readIdRefs(writer);
-        writer.newline();
-
-        CodeGeneration.idRef(writer, typeContext.getType());
+        readSingle(writer);
         writer.newline();
 
         helperMethods(writer);
@@ -158,9 +188,57 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
+    @Override
+    protected void readList(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("private List<%s> internalReadList(List<Element> elements) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("List<%s> models = null;", typeContext.getType().getParameterizedQualifiedSourceName());
+        writer.write("List<InstanceContextHolder<%s, Element>> instanceContextHolders = null;", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
+        writer.write("if (!elements.isEmpty()) {");
+        writer.indent();
+        writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
+        writer.write("instanceContextHolders = new ArrayList<InstanceContextHolder<%s, JSONObject>>();", typeContext
+                .getType().getParameterizedQualifiedSourceName());
+
+        CodeGeneration.log(writer, Level.FINE, "First iteration over elements to create models and process IDs");
+        writer.write("for (Element element : elements) {");
+        writer.indent();
+        writer.write("%s %s = readIds(element);", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInstanceVariable());
+        writer.write("if (%s != null) {", typeContext.getVariableNames().getInstanceVariable());
+        writer.indent();
+        writer.write("models.add(%s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("instanceContextHolders.add(new InstanceContextHolder<%s, Element>(%s, element));", typeContext
+                .getType().getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInstanceVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+
+        CodeGeneration.log(writer, Level.FINE, "Second iteration over generated models to map properties and IDREFs");
+        writer.write("for (InstanceContextHolder<%s, Element> ich : instanceContextHolders) {", typeContext.getType()
+                .getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("%s %s = ich.getInstance();", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInstanceVariable());
+        writer.write("readProperties(element, %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("readIdRefs(element, %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.outdent();
+        writer.write("}");
+        writer.write("return models;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
     // ---------------------------------------------------- read single methods
 
-    protected void readFromString(IndentedWriter writer) throws UnableToCompleteException
+    protected void readSingleFromString(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public %s read(String xml) {", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.indent();
@@ -170,7 +248,7 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    protected void readFromDocument(IndentedWriter writer) throws UnableToCompleteException
+    protected void readSingleFromDocument(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public %s read(Document document) {", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.indent();
@@ -186,7 +264,8 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
-    protected void readFromElement(IndentedWriter writer) throws UnableToCompleteException
+    @Override
+    protected void readSingle(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("public %s read(Element %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
                 typeContext.getVariableNames().getInputVariable());
@@ -208,57 +287,31 @@ public class XmlReaderCreator extends AbstractXmlCreator
     }
 
 
+    // -------------------------------------------------------------------- ids
+
+    /**
+     * TODO Is this method still necessary?
+     * 
+     * @see name.pehl.piriti.rebind.AbstractReaderCreator#handleIdsInNestedTypes(name.pehl.piriti.rebind.IndentedWriter)
+     */
+    @Override
+    protected void handleIdsInNestedTypes(IndentedWriter writer) throws UnableToCompleteException
+    {
+        for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
+        {
+            PropertyContext propertyContext = iter.next();
+            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+            if ((propertyHandler instanceof DefaultPropertyHandler || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
+                    && propertyHandler.isValid(writer, propertyContext))
+            {
+                writer.newline();
+                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
+            }
+        }
+    }
+
+
     // --------------------------------------------------------- helper methods
-
-    protected void internalReadList(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("private List<%s> internalReadList(List<Element> elements) {", typeContext.getType()
-                .getParameterizedQualifiedSourceName());
-        writer.indent();
-        writer.write("List<%s> models = null;", typeContext.getType().getParameterizedQualifiedSourceName());
-        writer.write("if (!elements.isEmpty()) {");
-        writer.indent();
-        writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
-        writer.write("for (Element element : elements) {");
-        writer.indent();
-        writer.write("%s %s = readIds(element);", typeContext.getType().getParameterizedQualifiedSourceName(),
-                typeContext.getVariableNames().getInstanceVariable());
-        writer.write("models.add(%s);", typeContext.getVariableNames().getInstanceVariable());
-        writer.outdent();
-        writer.write("}");
-        writer.write("int index = 0;");
-        writer.write("for (Element element : elements) {");
-        writer.indent();
-        writer.write("%s %s = models.get(index++);", typeContext.getType().getParameterizedQualifiedSourceName(),
-                typeContext.getVariableNames().getInstanceVariable());
-        writer.write("readProperties(element, %s);", typeContext.getVariableNames().getInstanceVariable());
-        writer.write("readIdRefs(element, %s);", typeContext.getVariableNames().getInstanceVariable());
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        writer.write("return models;");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    protected void readProperties(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("private %1$s readProperties(Element %2$s, %1$s %3$s) {", typeContext.getType()
-                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInputVariable(), typeContext
-                .getVariableNames().getInstanceVariable());
-        writer.indent();
-        writer.write("if (%s != null) {", typeContext.getVariableNames().getInputVariable());
-        writer.indent();
-        handleProperties(writer);
-        writer.outdent();
-        writer.write("}");
-        writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
-        writer.outdent();
-        writer.write("}");
-    }
-
 
     protected void helperMethods(IndentedWriter writer)
     {
@@ -275,102 +328,6 @@ public class XmlReaderCreator extends AbstractXmlCreator
         writer.outdent();
         writer.write("}");
         writer.write("return elements;");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    @Override
-    protected void handleProperty(IndentedWriter writer, PropertyHandler fieldHandler, PropertyContext fieldContext,
-            boolean hasNext) throws UnableToCompleteException
-    {
-        fieldHandler.log(writer, fieldContext);
-        fieldHandler.declare(writer, fieldContext);
-        fieldHandler.readInput(writer, fieldContext, propertyHandlerLookup);
-        fieldHandler.assign(writer, fieldContext);
-    }
-
-
-    // ------------------------------------------------------- ids / references
-
-    protected void readIds(IndentedWriter writer) throws UnableToCompleteException
-    {
-        boolean validIdField = false;
-        PropertyHandler handler = null;
-        PropertyContext idContext = typeContext.getId();
-        if (idContext != null)
-        {
-            handler = propertyHandlerLookup.lookup(idContext);
-            validIdField = handler != null && handler.isValid(writer, idContext);
-        }
-
-        writer.write("private %s readIds(Element %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
-                typeContext.getVariableNames().getInputVariable());
-        writer.indent();
-        writer.write("if (%s != null) {", typeContext.getVariableNames().getInputVariable());
-        writer.indent();
-        if (validIdField)
-        {
-            handler.log(writer, idContext);
-            handler.declare(writer, idContext);
-            handler.readInput(writer, idContext, propertyHandlerLookup);
-            writer.write("%s %s = this.idRef(%s);", typeContext.getType().getParameterizedQualifiedSourceName(),
-                    typeContext.getVariableNames().getInstanceVariable(), idContext.getVariableNames()
-                            .getValueVariable());
-            writer.write("if (%s == null) {", typeContext.getVariableNames().getInstanceVariable());
-            writer.indent();
-            // TODO Use InstanceCreator<T, C> if specified
-            writer.write("%s = new %s();", typeContext.getVariableNames().getInstanceVariable(), typeContext.getType()
-                    .getParameterizedQualifiedSourceName());
-            handler.assign(writer, idContext);
-            writer.outdent();
-            writer.write("}");
-        }
-        else
-        {
-            // TODO Use InstanceCreator<T, C> if specified
-            writer.write("%1$s %2$s = new %1$s();", typeContext.getType().getParameterizedQualifiedSourceName(),
-                    typeContext.getVariableNames().getInstanceVariable());
-        }
-        handleIdsInNestedModels(writer);
-        writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
-        writer.outdent();
-        writer.write("}");
-        writer.write("return null;");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    protected void handleIdsInNestedModels(IndentedWriter writer) throws UnableToCompleteException
-    {
-        for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
-        {
-            PropertyContext propertyContext = iter.next();
-            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-            if ((propertyHandler instanceof XmlRegistryPropertyHandler
-                    || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
-                    && propertyHandler.isValid(writer, propertyContext))
-            {
-                writer.newline();
-                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
-            }
-        }
-    }
-
-
-    protected void readIdRefs(IndentedWriter writer) throws UnableToCompleteException
-    {
-        writer.write("private %1$s readIdRefs(Element %2$s, %1$s %3$s) {", typeContext.getType()
-                .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInputVariable(), typeContext
-                .getVariableNames().getInstanceVariable());
-        writer.indent();
-        writer.write("if (%s != null) {", typeContext.getVariableNames().getInputVariable());
-        writer.indent();
-        handleIdRefs(writer);
-        writer.outdent();
-        writer.write("}");
-        writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
     }

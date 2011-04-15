@@ -5,7 +5,6 @@ import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.VariableNames;
-import name.pehl.piriti.rebind.json.JsonUtils;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
@@ -30,8 +29,8 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     /**
      * JSONPath special characters.
      */
-    private static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(',
-            ')',};
+    protected static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?',
+            '(', ')',};
 
     // -------------------------------------------------------- private members
 
@@ -168,7 +167,7 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
         }
         else
         {
-            if (JsonUtils.isJsonPath(propertyContext.getPath()))
+            if (isJsonPath(propertyContext.getPath()))
             {
                 writer.write("%s = JsonPath.select(%s, \"%s\");", jsonValueVariable, propertyContext.getVariableNames()
                         .getInputVariable(), propertyContext.getPath());

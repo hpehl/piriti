@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
+import name.pehl.piriti.rebind.json.propertyhandler.IdPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandlerLookup;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 
@@ -16,40 +17,35 @@ public class XmlPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     @Override
     protected PropertyHandler newIdHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new IdPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newIdRefHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new IdRefPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newBooleanHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new BooleanPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newNumericHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new NumericPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newCharacterHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new CharacterPropertyHandler(logger);
     }
 
 
@@ -63,32 +59,27 @@ public class XmlPropertyHandlerLookup extends AbstractPropertyHandlerLookup
     @Override
     protected PropertyHandler newEnumHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new EnumPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newArrayHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new ArrayPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newCollectionHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new CollectionPropertyHandler(logger);
     }
 
 
     @Override
     protected PropertyHandler newDefaultHandler()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return new DefaultPropertyHandler(logger);
     }
-
 }

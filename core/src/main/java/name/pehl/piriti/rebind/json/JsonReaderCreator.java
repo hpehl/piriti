@@ -280,10 +280,10 @@ public class JsonReaderCreator extends AbstractReaderCreator
                         .getInstanceVariable());
         writer.write("if (%s != null) {", typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
+        writer.write("models.add(%s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("instanceContextHolders.add(new InstanceContextHolder<%s, JSONObject>(%s, currentJsonObject));",
                 typeContext.getType().getParameterizedQualifiedSourceName(), typeContext.getVariableNames()
                         .getInstanceVariable());
-        writer.write("models.add(%s);", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -376,8 +376,13 @@ public class JsonReaderCreator extends AbstractReaderCreator
     }
 
 
-    // ------------------------------------------------------ handle properties
+    // -------------------------------------------------------------------- ids
 
+    /**
+     * TODO Is this method still necessary?
+     * 
+     * @see name.pehl.piriti.rebind.AbstractReaderCreator#handleIdsInNestedTypes(name.pehl.piriti.rebind.IndentedWriter)
+     */
     @Override
     protected void handleIdsInNestedTypes(IndentedWriter writer) throws UnableToCompleteException
     {
@@ -392,16 +397,5 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
             }
         }
-    }
-
-
-    @Override
-    protected void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
-            PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException
-    {
-        propertyHandler.log(writer, propertyContext);
-        propertyHandler.declare(writer, propertyContext);
-        propertyHandler.readInput(writer, propertyContext, propertyHandlerLookup);
-        propertyHandler.assign(writer, propertyContext);
     }
 }
