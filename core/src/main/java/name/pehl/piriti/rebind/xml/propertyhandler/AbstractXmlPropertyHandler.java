@@ -90,10 +90,10 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
     @Override
     public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("%s.append(\"<\");");
-        String elementName = propertyContext.getPath() != null ? propertyContext.getPath() : propertyContext.getName();
-        writer.write("%s.append(\"%s\");", elementName);
-        writer.write("%s.append(\">\");");
+        writer.write("%s.append(\"<\");", propertyContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\"%s\");", propertyContext.getVariableNames().getBuilderVariable(),
+                propertyContext.getPathOrName());
+        writer.write("%s.append(\">\");", propertyContext.getVariableNames().getBuilderVariable());
     }
 
 
@@ -116,10 +116,10 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
     @Override
     public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.write("%s.append(\"</\");");
-        String elementName = propertyContext.getPath() != null ? propertyContext.getPath() : propertyContext.getName();
-        writer.write("%s.append(\"%s\");", elementName);
-        writer.write("%s.append(\">\");");
+        writer.write("%s.append(\"</\");", propertyContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\"%s\");", propertyContext.getVariableNames().getBuilderVariable(),
+                propertyContext.getPathOrName());
+        writer.write("%s.append(\">\");", propertyContext.getVariableNames().getBuilderVariable());
     }
 
 

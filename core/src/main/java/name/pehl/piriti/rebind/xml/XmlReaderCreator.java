@@ -200,7 +200,7 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.write("if (!elements.isEmpty()) {");
         writer.indent();
         writer.write("models = new ArrayList<%s>();", typeContext.getType().getParameterizedQualifiedSourceName());
-        writer.write("instanceContextHolders = new ArrayList<InstanceContextHolder<%s, JSONObject>>();", typeContext
+        writer.write("instanceContextHolders = new ArrayList<InstanceContextHolder<%s, Element>>();", typeContext
                 .getType().getParameterizedQualifiedSourceName());
 
         CodeGeneration.log(writer, Level.FINE, "First iteration over elements to create models and process IDs");
@@ -224,8 +224,8 @@ public class XmlReaderCreator extends AbstractReaderCreator
         writer.indent();
         writer.write("%s %s = ich.getInstance();", typeContext.getType().getParameterizedQualifiedSourceName(),
                 typeContext.getVariableNames().getInstanceVariable());
-        writer.write("readProperties(element, %s);", typeContext.getVariableNames().getInstanceVariable());
-        writer.write("readIdRefs(element, %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("readProperties(ich.getContext(), %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("readIdRefs(ich.getContext(), %s);", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();

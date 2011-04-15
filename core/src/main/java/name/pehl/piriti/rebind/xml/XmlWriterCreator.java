@@ -89,24 +89,24 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("String xml = null;");
         writer.write("if (models != null && rootElement != null) {");
         writer.indent();
-        writer.write("StringBuilder xmlBuilder = new StringBuilder();");
-        writer.write("xmlBuilder.append(\"<\");");
-        writer.write("xmlBuilder.append(rootElement);");
-        writer.write("xmlBuilder.append(\">\");");
+        writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\"<\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(rootElement);", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\">\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("for (%s model : models) {", typeContext.getType().getParameterizedQualifiedSourceName());
         writer.indent();
         writer.write("String xmlValue = toXml(model);");
         writer.write("if (xmlValue != null) {");
         writer.indent();
-        writer.write("xmlBuilder.append(xmlValue);");
+        writer.write("%s.append(xmlValue);");
         writer.outdent();
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        writer.write("xmlBuilder.append(\"</\");");
-        writer.write("xmlBuilder.append(rootElement);");
-        writer.write("xmlBuilder.append(\">\");");
-        writer.write("xml = xmlBuilder.toString();");
+        writer.write("%s.append(\"</\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(rootElement);", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\">\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("xml = %s.toString();", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -123,13 +123,13 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("String xml = null;");
         writer.write("if (model != null) {");
         writer.indent();
-        writer.write("StringBuilder xmlBuilder = new StringBuilder();");
+        writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
 
         // This creates all FieldHandler / FieldContexts and calls handleField()
         // in a loop
         handleProperties(writer);
 
-        writer.write("xml = xmlBuilder.toString();");
+        writer.write("xml = %s.toString();", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
