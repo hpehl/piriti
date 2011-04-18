@@ -95,32 +95,40 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        // First try to read the input as string and convert using a specified
-        // or registered converter.
-        readInputAsString(writer, propertyContext);
-        writer.write("if (%s != null && %s != null) {", propertyContext.getVariableNames().getValueAsStringVariable(),
-                converterVariable);
-        writer.indent();
-        if (propertyContext.getFormat() != null)
+        if (propertyContext.isNative())
         {
-            writer.write("%s = %s.convert(%s, \"%s\");", propertyContext.getVariableNames().getValueVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable(),
-                    propertyContext.getFormat());
+            // TODO
+            readInputNativly(writer, propertyContext);
         }
         else
         {
-            writer.write("%s = %s.convert(%s, null);", propertyContext.getVariableNames().getValueVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable());
+            // First try to read the input as string and convert using a
+            // specified
+            // or registered converter.
+            readInputAsString(writer, propertyContext);
+            writer.write("if (%s != null && %s != null) {", propertyContext.getVariableNames()
+                    .getValueAsStringVariable(), converterVariable);
+            writer.indent();
+            if (propertyContext.getFormat() != null)
+            {
+                writer.write("%s = %s.convert(%s, \"%s\");", propertyContext.getVariableNames().getValueVariable(),
+                        converterVariable, propertyContext.getVariableNames().getValueAsStringVariable(),
+                        propertyContext.getFormat());
+            }
+            else
+            {
+                writer.write("%s = %s.convert(%s, null);", propertyContext.getVariableNames().getValueVariable(),
+                        converterVariable, propertyContext.getVariableNames().getValueAsStringVariable());
+            }
+            writer.outdent();
+            writer.write("}");
+            writer.write("else {");
+            writer.indent();
+            // Second try to read the input directly
+            readInputDirectly(writer, propertyContext);
+            writer.outdent();
+            writer.write("}");
         }
-        writer.outdent();
-        writer.write("}");
-        writer.write("else {");
-        writer.indent();
-        // Second try to read the input directly
-        readInputDirectly(writer, propertyContext);
-        writer.outdent();
-        writer.write("}");
-
     }
 
 
@@ -148,6 +156,20 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      * @param propertyContext
      */
     protected void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
+
+
+    /**
+     * Responsible to assign the property to the native JSON / XML instance in
+     * case the property was marked with {@code @}Native.
+     * <p>
+     * Empty implementation
+     * 
+     * @param writer
+     * @param propertyContext
+     */
+    protected void readInputNativly(IndentedWriter writer, PropertyContext propertyContext)
     {
     }
 
