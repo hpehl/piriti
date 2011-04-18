@@ -15,7 +15,7 @@ import java.util.Set;
 import name.pehl.piriti.commons.client.Format;
 import name.pehl.piriti.commons.client.Id;
 import name.pehl.piriti.commons.client.IdRef;
-import name.pehl.piriti.commons.client.Natural;
+import name.pehl.piriti.commons.client.Native;
 import name.pehl.piriti.commons.client.Order;
 import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.commons.client.Transient;
@@ -186,9 +186,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         Class<? extends Converter<?>> converter = getConverter(field);
         Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
         Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
-        boolean natural = getNatural(field);
+        boolean native_ = getNative(field);
         PropertyContext propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(),
-                path, format, whitespaceHandling, converter, getter, setter, referenceType, natural, logger);
+                path, format, whitespaceHandling, converter, getter, setter, referenceType, native_, logger);
         return propertyContext;
     }
 
@@ -270,9 +270,9 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     }
 
 
-    protected boolean getNatural(JField field)
+    protected boolean getNative(JField field)
     {
-        boolean nativ = field.isAnnotationPresent(Natural.class);
+        boolean nativ = field.isAnnotationPresent(Native.class);
         return nativ;
     }
 }

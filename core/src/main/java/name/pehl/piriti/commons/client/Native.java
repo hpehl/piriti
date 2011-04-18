@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * Using this annotation you can exclude a property from deserialization, but
- * assign the native info. Therefore the property assigned with {@code @}Natural
+ * assign the native info. Therefore the property assigned with {@code @}Native
  * must have one of the following types:
  * <ul>
  * <li>String
@@ -22,6 +22,6 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface Natural
+public @interface Native
 {
 }

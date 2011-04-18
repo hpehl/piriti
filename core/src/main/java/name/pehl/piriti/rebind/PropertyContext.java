@@ -44,7 +44,7 @@ public class PropertyContext extends LogFacade
     private final Class<? extends PropertyGetter<?, ?>> getter;
     private final Class<? extends PropertySetter<?, ?>> setter;
     private final ReferenceType referenceType;
-    private final boolean natural;
+    private final boolean native_;
     private VariableNames variableNames;
 
 
@@ -79,7 +79,7 @@ public class PropertyContext extends LogFacade
     public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path, String format,
             WhitespaceHandling whitespaceHandling, Class<? extends Converter<?>> converter,
             Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
-            ReferenceType referenceType, boolean natural, TreeLogger logger) throws UnableToCompleteException
+            ReferenceType referenceType, boolean native_, TreeLogger logger) throws UnableToCompleteException
     {
         super(logger);
 
@@ -131,7 +131,7 @@ public class PropertyContext extends LogFacade
         this.referenceType = referenceType;
 
         // Native field
-        this.natural = natural;
+        this.native_ = native_;
     }
 
 
@@ -409,9 +409,9 @@ public class PropertyContext extends LogFacade
     }
 
 
-    public boolean isNatural()
+    public boolean isNative()
     {
-        return natural;
+        return native_;
     }
 
 
