@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind;
 
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.converter.client.Converter;
@@ -46,8 +44,8 @@ public class PropertyContext extends LogFacade
     private final Class<? extends PropertyGetter<?, ?>> getter;
     private final Class<? extends PropertySetter<?, ?>> setter;
     private final ReferenceType referenceType;
+    private final boolean natural;
     private VariableNames variableNames;
-    private final Map<String, Object> metadata;
 
 
     // ----------------------------------------------------------- constructors
@@ -81,7 +79,7 @@ public class PropertyContext extends LogFacade
     public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path, String format,
             WhitespaceHandling whitespaceHandling, Class<? extends Converter<?>> converter,
             Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
-            ReferenceType referenceType, TreeLogger logger) throws UnableToCompleteException
+            ReferenceType referenceType, boolean natural, TreeLogger logger) throws UnableToCompleteException
     {
         super(logger);
 
@@ -131,7 +129,9 @@ public class PropertyContext extends LogFacade
         this.getter = getter == NoopPropertyGetter.class ? null : getter;
         this.setter = setter == NoopPropertySetter.class ? null : setter;
         this.referenceType = referenceType;
-        this.metadata = new HashMap<String, Object>();
+
+        // Native field
+        this.natural = natural;
     }
 
 
@@ -147,7 +147,7 @@ public class PropertyContext extends LogFacade
         TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
 
         PropertyContext nested = new PropertyContext(TypeContext.nextOrder(), nestedTypeContext, type, getName(), path,
-                getFormat(), getWhitespaceHandling(), getConverter(), null, null, null, logger);
+                getFormat(), getWhitespaceHandling(), getConverter(), null, null, null, false, logger);
         nested.setVariableNames(nestedVariableNames);
         return nested;
     }
@@ -409,6 +409,12 @@ public class PropertyContext extends LogFacade
     }
 
 
+    public boolean isNatural()
+    {
+        return natural;
+    }
+
+
     public VariableNames getVariableNames()
     {
         return variableNames;
@@ -418,21 +424,6 @@ public class PropertyContext extends LogFacade
     void setVariableNames(VariableNames variableNames)
     {
         this.variableNames = variableNames;
-    }
-
-
-    // --------------------------------------------------------------- metadata
-
-    public <T> void addMetadata(String key, T value)
-    {
-        metadata.put(key, value);
-    }
-
-
-    @SuppressWarnings("unchecked")
-    public <T> T getMetadata(String key)
-    {
-        return (T) metadata.get(key);
     }
 
     // ---------------------------------------------------------- inner classes

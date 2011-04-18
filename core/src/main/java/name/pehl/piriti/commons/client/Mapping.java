@@ -83,4 +83,7 @@ public @interface Mapping
      * @return
      */
     Class<? extends PropertySetter<?, ?>> setter() default NoopPropertySetter.class;
+
+
+    boolean natural() default false;
 }

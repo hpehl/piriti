@@ -380,8 +380,8 @@ public abstract class AbstractCreator extends LogFacade
 
 
     /**
-     * Generates code which instantiates the model either by calling the default
-     * no-arg constructor or by using an {@link InstanceCreator}.
+     * Generates code which instantiates the model either by calling
+     * GWT.create() or by using a configured {@link InstanceCreator}.
      * 
      * @param writer
      */
@@ -398,8 +398,9 @@ public abstract class AbstractCreator extends LogFacade
         }
         else
         {
-            writer.write("%1$s %2$s = new %1$s();", typeContext.getType().getParameterizedQualifiedSourceName(),
-                    typeContext.getVariableNames().getInstanceVariable());
+            writer.write("%1$s %2$s = GWT.create(%3$s.class);", typeContext.getType()
+                    .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInstanceVariable(),
+                    typeContext.getType().getQualifiedSourceName());
         }
     }
 }

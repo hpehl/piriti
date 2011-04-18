@@ -60,7 +60,7 @@ public class DefaultPropertyHandler extends AbstractXmlPropertyHandler
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();
         writer.write("Node nestedNode = %s.selectNode(\"%s\");", propertyContext.getVariableNames().getInputVariable(),
-                propertyContext.getPath());
+                propertyContext.getPathOrName());
         writer.write("if (nestedNode != null && nestedNode instanceof Element) {");
         writer.indent();
         writer.write("%s = %s.read((Element) nestedNode);", propertyContext.getVariableNames().getValueVariable(),
