@@ -98,7 +98,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
         if (propertyContext.isNative())
         {
             // TODO
-            readInputNativly(writer, propertyContext);
+            readInputNatively(writer, propertyContext);
         }
         else
         {
@@ -169,7 +169,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      * @param writer
      * @param propertyContext
      */
-    protected void readInputNativly(IndentedWriter writer, PropertyContext propertyContext)
+    protected void readInputNatively(IndentedWriter writer, PropertyContext propertyContext)
     {
     }
 

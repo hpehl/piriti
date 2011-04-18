@@ -61,6 +61,7 @@ public class IdRefPropertyHandler extends AbstractXmlPropertyHandler
             skipProperty(writer, propertyContext, "Reference type is no class or interface");
             return false;
         }
+        CodeGeneration.readerWriterInitialization(writer, classOrInterface);
         return true;
     }
 
@@ -71,7 +72,8 @@ public class IdRefPropertyHandler extends AbstractXmlPropertyHandler
     {
         String readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
         writer.write("XmlReader<%s> %s = xmlRegistry.getReader(%s.class);",
-                referenceType.getParameterizedQualifiedSourceName(), referenceType.getQualifiedSourceName());
+                referenceType.getParameterizedQualifiedSourceName(), readerVariable,
+                referenceType.getQualifiedSourceName());
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();
         String references = propertyContext.getVariableNames().newVariableName("References");

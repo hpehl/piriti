@@ -1,6 +1,5 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
-import name.pehl.piriti.rebind.json.propertyhandler.IdPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandlerLookup;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 

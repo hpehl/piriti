@@ -25,7 +25,8 @@ public class IdPropertyHandler extends StringPropertyHandler
         super.assign(writer, propertyContext);
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
-        writer.write("this.idMap.put(%s, model);", propertyContext.getVariableNames().getValueVariable());
+        writer.write("this.idMap.put(%s, %s);", propertyContext.getVariableNames().getValueVariable(), propertyContext
+                .getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
     }

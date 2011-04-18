@@ -384,22 +384,29 @@ public abstract class AbstractCreator extends LogFacade
      * GWT.create() or by using a configured {@link InstanceCreator}.
      * 
      * @param writer
+     * @param withDeclaration
      */
-    protected void newInstance(IndentedWriter writer)
+    protected void newInstance(IndentedWriter writer, boolean withDeclaration)
     {
         if (typeContext.getInstanceCreator() != null)
         {
             String instanceCreatorVariable = typeContext.getVariableNames().getInstanceVariable() + "Creator";
             writer.write("%$1s %$2s = GWT.create(%$1s.class);", typeContext.getInstanceCreator(),
                     instanceCreatorVariable);
-            writer.write("%s %s = %s.newInstance(%s);", typeContext.getType().getParameterizedQualifiedSourceName(),
-                    typeContext.getVariableNames().getInstanceVariable(), instanceCreatorVariable, typeContext
-                            .getVariableNames().getInputVariable());
+            if (withDeclaration)
+            {
+                writer.write("%s ", typeContext.getType().getParameterizedQualifiedSourceName());
+            }
+            writer.write("%s = %s.newInstance(%s);", typeContext.getVariableNames().getInstanceVariable(),
+                    instanceCreatorVariable, typeContext.getVariableNames().getInputVariable());
         }
         else
         {
-            writer.write("%1$s %2$s = GWT.create(%3$s.class);", typeContext.getType()
-                    .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInstanceVariable(),
+            if (withDeclaration)
+            {
+                writer.write("%s ", typeContext.getType().getParameterizedQualifiedSourceName());
+            }
+            writer.write("%s = GWT.create(%s.class);", typeContext.getVariableNames().getInstanceVariable(),
                     typeContext.getType().getQualifiedSourceName());
         }
     }

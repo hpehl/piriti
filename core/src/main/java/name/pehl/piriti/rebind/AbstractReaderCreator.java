@@ -76,14 +76,14 @@ public abstract class AbstractReaderCreator extends AbstractCreator
                             .getValueVariable());
             writer.write("if (%s == null) {", typeContext.getVariableNames().getInstanceVariable());
             writer.indent();
-            newInstance(writer);
+            newInstance(writer, false);
             handler.assign(writer, idContext);
             writer.outdent();
             writer.write("}");
         }
         else
         {
-            newInstance(writer);
+            newInstance(writer, false);
         }
         // TODO Is this necessary? Currently this causes StackOverflowError!
         // handleIdsInNestedTypes(writer);
