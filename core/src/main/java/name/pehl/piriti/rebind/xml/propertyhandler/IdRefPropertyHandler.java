@@ -2,12 +2,12 @@ package name.pehl.piriti.rebind.xml.propertyhandler;
 
 import java.util.logging.Level;
 
-import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
+import name.pehl.totoe.xml.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;

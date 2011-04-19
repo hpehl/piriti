@@ -1,12 +1,13 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
-import name.pehl.piriti.commons.client.WhitespaceHandling;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
+import name.pehl.totoe.xml.client.WhitespaceHandling;
 
 import org.apache.commons.lang.StringUtils;
 

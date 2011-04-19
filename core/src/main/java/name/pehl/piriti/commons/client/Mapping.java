@@ -12,6 +12,7 @@ import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
+import name.pehl.totoe.xml.client.WhitespaceHandling;
 
 /**
  * Annotation used inside {@link Mappings} to specify the mapping of one
