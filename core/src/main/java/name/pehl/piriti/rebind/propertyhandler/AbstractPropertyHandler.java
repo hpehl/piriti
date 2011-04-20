@@ -75,13 +75,11 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     // ---------------------------------------------------------- read property
 
     /**
-     * If conversion is supported
-     * {@link #readInputAsString(IndentedWriter, PropertyContext)} is called to
-     * read the property as string. Then a custom or registered converter is
-     * used to convert the string to the proerties type.
-     * <p>
-     * If conversion is not supported
-     * {@link #readInputDirectly(IndentedWriter, PropertyContext)} is called.
+     * If the native flag is set,
+     * {@link #readInputNatively(IndentedWriter, PropertyContext)} is called.
+     * Otherwise {@link #readInputAsString(IndentedWriter, PropertyContext)} is
+     * called. If a converter was registered for the property the string value
+     * is converted to the properties type.
      * 
      * @param writer
      * @param propertyContext
@@ -97,14 +95,12 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     {
         if (propertyContext.isNative())
         {
-            // TODO
             readInputNatively(writer, propertyContext);
         }
         else
         {
             // First try to read the input as string and convert using a
-            // specified
-            // or registered converter.
+            // specified or registered converter.
             readInputAsString(writer, propertyContext);
             writer.write("if (%s != null && %s != null) {", propertyContext.getVariableNames()
                     .getValueAsStringVariable(), converterVariable);

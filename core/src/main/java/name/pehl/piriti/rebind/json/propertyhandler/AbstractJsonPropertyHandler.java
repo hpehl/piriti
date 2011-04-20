@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 /**
  * Abstract base class for {@linkplain PropertyHandler}s used for JSON
@@ -107,6 +108,17 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    @Override
+    protected void readInputNatively(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        JType type = propertyContext.getType();
+        if (String.class.getName().equals(type.getQualifiedSourceName()))
+        {
+
+        }
     }
 
 
