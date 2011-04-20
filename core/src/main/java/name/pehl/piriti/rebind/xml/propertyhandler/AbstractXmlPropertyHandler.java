@@ -7,7 +7,6 @@ import name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
-import name.pehl.totoe.xml.client.WhitespaceHandling;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -82,9 +81,9 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
     @Override
     protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
-        writer.write("%s = %s.selectValue(\"%s\", %s);", propertyContext.getVariableNames().getValueAsStringVariable(),
-                propertyContext.getVariableNames().getInputVariable(), propertyContext.getPathOrName(),
-                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
+        writer.write("%s = %s.selectValue(\"%s\", WhitespaceHandling.%s);", propertyContext.getVariableNames()
+                .getValueAsStringVariable(), propertyContext.getVariableNames().getInputVariable(), propertyContext
+                .getPathOrName(), propertyContext.getWhitespaceHandling());
     }
 
 
