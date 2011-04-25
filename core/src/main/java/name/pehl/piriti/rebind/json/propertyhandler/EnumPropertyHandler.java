@@ -62,7 +62,7 @@ public class EnumPropertyHandler extends AbstractJsonPropertyHandler
     @Override
     protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
-        writer.write("%s.append(JsonUtils.escapeValue(%s));", propertyContext.getVariableNames().getBuilderVariable(),
-                propertyContext.getVariableNames().getValueVariable());
+        writer.write("%s.append(JsonUtils.escapeValue(%s.name()));", propertyContext.getVariableNames()
+                .getBuilderVariable(), propertyContext.getVariableNames().getValueVariable());
     }
 }
