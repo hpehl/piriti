@@ -123,7 +123,7 @@ public class CollectionPropertyHandler extends AbstractJsonPropertyHandler
         // The nested property context is created *without* a path. The nested
         // property handler must take care of this!
         JType elementType = getElementType(propertyContext);
-        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, null);
+        PropertyContext nestedPropertyContext = propertyContext.createNested(elementType, COLLECTION_ELEMENT_PATH);
         PropertyHandler nestedHandler = propertyHandlerLookup.lookup(nestedPropertyContext);
         if (!nestedHandler.isValid(writer, nestedPropertyContext))
         {

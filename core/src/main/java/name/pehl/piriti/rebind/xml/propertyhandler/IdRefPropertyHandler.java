@@ -7,7 +7,6 @@ import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.TypeUtils;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
-import name.pehl.totoe.xml.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -77,9 +76,9 @@ public class IdRefPropertyHandler extends AbstractXmlPropertyHandler
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();
         String references = propertyContext.getVariableNames().newVariableName("References");
-        writer.write("String[] %s = %s.selectValues(\"%s\", %s);", references, propertyContext.getVariableNames()
-                .getInputVariable(), propertyContext.getPath(),
-                propertyContext.getWhitespaceHandling() == WhitespaceHandling.REMOVE);
+        writer.write("String[] %s = %s.selectValues(\"%s\", WhitespaceHandling.%s);", references, propertyContext
+                .getVariableNames().getInputVariable(), propertyContext.getPath(), propertyContext
+                .getWhitespaceHandling());
         writer.write("if (%s.length == 1) {", references);
         writer.indent();
         // If there's only one value it is expected that this value contains

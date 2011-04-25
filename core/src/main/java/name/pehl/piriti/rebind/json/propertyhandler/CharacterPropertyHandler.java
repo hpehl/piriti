@@ -34,7 +34,7 @@ public class CharacterPropertyHandler extends AbstractJsonPropertyHandler
         writer.write("if (%1$s != null && %1$s.length() != 0) {", propertyContext.getVariableNames()
                 .getValueAsStringVariable());
         writer.indent();
-        writer.write("%s = %s.charAt(0));", propertyContext.getVariableNames().getValueVariable(), propertyContext
+        writer.write("%s = %s.charAt(0);", propertyContext.getVariableNames().getValueVariable(), propertyContext
                 .getVariableNames().getValueAsStringVariable());
         writer.outdent();
         writer.write("}");
