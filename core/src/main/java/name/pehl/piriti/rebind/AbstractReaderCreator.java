@@ -83,7 +83,7 @@ public abstract class AbstractReaderCreator extends AbstractCreator
         }
         else
         {
-            newInstance(writer, false);
+            newInstance(writer, true);
         }
         // TODO Is this necessary? Currently this causes StackOverflowError!
         // handleIdsInNestedTypes(writer);

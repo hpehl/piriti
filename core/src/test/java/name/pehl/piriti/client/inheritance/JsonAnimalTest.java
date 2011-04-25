@@ -89,11 +89,11 @@ public class JsonAnimalTest extends AbstractAnimalTest
     public void testWriteDog()
     {
         // Roundtrip
-        // String jsonIn = AnimalResources.INSTANCE.dogJson().getText();
-        // Dog dog = Dog.JSON_READER.read(jsonIn);
-        // String jsonOut = Dog.JSON_WRITER.toJson(dog);
-        // JSONObject jsonObject = new JsonParser().parse(jsonOut);
-        // assertNotNull(jsonObject);
+        String jsonIn = AnimalResources.INSTANCE.dogJson().getText();
+        Dog dog = Dog.JSON_READER.read(jsonIn);
+        String jsonOut = Dog.JSON_WRITER.toJson(dog);
+        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        assertNotNull(jsonObject);
         // TODO More asserts
     }
 }

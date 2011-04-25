@@ -31,7 +31,7 @@ public class EnumPropertyHandler extends AbstractJsonPropertyHandler
         writer.indent();
         String jsonString = propertyContext.getVariableNames().newVariableName("AsJsonString");
         writer.write("JSONString %s = %s.isString();", jsonString, jsonValueVariable);
-        writer.write("if (%$1s != null && %$1s.stringValue() != null) {", jsonString);
+        writer.write("if (%1$s != null && %1$s.stringValue() != null) {", jsonString);
         writer.indent();
         writer.write("try {");
         writer.indent();
@@ -56,5 +56,13 @@ public class EnumPropertyHandler extends AbstractJsonPropertyHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
+    }
+
+
+    @Override
+    protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        writer.write("%s.append(JsonUtils.escapeValue(%s));", propertyContext.getVariableNames().getBuilderVariable(),
+                propertyContext.getVariableNames().getValueVariable());
     }
 }
