@@ -71,7 +71,7 @@ public class CollectionPropertyHandler extends AbstractXmlPropertyHandler
         }
 
         writer.write("List<Element> %s = filterElements(%s.selectNodes(\"%s\"));", nestedElementsVariable,
-                propertyContext.getVariableNames().getInputVariable(), propertyContext.getPath());
+                propertyContext.getVariableNames().getInputVariable(), propertyContext.getPathOrName());
         writer.write("if (!%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
         String collectionImplementation = CodeGeneration.collectionImplementationFor(propertyContext.getType()

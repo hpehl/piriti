@@ -103,7 +103,7 @@ public class ShopReader
     public static final ShopXmlReader SHOP_XML_READER = GWT.create(ShopXmlReader.class);
 
     @Mappings(
-        id = @Mapping(value = "id", path = "id/text()"), 
+        id = @Mapping("id"), 
         value = {
             @Mapping("firstname"),
             @Mapping("surname")})
@@ -111,7 +111,7 @@ public class ShopReader
     public static final CustomerXmlReader CUSTOMER_XML_READER = GWT.create(CustomerXmlReader.class);
 
     @Mappings(
-        id = @Mapping("id"), 
+        id = @Mapping(value = "id", path = "@id"), 
         value = {
             @Mapping("name"), 
             @Mapping("price"),

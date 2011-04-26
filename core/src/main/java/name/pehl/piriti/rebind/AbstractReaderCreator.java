@@ -86,7 +86,7 @@ public abstract class AbstractReaderCreator extends AbstractCreator
             newInstance(writer, true);
         }
         // TODO Is this necessary? Currently this causes StackOverflowError!
-        // handleIdsInNestedTypes(writer);
+        handleIdsInNestedTypes(writer);
 
         writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();

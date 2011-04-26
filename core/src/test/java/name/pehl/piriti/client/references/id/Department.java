@@ -12,26 +12,19 @@ import com.google.gwt.core.client.GWT;
  * @version $Date$ $Revision: 421
  *          $
  */
+// @formatter:off
 public class Department
 {
     // ---------------------------------------------------- xml reader / writer
 
-    public interface DepartmentXmlReader extends XmlReader<Department>
-    {
-    }
-
+    public interface DepartmentXmlReader extends XmlReader<Department> {}
     public static final DepartmentXmlReader XML = GWT.create(DepartmentXmlReader.class);
 
     // ------------------------------------------------------------------- data
 
-    @Id
-    String id;
-
+    @Id @Path("@id") String id;
     String name;
-
-    @IdRef
-    @Path("employees/@members")
-    Employee[] employees;
+    @IdRef @Path("employees/@members") Employee[] employees;
 
 
     // --------------------------------------------------------- public methods

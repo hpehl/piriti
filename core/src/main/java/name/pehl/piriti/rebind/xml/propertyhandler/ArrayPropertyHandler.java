@@ -83,7 +83,7 @@ public class ArrayPropertyHandler extends AbstractXmlPropertyHandler
         }
 
         writer.write("List<Element> %s = filterElements(%s.selectNodes(\"%s\"));", nestedElementsVariable,
-                propertyContext.getVariableNames().getInputVariable(), propertyContext.getPath());
+                propertyContext.getVariableNames().getInputVariable(), propertyContext.getPathOrName());
         writer.write("if (!%1$s.isEmpty()) {", nestedElementsVariable);
         writer.indent();
         writer.write("List<%1$s> %2$s = new ArrayList<%1$s>();", elementType.getParameterizedQualifiedSourceName(),

@@ -59,7 +59,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
         writer.write("%s %s = null;", propertyContext.getType().getParameterizedQualifiedSourceName(), propertyContext
                 .getVariableNames().getValueVariable());
         converterVariable = propertyContext.getVariableNames().newVariableName("Converter");
-        if (propertyContext.useCustomConverter())
+        if (propertyContext.hasConverter())
         {
             writer.write("Converter<%1$s> %2$s = GWT.create(%3$s.class);", propertyContext.getType()
                     .getQualifiedSourceName(), converterVariable, propertyContext.getConverter().getName());
@@ -368,7 +368,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        if (propertyContext.useCustomConverter())
+        if (propertyContext.hasConverter())
         {
             writer.write("if (%s != null) {", converterVariable);
             writer.indent();

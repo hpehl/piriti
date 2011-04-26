@@ -301,13 +301,22 @@ public class XmlReaderCreator extends AbstractReaderCreator
         {
             PropertyContext propertyContext = iter.next();
             PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-            if ((propertyHandler instanceof DefaultPropertyHandler || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
-                    && propertyHandler.isValid(writer, propertyContext))
+            if (idable(writer, propertyHandler, propertyContext))
             {
                 writer.newline();
                 handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
             }
         }
+    }
+
+
+    private boolean idable(IndentedWriter writer, PropertyHandler propertyHandler, PropertyContext propertyContext)
+            throws UnableToCompleteException
+    {
+        boolean idable = (propertyHandler instanceof DefaultPropertyHandler
+                || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
+                && propertyHandler.isValid(writer, propertyContext);
+        return idable;
     }
 
 

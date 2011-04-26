@@ -17,7 +17,6 @@ public class JsonBackAndForthTest extends AbstractBackAndForthTest
         String json = BackAndForthResources.INSTANCE.backAndForthJson().getText();
         BackAndForth backAndForth = BackAndForth.JSON_READER.read(json);
         assertBackAndForth(backAndForth);
-        assertEquals(456, backAndForth.noConverter);
     }
 
 
@@ -28,6 +27,7 @@ public class JsonBackAndForthTest extends AbstractBackAndForthTest
         // Roundtrip
         String jsonIn = BackAndForthResources.INSTANCE.backAndForthJson().getText();
         BackAndForth backAndForth = BackAndForth.JSON_READER.read(jsonIn);
+        backAndForth.name = NameConverter.GERMAN;
         String jsonOut = BackAndForth.JSON_WRITER.toJson(backAndForth);
         JSONObject jsonObject = new JsonParser().parse(jsonOut);
         assertNotNull(jsonObject);

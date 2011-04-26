@@ -14,34 +14,21 @@ import com.google.gwt.core.client.GWT;
  * @version $Date$ $Revision: 408
  *          $
  */
+//@formatter:off
 public class Employee
 {
     // ---------------------------------------------------- xml reader / writer
 
-    public interface EmployeeXmlReader extends XmlReader<Employee>
-    {
-    }
-
+    public interface EmployeeXmlReader extends XmlReader<Employee> {}
     public static final EmployeeXmlReader XML = GWT.create(EmployeeXmlReader.class);
 
     // ------------------------------------------------------------------- data
 
-    @Id
-    String id;
-
+    @Id @Path("@id") String id;
     String name;
-
-    @IdRef
-    @Path("boss/@ref")
-    Employee boss;
-
-    @IdRef
-    @Path("team/member/@ref")
-    List<Employee> team;
-
-    @IdRef
-    @Path("department/@ref")
-    Department department;
+    @IdRef @Path("boss/@ref") Employee boss;
+    @IdRef @Path("team/member/@ref") List<Employee> team;
+    @IdRef @Path("department/@ref") Department department;
 
 
     // --------------------------------------------------------- public methods

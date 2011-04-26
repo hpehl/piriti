@@ -361,9 +361,15 @@ public class PropertyContext extends LogFacade
     }
 
 
+    public boolean hasPath()
+    {
+        return path != null;
+    }
+
+
     public String getPathOrName()
     {
-        return path != null ? path : name;
+        return hasPath() ? path : name;
     }
 
 
@@ -385,7 +391,7 @@ public class PropertyContext extends LogFacade
     }
 
 
-    public boolean useCustomConverter()
+    public boolean hasConverter()
     {
         return converter != null;
     }

@@ -15,7 +15,7 @@ import name.pehl.piriti.client.inheritance.XmlAnimalTest;
 import name.pehl.piriti.client.namespaces.LotteryTicketTest;
 import name.pehl.piriti.client.references.JsonBookTest;
 import name.pehl.piriti.client.references.XmlBookTest;
-import name.pehl.piriti.client.references.id.XmlEmployeeTest;
+import name.pehl.piriti.client.references.id.XmlCompanyTest;
 import name.pehl.piriti.client.types.JsonBooleansTest;
 import name.pehl.piriti.client.types.JsonFatGlobalItemTest;
 import name.pehl.piriti.client.types.XmlBooleansTest;
@@ -45,7 +45,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonBookTest.class);
         suite.addTestSuite(XmlBookTest.class);
 
-        suite.addTestSuite(XmlEmployeeTest.class);
+        suite.addTestSuite(XmlCompanyTest.class);
 
         suite.addTestSuite(JsonBooleansTest.class);
         suite.addTestSuite(XmlBooleansTest.class);

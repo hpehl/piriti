@@ -1,20 +1,19 @@
 package name.pehl.piriti.client.references.id;
 
-import java.util.List;
 
 /**
  * @author $Author$
  * @version $Revision$
  */
-public class XmlEmployeeTest extends AbstractEmployeeTest
+public class XmlCompanyTest extends AbstractCompanyTest
 {
     // ------------------------------------------------------------- read tests
 
     public void testRead()
     {
-        String xml = EmployeeResources.INSTANCE.employeesXml().getText();
-        List<Employee> employees = Employee.XML.readList(xml);
-        assertEmployees(employees);
+        String xml = CompanyResources.INSTANCE.companyXml().getText();
+        Company company = Company.XML.read(xml);
+        assertCompany(company);
     }
 
     // ------------------------------------------------------------ write tests

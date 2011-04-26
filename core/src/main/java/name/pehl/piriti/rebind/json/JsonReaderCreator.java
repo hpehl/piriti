@@ -1,18 +1,12 @@
 package name.pehl.piriti.rebind.json;
 
-import java.util.Iterator;
 import java.util.logging.Level;
 
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.rebind.AbstractReaderCreator;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.VariableNames;
-import name.pehl.piriti.rebind.json.propertyhandler.ArrayPropertyHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.CollectionPropertyHandler;
-import name.pehl.piriti.rebind.json.propertyhandler.DefaultPropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.GeneratorContext;
@@ -386,16 +380,22 @@ public class JsonReaderCreator extends AbstractReaderCreator
     @Override
     protected void handleIdsInNestedTypes(IndentedWriter writer) throws UnableToCompleteException
     {
-        for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
-        {
-            PropertyContext propertyContext = iter.next();
-            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-            if ((propertyHandler instanceof DefaultPropertyHandler || propertyHandler instanceof ArrayPropertyHandler || propertyHandler instanceof CollectionPropertyHandler)
-                    && propertyHandler.isValid(writer, propertyContext))
-            {
-                writer.newline();
-                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
-            }
-        }
+        // TODO Currently this causes Stackoverflow! Why?
+        // for (Iterator<PropertyContext> iter =
+        // typeContext.getProperties().iterator(); iter.hasNext();)
+        // {
+        // PropertyContext propertyContext = iter.next();
+        // PropertyHandler propertyHandler =
+        // propertyHandlerLookup.lookup(propertyContext);
+        // if ((propertyHandler instanceof DefaultPropertyHandler
+        // || propertyHandler instanceof ArrayPropertyHandler || propertyHandler
+        // instanceof CollectionPropertyHandler)
+        // && propertyHandler.isValid(writer, propertyContext))
+        // {
+        // writer.newline();
+        // handleProperty(writer, propertyHandler, propertyContext,
+        // iter.hasNext());
+        // }
+        // }
     }
 }

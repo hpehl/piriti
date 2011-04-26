@@ -1,9 +1,21 @@
 package name.pehl.piriti.client.references.id;
 
-import static name.pehl.piriti.client.references.id.EmployeeResources.*;
-
-import java.util.List;
-
+import static name.pehl.piriti.client.references.id.CompanyResources.BOARD_DEPARTMENT_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.BOARD_DEPARTMENT_NAME;
+import static name.pehl.piriti.client.references.id.CompanyResources.BOSS_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.BOSS_NAME;
+import static name.pehl.piriti.client.references.id.CompanyResources.CODER_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.CODER_NAME;
+import static name.pehl.piriti.client.references.id.CompanyResources.ENGINEER_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.ENGINEER_NAME;
+import static name.pehl.piriti.client.references.id.CompanyResources.IT_DEPARTMENT_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.IT_DEPARTMENT_NAME;
+import static name.pehl.piriti.client.references.id.CompanyResources.SALES_DEPARTMENT_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.SALES_DEPARTMENT_NAME;
+import static name.pehl.piriti.client.references.id.CompanyResources.SELLER_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.SELLER_NAME;
+import static name.pehl.piriti.client.references.id.CompanyResources.TESTER_ID;
+import static name.pehl.piriti.client.references.id.CompanyResources.TESTER_NAME;
 import name.pehl.piriti.client.AbstractPiritiTest;
 
 /**
@@ -11,14 +23,15 @@ import name.pehl.piriti.client.AbstractPiritiTest;
  * @version $Date$ $Revision: 295
  *          $
  */
-public abstract class AbstractEmployeeTest extends AbstractPiritiTest
+public abstract class AbstractCompanyTest extends AbstractPiritiTest
 {
-    protected void assertEmployees(List<Employee> employees)
+    protected void assertCompany(Company company)
     {
-        assertNotNull(employees);
-        assertEquals(5, employees.size());
+        assertNotNull(company);
+        assertEquals(5, company.employees.size());
+        assertEquals(3, company.departments.size());
 
-        Employee boss = employees.get(0);
+        Employee boss = company.employees.get(0);
         assertNotNull(boss);
         assertEquals(BOSS_ID, boss.id);
         assertEquals(BOSS_NAME, boss.name);

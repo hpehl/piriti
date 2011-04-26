@@ -87,7 +87,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Class<? extends PropertySetter<?, ?>> setter = mapping.setter();
             boolean native_ = mapping.native_();
             propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(), path, format,
-                    whitespaceHandling, converter, getter, setter, null, native_, logger);
+                    whitespaceHandling, converter, getter, setter, referenceType, native_, logger);
         }
         else
         {

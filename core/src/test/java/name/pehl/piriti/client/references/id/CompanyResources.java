@@ -9,7 +9,7 @@ import com.google.gwt.resources.client.TextResource;
  * @version $LastChangedRevision$
  */
 
-public interface EmployeeResources extends ClientBundle
+public interface CompanyResources extends ClientBundle
 {
     // -------------------------------------------------------------- constants
 
@@ -33,9 +33,9 @@ public interface EmployeeResources extends ClientBundle
 
     // ------------------------------------------------------- deferred binding
 
-    EmployeeResources INSTANCE = GWT.create(EmployeeResources.class);
+    CompanyResources INSTANCE = GWT.create(CompanyResources.class);
 
 
     @Source("employees.xml")
-    public TextResource employeesXml();
+    public TextResource companyXml();
 }

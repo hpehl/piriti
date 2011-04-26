@@ -49,7 +49,4 @@ public class BackAndForth
     @Convert(NameConverter.class)
     @Format(NameConverter.DE_EN)
     String name;
-    
-    @Convert(DefaultValueConverter.class) 
-    int noConverter = 456;
 }
