@@ -397,8 +397,9 @@ public abstract class AbstractCreator extends LogFacade
             {
                 writer.write("%s ", typeContext.getType().getParameterizedQualifiedSourceName());
             }
-            writer.write("%s = %s.newInstance(%s);", typeContext.getVariableNames().getInstanceVariable(),
-                    instanceCreatorVariable, typeContext.getVariableNames().getInputVariable());
+            writer.write("%s = (%s) %s.newInstance(%s);", typeContext.getVariableNames().getInstanceVariable(),
+                    typeContext.getType().getParameterizedQualifiedSourceName(), instanceCreatorVariable, typeContext
+                            .getVariableNames().getInputVariable());
         }
         else
         {
