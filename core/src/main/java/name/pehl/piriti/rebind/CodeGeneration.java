@@ -11,6 +11,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 
+import name.pehl.piriti.commons.client.InstanceCreator;
+
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -86,29 +88,80 @@ public final class CodeGeneration
      */
     public static void readerWriterInitialization(IndentedWriter writer, JClassType type)
     {
-        boolean noargConstructor = false;
-        JConstructor[] constructors = type.getConstructors();
-        if (constructors != null)
+        List<JClassType> concreteTypes = new ArrayList<JClassType>();
+        collectConcreteTypes(concreteTypes, type);
+        for (JClassType concreteType : concreteTypes)
         {
-            for (JConstructor constructor : constructors)
+            boolean noargConstructor = false;
+            JConstructor[] constructors = concreteType.getConstructors();
+            if (constructors != null)
             {
-                JParameter[] parameters = constructor.getParameters();
-                if (parameters == null || parameters.length == 0)
+                for (JConstructor constructor : constructors)
                 {
-                    noargConstructor = true;
-                    break;
+                    JParameter[] parameters = constructor.getParameters();
+                    if (parameters == null || parameters.length == 0)
+                    {
+                        noargConstructor = true;
+                        break;
+                    }
                 }
             }
+            else
+            {
+                noargConstructor = true;
+            }
+            if (noargConstructor)
+            {
+                writer.write(
+                        "new %1$s(); // if there are any reader / writer definitions in %1$s, this ensures they are registered",
+                        concreteType.getParameterizedQualifiedSourceName());
+            }
+        }
+    }
+
+
+    private static void collectConcreteTypes(List<JClassType> concreteTypes, JClassType type)
+    {
+        if (type != null)
+        {
+            if (type.isAbstract() || type.isInterface() != null)
+            {
+                JClassType[] subtypes = type.getSubtypes();
+                if (subtypes != null && subtypes.length != 0)
+                {
+                    for (JClassType subtype : subtypes)
+                    {
+                        collectConcreteTypes(concreteTypes, subtype);
+                    }
+                }
+            }
+            else
+            {
+                concreteTypes.add(type);
+            }
+        }
+    }
+
+
+    public static String lookupReader(IndentedWriter writer, PropertyContext propertyContext, String registryname)
+    {
+        String readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
+        Class<? extends InstanceCreator<?, ?>> instanceCreator = propertyContext.getTypeContext().getInstanceCreator();
+        if (instanceCreator != null)
+        {
+            // TODO Calculate concrete subtype
+            String instanceCreatorVariable = propertyContext.getVariableNames().getInstanceVariable()
+                    + "CreatorForConcreteType";
+            writer.write("%1$s %2$s = GWT.create(%1$s.class);", instanceCreator.getName(), instanceCreatorVariable);
+            writer.write("JsonReader<%s> %s = %s.getReader(%s.getType());", propertyContext.getType()
+                    .getParameterizedQualifiedSourceName(), readerVariable, registryname, instanceCreatorVariable);
         }
         else
         {
-            noargConstructor = true;
+            writer.write("JsonReader<%s> %s = %s.getReader(%s.class);", propertyContext.getType()
+                    .getParameterizedQualifiedSourceName(), readerVariable, registryname, propertyContext.getType()
+                    .getQualifiedSourceName());
         }
-        if (noargConstructor)
-        {
-            writer.write(
-                    "new %1$s(); // if there are any reader / writer definitions in %1$s, this ensures they are registered",
-                    type.getParameterizedQualifiedSourceName());
-        }
+        return readerVariable;
     }
 }

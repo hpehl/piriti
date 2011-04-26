@@ -53,10 +53,7 @@ public class DefaultPropertyHandler extends AbstractXmlPropertyHandler
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        String readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
-        writer.write("XmlReader<%s> %s = xmlRegistry.getReader(%s.class);", propertyContext.getType()
-                .getParameterizedQualifiedSourceName(), readerVariable, propertyContext.getType()
-                .getQualifiedSourceName());
+        String readerVariable = CodeGeneration.lookupReader(writer, propertyContext, "xmlRegistry");
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();
         writer.write("Node nestedNode = %s.selectNode(\"%s\");", propertyContext.getVariableNames().getInputVariable(),

@@ -51,10 +51,7 @@ public class DefaultPropertyHandler extends AbstractJsonPropertyHandler
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        String readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
-        writer.write("JsonReader<%s> %s = jsonRegistry.getReader(%s.class);", propertyContext.getType()
-                .getParameterizedQualifiedSourceName(), readerVariable, propertyContext.getType()
-                .getQualifiedSourceName());
+        String readerVariable = CodeGeneration.lookupReader(writer, propertyContext, "jsonRegistry");
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();
         getOrSelectJson(writer, propertyContext);

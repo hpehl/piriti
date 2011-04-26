@@ -391,7 +391,7 @@ public abstract class AbstractCreator extends LogFacade
         if (typeContext.getInstanceCreator() != null)
         {
             String instanceCreatorVariable = typeContext.getVariableNames().getInstanceVariable() + "Creator";
-            writer.write("%$1s %$2s = GWT.create(%$1s.class);", typeContext.getInstanceCreator(),
+            writer.write("%1$s %2$s = GWT.create(%1$s.class);", typeContext.getInstanceCreator().getName(),
                     instanceCreatorVariable);
             if (withDeclaration)
             {
