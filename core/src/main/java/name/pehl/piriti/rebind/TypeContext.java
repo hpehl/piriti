@@ -107,7 +107,7 @@ public class TypeContext extends LogFacade
         }
         catch (NotFoundException e)
         {
-            throw new UnableToCompleteException();
+            die("Cannot find type: " + e.getMessage());
         }
     }
 

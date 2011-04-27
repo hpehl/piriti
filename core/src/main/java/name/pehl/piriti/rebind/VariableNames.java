@@ -15,23 +15,34 @@ public class VariableNames
     private final String instanceVariable;
     private final String inputType;
     private final String inputVariable;
+    private final String readerType;
+    private final String writerType;
+    private final String registryType;
+    private final String registryVariable;
     private final String builderVariable;
 
 
-    public VariableNames(String valueVariable, String inputType, String inputVariable, String builderVariable)
+    public VariableNames(String valueVariable, String inputType, String inputVariable, String readerType,
+            String writerType, String registryType, String registryVariable, String builderVariable)
     {
-        this(0, DEFAULT_INSTANCE_VARIABLE, valueVariable, inputType, inputVariable, builderVariable);
+        this(0, DEFAULT_INSTANCE_VARIABLE, valueVariable, inputType, inputVariable, readerType, writerType,
+                registryType, registryVariable, builderVariable);
     }
 
 
     private VariableNames(int index, String instanceVariable, String valueVariable, String inputType,
-            String inputVariable, String builderVariable)
+            String inputVariable, String readerType, String writerType, String registryType, String registryVariable,
+            String builderVariable)
     {
         this.index = index;
         this.instanceVariable = instanceVariable;
         this.valueVariable = valueVariable;
         this.inputType = inputType;
         this.inputVariable = inputVariable;
+        this.readerType = readerType;
+        this.writerType = writerType;
+        this.registryType = registryType;
+        this.registryVariable = registryVariable;
         this.builderVariable = builderVariable;
     }
 
@@ -51,6 +62,30 @@ public class VariableNames
     public String getInputVariable()
     {
         return inputVariable;
+    }
+
+
+    public String getReaderType()
+    {
+        return readerType;
+    }
+
+
+    public String getWriterType()
+    {
+        return writerType;
+    }
+
+
+    public String getRegistryType()
+    {
+        return registryType;
+    }
+
+
+    public String getRegistryVariable()
+    {
+        return registryVariable;
     }
 
 
@@ -80,6 +115,7 @@ public class VariableNames
 
     VariableNames next()
     {
-        return new VariableNames(index + 1, instanceVariable, valueVariable, inputType, inputVariable, builderVariable);
+        return new VariableNames(index + 1, instanceVariable, valueVariable, inputType, inputVariable, readerType,
+                writerType, registryType, registryVariable, builderVariable);
     }
 }

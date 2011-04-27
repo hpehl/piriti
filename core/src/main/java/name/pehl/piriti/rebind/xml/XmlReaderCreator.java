@@ -62,18 +62,11 @@ public class XmlReaderCreator extends AbstractReaderCreator
 
 
     @Override
-    protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
-    {
-        super.createMemberVariables(writer);
-        XmlUtils.createMemberVariables(writer);
-    }
-
-
-    @Override
     protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
     {
+        // Order is important!
+        XmlUtils.createConstructorBody(writer);
         super.createConstructorBody(writer);
-        XmlUtils.createConstructorBody(writer, typeContext);
     }
 
 

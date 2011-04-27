@@ -1,7 +1,6 @@
 package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.TypeContext;
 import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.json.propertyhandler.JsonPropertyHandlerLookup;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
@@ -27,7 +26,7 @@ public final class JsonUtils
 
     static VariableNames newVariableNames()
     {
-        return new VariableNames("value", "JSONObject", "input", "builder");
+        return new VariableNames("value", "JSONObject", "input", "JsonRegistry", "jsonRegistry", "builder");
     }
 
 
@@ -46,15 +45,8 @@ public final class JsonUtils
     }
 
 
-    static void createMemberVariables(IndentedWriter writer)
-    {
-        writer.write("private JsonRegistry jsonRegistry;");
-    }
-
-
-    static void createConstructorBody(IndentedWriter writer, TypeContext typeContext)
+    static void createConstructorBody(IndentedWriter writer)
     {
         writer.write("this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();");
-        writer.write("this.jsonRegistry.register(%s.class, this);", typeContext.getType().getQualifiedSourceName());
     }
 }

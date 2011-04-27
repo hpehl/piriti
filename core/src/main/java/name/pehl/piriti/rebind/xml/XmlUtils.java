@@ -1,7 +1,6 @@
 package name.pehl.piriti.rebind.xml;
 
 import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.TypeContext;
 import name.pehl.piriti.rebind.VariableNames;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 import name.pehl.piriti.rebind.xml.propertyhandler.XmlPropertyHandlerLookup;
@@ -27,7 +26,7 @@ public final class XmlUtils
 
     static VariableNames newVariableNames()
     {
-        return new VariableNames("value", "Element", "input", "builder");
+        return new VariableNames("value", "Element", "input", "XmlRegistry", "xmlRegistry", "builder");
     }
 
 
@@ -44,15 +43,8 @@ public final class XmlUtils
     }
 
 
-    static void createMemberVariables(IndentedWriter writer)
-    {
-        writer.write("private XmlRegistry xmlRegistry;");
-    }
-
-
-    static void createConstructorBody(IndentedWriter writer, TypeContext typeContext)
+    static void createConstructorBody(IndentedWriter writer)
     {
         writer.write("this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();");
-        writer.write("this.xmlRegistry.register(%s.class, this);", typeContext.getType().getQualifiedSourceName());
     }
 }

@@ -74,6 +74,10 @@ public class PropertyContext extends LogFacade
      *            A custom property setter
      * @param referenceType
      *            The refereence type.
+     * @param native_
+     *            Whether to read the property nativly
+     * @param logger
+     *            the looger
      * @throws UnableToCompleteException
      */
     public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path, String format,
@@ -104,7 +108,7 @@ public class PropertyContext extends LogFacade
             this.type = type;
             this.primitiveType = null;
         }
-        // Name, path, order, format, stripWsnl and converter
+        // Name, path and format / converter stuff
         this.name = name;
         if (path == null || path.length() == 0)
         {
@@ -125,12 +129,12 @@ public class PropertyContext extends LogFacade
         this.whitespaceHandling = whitespaceHandling;
         this.converter = converter == NoopConverter.class ? null : converter;
 
-        // Reference type, property stuff, variable names and metadata
+        // Getter, setter and reference type
         this.getter = getter == NoopPropertyGetter.class ? null : getter;
         this.setter = setter == NoopPropertySetter.class ? null : setter;
         this.referenceType = referenceType;
 
-        // Native field
+        // Native flag
         this.native_ = native_;
     }
 
@@ -142,7 +146,9 @@ public class PropertyContext extends LogFacade
         String nestedValueVariable = getVariableNames().newVariableName("NestedValue");
         String nestedInputVariable = getVariableNames().newVariableName("NestedInput");
         VariableNames nestedVariableNames = new VariableNames(nestedValueVariable, getVariableNames().getInputType(),
-                nestedInputVariable, getVariableNames().getBuilderVariable());
+                nestedInputVariable, getVariableNames().getReaderType(), getVariableNames().getWriterType(),
+                getVariableNames().getRegistryType(), getVariableNames().getRegistryVariable(), getVariableNames()
+                        .getBuilderVariable());
 
         TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
 

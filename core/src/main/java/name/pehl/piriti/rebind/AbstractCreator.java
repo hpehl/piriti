@@ -234,6 +234,7 @@ public abstract class AbstractCreator extends LogFacade
      * 
      * <pre>
      * private ConverterRegistry converterRegistry;
+     * private &lt;{@link VariableNames#getRegistryType()}&gt; &lt;{@link VariableNames#getRegistryVariable()}&gt;;
      * private Map&lt;String, T&gt; idMap;
      * </pre>
      * 
@@ -242,6 +243,8 @@ public abstract class AbstractCreator extends LogFacade
     protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("private ConverterRegistry converterRegistry;");
+        writer.write("private %s %s;", typeContext.getVariableNames().getRegistryType(), typeContext.getVariableNames()
+                .getRegistryVariable());
         writer.write("private Map<String,%s> idMap;", typeContext.getType().getQualifiedSourceName());
     }
 
@@ -277,6 +280,8 @@ public abstract class AbstractCreator extends LogFacade
     protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
     {
         writer.write("this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();");
+        writer.write("this.%s.register(%s.class, this);", typeContext.getVariableNames().getRegistryVariable(),
+                typeContext.getType().getQualifiedSourceName());
         writer.write("this.idMap = new HashMap<String,%s>();", typeContext.getType().getQualifiedSourceName());
     }
 

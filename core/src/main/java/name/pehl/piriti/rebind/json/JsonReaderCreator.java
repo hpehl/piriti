@@ -56,18 +56,11 @@ public class JsonReaderCreator extends AbstractReaderCreator
 
 
     @Override
-    protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
-    {
-        super.createMemberVariables(writer);
-        JsonUtils.createMemberVariables(writer);
-    }
-
-
-    @Override
     protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
     {
+        // Order is important!
+        JsonUtils.createConstructorBody(writer);
         super.createConstructorBody(writer);
-        JsonUtils.createConstructorBody(writer, typeContext);
     }
 
 
