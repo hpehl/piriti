@@ -9,27 +9,31 @@ import com.google.gwt.json.client.JSONValue;
 public class MediumCreator extends JsonInstanceCreator<Medium>
 {
     @Override
-    public Medium newInstance(JSONObject context)
+    public Medium newInstance(JSONValue context)
     {
         Medium medium = null;
-        JSONValue idValue = context.get("id");
-        if (idValue != null)
+        JSONObject jsonObject = context.isObject();
+        if (jsonObject != null)
         {
-            JSONString idString = idValue.isString();
-            if (idString != null)
+            JSONValue idValue = jsonObject.get("id");
+            if (idValue != null)
             {
-                String id = idString.stringValue();
-                if (id.startsWith("isbn-"))
+                JSONString idString = idValue.isString();
+                if (idString != null)
                 {
-                    medium = new Book();
-                }
-                else if (id.startsWith("cd-"))
-                {
-                    medium = new Cd();
-                }
-                if (id.startsWith("dvd-"))
-                {
-                    medium = new Dvd();
+                    String id = idString.stringValue();
+                    if (id.startsWith("isbn-"))
+                    {
+                        medium = new Book();
+                    }
+                    else if (id.startsWith("cd-"))
+                    {
+                        medium = new Cd();
+                    }
+                    if (id.startsWith("dvd-"))
+                    {
+                        medium = new Dvd();
+                    }
                 }
             }
         }

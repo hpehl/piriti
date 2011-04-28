@@ -117,7 +117,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
                         instanceCreatorVariable);
                 writer.write("%s %s = %s.newInstance(%s);", propertyContext.getType()
                         .getParameterizedQualifiedSourceName(), dummyInstanceVariable, instanceCreatorVariable,
-                        inputVariableForInstanceCreator(propertyContext));
+                        propertyContext.getVariableNames().getInputVariable());
                 writer.write("%s = (%s<%s>) %s.get%s(%s.getClass());", rwVariable, rwType, propertyContext.getType()
                         .getParameterizedQualifiedSourceName(), propertyContext.getVariableNames()
                         .getRegistryVariable(), rw, dummyInstanceVariable);
@@ -126,16 +126,6 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
             }
         }
         return rwVariable;
-    }
-
-
-    /**
-     * @param propertyContext
-     * @return {@link VariableNames#getInputVariable()}
-     */
-    protected String inputVariableForInstanceCreator(PropertyContext propertyContext)
-    {
-        return propertyContext.getVariableNames().getInputVariable();
     }
 
 

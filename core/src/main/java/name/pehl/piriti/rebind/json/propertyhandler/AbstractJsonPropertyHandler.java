@@ -89,13 +89,6 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
 
 
     @Override
-    protected String inputVariableForInstanceCreator(PropertyContext propertyContext)
-    {
-        return super.inputVariableForInstanceCreator(propertyContext) + ".isObject()";
-    }
-
-
-    @Override
     protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
         getOrSelectJson(writer, propertyContext);
