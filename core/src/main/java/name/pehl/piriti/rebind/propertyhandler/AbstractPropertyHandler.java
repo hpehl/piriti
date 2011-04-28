@@ -2,7 +2,6 @@ package name.pehl.piriti.rebind.propertyhandler;
 
 import java.util.logging.Level;
 
-import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.LogFacade;
@@ -30,6 +29,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     // -------------------------------------------------------- private members
 
     protected String converterVariable;
+    protected boolean rwPossible;
     protected String readerVariable;
     protected String writerVariable;
 
@@ -60,6 +60,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     @Override
     public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
+        writer.newline();
         writer.write("%s %s = null;", propertyContext.getType().getParameterizedQualifiedSourceName(), propertyContext
                 .getVariableNames().getValueVariable());
 
@@ -79,44 +80,55 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
             }
         }
 
-        // Reader
+        // Reader / Writer
+        rwPossible = propertyContext.isClassOrInterface()
+                && !(propertyContext.getType().getQualifiedSourceName().startsWith("java."))
+                && !(propertyContext.isArray() || TypeUtils.isCollection(propertyContext.getType()));
+        if (propertyContext.getTypeContext().isReader())
+        {
+            declareReader(writer, propertyContext);
+        }
+
+        if (propertyContext.getTypeContext().isWriter())
+        {
+            declareWriter(writer, propertyContext);
+        }
+    }
+
+
+    protected void declareReader(IndentedWriter writer, PropertyContext propertyContext)
+    {
         readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
         writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getReaderType(), propertyContext.getType()
                 .getParameterizedQualifiedSourceName(), readerVariable);
-        if (propertyContext.isClassOrInterface())
+        if (rwPossible)
         {
             writer.write("%s = %s.getReader(%s.class);", readerVariable, propertyContext.getVariableNames()
                     .getRegistryVariable(), propertyContext.getType().getQualifiedSourceName());
-            writer.write("if (%s == null) {");
+            writer.write("if (%s == null) {", readerVariable);
             writer.indent();
-            Class<? extends InstanceCreator<?, ?>> instanceCreator = propertyContext.getTypeContext()
-                    .getInstanceCreator();
-            if (instanceCreator != nukk)
-            {
-                writer.write("");
-            }
+            CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate reader");
             writer.outdent();
             writer.write("}");
         }
+    }
 
-        Class<? extends InstanceCreator<?, ?>> instanceCreator = propertyContext.getTypeContext().getInstanceCreator();
-        if (instanceCreator != null)
-        {
-            // TODO Calculate concrete subtype
-            String instanceCreatorVariable = propertyContext.getVariableNames().getInstanceVariable()
-                    + "CreatorForConcreteType";
-            writer.write("%1$s %2$s = GWT.create(%1$s.class);", instanceCreator.getName(), instanceCreatorVariable);
-            writer.write("JsonReader<%s> %s = %s.getReader(%s.getType());", propertyContext.getType()
-                    .getParameterizedQualifiedSourceName(), readerVariable, registryname, instanceCreatorVariable);
-        }
-        else
-        {
-            writer.write("JsonReader<%s> %s = %s.getReader(%s.class);", propertyContext.getType()
-                    .getParameterizedQualifiedSourceName(), readerVariable, registryname, propertyContext.getType()
-                    .getQualifiedSourceName());
-        }
 
-        writer.write("");
+    protected void declareWriter(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        writerVariable = propertyContext.getVariableNames().newVariableName("Writer");
+        writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getWriterType(), propertyContext.getType()
+                .getParameterizedQualifiedSourceName(), writerVariable);
+        if (rwPossible)
+        {
+            writer.write("%s = %s.getWriter(%s.class);", writerVariable, propertyContext.getVariableNames()
+                    .getRegistryVariable(), propertyContext.getType().getQualifiedSourceName());
+            writer.write("if (%s == null) {", writerVariable);
+            writer.indent();
+            CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate writer");
+            writer.outdent();
+            writer.write("}");
+        }
     }
 
 
@@ -125,9 +137,14 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     /**
      * If the native flag is set,
      * {@link #readInputNatively(IndentedWriter, PropertyContext)} is called.
-     * Otherwise {@link #readInputAsString(IndentedWriter, PropertyContext)} is
-     * called. If a converter was registered for the property the string value
-     * is converted to the properties type.
+     * Otherwise if a reader was registered
+     * {@link #readInputUsingReader(IndentedWriter, PropertyContext)} is called.
+     * If no reader was found, the input is read as string by calling
+     * {@link #readInputAsString(IndentedWriter, PropertyContext)} and
+     * optionally converted by calling
+     * {@link #useConverterForReading(IndentedWriter, PropertyContext)}. If the
+     * input cannot be read as string
+     * {@link #readInputDirectly(IndentedWriter, PropertyContext)} is called.
      * 
      * @param writer
      * @param propertyContext
@@ -141,31 +158,38 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
+        writer.newline();
         if (propertyContext.isNative())
         {
             readInputNatively(writer, propertyContext);
         }
         else
         {
-            // First try to find a custom reader for the type
-            String readerVariable = readInputUsingReader(writer, propertyContext);
-
-            // Then try to read the input as string and convert using a
-            // specified or registered converter.
+            if (rwPossible)
+            {
+                writer.write("if (%s != null) {", readerVariable);
+                writer.indent();
+                readInputUsingReader(writer, propertyContext);
+                writer.outdent();
+                writer.write("} else {");
+                writer.indent();
+            }
             readInputAsString(writer, propertyContext);
             writer.write("if (%s != null && %s != null) {", propertyContext.getVariableNames()
                     .getValueAsStringVariable(), converterVariable);
             writer.indent();
-            readInputUsingConverter(writer, propertyContext);
+            useConverterForReading(writer, propertyContext);
             writer.outdent();
-            writer.write("}");
-            writer.write("else {");
+            writer.write("} else {");
             writer.indent();
-
-            // Finally try to read the input directly
             readInputDirectly(writer, propertyContext);
             writer.outdent();
             writer.write("}");
+            if (rwPossible)
+            {
+                writer.outdent();
+                writer.write("}");
+            }
         }
     }
 
@@ -213,12 +237,13 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
     /**
      * Generates code to convert
-     * {@link VariableNames#getValueAsStringVariable()} using
+     * {@link VariableNames#getValueAsStringVariable()} using a specified or
+     * registered converter into {@link VariableNames#getValueVariable()}
      * 
      * @param writer
      * @param propertyContext
      */
-    protected void readInputUsingConverter(IndentedWriter writer, PropertyContext propertyContext)
+    protected void useConverterForReading(IndentedWriter writer, PropertyContext propertyContext)
     {
         if (propertyContext.getFormat() != null)
         {
@@ -259,6 +284,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     @Override
     public void assign(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
+        writer.newline();
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
         if (propertyContext.getSetter() == null)
@@ -335,7 +361,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     }
 
 
-    // ---------------------------------------------------------- read property
+    // ------------------------------------------------- methods used in writer
 
     /**
      * {@inheritDoc}
@@ -452,29 +478,22 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
         }
         else
         {
-            // First try to find a custom writer for the type
+            writer.write("if (%s != null) {", writerVariable);
+            writer.indent();
             writeValueUsingWriter(writer, propertyContext);
-
-            // Then try to write the value using a converter
-            writer.write("if (%s != null) {", converterVariable);
-            writer.indent();
-            if (propertyContext.getFormat() != null)
-            {
-                writer.write("%s = %s.serialize(%s, \"%s\");", propertyContext.getVariableNames()
-                        .getValueAsStringVariable(), converterVariable, propertyContext.getVariableNames()
-                        .getValueVariable(), propertyContext.getFormat());
-            }
-            else
-            {
-                writer.write("%s = %s.serialize(%s, null);", propertyContext.getVariableNames()
-                        .getValueAsStringVariable(), converterVariable, propertyContext.getVariableNames()
-                        .getValueVariable());
-            }
-            writeValueAsString(writer, propertyContext);
             writer.outdent();
-            writer.write("}");
-            writer.write("else {");
+            writer.write("} else {");
             writer.indent();
+            if (propertyContext.hasConverter())
+            {
+                writer.write("if (%s != null) {", converterVariable);
+                writer.indent();
+                useConverterForWriting(writer, propertyContext);
+                writeValueAsString(writer, propertyContext);
+                writer.outdent();
+                writer.write("} else {");
+                writer.indent();
+            }
             if (propertyContext.getType().isPrimitive() == null)
             {
                 // if null, append default value
@@ -483,8 +502,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
                 writer.write("%s.append(\"%s\");", propertyContext.getVariableNames().getBuilderVariable(),
                         defaultValue());
                 writer.outdent();
-                writer.write("}");
-                writer.write("else {");
+                writer.write("} else {");
                 writer.indent();
                 writeValueDirectly(writer, propertyContext);
                 writer.outdent();
@@ -493,29 +511,65 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
             else
             {
                 writeValueDirectly(writer, propertyContext);
+            }
+            if (propertyContext.hasConverter())
+            {
+                writer.outdent();
+                writer.write("}");
             }
             writer.outdent();
             writer.write("}");
+        }
+    }
 
-            if (propertyContext.getType().isPrimitive() == null)
-            {
-                // if null, append default value
-                writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
-                writer.indent();
-                writer.write("%s.append(\"%s\");", propertyContext.getVariableNames().getBuilderVariable(),
-                        defaultValue());
-                writer.outdent();
-                writer.write("}");
-                writer.write("else {");
-                writer.indent();
-                writeValueDirectly(writer, propertyContext);
-                writer.outdent();
-                writer.write("}");
-            }
-            else
-            {
-                writeValueDirectly(writer, propertyContext);
-            }
+
+    /**
+     * Responsible to assign the property nativley in case the property was
+     * marked with {@code @}Native.
+     * <p>
+     * Empty implementation
+     * 
+     * @param writer
+     * @param propertyContext
+     */
+    protected void writeValueNatively(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
+
+
+    /**
+     * Responsible to write the JSON / XML using a registered writer.
+     * <p>
+     * Empty implementation
+     * 
+     * @param writer
+     * @param propertyContext
+     */
+    protected void writeValueUsingWriter(IndentedWriter writer, PropertyContext propertyContext)
+    {
+    }
+
+
+    /**
+     * Generates code to serialize {@link VariableNames#getValueVariable()} to
+     * {@link VariableNames#getValueAsStringVariable()} using a specified or
+     * registered converter
+     * 
+     * @param writer
+     * @param propertyContext
+     */
+    protected void useConverterForWriting(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        if (propertyContext.getFormat() != null)
+        {
+            writer.write("%s = %s.serialize(%s, \"%s\");", propertyContext.getVariableNames()
+                    .getValueAsStringVariable(), converterVariable, propertyContext.getVariableNames()
+                    .getValueVariable(), propertyContext.getFormat());
+        }
+        else
+        {
+            writer.write("%s = %s.serialize(%s, null);", propertyContext.getVariableNames().getValueAsStringVariable(),
+                    converterVariable, propertyContext.getVariableNames().getValueVariable());
         }
     }
 

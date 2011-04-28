@@ -26,7 +26,8 @@ public final class JsonUtils
 
     static VariableNames newVariableNames()
     {
-        return new VariableNames("value", "JSONObject", "input", "JsonRegistry", "jsonRegistry", "builder");
+        return new VariableNames("value", "JSONObject", "input", "JsonReader", "JsonWriter", "JsonRegistry",
+                "jsonRegistry", "builder");
     }
 
 

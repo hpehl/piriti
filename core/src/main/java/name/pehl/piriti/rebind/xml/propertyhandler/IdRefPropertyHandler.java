@@ -66,13 +66,41 @@ public class IdRefPropertyHandler extends AbstractXmlPropertyHandler
 
 
     @Override
+    protected void declareReader(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
+        writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getReaderType(),
+                referenceType.getParameterizedQualifiedSourceName(), readerVariable);
+        writer.write("%s = %s.getReader(%s.class);", readerVariable, propertyContext.getVariableNames()
+                .getRegistryVariable(), referenceType.getQualifiedSourceName());
+        writer.write("if (%s == null) {", readerVariable);
+        writer.indent();
+        CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate reader");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    @Override
+    protected void declareWriter(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        writerVariable = propertyContext.getVariableNames().newVariableName("Writer");
+        writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getWriterType(),
+                referenceType.getParameterizedQualifiedSourceName(), writerVariable);
+        writer.write("%s = %s.getWriter(%s.class);", writerVariable, propertyContext.getVariableNames()
+                .getRegistryVariable(), referenceType.getQualifiedSourceName());
+        writer.write("if (%s == null) {", writerVariable);
+        writer.indent();
+        CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate writer");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    @Override
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        String readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
-        writer.write("XmlReader<%s> %s = xmlRegistry.getReader(%s.class);",
-                referenceType.getParameterizedQualifiedSourceName(), readerVariable,
-                referenceType.getQualifiedSourceName());
         writer.write("if (%s != null) {", readerVariable);
         writer.indent();
         String references = propertyContext.getVariableNames().newVariableName("References");
@@ -138,13 +166,5 @@ public class IdRefPropertyHandler extends AbstractXmlPropertyHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
-    }
-
-
-    @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerLookup propertyHandlerRegistry) throws UnableToCompleteException
-    {
-        CodeGeneration.log(writer, Level.WARNING, "writeValue() NYI");
     }
 }

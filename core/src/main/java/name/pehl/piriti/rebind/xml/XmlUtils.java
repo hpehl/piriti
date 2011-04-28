@@ -26,7 +26,8 @@ public final class XmlUtils
 
     static VariableNames newVariableNames()
     {
-        return new VariableNames("value", "Element", "input", "XmlRegistry", "xmlRegistry", "builder");
+        return new VariableNames("value", "Element", "input", "XmlReader", "XmlWriter", "XmlRegistry", "xmlRegistry",
+                "builder");
     }
 
 

@@ -5,7 +5,6 @@ import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -48,12 +47,8 @@ public class DefaultPropertyHandler extends AbstractJsonPropertyHandler
 
 
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
+    protected void readInputUsingReader(IndentedWriter writer, PropertyContext propertyContext)
     {
-        String readerVariable = CodeGeneration.lookupReader(writer, propertyContext, "jsonRegistry");
-        writer.write("if (%s != null) {", readerVariable);
-        writer.indent();
         getOrSelectJson(writer, propertyContext);
         writer.write("if (%s != null) {", jsonValueVariable);
         writer.indent();
@@ -71,43 +66,13 @@ public class DefaultPropertyHandler extends AbstractJsonPropertyHandler
         writer.write("}");
         writer.outdent();
         writer.write("}");
-        writer.outdent();
-        writer.write("}");
-        writer.write("else {");
-        writer.indent();
-        super.readInput(writer, propertyContext, propertyHandlerLookup);
-        writer.outdent();
-        writer.write("}");
     }
 
 
     @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
+    protected void writeValueUsingWriter(IndentedWriter writer, PropertyContext propertyContext)
     {
-        writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
-        writer.indent();
-        writer.write("%s.append(\"null\");", propertyContext.getVariableNames().getBuilderVariable());
-        writer.outdent();
-        writer.write("}");
-        writer.write("else {");
-        writer.indent();
-        String writerVariable = propertyContext.getVariableNames().newVariableName("Writer");
-        writer.write("JsonWriter<%s> %s = jsonRegistry.getWriter(%s.class);", propertyContext.getType()
-                .getParameterizedQualifiedSourceName(), writerVariable, propertyContext.getType()
-                .getQualifiedSourceName());
-        writer.write("if (%s != null) {", writerVariable);
-        writer.indent();
         writer.write("%s.append(%s.toJson(%s));", propertyContext.getVariableNames().getBuilderVariable(),
                 writerVariable, propertyContext.getVariableNames().getValueVariable());
-        writer.outdent();
-        writer.write("}");
-        writer.write("else {");
-        writer.indent();
-        super.writeValue(writer, propertyContext, propertyHandlerLookup);
-        writer.outdent();
-        writer.write("}");
-        writer.outdent();
-        writer.write("}");
     }
 }

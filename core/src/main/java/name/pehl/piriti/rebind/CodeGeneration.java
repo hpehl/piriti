@@ -11,8 +11,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 
-import name.pehl.piriti.commons.client.InstanceCreator;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -140,28 +138,5 @@ public final class CodeGeneration
                 concreteTypes.add(type);
             }
         }
-    }
-
-
-    public static String lookupReader(IndentedWriter writer, PropertyContext propertyContext, String registryname)
-    {
-        String readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
-        Class<? extends InstanceCreator<?, ?>> instanceCreator = propertyContext.getTypeContext().getInstanceCreator();
-        if (instanceCreator != null)
-        {
-            // TODO Calculate concrete subtype
-            String instanceCreatorVariable = propertyContext.getVariableNames().getInstanceVariable()
-                    + "CreatorForConcreteType";
-            writer.write("%1$s %2$s = GWT.create(%1$s.class);", instanceCreator.getName(), instanceCreatorVariable);
-            writer.write("JsonReader<%s> %s = %s.getReader(%s.getType());", propertyContext.getType()
-                    .getParameterizedQualifiedSourceName(), readerVariable, registryname, instanceCreatorVariable);
-        }
-        else
-        {
-            writer.write("JsonReader<%s> %s = %s.getReader(%s.class);", propertyContext.getType()
-                    .getParameterizedQualifiedSourceName(), readerVariable, registryname, propertyContext.getType()
-                    .getQualifiedSourceName());
-        }
-        return readerVariable;
     }
 }
