@@ -81,7 +81,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
         // Reader / Writer
         rwPossible = propertyContext.isClassOrInterface()
-                && !(propertyContext.getType().getQualifiedSourceName().startsWith("java."))
+                && !propertyContext.getType().getQualifiedSourceName().startsWith("java.")
                 && !(propertyContext.isArray() || TypeUtils.isCollection(propertyContext.getType()));
         if (propertyContext.getTypeContext().isReader())
         {
@@ -96,9 +96,11 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
     protected String declareReaderWriter(IndentedWriter writer, PropertyContext propertyContext, String rw)
     {
+        String rwType = "Reader".equals(rw) ? propertyContext.getVariableNames().getReaderType() : propertyContext
+                .getVariableNames().getWriterType();
         String rwVariable = propertyContext.getVariableNames().newVariableName(rw);
-        writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getReaderType(), propertyContext.getType()
-                .getParameterizedQualifiedSourceName(), rwVariable);
+        writer.write("%s<%s> %s = null;", rwType, propertyContext.getType().getParameterizedQualifiedSourceName(),
+                rwVariable);
         if (rwPossible)
         {
             writer.write("%s = %s.get%s(%s.class);", rwVariable, propertyContext.getVariableNames()
@@ -111,8 +113,6 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
                 writer.indent();
                 String instanceCreatorVariable = propertyContext.getVariableNames().newVariableName("InstanceCreator");
                 String dummyInstanceVariable = propertyContext.getVariableNames().newVariableName("DummyInstance");
-                String rwType = "Reader".equals(rw) ? propertyContext.getVariableNames().getReaderType()
-                        : propertyContext.getVariableNames().getWriterType();
                 writer.write("%1$s %2$s = GWT.create(%1$s.class);", propertyContext.getInstanceCreator().getName(),
                         instanceCreatorVariable);
                 writer.write("%s %s = %s.newInstance(%s);", propertyContext.getType()
