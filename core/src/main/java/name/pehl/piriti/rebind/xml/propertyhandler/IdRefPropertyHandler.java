@@ -1,7 +1,5 @@
 package name.pehl.piriti.rebind.xml.propertyhandler;
 
-import java.util.logging.Level;
-
 import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
@@ -66,34 +64,14 @@ public class IdRefPropertyHandler extends AbstractXmlPropertyHandler
 
 
     @Override
-    protected void declareReader(IndentedWriter writer, PropertyContext propertyContext)
+    protected String declareReaderWriter(IndentedWriter writer, PropertyContext propertyContext, String rw)
     {
-        readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
+        String rwVariable = propertyContext.getVariableNames().newVariableName(rw);
         writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getReaderType(),
-                referenceType.getParameterizedQualifiedSourceName(), readerVariable);
-        writer.write("%s = %s.getReader(%s.class);", readerVariable, propertyContext.getVariableNames()
-                .getRegistryVariable(), referenceType.getQualifiedSourceName());
-        writer.write("if (%s == null) {", readerVariable);
-        writer.indent();
-        CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate reader");
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    @Override
-    protected void declareWriter(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writerVariable = propertyContext.getVariableNames().newVariableName("Writer");
-        writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getWriterType(),
-                referenceType.getParameterizedQualifiedSourceName(), writerVariable);
-        writer.write("%s = %s.getWriter(%s.class);", writerVariable, propertyContext.getVariableNames()
-                .getRegistryVariable(), referenceType.getQualifiedSourceName());
-        writer.write("if (%s == null) {", writerVariable);
-        writer.indent();
-        CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate writer");
-        writer.outdent();
-        writer.write("}");
+                referenceType.getParameterizedQualifiedSourceName(), rwVariable);
+        writer.write("%s = %s.get%s(%s.class);", rwVariable, propertyContext.getVariableNames().getRegistryVariable(),
+                rw, referenceType.getQualifiedSourceName());
+        return rwVariable;
     }
 
 

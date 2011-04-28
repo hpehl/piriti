@@ -7,7 +7,4 @@
 	<inherits name="name.pehl.piriti.xml.XML" />
 
 	<set-property name="gwt.logging.logLevel" value="FINE" />
-	<set-property name="gwt.logging.developmentModeHandler"
-		value="ENABLED" />
-	<set-property name="gwt.logging.systemHandler" value="ENABLED" />
 </module>

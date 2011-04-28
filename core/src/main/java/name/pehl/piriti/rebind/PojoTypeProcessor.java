@@ -12,9 +12,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import name.pehl.piriti.commons.client.CreateWith;
 import name.pehl.piriti.commons.client.Format;
 import name.pehl.piriti.commons.client.Id;
 import name.pehl.piriti.commons.client.IdRef;
+import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.Native;
 import name.pehl.piriti.commons.client.Order;
 import name.pehl.piriti.commons.client.Path;
@@ -47,6 +49,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             throws UnableToCompleteException
     {
         // normal mappings
+        debug("Collect normal mappings...");
         List<JField> fields = new ArrayList<JField>();
         collectFields(typeContext.getType(), fields, Collections.<Class<? extends Annotation>> emptySet(),
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class, IdRef.class)));
@@ -59,8 +62,10 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 typeContext.addProperty(propertyContext);
             }
         }
+        debug("Normal mappings done");
 
         // id
+        debug("Looking for id...");
         List<JField> idFields = new ArrayList<JField>();
         collectFields(typeContext.getType(), idFields, new HashSet<Class<? extends Annotation>>(asList(Id.class)),
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, IdRef.class)));
@@ -81,8 +86,10 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 }
             }
         }
+        debug("Id done");
 
         // idref
+        debug("Collect reference mappings...");
         List<JField> idRefFields = new ArrayList<JField>();
         collectFields(typeContext.getType(), idRefFields,
                 new HashSet<Class<? extends Annotation>>(asList(IdRef.class)),
@@ -96,6 +103,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 typeContext.addReference(propertyContext);
             }
         }
+        debug("Reference mappings done");
     }
 
 
@@ -181,14 +189,16 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     {
         int order = getOrder(field);
         String path = getPath(field);
+        Class<? extends Converter<?>> converter = getConverter(field);
         String format = getFormat(field);
         WhitespaceHandling whitespaceHandling = getWhitespaceHandling(field);
-        Class<? extends Converter<?>> converter = getConverter(field);
+        Class<? extends InstanceCreator<?, ?>> instanceCreator = getInstanceCreator(field);
         Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
         Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
         boolean native_ = getNative(field);
         PropertyContext propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(),
-                path, format, whitespaceHandling, converter, getter, setter, referenceType, native_, logger);
+                path, converter, format, whitespaceHandling, instanceCreator, getter, setter, referenceType, native_,
+                logger);
         return propertyContext;
     }
 
@@ -223,6 +233,17 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             whitespaceHandling = field.getAnnotation(Whitespace.class).value();
         }
         return whitespaceHandling;
+    }
+
+
+    protected Class<? extends InstanceCreator<?, ?>> getInstanceCreator(JField field)
+    {
+        Class<? extends InstanceCreator<?, ?>> instanceCreator = null;
+        if (field.isAnnotationPresent(CreateWith.class))
+        {
+            instanceCreator = field.getAnnotation(CreateWith.class).value();
+        }
+        return instanceCreator;
     }
 
 

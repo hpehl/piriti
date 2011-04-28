@@ -1,5 +1,11 @@
 package name.pehl.piriti.commons.client;
 
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * Annotation to specify an {@link InstanceCreator} for a POJO. Normally the
  * POJO is created using <code>GWT.create()</code> which in turn calls the
@@ -11,6 +17,9 @@ package name.pehl.piriti.commons.client;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
+@Documented
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE, ElementType.FIELD})
 public @interface CreateWith
 {
     Class<? extends InstanceCreator<?, ?>> value();

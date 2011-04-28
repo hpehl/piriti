@@ -1,6 +1,5 @@
 package name.pehl.piriti.client.polymorph;
 
-import name.pehl.piriti.commons.client.CreateWith;
 import name.pehl.piriti.json.client.JsonReader;
 
 import com.google.gwt.core.client.GWT;
@@ -11,7 +10,6 @@ import com.google.gwt.core.client.GWT;
  *          1454 $
  */
 //@formatter:off
-@CreateWith(MediumCreator.class)
 public class Dvd extends Medium
 {
     public interface DvdReader extends JsonReader<Dvd> {}

@@ -60,7 +60,6 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     @Override
     public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.newline();
         writer.write("%s %s = null;", propertyContext.getType().getParameterizedQualifiedSourceName(), propertyContext
                 .getVariableNames().getValueVariable());
 
@@ -86,49 +85,57 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
                 && !(propertyContext.isArray() || TypeUtils.isCollection(propertyContext.getType()));
         if (propertyContext.getTypeContext().isReader())
         {
-            declareReader(writer, propertyContext);
+            readerVariable = declareReaderWriter(writer, propertyContext, "Reader");
         }
-
         if (propertyContext.getTypeContext().isWriter())
         {
-            declareWriter(writer, propertyContext);
+            writerVariable = declareReaderWriter(writer, propertyContext, "Writer");
         }
     }
 
 
-    protected void declareReader(IndentedWriter writer, PropertyContext propertyContext)
+    protected String declareReaderWriter(IndentedWriter writer, PropertyContext propertyContext, String rw)
     {
-        readerVariable = propertyContext.getVariableNames().newVariableName("Reader");
+        String rwVariable = propertyContext.getVariableNames().newVariableName(rw);
         writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getReaderType(), propertyContext.getType()
-                .getParameterizedQualifiedSourceName(), readerVariable);
+                .getParameterizedQualifiedSourceName(), rwVariable);
         if (rwPossible)
         {
-            writer.write("%s = %s.getReader(%s.class);", readerVariable, propertyContext.getVariableNames()
-                    .getRegistryVariable(), propertyContext.getType().getQualifiedSourceName());
-            writer.write("if (%s == null) {", readerVariable);
-            writer.indent();
-            CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate reader");
-            writer.outdent();
-            writer.write("}");
+            writer.write("%s = %s.get%s(%s.class);", rwVariable, propertyContext.getVariableNames()
+                    .getRegistryVariable(), rw, propertyContext.getType().getQualifiedSourceName());
+            if (propertyContext.hasInstanceCreator())
+            {
+                // If no reader was found try to use a configured instance
+                // creator
+                writer.write("if (%s == null) {", rwVariable);
+                writer.indent();
+                String instanceCreatorVariable = propertyContext.getVariableNames().newVariableName("InstanceCreator");
+                String dummyInstanceVariable = propertyContext.getVariableNames().newVariableName("DummyInstance");
+                String rwType = "Reader".equals(rw) ? propertyContext.getVariableNames().getReaderType()
+                        : propertyContext.getVariableNames().getWriterType();
+                writer.write("%1$s %2$s = GWT.create(%1$s.class);", propertyContext.getInstanceCreator().getName(),
+                        instanceCreatorVariable);
+                writer.write("%s %s = %s.newInstance(%s);", propertyContext.getType()
+                        .getParameterizedQualifiedSourceName(), dummyInstanceVariable, instanceCreatorVariable,
+                        inputVariableForInstanceCreator(propertyContext));
+                writer.write("%s = (%s<%s>) %s.get%s(%s.getClass());", rwVariable, rwType, propertyContext.getType()
+                        .getParameterizedQualifiedSourceName(), propertyContext.getVariableNames()
+                        .getRegistryVariable(), rw, dummyInstanceVariable);
+                writer.outdent();
+                writer.write("}");
+            }
         }
+        return rwVariable;
     }
 
 
-    protected void declareWriter(IndentedWriter writer, PropertyContext propertyContext)
+    /**
+     * @param propertyContext
+     * @return {@link VariableNames#getInputVariable()}
+     */
+    protected String inputVariableForInstanceCreator(PropertyContext propertyContext)
     {
-        writerVariable = propertyContext.getVariableNames().newVariableName("Writer");
-        writer.write("%s<%s> %s = null;", propertyContext.getVariableNames().getWriterType(), propertyContext.getType()
-                .getParameterizedQualifiedSourceName(), writerVariable);
-        if (rwPossible)
-        {
-            writer.write("%s = %s.getWriter(%s.class);", writerVariable, propertyContext.getVariableNames()
-                    .getRegistryVariable(), propertyContext.getType().getQualifiedSourceName());
-            writer.write("if (%s == null) {", writerVariable);
-            writer.indent();
-            CodeGeneration.log(writer, Level.FINE, "TODO: Find a appropriate writer");
-            writer.outdent();
-            writer.write("}");
-        }
+        return propertyContext.getVariableNames().getInputVariable();
     }
 
 
@@ -158,7 +165,6 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     public void readInput(IndentedWriter writer, PropertyContext propertyContext,
             PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
     {
-        writer.newline();
         if (propertyContext.isNative())
         {
             readInputNatively(writer, propertyContext);
@@ -284,7 +290,6 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     @Override
     public void assign(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
-        writer.newline();
         writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
         writer.indent();
         if (propertyContext.getSetter() == null)

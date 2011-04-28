@@ -5,6 +5,7 @@ import static name.pehl.piriti.rebind.ReferenceType.IDREF;
 
 import java.util.Set;
 
+import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.Mapping;
 import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.converter.client.Converter;
@@ -32,6 +33,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         JClassType rwType = typeContext.getRwType();
         if (rwType.isAnnotationPresent(Mappings.class))
         {
+            debug("Collect normal mappings...");
             int index = 0;
             Mappings mappingsAnno = rwType.getAnnotation(Mappings.class);
             Mapping[] mappings = mappingsAnno.value();
@@ -44,7 +46,9 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                     typeContext.addProperty(propertyContext);
                 }
             }
+            debug("Normal mappings done");
 
+            debug("Looking for id...");
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
@@ -56,7 +60,9 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                     typeContext.setId(propertyContext);
                 }
             }
+            debug("Id done");
 
+            debug("Collect reference mappings...");
             Mapping[] idRefMappings = mappingsAnno.references();
             for (Mapping idRefMapping : idRefMappings)
             {
@@ -68,6 +74,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                     typeContext.addReference(propertyContext);
                 }
             }
+            debug("Reference mappings done");
         }
     }
 
@@ -80,14 +87,15 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         if (field != null)
         {
             String path = mapping.path();
+            Class<? extends Converter<?>> converter = mapping.convert();
             String format = mapping.format();
             WhitespaceHandling whitespaceHandling = mapping.whitespace();
-            Class<? extends Converter<?>> converter = mapping.convert();
+            Class<? extends InstanceCreator<?, ?>> instanceCreator = mapping.createWith();
             Class<? extends PropertyGetter<?, ?>> getter = mapping.getter();
             Class<? extends PropertySetter<?, ?>> setter = mapping.setter();
             boolean native_ = mapping.native_();
-            propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(), path, format,
-                    whitespaceHandling, converter, getter, setter, referenceType, native_, logger);
+            propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(), path, converter,
+                    format, whitespaceHandling, instanceCreator, getter, setter, referenceType, native_, logger);
         }
         else
         {

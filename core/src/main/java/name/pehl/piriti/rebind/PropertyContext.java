@@ -2,6 +2,8 @@ package name.pehl.piriti.rebind;
 
 import java.util.Comparator;
 
+import name.pehl.piriti.commons.client.InstanceCreator;
+import name.pehl.piriti.commons.client.NoopInstanceCreator;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.NoopConverter;
 import name.pehl.piriti.property.client.NoopPropertyGetter;
@@ -38,9 +40,10 @@ public class PropertyContext extends LogFacade
     private final JPrimitiveType primitiveType;
     private final String name;
     private final String path;
+    private final Class<? extends Converter<?>> converter;
     private final String format;
     private final WhitespaceHandling whitespaceHandling;
-    private final Class<? extends Converter<?>> converter;
+    private final Class<? extends InstanceCreator<?, ?>> instanceCreator;
     private final Class<? extends PropertyGetter<?, ?>> getter;
     private final Class<? extends PropertySetter<?, ?>> setter;
     private final ReferenceType referenceType;
@@ -62,12 +65,14 @@ public class PropertyContext extends LogFacade
      *            The name of the property
      * @param path
      *            The path information for the mapping
+     * @param converter
+     *            A custom converter
      * @param format
      *            The format
      * @param whitespaceHandling
      *            Whether to strip whitespace and newlines from the input
-     * @param converter
-     *            A custom converter
+     * @param instanceCreator
+     *            A custom instance creator
      * @param getter
      *            A custom property getter
      * @param setter
@@ -80,10 +85,11 @@ public class PropertyContext extends LogFacade
      *            the looger
      * @throws UnableToCompleteException
      */
-    public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path, String format,
-            WhitespaceHandling whitespaceHandling, Class<? extends Converter<?>> converter,
-            Class<? extends PropertyGetter<?, ?>> getter, Class<? extends PropertySetter<?, ?>> setter,
-            ReferenceType referenceType, boolean native_, TreeLogger logger) throws UnableToCompleteException
+    public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path,
+            Class<? extends Converter<?>> converter, String format, WhitespaceHandling whitespaceHandling,
+            Class<? extends InstanceCreator<?, ?>> instanceCreator, Class<? extends PropertyGetter<?, ?>> getter,
+            Class<? extends PropertySetter<?, ?>> setter, ReferenceType referenceType, boolean native_,
+            TreeLogger logger) throws UnableToCompleteException
     {
         super(logger);
 
@@ -108,7 +114,7 @@ public class PropertyContext extends LogFacade
             this.type = type;
             this.primitiveType = null;
         }
-        // Name, path and format / converter stuff
+        // Name and path
         this.name = name;
         if (path == null || path.length() == 0)
         {
@@ -118,6 +124,9 @@ public class PropertyContext extends LogFacade
         {
             this.path = path;
         }
+
+        // Converter and format stuff
+        this.converter = converter == NoopConverter.class ? null : converter;
         if (format == null || format.length() == 0)
         {
             this.format = null;
@@ -127,9 +136,9 @@ public class PropertyContext extends LogFacade
             this.format = format;
         }
         this.whitespaceHandling = whitespaceHandling;
-        this.converter = converter == NoopConverter.class ? null : converter;
 
-        // Getter, setter and reference type
+        // InstanceCreator, getter, setter and reference type
+        this.instanceCreator = instanceCreator == NoopInstanceCreator.class ? null : instanceCreator;
         this.getter = getter == NoopPropertyGetter.class ? null : getter;
         this.setter = setter == NoopPropertySetter.class ? null : setter;
         this.referenceType = referenceType;
@@ -153,7 +162,7 @@ public class PropertyContext extends LogFacade
         TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
 
         PropertyContext nested = new PropertyContext(TypeContext.nextOrder(), nestedTypeContext, type, getName(), path,
-                getFormat(), getWhitespaceHandling(), getConverter(), null, null, null, false, logger);
+                getConverter(), getFormat(), getWhitespaceHandling(), instanceCreator, null, null, null, false, logger);
         nested.setVariableNames(nestedVariableNames);
         return nested;
     }
@@ -400,6 +409,18 @@ public class PropertyContext extends LogFacade
     public boolean hasConverter()
     {
         return converter != null;
+    }
+
+
+    public Class<? extends InstanceCreator<?, ?>> getInstanceCreator()
+    {
+        return instanceCreator;
+    }
+
+
+    public boolean hasInstanceCreator()
+    {
+        return instanceCreator != null;
     }
 
 

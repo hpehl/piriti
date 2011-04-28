@@ -56,6 +56,9 @@ public @interface Mapping
     WhitespaceHandling whitespace() default WhitespaceHandling.REMOVE;
 
 
+    Class<? extends InstanceCreator<?, ?>> createWith() default NoopInstanceCreator.class;
+
+
     /**
      * A custom converter which is used for the parsing and serialization of the
      * JSON value. Defaults to {@link NoopConverter} which means no custom
