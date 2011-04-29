@@ -81,7 +81,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
         // Reader / Writer
         rwPossible = propertyContext.isClassOrInterface()
-                && !propertyContext.getType().getQualifiedSourceName().startsWith("java.")
+                && !(TypeUtils.isJavaType(propertyContext.getType()) || TypeUtils.isGwtType(propertyContext.getType()))
                 && !(propertyContext.isArray() || TypeUtils.isCollection(propertyContext.getType()));
         if (propertyContext.getTypeContext().isReader())
         {

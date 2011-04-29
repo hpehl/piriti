@@ -1,0 +1,7 @@
+{
+  "version": "1.0",
+  "recode": 200,
+  "result": {
+    "foo": "bar"
+  }
+}

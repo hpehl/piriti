@@ -300,6 +300,42 @@ public final class TypeUtils
     }
 
 
+    public static boolean isJavaType(JType type)
+    {
+        if (type != null)
+        {
+            return type.getQualifiedSourceName().startsWith("java.")
+                    || type.getQualifiedSourceName().startsWith("javax.");
+        }
+        return false;
+    }
+
+
+    public static boolean isGwtType(JType type)
+    {
+        if (type != null)
+        {
+            return type.getQualifiedSourceName().startsWith("com.google.gwt.");
+        }
+        return false;
+    }
+
+
+    public static boolean isDefaultInstantiable(JType type)
+    {
+        if (type == null)
+        {
+            return false;
+        }
+        JClassType classType = type.isClass();
+        if (classType == null)
+        {
+            return false;
+        }
+        return classType.isDefaultInstantiable();
+    }
+
+
     /**
      * Returns the first type variable of the specified parameterized type or
      * null if {@code type} is <code>null</code> or does not have any type

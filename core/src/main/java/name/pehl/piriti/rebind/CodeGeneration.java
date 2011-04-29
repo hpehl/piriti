@@ -14,8 +14,6 @@ import java.util.logging.Level;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JConstructor;
-import com.google.gwt.core.ext.typeinfo.JParameter;
 
 /**
  * Contains utility method for the code generation
@@ -90,30 +88,9 @@ public final class CodeGeneration
         collectConcreteTypes(concreteTypes, type);
         for (JClassType concreteType : concreteTypes)
         {
-            boolean noargConstructor = false;
-            JConstructor[] constructors = concreteType.getConstructors();
-            if (constructors != null)
-            {
-                for (JConstructor constructor : constructors)
-                {
-                    JParameter[] parameters = constructor.getParameters();
-                    if (parameters == null || parameters.length == 0)
-                    {
-                        noargConstructor = true;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                noargConstructor = true;
-            }
-            if (noargConstructor)
-            {
-                writer.write(
-                        "new %1$s(); // if there are any reader / writer definitions in %1$s, this ensures they are registered",
-                        concreteType.getParameterizedQualifiedSourceName());
-            }
+            writer.write(
+                    "new %1$s(); // if there are any reader / writer definitions in %1$s, this ensures they are registered",
+                    concreteType.getParameterizedQualifiedSourceName());
         }
     }
 
@@ -135,7 +112,11 @@ public final class CodeGeneration
             }
             else
             {
-                concreteTypes.add(type);
+                if (!(TypeUtils.isJavaType(type) || TypeUtils.isGwtType(type))
+                        && TypeUtils.isDefaultInstantiable(type))
+                {
+                    concreteTypes.add(type);
+                }
             }
         }
     }

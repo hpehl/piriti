@@ -308,7 +308,7 @@ public class PropertyContext extends LogFacade
      */
     public JClassType getClassOrInterfaceType()
     {
-        return type.isClass();
+        return type.isClassOrInterface();
     }
 
 

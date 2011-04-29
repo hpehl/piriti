@@ -1,7 +1,10 @@
 package name.pehl.piriti.rebind.json.propertyhandler;
 
+import java.util.logging.Level;
+
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.rebind.CodeGeneration;
 import name.pehl.piriti.rebind.IndentedWriter;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.VariableNames;
@@ -12,7 +15,9 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
+import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.json.client.JSONValue;
 
 /**
  * Abstract base class for {@linkplain PropertyHandler}s used for JSON
@@ -89,6 +94,50 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
 
 
     @Override
+    protected void readInputNatively(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        getOrSelectJson(writer, propertyContext);
+        writer.write("if (%s != null) {", jsonValueVariable);
+        writer.indent();
+        JType type = propertyContext.getType();
+        if (String.class.getName().equals(type.getQualifiedSourceName()))
+        {
+            writer.write("%s = %s.toString();", propertyContext.getVariableNames().getValueVariable(),
+                    jsonValueVariable);
+        }
+        else if (type.isClassOrInterface() != null)
+        {
+            JClassType jsonValueType = propertyContext.getTypeContext().getTypeOracle()
+                    .findType(JSONValue.class.getName());
+            if (jsonValueType != null)
+            {
+                if (jsonValueType.equals(type.isClassOrInterface()))
+                {
+                    // Property is a JSONValue
+                    CodeGeneration.log(writer, Level.FINE, "Mapping native property %s as JSONValue", propertyContext);
+                    writer.write("%s = %s;", propertyContext.getVariableNames().getValueVariable(), jsonValueVariable);
+                }
+                else if (jsonValueType.isAssignableFrom(type.isClassOrInterface()))
+                {
+                    // Property is a subtype of JSONValue
+                    CodeGeneration.log(writer, Level.FINE, "Mapping native property %s as subtype of JSONValue",
+                            propertyContext);
+                    writer.write("if (%s instanceof %s) {", jsonValueVariable, propertyContext.getType()
+                            .getQualifiedSourceName());
+                    writer.indent();
+                    writer.write("%s = (%s)%s;", propertyContext.getVariableNames().getValueVariable(), propertyContext
+                            .getType().getQualifiedSourceName(), jsonValueVariable);
+                    writer.outdent();
+                    writer.write("}");
+                }
+            }
+        }
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    @Override
     protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
         getOrSelectJson(writer, propertyContext);
@@ -108,17 +157,6 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
         writer.write("}");
         writer.outdent();
         writer.write("}");
-    }
-
-
-    @Override
-    protected void readInputNatively(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        JType type = propertyContext.getType();
-        if (String.class.getName().equals(type.getQualifiedSourceName()))
-        {
-
-        }
     }
 
 
