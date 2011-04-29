@@ -2,30 +2,22 @@ package name.pehl.piriti.client.campaign;
 
 import java.util.Date;
 
-import name.pehl.piriti.json.client.Json;
 import name.pehl.piriti.json.client.JsonReader;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
+// @formatter:off
 public class Campaign
 {
-
-    public static interface CampaignReader extends JsonReader<Campaign>
-    {
-    }
-
+    public static interface CampaignReader extends JsonReader<Campaign> { }
     public static final CampaignReader READER = GWT.create(CampaignReader.class);
 
     private static int nextID = 1001;
     private static DateTimeFormat dateFormat = DateTimeFormat.getFormat("MM-dd-yyyy");
 
-    @Json
     public String campaignId;
-
-    @Json
     public String clientName;
-    @Json
     public String campaignName;
     public String productName;
     public String mediaCode;
