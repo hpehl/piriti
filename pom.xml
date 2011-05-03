@@ -7,14 +7,14 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>superpom</artifactId>
-        <version>6</version>
+        <version>7</version>
     </parent>
 
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.pehl.piriti</groupId>
     <artifactId>piriti-parent</artifactId>
-    <version>0.7.0</version>
+    <version>0.7.0b1</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
     <description>Annotation based JSON and XML mapper for GWT</description>
@@ -49,7 +49,6 @@
 
     <modules>
         <module>core</module>
-        <module>gxt</module>
         <module>playground</module>
         <module>restlet</module>
     </modules>
@@ -134,30 +133,4 @@
             </plugin>
         </plugins>
     </build>
-    
-    
-    <profiles>
-        <profile>
-            <id>default</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <modules>
-                <module>gxt</module>
-                <module>playground</module>
-                <module>restlet</module>
-            </modules>
-        </profile>
-        <!-- 
-            Contains only the modules which are compatible with GWT 2.2.0. 
-            As GXT 2.2.0 is *not* GWT 2.2.0 compatible all modules with 
-            GXT dependencies are excluded in this profile 
-        -->
-        <profile>
-            <id>gwt2.2</id>
-            <modules>
-                <module>restlet</module>
-            </modules>
-        </profile>
-    </profiles>
 </project>
