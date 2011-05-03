@@ -151,23 +151,6 @@ public class TypeContext extends LogFacade
     }
 
 
-    public boolean isGxt()
-    {
-        Set<? extends JClassType> hierarchy = type.getFlattenedSupertypeHierarchy();
-        if (hierarchy != null)
-        {
-            for (JClassType h : hierarchy)
-            {
-                if (h.getQualifiedSourceName().equals("com.extjs.gxt.ui.client.data.Model"))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
     // ------------------------------------------------------------ collections
 
     public void addProperty(PropertyContext propertyContext)

@@ -284,14 +284,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
         writer.indent();
         if (propertyContext.getSetter() == null)
         {
-            if (propertyContext.getTypeContext().isGxt())
-            {
-                assignGxt(writer, propertyContext);
-            }
-            else
-            {
-                assignFieldOrSetter(writer, propertyContext);
-            }
+            assignFieldOrSetter(writer, propertyContext);
         }
         else
         {
@@ -349,13 +342,6 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     }
 
 
-    protected void assignGxt(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writer.write("model.set(\"%s\", %s);", propertyContext.getName(), propertyContext.getVariableNames()
-                .getValueVariable());
-    }
-
-
     // ------------------------------------------------- methods used in writer
 
     /**
@@ -366,14 +352,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     {
         if (propertyContext.getGetter() == null)
         {
-            if (propertyContext.getTypeContext().isGxt())
-            {
-                readGxt(writer, propertyContext);
-            }
-            else
-            {
-                readFieldOrSetter(writer, propertyContext);
-            }
+            readFieldOrSetter(writer, propertyContext);
         }
         else
         {
@@ -427,13 +406,6 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
                 skipProperty(writer, propertyContext, reason);
             }
         }
-    }
-
-
-    protected void readGxt(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writer.write("%s = model.get(\"%s\");", propertyContext.getVariableNames().getValueVariable(),
-                propertyContext.getName());
     }
 
 
