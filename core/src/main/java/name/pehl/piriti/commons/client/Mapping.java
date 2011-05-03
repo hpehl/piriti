@@ -33,11 +33,11 @@ public @interface Mapping
 
 
     /**
-     * A "path" expression to select the JSON data. This can be either just the
-     * key of the JSON data or a <a
-     * href="http://code.google.com/p/jsonpath/">JSONPath</a> expression.
-     * Defaults to "" which means that the properties name is taken as a
-     * default.
+     * A "path" expression to select the JSON / XML data. This can be either
+     * just the key / element name or a <a
+     * href="http://code.google.com/p/jsonpath/">JSONPath</a> or XPath
+     * expression. Defaults to "" which means that the properties name is taken
+     * as a default.
      * 
      * @return
      */
@@ -53,16 +53,27 @@ public @interface Mapping
     String format() default "";
 
 
+    /**
+     * How to handle how leading and trailing whitespace. Please note that this
+     * does not effect whitespace <strong>within</strong> the mapped value.
+     * 
+     * @return
+     */
     WhitespaceHandling whitespace() default WhitespaceHandling.REMOVE;
 
 
+    /**
+     * Whether to use an {@link InstanceCreator}.
+     * 
+     * @return
+     */
     Class<? extends InstanceCreator<?, ?>> createWith() default NoopInstanceCreator.class;
 
 
     /**
      * A custom converter which is used for the parsing and serialization of the
-     * JSON value. Defaults to {@link NoopConverter} which means no custom
-     * converter should be used.
+     * value. Defaults to {@link NoopConverter} which means no custom converter
+     * should be used.
      * 
      * @return
      */
@@ -89,5 +100,10 @@ public @interface Mapping
     Class<? extends PropertySetter<?, ?>> setter() default NoopPropertySetter.class;
 
 
+    /**
+     * Wehther this property should be handled nativly.
+     * 
+     * @return
+     */
     boolean native_() default false;
 }

@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * The "path" expression to select the JSON / XML data. This can be either just
- * the key of the JSON data, a <a
+ * the key / name of data, a <a
  * href="http://code.google.com/p/jsonpath/">JSONPath</a> or XPath expression.
  * 
  * @author $LastChangedBy:$

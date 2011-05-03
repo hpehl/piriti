@@ -7,12 +7,10 @@ import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONObject;
 
 /**
- * Interface for converting JSON data to an instance of T or a list of Ts. The
- * implementation for this interface is generated using deferred binding. All
- * properties of T are handled by the generated JsonReader implementation. If
- * the path expression behind {@link Json} returns some data != null the
- * relevant property is assigned with the converted value, otherwise the
- * property remains unchanged.
+ * Interface for converting JSON data to an instance of T or a list of Ts. All
+ * properties of T and superclasses of T are handled by the generated JsonReader
+ * implementation. If there's data for the property it is assigned with the
+ * converted value, otherwise the property remains unchanged.
  * <p>
  * The setup of the JsonReader is inspired by the UiBinder and is typically
  * specified as an inner class:

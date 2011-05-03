@@ -3,11 +3,9 @@ package name.pehl.piriti.json.client;
 import java.util.List;
 
 /**
- * Interface for serializing an instance of T or a list of Ts to JSON data. The
- * implementation for this interface is generated using deferred binding. All
- * properties of T are handled by the generated JsonWriter implementation.
- * <p>
- * Null values in T are generated into the resulting JSON data.
+ * Interface for serializing an instance of T or a list of Ts to JSON data. All
+ * properties of T and superclasses of T are handled by the generated JsonWriter
+ * implementation. Null values in T are generated into the resulting JSON data.
  * <p>
  * The setup of the JsonWriter is inspired by the UiBinder and is typically
  * specified as an inner class:

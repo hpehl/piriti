@@ -2,20 +2,15 @@ package name.pehl.piriti.xml.client;
 
 import java.util.List;
 
-import name.pehl.piriti.commons.client.Id;
-import name.pehl.piriti.commons.client.IdRef;
 import name.pehl.totoe.xml.client.Document;
 import name.pehl.totoe.xml.client.Element;
 import name.pehl.totoe.xml.client.XmlParseException;
 
 /**
- * Interface for converting an XML document / element to an instance of T or a
- * list of Ts. The implementation for this interface is generated using deferred
- * binding. All properties of T which are annotated with {@link Xml}, {@link Id}
- * or {@link IdRef} are handled by the generated XmlReader implementation. If
- * the XPath expression behind {@link Xml} returns some data != null the
- * relevant property is assigned with the converted value, otherwise the
- * property remains unchanged.
+ * Interface for converting XML document / element to an instance of T or a list
+ * of Ts. All properties of T and superclasses of T are handled by the generated
+ * XmlReader implementation. If there's data for the property it is assigned
+ * with the converted value, otherwise the property remains unchanged.
  * <p>
  * The setup of the XmlReader is inspired by the UiBinder and is typically
  * specified as an inner class:

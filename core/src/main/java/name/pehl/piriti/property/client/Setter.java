@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The custom property setter for setting the property.
+ * Annotation to specify a custom {@link Setter} for setting the property.
  * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$

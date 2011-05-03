@@ -1,7 +1,7 @@
 package name.pehl.piriti.property.client;
 
 /**
- * Noop converter used as default value in annotations.
+ * Noop {@link Getter} used as default value in annotations.
  * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$

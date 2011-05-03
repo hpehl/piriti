@@ -8,7 +8,8 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to reference one or more POJOs. The properties type must be T, an
- * array or collection of Ts, where T is a POJO with a registered reader.
+ * array or collection of Ts, where T is a POJO with a registered reader and an
+ * {@code @}{@link Id} annotation.
  * 
  * @see Id
  * @author $LastChangedBy: harald.pehl $

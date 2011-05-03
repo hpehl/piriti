@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The custom property getter for reading the property.
+ * Annotation to specify a custom {@link Getter} for reading the property.
  * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
