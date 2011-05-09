@@ -8,7 +8,7 @@ import java.sql.Date;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class SqlDateConverter implements Converter<Date>
+public class SqlDateConverter extends AbstractConverter<Date>
 {
     /**
      * Converts the specified value to a sql date. Therefore

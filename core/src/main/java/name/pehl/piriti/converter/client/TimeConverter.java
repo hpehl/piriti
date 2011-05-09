@@ -8,7 +8,7 @@ import java.sql.Time;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class TimeConverter implements Converter<Time>
+public class TimeConverter extends AbstractConverter<Time>
 {
     /**
      * Converts the specified value to a time. Therefore

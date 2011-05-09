@@ -8,7 +8,7 @@ import java.sql.Timestamp;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class TimestampConverter implements Converter<Timestamp>
+public class TimestampConverter extends AbstractConverter<Timestamp>
 {
     /**
      * Converts the specified value to a timestamp. Therefore
