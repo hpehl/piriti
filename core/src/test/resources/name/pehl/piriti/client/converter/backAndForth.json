@@ -1,6 +1,9 @@
 {
+  "date": "1973-09-02T11:22:33.444+01:00",
+  "dateWithFormat": "20.09.04",
+  "dateWithConverter": "tomorrow",
+  "maths": "TWO",
+  "mathsWithConverter": "2",
   "duration": "4h",
-  "date": "tomorrow",
-  "maths": "2",
   "name": "Max Mustermann"
 }

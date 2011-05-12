@@ -8,7 +8,7 @@ import name.pehl.piriti.converter.client.Converter;
 public class TomorrowConverter implements Converter<Date>
 {
     public final static String TOMORROW_NAME = "tomorrow";
-    public final static Date TOMORROW_DATE = new Date(System.currentTimeMillis() + (24 * 60 * 60 * 60 * 1000));
+    public final static Date TOMORROW_DATE = new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000));
     static
     {
         TOMORROW_DATE.setHours(0);

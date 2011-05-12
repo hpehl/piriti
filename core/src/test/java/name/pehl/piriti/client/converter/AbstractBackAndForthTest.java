@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.converter;
 
+import java.util.Date;
+
 import name.pehl.piriti.client.AbstractPiritiTest;
 
 /**
@@ -12,9 +14,33 @@ public abstract class AbstractBackAndForthTest extends AbstractPiritiTest
     protected void assertBackAndForth(BackAndForth backAndForth)
     {
         assertNotNull(backAndForth);
-        assertEquals(4, backAndForth.duration);
-        assertEquals(TomorrowConverter.TOMORROW_DATE, backAndForth.date);
+        assertDateTime(1973, 9, 2, 11, 22, 33, backAndForth.date);
+        assertDate(2004, 9, 20, backAndForth.dateWithFormat);
+        assertEquals(TomorrowConverter.TOMORROW_DATE, backAndForth.dateWithConverter);
         assertEquals(Maths.TWO, backAndForth.maths);
+        assertEquals(Maths.TWO, backAndForth.mathsWithConverter);
+        assertEquals(4, backAndForth.duration);
         assertEquals(NameConverter.ENGLISH, backAndForth.name);
+    }
+
+
+    @SuppressWarnings("deprecation")
+    private void assertDate(int expectedYear, int expectedMonth, int expectedDay, Date actualDate)
+    {
+        assertNotNull(actualDate);
+        assertEquals(expectedYear, actualDate.getYear() + 1900);
+        assertEquals(expectedMonth, actualDate.getMonth() + 1);
+        assertEquals(expectedDay, actualDate.getDate());
+    }
+
+
+    @SuppressWarnings("deprecation")
+    private void assertDateTime(int expectedYear, int expectedMonth, int expectedDay, int expectedHours,
+            int expectedMinutes, int expectedSeconds, Date actualDate)
+    {
+        assertDate(expectedYear, expectedMonth, expectedDay, actualDate);
+        assertEquals(expectedHours, actualDate.getHours());
+        assertEquals(expectedMinutes, actualDate.getMinutes());
+        assertEquals(expectedSeconds, actualDate.getSeconds());
     }
 }

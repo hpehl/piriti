@@ -4,8 +4,11 @@
     in the elements. Otherwise the asserts will fail!
  -->
 <backAndFourth>
+  <date>1973-09-02T11:22:33.444+01:00</date>
+  <dateWithFormat>20.09.04</dateWithFormat>
+  <dateWithConverter>tomorrow</dateWithConverter>
+  <maths>TWO</maths>
+  <mathsWithConverter>2</mathsWithConverter>
   <duration>4h</duration>
-  <date>tomorrow</date>
-  <maths>2</maths>
   <name>Max Mustermann</name>
 </backAndFourth>

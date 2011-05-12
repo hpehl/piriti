@@ -69,10 +69,31 @@ public class DefaultPropertyHandler extends AbstractJsonPropertyHandler
     }
 
 
+    /**
+     * Since this is the fallback handler, always return <code>true</code>
+     * 
+     * @return always <code>true</code>
+     * @see name.pehl.piriti.rebind.propertyhandler.AbstractPropertyHandler#shouldUseConverterForWriting(name.pehl.piriti.rebind.PropertyContext)
+     */
+    @Override
+    protected boolean shouldUseConverterForWriting(PropertyContext propertyContext)
+    {
+        return true;
+    }
+
+
     @Override
     protected void writeValueUsingWriter(IndentedWriter writer, PropertyContext propertyContext)
     {
         writer.write("%s.append(%s.toJson(%s));", propertyContext.getVariableNames().getBuilderVariable(),
                 writerVariable, propertyContext.getVariableNames().getValueVariable());
+    }
+
+
+    @Override
+    protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        writer.write("%s.append(JsonUtils.escapeValue(String.valueOf(%s)));", propertyContext.getVariableNames()
+                .getBuilderVariable(), propertyContext.getVariableNames().getValueVariable());
     }
 }

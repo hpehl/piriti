@@ -451,9 +451,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
             writer.outdent();
             writer.write("} else {");
             writer.indent();
-            // FIXME Dates in JsonWriter without explicit converter are
-            // written using writeValueDirectly() which is false!
-            if (propertyContext.hasConverter())
+            if (shouldUseConverterForWriting(propertyContext))
             {
                 writer.write("if (%s != null) {", converterVariable);
                 writer.indent();
@@ -481,7 +479,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
             {
                 writeValueDirectly(writer, propertyContext);
             }
-            if (propertyContext.hasConverter())
+            if (shouldUseConverterForWriting(propertyContext))
             {
                 writer.outdent();
                 writer.write("}");
@@ -489,6 +487,12 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
             writer.outdent();
             writer.write("}");
         }
+    }
+
+
+    protected boolean shouldUseConverterForWriting(PropertyContext propertyContext)
+    {
+        return propertyContext.hasConverter() || propertyContext.getFormat() != null;
     }
 
 

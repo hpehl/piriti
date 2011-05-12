@@ -37,16 +37,13 @@ public class BackAndForth
 
     // ------------------------------------------------------------------- data
 
-    @Convert(DurationConverter.class)
-    int duration;
-    
-    @Convert(TomorrowConverter.class)
     Date date;
+    @Format("dd.MM.yy") Date dateWithFormat;
+    @Convert(TomorrowConverter.class) Date dateWithConverter;
     
-    @Convert(MathsConverter.class)
     Maths maths;
+    @Convert(MathsConverter.class) Maths mathsWithConverter;
     
-    @Convert(NameConverter.class)
-    @Format(NameConverter.DE_EN)
-    String name;
+    @Convert(DurationConverter.class) int duration;
+    @Convert(NameConverter.class) @Format(NameConverter.DE_EN) String name;
 }
