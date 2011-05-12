@@ -1,5 +1,7 @@
 package name.pehl.piriti.converter.client;
 
+import static com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat.ISO_8601;
+
 import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -13,13 +15,6 @@ import com.google.gwt.i18n.client.DateTimeFormat;
  */
 public class DateConverter extends AbstractConverter<Date>
 {
-    /**
-     * The default format which is used if no format is specified in
-     * {@link #convert(String, String)}
-     */
-    public static final String DEFAULT_FORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
-
-
     /**
      * Converts the specified value to date.
      * 
@@ -37,7 +32,7 @@ public class DateConverter extends AbstractConverter<Date>
     {
         if (isValid(value))
         {
-            return parseDate(value, format == null ? DEFAULT_FORMAT : format);
+            return convertDate(value, format);
         }
         return null;
     }
@@ -51,9 +46,9 @@ public class DateConverter extends AbstractConverter<Date>
      * @param format
      * @return
      */
-    protected Date parseDate(String value, String format)
+    protected Date convertDate(String value, String format)
     {
-        DateTimeFormat dtFormat = DateTimeFormat.getFormat(format);
+        DateTimeFormat dtFormat = dateTimeFormatFor(format);
         try
         {
             return dtFormat.parse(value);
@@ -70,7 +65,7 @@ public class DateConverter extends AbstractConverter<Date>
     {
         if (value != null)
         {
-            return serializeDate(value, format == null ? DEFAULT_FORMAT : format);
+            return serializeDate(value, format);
         }
         return null;
     }
@@ -85,7 +80,22 @@ public class DateConverter extends AbstractConverter<Date>
      */
     protected String serializeDate(Date value, String format)
     {
-        DateTimeFormat dtFormat = DateTimeFormat.getFormat(format);
+        DateTimeFormat dtFormat = dateTimeFormatFor(format);
         return dtFormat.format(value);
+    }
+
+
+    private DateTimeFormat dateTimeFormatFor(String format)
+    {
+        DateTimeFormat dtFormat = null;
+        if (format == null)
+        {
+            dtFormat = DateTimeFormat.getFormat(ISO_8601);
+        }
+        else
+        {
+            dtFormat = DateTimeFormat.getFormat(format);
+        }
+        return dtFormat;
     }
 }

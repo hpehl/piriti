@@ -7,8 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import name.pehl.piriti.converter.client.DateConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,13 +16,14 @@ import org.junit.Test;
  */
 public class DateConverterTest extends DateConverter
 {
+    private static final String DEFAULT_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ";
     private DateConverter underTest;
 
 
     @Override
-    protected Date parseDate(String value, String format)
+    protected Date convertDate(String value, String format)
     {
-        SimpleDateFormat dtFormat = new SimpleDateFormat(format);
+        SimpleDateFormat dtFormat = new SimpleDateFormat(format == null ? DEFAULT_FORMAT : format);
         try
         {
             return dtFormat.parse(value);
