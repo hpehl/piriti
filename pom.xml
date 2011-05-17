@@ -7,7 +7,7 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>superpom</artifactId>
-        <version>8</version>
+        <version>11</version>
     </parent>
 
 
@@ -62,11 +62,11 @@
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
+            <artifactId>gwt-dev</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-dev</artifactId>
+            <artifactId>gwt-user</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
@@ -79,6 +79,10 @@
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
         </dependency>
         <dependency>
             <groupId>aopalliance</groupId>
