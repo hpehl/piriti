@@ -4,6 +4,7 @@ import java.util.List;
 
 import name.pehl.piriti.commons.client.CreateWith;
 import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -18,6 +19,12 @@ public class Library
     public interface LibraryReader extends JsonReader<Library> {}
     public static final LibraryReader READER = GWT.create(LibraryReader.class);
     
+    public interface LibraryWriter extends JsonWriter<Library> {}
+    public static final LibraryWriter WRITER = GWT.create(LibraryWriter.class);
+
     @CreateWith(MediumCreator.class)
-    List<Medium> mediums;
+    Medium[] mediumsArray;
+
+    @CreateWith(MediumCreator.class)
+    List<Medium> mediumsList;
 }

@@ -12,9 +12,17 @@ public abstract class AbstractLibraryTest extends AbstractPiritiTest
     protected void assertLibrary(Library library)
     {
         assertNotNull(library);
-        assertEquals(3, library.mediums.size());
-        assertTrue(library.mediums.get(0) instanceof Book);
-        assertTrue(library.mediums.get(1) instanceof Cd);
-        assertTrue(library.mediums.get(2) instanceof Dvd);
+
+        assertNotNull(library.mediumsArray);
+        assertEquals(3, library.mediumsArray.length);
+        assertTrue(library.mediumsArray[0] instanceof Book);
+        assertTrue(library.mediumsArray[1] instanceof Cd);
+        assertTrue(library.mediumsArray[2] instanceof Dvd);
+
+        assertNotNull(library.mediumsList);
+        assertEquals(3, library.mediumsList.size());
+        assertTrue(library.mediumsList.get(0) instanceof Book);
+        assertTrue(library.mediumsList.get(1) instanceof Cd);
+        assertTrue(library.mediumsList.get(2) instanceof Dvd);
     }
 }

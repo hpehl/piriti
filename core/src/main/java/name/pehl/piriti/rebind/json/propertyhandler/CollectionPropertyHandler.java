@@ -148,6 +148,11 @@ public class CollectionPropertyHandler extends AbstractJsonPropertyHandler
         nestedHandler.declare(writer, nestedPropertyContext);
         // Replace nestedHandler.readField(writer, nestedFieldContext) with
         writer.write("%s = iter.next();", nestedPropertyContext.getVariableNames().getValueVariable());
+        if (nestedHandler instanceof DefaultPropertyHandler)
+        {
+            DefaultPropertyHandler dph = (DefaultPropertyHandler) nestedHandler;
+            dph.updateDeclarations(writer, nestedPropertyContext);
+        }
         // No nestedHandler.markupStart(writer, nestedFieldContext); since we're
         // in an JSON array
         nestedHandler.writeValue(writer, nestedPropertyContext, propertyHandlerLookup);

@@ -105,7 +105,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
         {
             writer.write("%s = %s.get%s(%s.class);", rwVariable, propertyContext.getVariableNames()
                     .getRegistryVariable(), rw, propertyContext.getType().getQualifiedSourceName());
-            if (propertyContext.hasInstanceCreator())
+            if (propertyContext.hasInstanceCreator() && propertyContext.getTypeContext().isReader())
             {
                 // If no reader was found try to use a configured instance
                 // creator

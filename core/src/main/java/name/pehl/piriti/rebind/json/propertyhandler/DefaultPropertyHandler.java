@@ -96,4 +96,30 @@ public class DefaultPropertyHandler extends AbstractJsonPropertyHandler
         writer.write("%s.append(JsonUtils.escapeValue(String.valueOf(%s)));", propertyContext.getVariableNames()
                 .getBuilderVariable(), propertyContext.getVariableNames().getValueVariable());
     }
+
+
+    public void updateDeclarations(IndentedWriter writer, PropertyContext propertyContext)
+    {
+        if (propertyContext.getTypeContext().isWriter())
+        {
+            writer.write("if (%1$s != null && !%1$s.getClass().equals(%2$s.class)) {", propertyContext
+                    .getVariableNames().getValueVariable(), propertyContext.getType().getQualifiedSourceName());
+            writer.indent();
+            if (!propertyContext.hasConverter())
+            {
+                // No custom converter --> Update!
+                writer.write("%s = (Converter<%s>)converterRegistry.get(%s.getClass());", converterVariable,
+                        propertyContext.getType().getQualifiedSourceName(), propertyContext.getVariableNames()
+                                .getValueVariable());
+            }
+            if (rwPossible)
+            {
+                writer.write("%s = (JsonWriter<%s>)%s.getWriter(%s.getClass());", writerVariable, propertyContext
+                        .getType().getQualifiedSourceName(), propertyContext.getVariableNames().getRegistryVariable(),
+                        propertyContext.getVariableNames().getValueVariable());
+            }
+            writer.outdent();
+            writer.write("}");
+        }
+    }
 }

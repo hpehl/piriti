@@ -1,6 +1,7 @@
 package name.pehl.piriti.client.polymorph;
 
 import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -14,6 +15,9 @@ public class Cd extends Medium
 {
     public interface CdReader extends JsonReader<Cd> {}
     public static final CdReader READER = GWT.create(CdReader.class);
+
+    public interface CdWriter extends JsonWriter<Cd> {}
+    public static final CdWriter WRITER = GWT.create(CdWriter.class);
 
     int tracks;
 }
