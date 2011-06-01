@@ -18,6 +18,7 @@ import java.util.Map;
  * <li>Float.class --> {@link FloatConverter}
  * <li>Integer.class --> {@link IntegerConverter}
  * <li>Long.class --> {@link LongConverter}
+ * <li>Object.class --> {@link ObjectConverter}
  * <li>Short.class --> {@link ShortConverter}
  * <li>Time.class --> {@link TimeConverter}
  * <li>Timestamp.class --> {@link TimestampConverter}
@@ -54,6 +55,7 @@ public final class ConverterRegistry
      * <li>Float.class --> {@link FloatConverter}
      * <li>Integer.class --> {@link IntegerConverter}
      * <li>Long.class --> {@link LongConverter}
+     * <li>Object.class --> {@link ObjectConverter}
      * <li>Short.class --> {@link ShortConverter}
      * <li>Time.class --> {@link TimeConverter}
      * <li>Timestamp.class --> {@link TimestampConverter}
@@ -70,6 +72,7 @@ public final class ConverterRegistry
         register(Float.class, new FloatConverter());
         register(Integer.class, new IntegerConverter());
         register(Long.class, new LongConverter());
+        register(Object.class, new ObjectConverter());
         register(Short.class, new ShortConverter());
         register(Time.class, new TimeConverter());
         register(Timestamp.class, new TimestampConverter());

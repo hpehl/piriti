@@ -19,8 +19,10 @@ import name.pehl.piriti.client.polymorph.JsonLibraryTest;
 import name.pehl.piriti.client.references.JsonBookTest;
 import name.pehl.piriti.client.references.XmlBookTest;
 import name.pehl.piriti.client.references.id.XmlCompanyTest;
+import name.pehl.piriti.client.types.JsonAnythingTest;
 import name.pehl.piriti.client.types.JsonBooleansTest;
 import name.pehl.piriti.client.types.JsonFatGlobalItemTest;
+import name.pehl.piriti.client.types.XmlAnythingTest;
 import name.pehl.piriti.client.types.XmlBooleansTest;
 import name.pehl.piriti.client.types.XmlFatGlobalItemTest;
 
@@ -40,6 +42,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonAmoebaReaderTest.class);
         suite.addTestSuite(JsonAmoebaWriterTest.class);
         suite.addTestSuite(JsonAnimalTest.class);
+        suite.addTestSuite(JsonAnythingTest.class);
         suite.addTestSuite(JsonBackAndForthTest.class);
         suite.addTestSuite(JsonBookTest.class);
         suite.addTestSuite(JsonBooleansTest.class);
@@ -51,6 +54,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(RefugeeJsonTest.class);
         suite.addTestSuite(XmlAmoebaReaderTest.class);
         suite.addTestSuite(XmlAnimalTest.class);
+        suite.addTestSuite(XmlAnythingTest.class);
         suite.addTestSuite(XmlBackAndForthTest.class);
         suite.addTestSuite(XmlBookTest.class);
         suite.addTestSuite(XmlBooleansTest.class);
