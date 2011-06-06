@@ -1,8 +1,7 @@
 package name.pehl.piriti.client.types;
 
-import name.pehl.totoe.json.client.JsonParser;
-
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 /**
  * @author $Author: harald.pehl $
@@ -28,7 +27,7 @@ public class JsonAnythingTest extends AbstractAnythingTest
         String jsonIn = AnythingResources.INSTANCE.anythingJson().getText();
         Anything anything = Anything.JSON_READER.read(jsonIn);
         String jsonOut = Anything.JSON_WRITER.toJson(anything);
-        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts
     }

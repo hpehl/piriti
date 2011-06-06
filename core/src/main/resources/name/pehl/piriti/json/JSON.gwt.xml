@@ -8,7 +8,7 @@
     <inherits name="name.pehl.piriti.commons.Commons" />
     <inherits name="name.pehl.piriti.converter.Converter" />
     <inherits name="name.pehl.piriti.property.Property" />
-    <inherits name="name.pehl.totoe.json.JsonParser" />
+    <inherits name="name.pehl.totoe.json.JSON" />
 
     <!-- Generator for JsonReader -->
     <generate-with class="name.pehl.piriti.rebind.json.JsonReaderGenerator">

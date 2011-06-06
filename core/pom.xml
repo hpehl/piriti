@@ -13,15 +13,6 @@
     <name>Piriti Core</name>
     
     
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-
-    
     <build>
         <plugins>
             <plugin>

@@ -1,8 +1,7 @@
 package name.pehl.piriti.client.escape;
 
-import name.pehl.totoe.json.client.JsonParser;
-
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 /**
  * JsonWriter tests (special characters, escaping, ...)
@@ -37,7 +36,7 @@ public class RefugeeJsonTest extends AbstractRefugeeTest
         String jsonIn = RefugeeResources.INSTANCE.refugeeJson().getText();
         Refugee refugee = Refugee.JSON_READER.read(jsonIn);
         String jsonOut = Refugee.JSON_WRITER.toJson(refugee);
-        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts
     }

@@ -11,7 +11,7 @@ import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
-import name.pehl.totoe.xml.client.WhitespaceHandling;
+import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;

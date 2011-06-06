@@ -1,8 +1,7 @@
 package name.pehl.piriti.client.polymorph;
 
-import name.pehl.totoe.json.client.JsonParser;
-
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 /**
  * @author $Author: harald.pehl $
@@ -28,7 +27,7 @@ public class JsonLibraryTest extends AbstractLibraryTest
         String jsonIn = LibraryResources.INSTANCE.libraryJson().getText();
         Library library = Library.READER.read(jsonIn);
         String jsonOut = Library.WRITER.toJson(library);
-        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts
     }

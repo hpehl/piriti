@@ -1,8 +1,7 @@
 package name.pehl.piriti.client.inheritance;
 
-import name.pehl.totoe.json.client.JsonParser;
-
 import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
 
 /**
  * @author $Author$
@@ -56,7 +55,7 @@ public class JsonAnimalTest extends AbstractAnimalTest
         // Test order
         assertEquals(AnimalResources.INSTANCE.birdOrderedJson().getText(), jsonOut);
 
-        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts
     }
@@ -68,7 +67,7 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.insectJson().getText();
         Insect insect = Insect.JSON_READER.read(jsonIn);
         String jsonOut = Insect.JSON_WRITER.toJson(insect);
-        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts
     }
@@ -80,7 +79,7 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.catJson().getText();
         Cat cat = Cat.JSON_READER.read(jsonIn);
         String jsonOut = Cat.JSON_WRITER.toJson(cat);
-        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts
     }
@@ -92,7 +91,7 @@ public class JsonAnimalTest extends AbstractAnimalTest
         String jsonIn = AnimalResources.INSTANCE.dogJson().getText();
         Dog dog = Dog.JSON_READER.read(jsonIn);
         String jsonOut = Dog.JSON_WRITER.toJson(dog);
-        JSONObject jsonObject = new JsonParser().parse(jsonOut);
+        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts
     }

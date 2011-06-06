@@ -8,7 +8,7 @@
     <inherits name="name.pehl.piriti.commons.Commons" />
     <inherits name="name.pehl.piriti.converter.Converter" />
     <inherits name="name.pehl.piriti.property.Property" />
-    <inherits name="name.pehl.totoe.xml.XmlParser" />
+    <inherits name="name.pehl.totoe.xml.XML" />
 
     <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">

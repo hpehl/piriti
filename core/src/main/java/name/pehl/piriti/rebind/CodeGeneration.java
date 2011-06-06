@@ -11,8 +11,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
@@ -61,12 +59,24 @@ public final class CodeGeneration
 
     public static void log(IndentedWriter writer, Level level, String message, Object... params)
     {
-        String logMessage = StringEscapeUtils.escapeJava(String.format(message, params));
+        String logMessage = escapeJava(String.format(message, params));
         writer.write("if (logger.isLoggable(%s)) {", level);
         writer.indent();
         writer.write("logger.log(%s, \"%s\");", level, logMessage);
         writer.outdent();
         writer.write("}");
+    }
+
+
+    private static String escapeJava(String code)
+    {
+        String cleanCode = code;
+        if (cleanCode != null)
+        {
+            // TODO Remove " and other problematic characters
+            cleanCode = cleanCode.replace('"', '\'');
+        }
+        return cleanCode;
     }
 
 
@@ -112,8 +122,7 @@ public final class CodeGeneration
             }
             else
             {
-                if (!(TypeUtils.isJavaType(type) || TypeUtils.isGwtType(type))
-                        && TypeUtils.isDefaultInstantiable(type))
+                if (!(TypeUtils.isJavaType(type) || TypeUtils.isGwtType(type)) && TypeUtils.isDefaultInstantiable(type))
                 {
                     concreteTypes.add(type);
                 }
