@@ -1,7 +1,7 @@
 package name.pehl.piriti.commons.client;
 
 /**
- * Class used during (de)serialization to store and get the context information
+ * Class used during deserialization to store and get the context information
  * for an instance of T.
  * 
  * @author upudxv4
@@ -41,8 +41,8 @@ public class InstanceContextHolder<T, C>
     {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((context == null) ? 0 : context.hashCode());
-        result = prime * result + ((instance == null) ? 0 : instance.hashCode());
+        result = prime * result + (context == null ? 0 : context.hashCode());
+        result = prime * result + (instance == null ? 0 : instance.hashCode());
         return result;
     }
 
