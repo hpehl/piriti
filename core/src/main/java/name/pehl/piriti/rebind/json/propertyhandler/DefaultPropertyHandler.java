@@ -98,7 +98,7 @@ public class DefaultPropertyHandler extends AbstractJsonPropertyHandler
     }
 
 
-    public void updateDeclarations(IndentedWriter writer, PropertyContext propertyContext)
+    void updateDeclarations(IndentedWriter writer, PropertyContext propertyContext)
     {
         if (propertyContext.getTypeContext().isWriter())
         {
