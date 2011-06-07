@@ -186,6 +186,7 @@ public abstract class AbstractCreator extends LogFacade
         writer.write("import static java.util.logging.Level.*;");
         writer.write("import java.util.logging.Logger;");
         writer.write("import com.google.gwt.core.client.GWT;");
+        writer.write("import name.pehl.totoe.commons.client.*;");
         writer.write("import name.pehl.piriti.converter.client.*;");
     }
 
