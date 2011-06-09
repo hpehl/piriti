@@ -1,5 +1,8 @@
 package name.pehl.piriti.client.references;
 
+import name.pehl.totoe.xml.client.Document;
+import name.pehl.totoe.xml.client.XmlParser;
+
 /**
  * @author $Author: harald.pehl $
  * @version $Revision: 133 $
@@ -15,7 +18,17 @@ public class XmlBookTest extends AbstractBookTest
         assertBook(book, true, true);
     }
 
+
     // ------------------------------------------------------------ write tests
 
-    // NYI
+    public void testWriteBook()
+    {
+        // Roundtrip
+        String xmlIn = BookResources.INSTANCE.bookXml().getText();
+        Book book = Book.XML_READER.read(xmlIn);
+        String xmlOut = Book.XML_WRITER.toXml(book);
+        Document document = new XmlParser().parse(xmlOut);
+        assertNotNull(document);
+        // TODO More asserts
+    }
 }
