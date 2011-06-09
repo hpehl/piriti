@@ -64,7 +64,7 @@ public class DefaultPropertyHandler extends AbstractXmlPropertyHandler
     @Override
     protected void writeValueUsingWriter(IndentedWriter writer, PropertyContext propertyContext)
     {
-        writer.write("%s.append(%s.toXml(%s));", propertyContext.getVariableNames().getBuilderVariable(),
+        writer.write("%s.append(%s.toPlainXml(%s));", propertyContext.getVariableNames().getBuilderVariable(),
                 writerVariable, propertyContext.getVariableNames().getValueVariable());
     }
 }

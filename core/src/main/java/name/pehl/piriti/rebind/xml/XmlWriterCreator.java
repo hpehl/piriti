@@ -19,7 +19,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public class XmlWriterCreator extends AbstractWriterCreator
 {
-    private static final String XML_DECL = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    private static final String XML_DECL = "<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>";
 
 
     // --------------------------------------------------------- initialization
@@ -81,6 +81,8 @@ public class XmlWriterCreator extends AbstractWriterCreator
 
         writeSingleRootElement(writer);
         writer.newline();
+
+        writeSinglePlain(writer);
     }
 
 
@@ -117,7 +119,7 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("if (models != null && rootElement != null && rootElement.length() != 0 && nestedRootElement != null && nestedRootElement.length() != 0) {");
         writer.indent();
         writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
-        writer.write("%s.append(%s);", XML_DECL);
+        writer.write("%s.append(\"" + XML_DECL + "\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\"<\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(rootElement);", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\">\");", typeContext.getVariableNames().getBuilderVariable());
@@ -163,18 +165,40 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("if (model != null && rootElement != null && rootElement.length() != 0) {");
         writer.indent();
         writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
-        writer.write("%s.append(%s);", XML_DECL);
+        writer.write("%s.append(\"" + XML_DECL + "\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\"<\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(rootElement);", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\">\");", typeContext.getVariableNames().getBuilderVariable());
+
+        writer.write("%s.append(toPlainXml(%s));", typeContext.getVariableNames().getBuilderVariable(), typeContext
+                .getVariableNames().getInstanceVariable());
+
+        writer.write("%s.append(\"</\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(rootElement);", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("%s.append(\">\");", typeContext.getVariableNames().getBuilderVariable());
+        writer.write("xml = %s.toString();", typeContext.getVariableNames().getBuilderVariable());
+        writer.outdent();
+        writer.write("}");
+        writer.write("return xml;");
+        writer.outdent();
+        writer.write("}");
+    }
+
+
+    protected void writeSinglePlain(IndentedWriter writer) throws UnableToCompleteException
+    {
+        writer.write("public String toPlainXml(%s %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
+                typeContext.getVariableNames().getInstanceVariable());
+        writer.indent();
+        writer.write("String xml = null;");
+        writer.write("if (model != null) {");
+        writer.indent();
+        writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
 
         // This creates all FieldHandler / FieldContexts and calls handleField()
         // in a loop
         handleProperties(writer);
 
-        writer.write("%s.append(\"</\");", typeContext.getVariableNames().getBuilderVariable());
-        writer.write("%s.append(rootElement);", typeContext.getVariableNames().getBuilderVariable());
-        writer.write("%s.append(\">\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("xml = %s.toString();", typeContext.getVariableNames().getBuilderVariable());
         writer.outdent();
         writer.write("}");

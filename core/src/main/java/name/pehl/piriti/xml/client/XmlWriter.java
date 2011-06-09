@@ -145,4 +145,18 @@ public interface XmlWriter<T>
      *         {@code rootElement} is <code>null</code>
      */
     String toXml(T model, String rootElement);
+
+
+    /**
+     * Serializes the specified model to XML using <em>no</em> root element.
+     * Please note that the resulting XML is <em>not valid</em>. Use this method
+     * if you want to put the XML in your own root element or if you want
+     * process the XML in some custom way.
+     * 
+     * @param model
+     * @return the relevant XML <em>without</em> a root element or
+     *         <code>null</code> if {@code model} and/or {@code rootElement} is
+     *         <code>null</code>
+     */
+    String toPlainXml(T model);
 }
