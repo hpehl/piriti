@@ -497,7 +497,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
 
     /**
-     * Responsible to assign the property nativley in case the property was
+     * Responsible to write the property nativley in case the property was
      * marked with {@code @}Native.
      * <p>
      * Empty implementation
