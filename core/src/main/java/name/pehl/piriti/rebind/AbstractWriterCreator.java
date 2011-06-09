@@ -28,6 +28,25 @@ public abstract class AbstractWriterCreator extends AbstractCreator
     protected abstract void createWriterMethods(IndentedWriter writer) throws UnableToCompleteException;
 
 
+    /**
+     * Calls distinct methods of {@link PropertyHandler} in this order
+     * <ol>
+     * <li> {@link PropertyHandler#log(IndentedWriter, PropertyContext)}
+     * <li> {@link PropertyHandler#declare(IndentedWriter, PropertyContext)}
+     * <li>
+     * {@link PropertyHandler#readProperty(IndentedWriter, PropertyContext)}
+     * <li> {@link PropertyHandler#markupStart(IndentedWriter, PropertyContext)}
+     * <li>
+     * {@link PropertyHandler#writeValue(IndentedWriter, PropertyContext, name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup)}
+     * <li> {@link PropertyHandler#markupEnd(IndentedWriter, PropertyContext)}
+     * </ol>
+     * If {@code hasNext} is true,
+     * {@link #writeSeperator(IndentedWriter, PropertyContext)} is called.
+     * 
+     * @see name.pehl.piriti.rebind.AbstractCreator#handleProperty(name.pehl.piriti.rebind.IndentedWriter,
+     *      name.pehl.piriti.rebind.propertyhandler.PropertyHandler,
+     *      name.pehl.piriti.rebind.PropertyContext, boolean)
+     */
     @Override
     protected void handleProperty(IndentedWriter writer, PropertyHandler propertyHandler,
             PropertyContext propertyContext, boolean hasNext) throws UnableToCompleteException
