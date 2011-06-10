@@ -31,6 +31,7 @@ public class Author
     public interface AuthorXmlReader extends XmlReader<Author> {}
     public static final AuthorXmlReader XML_READER = GWT.create(AuthorXmlReader.class);
 
+    @Mappings(@Mapping(value = "bestseller", path = "bestseller/book"))
     public interface AuthorXmlWriter extends XmlWriter<Author> {}
     public static final AuthorXmlWriter XML_WRITER = GWT.create(AuthorXmlWriter.class);
 

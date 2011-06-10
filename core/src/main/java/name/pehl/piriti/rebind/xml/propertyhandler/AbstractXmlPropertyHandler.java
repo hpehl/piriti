@@ -35,6 +35,11 @@ public abstract class AbstractXmlPropertyHandler extends AbstractPropertyHandler
      */
     protected static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']', '/', '@',};
 
+    /**
+     * Regular expression for a nested path
+     */
+    protected static final String NESTED_PATH_PATH_REGEX = "\\w+(/\\w+)?";
+
 
     // ----------------------------------------------------------- constructors
 

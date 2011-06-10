@@ -36,6 +36,9 @@ public class Book
     public interface BookXmlReader extends XmlReader<Book> {}
     public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
 
+    @Mappings({@Mapping(value = "reviews", path = "reviews/review"),
+        @Mapping(value = "related", path = "related/book"),
+        @Mapping(value = "extraInfoOfLastRelatedBook", path = "//related/book[3]/extraInfo/text()")})    
     public interface BookXmlWriter extends XmlWriter<Book> {}
     public static final BookXmlWriter XML_WRITER = GWT.create(BookXmlWriter.class);
 

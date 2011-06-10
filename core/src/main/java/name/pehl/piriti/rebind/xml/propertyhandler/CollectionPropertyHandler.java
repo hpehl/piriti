@@ -103,4 +103,25 @@ public class CollectionPropertyHandler extends AbstractXmlPropertyHandler
     {
         CodeGeneration.log(writer, Level.WARNING, "writeValue() NYI");
     }
+
+
+    /**
+     * Overwrites the method so that paths which match
+     * {@link AbstractXmlPropertyHandler#NESTED_PATH_PATH_REGEX} are allowed.
+     * 
+     * @see name.pehl.piriti.rebind.xml.propertyhandler.AbstractXmlPropertyHandler#isXmlPath(java.lang.String)
+     */
+    @Override
+    protected boolean isXmlPath(String path)
+    {
+        boolean xmlPath = super.isXmlPath(path);
+        if (xmlPath)
+        {
+            if (path.matches(NESTED_PATH_PATH_REGEX))
+            {
+                xmlPath = false;
+            }
+        }
+        return xmlPath;
+    }
 }
