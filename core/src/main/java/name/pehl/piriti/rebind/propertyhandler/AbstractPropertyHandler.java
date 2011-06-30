@@ -352,7 +352,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     {
         if (propertyContext.getGetter() == null)
         {
-            readFieldOrSetter(writer, propertyContext);
+            readFieldOrGetter(writer, propertyContext);
         }
         else
         {
@@ -362,7 +362,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     }
 
 
-    protected void readFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
+    protected void readFieldOrGetter(IndentedWriter writer, PropertyContext propertyContext)
     {
         JField field = TypeUtils.findField(propertyContext.getTypeContext().getType(), propertyContext.getName());
         if (field == null)
@@ -374,7 +374,7 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
 
         JClassType enclosingType = field.getEnclosingType();
         boolean samePackage = propertyContext.getTypeContext().getRwType().getPackage() == enclosingType.getPackage();
-        if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
+        if (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected()))
         {
             writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
                     propertyContext.getName());

@@ -10,6 +10,7 @@ import name.pehl.piriti.client.converter.XmlBackAndForthTest;
 import name.pehl.piriti.client.escape.RefugeeJsonTest;
 import name.pehl.piriti.client.external.JsonShopTest;
 import name.pehl.piriti.client.external.XmlShopTest;
+import name.pehl.piriti.client.generics.JsonGenericsTest;
 import name.pehl.piriti.client.inheritance.JsonAnimalTest;
 import name.pehl.piriti.client.inheritance.XmlAnimalTest;
 import name.pehl.piriti.client.namespaces.LotteryTicketTest;
@@ -47,6 +48,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonBookTest.class);
         suite.addTestSuite(JsonBooleansTest.class);
         suite.addTestSuite(JsonFatGlobalItemTest.class);
+        suite.addTestSuite(JsonGenericsTest.class);
         suite.addTestSuite(JsonLibraryTest.class);
         suite.addTestSuite(JsonResponseTest.class);
         suite.addTestSuite(JsonShopTest.class);
