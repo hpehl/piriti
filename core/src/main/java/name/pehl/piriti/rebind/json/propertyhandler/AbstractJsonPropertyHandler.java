@@ -171,8 +171,16 @@ public abstract class AbstractJsonPropertyHandler extends AbstractPropertyHandle
     @Override
     protected void writeValueAsString(IndentedWriter writer, PropertyContext propertyContext)
     {
+        writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueAsStringVariable());
+        writer.indent();
+        writer.write("%s.append(\"null\");", propertyContext.getVariableNames().getBuilderVariable());
+        writer.outdent();
+        writer.write("} else {");
+        writer.indent();
         writer.write("%s.append(JsonUtils.escapeValue(%s));", propertyContext.getVariableNames().getBuilderVariable(),
                 propertyContext.getVariableNames().getValueAsStringVariable());
+        writer.outdent();
+        writer.write("}");
     }
 
 

@@ -7,14 +7,14 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>superpom</artifactId>
-        <version>14</version>
+        <version>15</version>
     </parent>
 
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.pehl.piriti</groupId>
     <artifactId>piriti-parent</artifactId>
-    <version>0.7b2</version>
+    <version>0.7b3</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
     <description>Annotation based JSON and XML mapper for GWT</description>
