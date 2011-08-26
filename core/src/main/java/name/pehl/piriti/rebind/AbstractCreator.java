@@ -74,6 +74,10 @@ public abstract class AbstractCreator extends LogFacade
         {
             die("No type parameter found in %s", (Object[]) rwTypes);
         }
+        if (type.isParameterized() != null)
+        {
+            die("Type parameters for the model are not supported!");
+        }
 
         // initialize
         this.generatorContext = generatorContext;

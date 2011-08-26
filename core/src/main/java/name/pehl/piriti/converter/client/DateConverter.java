@@ -1,10 +1,10 @@
 package name.pehl.piriti.converter.client;
 
-import static com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat.ISO_8601;
+import static com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat.ISO_8601;
 
 import java.util.Date;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.shared.DateTimeFormat;
 
 /**
  * Converter for dates. Uses {@code DateTimeFormat#parse(String)} for the
@@ -91,6 +91,10 @@ public class DateConverter extends AbstractConverter<Date>
         if (format == null)
         {
             dtFormat = DateTimeFormat.getFormat(ISO_8601);
+        }
+        else if (DateMS_DateTimeFormat.DateMS.equalsIgnoreCase(format))
+        {
+            return DateMS_DateTimeFormat.me;
         }
         else
         {
