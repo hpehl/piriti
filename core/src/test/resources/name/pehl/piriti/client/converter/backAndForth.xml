@@ -5,6 +5,7 @@
  -->
 <backAndFourth>
   <date>1973-09-02T11:22:33.444+01:00</date>
+  <millis>/Date(115772400000)/</millis>
   <dateWithFormat>20.09.04</dateWithFormat>
   <dateWithConverter>tomorrow</dateWithConverter>
   <maths>TWO</maths>

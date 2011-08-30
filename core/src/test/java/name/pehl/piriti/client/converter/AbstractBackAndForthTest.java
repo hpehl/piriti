@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.converter;
 
+import static name.pehl.piriti.client.converter.BackAndForthResources.MY_BIRTHDAY_IN_MILLIS;
+
 import java.util.Date;
 
 import name.pehl.piriti.client.AbstractPiritiTest;
@@ -15,6 +17,7 @@ public abstract class AbstractBackAndForthTest extends AbstractPiritiTest
     {
         assertNotNull(backAndForth);
         assertDateTime(1973, 9, 2, 11, 22, 33, backAndForth.date);
+        assertEquals(backAndForth.millis.getTime(), MY_BIRTHDAY_IN_MILLIS);
         assertDate(2004, 9, 20, backAndForth.dateWithFormat);
         assertEquals(TomorrowConverter.TOMORROW_DATE, backAndForth.dateWithConverter);
         assertEquals(Maths.TWO, backAndForth.maths);

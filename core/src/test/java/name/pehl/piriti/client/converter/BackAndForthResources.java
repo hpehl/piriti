@@ -16,6 +16,7 @@ public interface BackAndForthResources extends ClientBundle
     int RELATED_SIZE = 3;
     String ISBN = "978-0345417954";
     int PAGES = 432;
+    long MY_BIRTHDAY_IN_MILLIS = 115772400000l;
     String TITLE = "The Hotel New Hampshire";
     String EXTRA_INFO = "dki82";
     String AUTHOR_SURNAME = "Irving";

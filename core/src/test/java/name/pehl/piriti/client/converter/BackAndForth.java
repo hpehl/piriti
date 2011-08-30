@@ -4,6 +4,7 @@ import java.util.Date;
 
 import name.pehl.piriti.commons.client.Format;
 import name.pehl.piriti.converter.client.Convert;
+import name.pehl.piriti.converter.client.DateMS_DateTimeFormat;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.xml.client.XmlReader;
@@ -39,6 +40,7 @@ public class BackAndForth
 
     Date date;
     @Format("dd.MM.yy") Date dateWithFormat;
+    @Format(DateMS_DateTimeFormat.DateMS) Date millis;
     @Convert(TomorrowConverter.class) Date dateWithConverter;
     
     Maths maths;
