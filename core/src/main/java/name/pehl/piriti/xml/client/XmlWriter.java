@@ -2,6 +2,8 @@ package name.pehl.piriti.xml.client;
 
 import java.util.List;
 
+import name.pehl.piriti.commons.client.HasWriteModelHandler;
+
 /**
  * Interface for serializing an instance of T or a list of Ts to XML. All
  * properties of T and superclasses of T are handled by the generated XmlWriter
@@ -34,7 +36,7 @@ import java.util.List;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface XmlWriter<T>
+public interface XmlWriter<T> extends HasWriteModelHandler<T>
 {
     /**
      * Serializes the specified models to XML. For the root element and the

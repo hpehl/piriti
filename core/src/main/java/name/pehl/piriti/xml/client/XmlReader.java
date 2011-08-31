@@ -2,6 +2,7 @@ package name.pehl.piriti.xml.client;
 
 import java.util.List;
 
+import name.pehl.piriti.commons.client.HasReadModelHandler;
 import name.pehl.totoe.xml.client.Document;
 import name.pehl.totoe.xml.client.Element;
 import name.pehl.totoe.xml.client.XmlParseException;
@@ -38,7 +39,7 @@ import name.pehl.totoe.xml.client.XmlParseException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface XmlReader<T>
+public interface XmlReader<T> extends HasReadModelHandler<T>
 {
     // -------------------------------------------------------------- read list
 

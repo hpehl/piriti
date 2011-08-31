@@ -123,9 +123,11 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("%s.append(\"<\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(rootElement);", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\">\");", typeContext.getVariableNames().getBuilderVariable());
-        writer.write("for (%s model : models) {", typeContext.getType().getParameterizedQualifiedSourceName());
+        writer.write("for (%s %s : models) {", typeContext.getType().getParameterizedQualifiedSourceName(), typeContext
+                .getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("String xmlValue = toXml(model, nestedRootElement);");
+        writer.write("String xmlValue = toXml(%s, nestedRootElement);", typeContext.getVariableNames()
+                .getInstanceVariable());
         writer.write("if (xmlValue != null) {");
         writer.indent();
         writer.write("%s.append(xmlValue);", typeContext.getVariableNames().getBuilderVariable());
@@ -150,7 +152,8 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("public String toXml(%s %s) {", typeContext.getType().getParameterizedQualifiedSourceName(),
                 typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("return toXml(model, \"%s\");", buildRootElement(typeContext.getType()));
+        writer.write("return toXml(%s, \"%s\");", typeContext.getVariableNames().getInstanceVariable(),
+                buildRootElement(typeContext.getType()));
         writer.outdent();
         writer.write("}");
     }
@@ -162,8 +165,10 @@ public class XmlWriterCreator extends AbstractWriterCreator
                 .getParameterizedQualifiedSourceName(), typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
         writer.write("String xml = null;");
-        writer.write("if (model != null && rootElement != null && rootElement.length() != 0) {");
+        writer.write("if (%s != null && rootElement != null && rootElement.length() != 0) {", typeContext
+                .getVariableNames().getInstanceVariable());
         writer.indent();
+        writer.write("WriteModelEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\"" + XML_DECL + "\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\"<\");", typeContext.getVariableNames().getBuilderVariable());

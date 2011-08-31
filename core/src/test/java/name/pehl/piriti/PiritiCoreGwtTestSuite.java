@@ -8,6 +8,8 @@ import name.pehl.piriti.client.constraints.XmlAmoebaReaderTest;
 import name.pehl.piriti.client.converter.JsonBackAndForthTest;
 import name.pehl.piriti.client.converter.XmlBackAndForthTest;
 import name.pehl.piriti.client.escape.RefugeeJsonTest;
+import name.pehl.piriti.client.events.JsonPersonsTest;
+import name.pehl.piriti.client.events.XmlPersonsTest;
 import name.pehl.piriti.client.external.JsonShopTest;
 import name.pehl.piriti.client.external.XmlShopTest;
 import name.pehl.piriti.client.inheritance.JsonAnimalTest;
@@ -48,6 +50,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonBooleansTest.class);
         suite.addTestSuite(JsonFatGlobalItemTest.class);
         suite.addTestSuite(JsonLibraryTest.class);
+        suite.addTestSuite(JsonPersonsTest.class);
         suite.addTestSuite(JsonResponseTest.class);
         suite.addTestSuite(JsonShopTest.class);
         suite.addTestSuite(LotteryTicketTest.class);
@@ -60,6 +63,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(XmlBooleansTest.class);
         suite.addTestSuite(XmlCompanyTest.class);
         suite.addTestSuite(XmlFatGlobalItemTest.class);
+        suite.addTestSuite(XmlPersonsTest.class);
         suite.addTestSuite(XmlResponseTest.class);
         suite.addTestSuite(XmlShopTest.class);
 

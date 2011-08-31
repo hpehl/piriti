@@ -21,7 +21,7 @@ public class JsonBookTest extends AbstractBookTest
 
     // ------------------------------------------------------------ write tests
 
-    public void testWriteBook()
+    public void testWrite()
     {
         // Roundtrip
         String jsonIn = BookResources.INSTANCE.bookJson().getText();

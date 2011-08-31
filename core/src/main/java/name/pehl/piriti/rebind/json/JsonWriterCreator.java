@@ -122,6 +122,7 @@ public class JsonWriterCreator extends AbstractWriterCreator
         writer.write("String json = null;");
         writer.write("if (%s != null) {", typeContext.getVariableNames().getInstanceVariable());
         writer.indent();
+        writer.write("WriteModelEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\"{\");", typeContext.getVariableNames().getBuilderVariable());
 

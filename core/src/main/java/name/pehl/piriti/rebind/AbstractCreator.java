@@ -175,6 +175,10 @@ public abstract class AbstractCreator extends LogFacade
 
     /**
      * Adds some common import statements.
+     * <p>
+     * TODO We often import all (.*) classes from a package, but need only some
+     * of them. Check whether this has an impact on performance or whether the
+     * GWT compiler will take care of it.
      * 
      * @param writer
      * @throws UnableToCompleteException
@@ -190,7 +194,11 @@ public abstract class AbstractCreator extends LogFacade
         writer.write("import static java.util.logging.Level.*;");
         writer.write("import java.util.logging.Logger;");
         writer.write("import com.google.gwt.core.client.GWT;");
+        writer.write("import com.google.gwt.event.shared.GwtEvent;");
+        writer.write("import com.google.gwt.event.shared.HandlerManager;");
+        writer.write("import com.google.gwt.event.shared.HandlerRegistration;");
         writer.write("import name.pehl.totoe.commons.client.*;");
+        writer.write("import name.pehl.piriti.commons.client.*;");
         writer.write("import name.pehl.piriti.converter.client.*;");
     }
 
@@ -222,6 +230,9 @@ public abstract class AbstractCreator extends LogFacade
         createConstructor(writer);
         writer.newline();
 
+        createEventHandlerCode(writer);
+        writer.newline();
+
         createMethods(writer);
         writer.newline();
 
@@ -247,10 +258,11 @@ public abstract class AbstractCreator extends LogFacade
      */
     protected void createMemberVariables(IndentedWriter writer) throws UnableToCompleteException
     {
-        writer.write("private ConverterRegistry converterRegistry;");
-        writer.write("private %s %s;", typeContext.getVariableNames().getRegistryType(), typeContext.getVariableNames()
-                .getRegistryVariable());
-        writer.write("private Map<String,%s> idMap;", typeContext.getType().getQualifiedSourceName());
+        writer.write("private final HandlerManager handlerManager;");
+        writer.write("private final ConverterRegistry converterRegistry;");
+        writer.write("private final %s %s;", typeContext.getVariableNames().getRegistryType(), typeContext
+                .getVariableNames().getRegistryVariable());
+        writer.write("private final Map<String,%s> idMap;", typeContext.getType().getQualifiedSourceName());
     }
 
 
@@ -284,10 +296,30 @@ public abstract class AbstractCreator extends LogFacade
      */
     protected void createConstructorBody(IndentedWriter writer) throws UnableToCompleteException
     {
+        writer.write("this.handlerManager = new HandlerManager(this);");
         writer.write("this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();");
         writer.write("this.%s.register(%s.class, this);", typeContext.getVariableNames().getRegistryVariable(),
                 typeContext.getType().getQualifiedSourceName());
         writer.write("this.idMap = new HashMap<String,%s>();", typeContext.getType().getQualifiedSourceName());
+    }
+
+
+    protected void createEventHandlerCode(IndentedWriter writer)
+    {
+        String kind = typeContext.isReader() ? "Read" : "Write";
+        writer.write("public HandlerRegistration add%1$sModelHandler(%1$sModelHandler<%2$s> handler) {", kind,
+                typeContext.getType().getParameterizedQualifiedSourceName());
+        writer.indent();
+        writer.write("return handlerManager.addHandler(%sModelEvent.getType(), handler);", kind);
+        writer.outdent();
+        writer.write("}");
+        writer.newline();
+
+        writer.write("public void fireEvent(GwtEvent<?> event) {");
+        writer.indent();
+        writer.write("handlerManager.fireEvent(event);");
+        writer.outdent();
+        writer.write("}");
     }
 
 
