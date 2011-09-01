@@ -21,7 +21,7 @@ public class XmlBookTest extends AbstractBookTest
 
     // ------------------------------------------------------------ write tests
 
-    public void testWrite()
+    public void _testWrite()
     {
         // Roundtrip
         String xmlIn = BookResources.INSTANCE.bookXml().getText();
