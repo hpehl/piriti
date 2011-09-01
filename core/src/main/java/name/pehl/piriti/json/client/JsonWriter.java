@@ -2,7 +2,7 @@ package name.pehl.piriti.json.client;
 
 import java.util.List;
 
-import name.pehl.piriti.commons.client.HasWriteModelHandler;
+import name.pehl.piriti.commons.client.HasModelWriteHandler;
 
 /**
  * Interface for serializing an instance of T or a list of Ts to JSON. All
@@ -35,7 +35,7 @@ import name.pehl.piriti.commons.client.HasWriteModelHandler;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface JsonWriter<T> extends HasWriteModelHandler<T>
+public interface JsonWriter<T> extends HasModelWriteHandler<T>
 {
     /**
      * Generates JSON data for the list of Ts according to the annotated

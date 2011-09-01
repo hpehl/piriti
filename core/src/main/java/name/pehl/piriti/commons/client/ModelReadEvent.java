@@ -10,16 +10,16 @@ import com.google.gwt.event.shared.GwtEvent;
  * @param <T>
  *            the model type
  */
-public class ReadModelEvent<T> extends GwtEvent<ReadModelHandler<T>>
+public class ModelReadEvent<T> extends GwtEvent<ModelReadHandler<T>>
 {
     /**
      * Handler type.
      */
-    private static Type<ReadModelHandler<?>> TYPE;
+    private static Type<ModelReadHandler<?>> TYPE;
 
 
     /**
-     * Fires a {@link ReadModelEvent} on all registered handlers. If no such
+     * Fires a {@link ModelReadEvent} on all registered handlers. If no such
      * handlers exist, this method will do nothing.
      * 
      * @param <T>
@@ -29,11 +29,11 @@ public class ReadModelEvent<T> extends GwtEvent<ReadModelHandler<T>>
      * @param model
      *            the model
      */
-    public static <T> void fire(HasReadModelHandler<T> source, T model)
+    public static <T> void fire(HasModelReadHandler<T> source, T model)
     {
         if (TYPE != null)
         {
-            ReadModelEvent<T> event = new ReadModelEvent<T>(model);
+            ModelReadEvent<T> event = new ModelReadEvent<T>(model);
             source.fireEvent(event);
         }
     }
@@ -44,11 +44,11 @@ public class ReadModelEvent<T> extends GwtEvent<ReadModelHandler<T>>
      * 
      * @return returns the handler type
      */
-    public static Type<ReadModelHandler<?>> getType()
+    public static Type<ModelReadHandler<?>> getType()
     {
         if (TYPE == null)
         {
-            TYPE = new Type<ReadModelHandler<?>>();
+            TYPE = new Type<ModelReadHandler<?>>();
         }
         return TYPE;
     }
@@ -62,7 +62,7 @@ public class ReadModelEvent<T> extends GwtEvent<ReadModelHandler<T>>
      * @param model
      *            the model
      */
-    protected ReadModelEvent(T model)
+    protected ModelReadEvent(T model)
     {
         this.model = model;
     }
@@ -70,7 +70,7 @@ public class ReadModelEvent<T> extends GwtEvent<ReadModelHandler<T>>
 
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public final Type<ReadModelHandler<T>> getAssociatedType()
+    public final Type<ModelReadHandler<T>> getAssociatedType()
     {
         return (Type) TYPE;
     }
@@ -95,8 +95,8 @@ public class ReadModelEvent<T> extends GwtEvent<ReadModelHandler<T>>
 
 
     @Override
-    protected void dispatch(ReadModelHandler<T> handler)
+    protected void dispatch(ModelReadHandler<T> handler)
     {
-        handler.onReadModel(this);
+        handler.onModelRead(this);
     }
 }

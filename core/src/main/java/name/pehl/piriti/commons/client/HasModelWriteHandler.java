@@ -5,14 +5,14 @@ import com.google.gwt.event.shared.HasHandlers;
 
 /**
  * A class that implements this interface provides registration for
- * {@link ReadModelHandler} instances.
+ * {@link ModelWriteHandler} instances.
  * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  * @param <T>
  *            The model type
  */
-public interface HasReadModelHandler<T> extends HasHandlers
+public interface HasModelWriteHandler<T> extends HasHandlers
 {
-    HandlerRegistration addReadModelHandler(ReadModelHandler<T> handler);
+    HandlerRegistration addModelWriteHandler(ModelWriteHandler<T> handler);
 }

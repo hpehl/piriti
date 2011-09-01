@@ -10,16 +10,16 @@ import com.google.gwt.event.shared.GwtEvent;
  * @param <T>
  *            the model type
  */
-public class WriteModelEvent<T> extends GwtEvent<WriteModelHandler<T>>
+public class ModelWriteEvent<T> extends GwtEvent<ModelWriteHandler<T>>
 {
     /**
      * Handler type.
      */
-    private static Type<WriteModelHandler<?>> TYPE;
+    private static Type<ModelWriteHandler<?>> TYPE;
 
 
     /**
-     * Fires a {@link WriteModelEvent} on all registered handlers. If no such
+     * Fires a {@link ModelWriteEvent} on all registered handlers. If no such
      * handlers exist, this method will do nothing.
      * 
      * @param <T>
@@ -29,11 +29,11 @@ public class WriteModelEvent<T> extends GwtEvent<WriteModelHandler<T>>
      * @param model
      *            the model
      */
-    public static <T> void fire(HasWriteModelHandler<T> source, T model)
+    public static <T> void fire(HasModelWriteHandler<T> source, T model)
     {
         if (TYPE != null)
         {
-            WriteModelEvent<T> event = new WriteModelEvent<T>(model);
+            ModelWriteEvent<T> event = new ModelWriteEvent<T>(model);
             source.fireEvent(event);
         }
     }
@@ -44,11 +44,11 @@ public class WriteModelEvent<T> extends GwtEvent<WriteModelHandler<T>>
      * 
      * @return returns the handler type
      */
-    public static Type<WriteModelHandler<?>> getType()
+    public static Type<ModelWriteHandler<?>> getType()
     {
         if (TYPE == null)
         {
-            TYPE = new Type<WriteModelHandler<?>>();
+            TYPE = new Type<ModelWriteHandler<?>>();
         }
         return TYPE;
     }
@@ -62,7 +62,7 @@ public class WriteModelEvent<T> extends GwtEvent<WriteModelHandler<T>>
      * @param model
      *            the model
      */
-    protected WriteModelEvent(T model)
+    protected ModelWriteEvent(T model)
     {
         this.model = model;
     }
@@ -70,7 +70,7 @@ public class WriteModelEvent<T> extends GwtEvent<WriteModelHandler<T>>
 
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public final Type<WriteModelHandler<T>> getAssociatedType()
+    public final Type<ModelWriteHandler<T>> getAssociatedType()
     {
         return (Type) TYPE;
     }
@@ -95,8 +95,8 @@ public class WriteModelEvent<T> extends GwtEvent<WriteModelHandler<T>>
 
 
     @Override
-    protected void dispatch(WriteModelHandler<T> handler)
+    protected void dispatch(ModelWriteHandler<T> handler)
     {
-        handler.onWriteModel(this);
+        handler.onModelWrite(this);
     }
 }

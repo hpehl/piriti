@@ -307,10 +307,10 @@ public abstract class AbstractCreator extends LogFacade
     protected void createEventHandlerCode(IndentedWriter writer)
     {
         String kind = typeContext.isReader() ? "Read" : "Write";
-        writer.write("public HandlerRegistration add%1$sModelHandler(%1$sModelHandler<%2$s> handler) {", kind,
+        writer.write("public HandlerRegistration addModel%1$sHandler(Model%1$sHandler<%2$s> handler) {", kind,
                 typeContext.getType().getParameterizedQualifiedSourceName());
         writer.indent();
-        writer.write("return handlerManager.addHandler(%sModelEvent.getType(), handler);", kind);
+        writer.write("return handlerManager.addHandler(Model%sEvent.getType(), handler);", kind);
         writer.outdent();
         writer.write("}");
         writer.newline();

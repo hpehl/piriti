@@ -2,7 +2,7 @@ package name.pehl.piriti.json.client;
 
 import java.util.List;
 
-import name.pehl.piriti.commons.client.HasReadModelHandler;
+import name.pehl.piriti.commons.client.HasModelReadHandler;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONException;
@@ -40,7 +40,7 @@ import com.google.gwt.json.client.JSONObject;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface JsonReader<T> extends HasReadModelHandler<T>
+public interface JsonReader<T> extends HasModelReadHandler<T>
 {
     // -------------------------------------------------------------- read list
 

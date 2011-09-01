@@ -11,7 +11,7 @@ public class XmlPersonsTest extends AbstractPersonsTest
     public void testRead()
     {
         CountHandler handler = new CountHandler();
-        Person.XML_READER.addReadModelHandler(handler);
+        Person.XML_READER.addModelReadHandler(handler);
 
         String xml = PersonResources.INSTANCE.personsXml().getText();
         Person.XML_READER.readList(xml);
@@ -24,7 +24,7 @@ public class XmlPersonsTest extends AbstractPersonsTest
     public void testWrite()
     {
         CountHandler handler = new CountHandler();
-        Person.XML_WRITER.addWriteModelHandler(handler);
+        Person.XML_WRITER.addModelWriteHandler(handler);
 
         Person.XML_WRITER.toXml(persons());
         assertEquals(PersonResources.COUNT, handler.writeCount);

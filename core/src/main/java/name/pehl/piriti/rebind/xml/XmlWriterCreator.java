@@ -168,7 +168,7 @@ public class XmlWriterCreator extends AbstractWriterCreator
         writer.write("if (%s != null && rootElement != null && rootElement.length() != 0) {", typeContext
                 .getVariableNames().getInstanceVariable());
         writer.indent();
-        writer.write("WriteModelEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("ModelWriteEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("StringBuilder %s = new StringBuilder();", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\"" + XML_DECL + "\");", typeContext.getVariableNames().getBuilderVariable());
         writer.write("%s.append(\"<\");", typeContext.getVariableNames().getBuilderVariable());

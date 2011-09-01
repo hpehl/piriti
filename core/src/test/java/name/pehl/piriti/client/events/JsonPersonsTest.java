@@ -11,7 +11,7 @@ public class JsonPersonsTest extends AbstractPersonsTest
     public void testRead()
     {
         CountHandler handler = new CountHandler();
-        Person.JSON_READER.addReadModelHandler(handler);
+        Person.JSON_READER.addModelReadHandler(handler);
 
         String json = PersonResources.INSTANCE.personsJson().getText();
         Person.JSON_READER.readList(json);
@@ -24,7 +24,7 @@ public class JsonPersonsTest extends AbstractPersonsTest
     public void testWrite()
     {
         CountHandler handler = new CountHandler();
-        Person.JSON_WRITER.addWriteModelHandler(handler);
+        Person.JSON_WRITER.addModelWriteHandler(handler);
 
         Person.JSON_WRITER.toJson(persons(), "persons");
         assertEquals(PersonResources.COUNT, handler.writeCount);

@@ -288,7 +288,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 typeContext.getVariableNames().getInstanceVariable());
         writer.write("readProperties(ich.getContext(), %s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("readIdRefs(ich.getContext(), %s);", typeContext.getVariableNames().getInstanceVariable());
-        writer.write("ReadModelEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("ModelReadEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
         writer.outdent();
@@ -358,7 +358,7 @@ public class JsonReaderCreator extends AbstractReaderCreator
                 .getVariableNames().getInstanceVariable());
         writer.write("readIdRefs(%s, %s);", typeContext.getVariableNames().getInputVariable(), typeContext
                 .getVariableNames().getInstanceVariable());
-        writer.write("ReadModelEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
+        writer.write("ModelReadEvent.fire(this, %s);", typeContext.getVariableNames().getInstanceVariable());
         writer.write("return %s;", typeContext.getVariableNames().getInstanceVariable());
         writer.outdent();
         writer.write("}");
