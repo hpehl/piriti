@@ -4,7 +4,8 @@ package name.pehl.piriti.commons.client;
  * Class used during deserialization to store and get the context information
  * for an instance of T.
  * 
- * @author upudxv4
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  * @param <T>
  *            the model type
  * @param <C>

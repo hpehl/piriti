@@ -5,7 +5,8 @@ import com.google.gwt.event.shared.EventHandler;
 /**
  * Handler for {@link WriteModelEvent} events.
  * 
- * @author upudxv4
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  * @param <T>
  *            the model type
  */

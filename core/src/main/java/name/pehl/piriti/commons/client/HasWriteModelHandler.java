@@ -7,7 +7,8 @@ import com.google.gwt.event.shared.HasHandlers;
  * A class that implements this interface provides registration for
  * {@link WriteModelHandler} instances.
  * 
- * @author upudxv4
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  * @param <T>
  *            The model type
  */

@@ -5,7 +5,8 @@ import com.google.gwt.event.shared.GwtEvent;
 /**
  * Represents the event when a model is read from JSON / XML.
  * 
- * @author upudxv4
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  * @param <T>
  *            the model type
  */
