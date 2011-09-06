@@ -48,8 +48,9 @@ public class CharacterPropertyHandler extends AbstractJsonPropertyHandler
 
 
     @Override
-    protected String defaultValue()
+    protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
     {
-        return "'\\0'";
+        writer.write("%s.append(JsonUtils.escapeValue(String.valueOf(%s)));", propertyContext.getVariableNames()
+                .getBuilderVariable(), propertyContext.getVariableNames().getValueVariable());
     }
 }

@@ -13,11 +13,4 @@ public class CharacterPropertyHandler extends AbstractXmlPropertyHandler
     {
         super(logger);
     }
-
-
-    @Override
-    protected String defaultValue()
-    {
-        return "'\\0'";
-    }
 }

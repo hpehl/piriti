@@ -2,6 +2,8 @@ package name.pehl.piriti.rebind;
 
 import java.io.PrintWriter;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
@@ -358,7 +360,8 @@ public abstract class AbstractCreator extends LogFacade
      */
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
-        for (Iterator<PropertyContext> iter = typeContext.getProperties().iterator(); iter.hasNext();)
+        List<PropertyContext> properties = typeContext.getProperties();
+        for (ListIterator<PropertyContext> iter = properties.listIterator(); iter.hasNext();)
         {
             PropertyContext propertyContext = iter.next();
             debug("Processing property %s", propertyContext);
@@ -366,13 +369,28 @@ public abstract class AbstractCreator extends LogFacade
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
                 writer.newline();
-                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
+                boolean hasNext = hasMoreValidProperties(writer, properties, iter.nextIndex());
+                handleProperty(writer, propertyHandler, propertyContext, hasNext);
             }
             else
             {
                 warn("No PropertyHandler found for property %s. Skip this property!", propertyContext);
             }
         }
+    }
+
+
+    private boolean hasMoreValidProperties(IndentedWriter writer, List<PropertyContext> properties, int startAt)
+            throws UnableToCompleteException
+    {
+        boolean valid = false;
+        for (ListIterator<PropertyContext> iter = properties.listIterator(startAt); iter.hasNext() && !valid;)
+        {
+            PropertyContext propertyContext = iter.next();
+            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+            valid = propertyHandler != null && propertyHandler.isValid(writer, propertyContext);
+        }
+        return valid;
     }
 
 
