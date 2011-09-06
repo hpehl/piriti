@@ -9,6 +9,8 @@
     <inherits name="name.pehl.piriti.converter.Converter" />
     <inherits name="name.pehl.piriti.property.Property" />
     <inherits name="name.pehl.totoe.xml.XML" />
+    
+    <super-source path="jre" />
 
     <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">
