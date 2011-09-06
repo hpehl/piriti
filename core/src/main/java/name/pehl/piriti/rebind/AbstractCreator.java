@@ -3,7 +3,10 @@ package name.pehl.piriti.rebind;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
@@ -360,37 +363,18 @@ public abstract class AbstractCreator extends LogFacade
      */
     protected void handleProperties(IndentedWriter writer) throws UnableToCompleteException
     {
-        List<PropertyContext> properties = typeContext.getProperties();
-        for (ListIterator<PropertyContext> iter = properties.listIterator(); iter.hasNext();)
+        SortedMap<PropertyContext, PropertyHandler> validProperties = findValidProperties(writer,
+                typeContext.getProperties());
+        for (Iterator<Map.Entry<PropertyContext, PropertyHandler>> iter = validProperties.entrySet().iterator(); iter
+                .hasNext();)
         {
-            PropertyContext propertyContext = iter.next();
+            Entry<PropertyContext, PropertyHandler> entry = iter.next();
+            PropertyContext propertyContext = entry.getKey();
+            PropertyHandler propertyHandler = entry.getValue();
             debug("Processing property %s", propertyContext);
-            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-            if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
-            {
-                writer.newline();
-                boolean hasNext = hasMoreValidProperties(writer, properties, iter.nextIndex());
-                handleProperty(writer, propertyHandler, propertyContext, hasNext);
-            }
-            else
-            {
-                warn("No PropertyHandler found for property %s. Skip this property!", propertyContext);
-            }
+            writer.newline();
+            handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
         }
-    }
-
-
-    private boolean hasMoreValidProperties(IndentedWriter writer, List<PropertyContext> properties, int startAt)
-            throws UnableToCompleteException
-    {
-        boolean valid = false;
-        for (ListIterator<PropertyContext> iter = properties.listIterator(startAt); iter.hasNext() && !valid;)
-        {
-            PropertyContext propertyContext = iter.next();
-            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-            valid = propertyHandler != null && propertyHandler.isValid(writer, propertyContext);
-        }
-        return valid;
     }
 
 
@@ -408,20 +392,17 @@ public abstract class AbstractCreator extends LogFacade
      */
     protected void handleIdRefs(IndentedWriter writer) throws UnableToCompleteException
     {
-        for (Iterator<PropertyContext> iter = typeContext.getReferences().iterator(); iter.hasNext();)
+        SortedMap<PropertyContext, PropertyHandler> validReferences = findValidProperties(writer,
+                typeContext.getReferences());
+        for (Iterator<Map.Entry<PropertyContext, PropertyHandler>> iter = validReferences.entrySet().iterator(); iter
+                .hasNext();)
         {
-            PropertyContext propertyContext = iter.next();
+            Entry<PropertyContext, PropertyHandler> entry = iter.next();
+            PropertyContext propertyContext = entry.getKey();
+            PropertyHandler propertyHandler = entry.getValue();
             debug("Processing idref %s", propertyContext);
-            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-            if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
-            {
-                writer.newline();
-                handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
-            }
-            else
-            {
-                warn("No PropertyHandler found for idref %s. Skip this property!", propertyContext);
-            }
+            writer.newline();
+            handleProperty(writer, propertyHandler, propertyContext, iter.hasNext());
         }
     }
 
@@ -470,5 +451,27 @@ public abstract class AbstractCreator extends LogFacade
             writer.write("%s = GWT.create(%s.class);", typeContext.getVariableNames().getInstanceVariable(),
                     typeContext.getType().getQualifiedSourceName());
         }
+    }
+
+
+    private SortedMap<PropertyContext, PropertyHandler> findValidProperties(IndentedWriter writer,
+            List<PropertyContext> properties) throws UnableToCompleteException
+    {
+        SortedMap<PropertyContext, PropertyHandler> validProperties = new TreeMap<PropertyContext, PropertyHandler>(
+                new PropertyContext.PropertyContextOrder());
+        for (Iterator<PropertyContext> iter = properties.iterator(); iter.hasNext();)
+        {
+            PropertyContext propertyContext = iter.next();
+            PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+            if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
+            {
+                validProperties.put(propertyContext, propertyHandler);
+            }
+            else
+            {
+                warn("No PropertyHandler found for property %s. Skip this property!", propertyContext);
+            }
+        }
+        return validProperties;
     }
 }
