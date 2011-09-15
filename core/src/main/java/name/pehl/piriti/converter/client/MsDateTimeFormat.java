@@ -19,26 +19,25 @@ import com.google.gwt.i18n.shared.TimeZone;
  * @see https://groups.google.com/d/topic/piriti/Is3Z3tBDgVM/discussion
  * @author obesga@gmail.com
  */
-public class DateMS_DateTimeFormat extends DateTimeFormat
+public class MsDateTimeFormat extends DateTimeFormat
 {
     // Me and myself
-    public static final DateMS_DateTimeFormat me = new DateMS_DateTimeFormat();
+    public static final MsDateTimeFormat me = new MsDateTimeFormat();
 
     // Use the one you want
-    public static final String DateMS_DateTimeFormatPattern = "DateMS()";
-    public static final String DateMS = DateMS_DateTimeFormatPattern;
+    public static final String PATTERN = "MsDateTimeFormat()";
 
     // Pre and post string where formatting dates, pretty simple
     public static final String prefix = "/Date(";
     public static final String postfix = ")/";
 
     // Private JS object to store regexok
-    private static JavaScriptObject joRegexp;
+    private static JavaScriptObject regexp;
 
 
-    protected DateMS_DateTimeFormat()
+    protected MsDateTimeFormat()
     {
-        super(DateMS);
+        super(PATTERN);
         createJoRegExp();
     }
 
@@ -60,8 +59,7 @@ public class DateMS_DateTimeFormat extends DateTimeFormat
     @Override
     public String getPattern()
     {
-        // Return 'pattern'
-        return DateMS;
+        return PATTERN;
     }
 
 
@@ -104,7 +102,7 @@ public class DateMS_DateTimeFormat extends DateTimeFormat
     public static boolean matches(String text)
     {
         // Create if first time
-        if (joRegexp == null)
+        if (regexp == null)
         {
             createJoRegExp();
         }
@@ -117,22 +115,22 @@ public class DateMS_DateTimeFormat extends DateTimeFormat
      * object and store to use later if not created previously
      */
     private static native void createJoRegExp() /*-{
-		if (@name.pehl.piriti.converter.client.DateMS_DateTimeFormat::joRegexp == null) {
-			@name.pehl.piriti.converter.client.DateMS_DateTimeFormat::joRegexp = /\/Date\((\d+)\)\//i;
+		if (@name.pehl.piriti.converter.client.MsDateTimeFormat::regexp == null) {
+			@name.pehl.piriti.converter.client.MsDateTimeFormat::regexp = /\/Date\((\d+)\)\//i;
 		}
     }-*/;
 
 
     /**
-     * PRIVATE NATIVE METHOD Test a string against regular expression ( make
-     * sure it is created before )
+     * PRIVATE NATIVE METHOD Test a string against regular expression (make sure
+     * it is created before)
      * 
      * @param text
      *            Text to test
      * @return True if text matches regular expression
      */
     private static native boolean testJoRegExp(String text) /*-{
-		return @name.pehl.piriti.converter.client.DateMS_DateTimeFormat::joRegexp
+		return @name.pehl.piriti.converter.client.MsDateTimeFormat::regexp
 				.test(text);
     }-*/;
 }

@@ -5,8 +5,6 @@ import static org.junit.Assert.assertNull;
 
 import java.sql.Date;
 
-import name.pehl.piriti.converter.client.SqlDateConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,20 +15,20 @@ import org.junit.Test;
 
 public class SqlDateConverterTest
 {
-    private SqlDateConverter underTest;
+    private TestableSqlDateConverter underTest;
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new SqlDateConverter();
+        underTest = new TestableSqlDateConverter();
     }
 
 
     @Test
     public void testConvertNull()
     {
-        Date result = underTest.convert(null, null);
+        Date result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -38,7 +36,7 @@ public class SqlDateConverterTest
     @Test
     public void testConvertEmpty()
     {
-        Date result = underTest.convert("", null);
+        Date result = underTest.convert("");
         assertNull(result);
     }
 
@@ -46,7 +44,7 @@ public class SqlDateConverterTest
     @Test
     public void testConvertBlank()
     {
-        Date result = underTest.convert("    ", null);
+        Date result = underTest.convert("    ");
         assertNull(result);
     }
 
@@ -54,7 +52,7 @@ public class SqlDateConverterTest
     @Test
     public void testConvertFoo()
     {
-        Date result = underTest.convert("foo", null);
+        Date result = underTest.convert("foo");
         assertNull(result);
     }
 
@@ -63,7 +61,7 @@ public class SqlDateConverterTest
     public void testConvertDate()
     {
         String value = "1973-09-02";
-        Date result = underTest.convert(value, null);
+        Date result = underTest.convert(value);
         assertEquals(Date.valueOf(value), result);
     }
 }

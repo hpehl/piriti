@@ -16,10 +16,11 @@ public abstract class AbstractBackAndForthTest extends AbstractPiritiTest
     protected void assertBackAndForth(BackAndForth backAndForth)
     {
         assertNotNull(backAndForth);
-        assertDateTime(1973, 9, 2, 11, 22, 33, backAndForth.date);
-        assertEquals(backAndForth.millis.getTime(), MY_BIRTHDAY_IN_MILLIS);
+        assertDateTime(1973, 9, 2, 11, 22, 33, backAndForth.dateWithDefaultFormat);
         assertDate(2004, 9, 20, backAndForth.dateWithFormat);
-        assertEquals(TomorrowConverter.TOMORROW_DATE, backAndForth.dateWithConverter);
+        assertEquals(backAndForth.msDateTimeFormat.getTime(), MY_BIRTHDAY_IN_MILLIS);
+        assertEquals(backAndForth.dateWithMillisConverter.getTime(), MY_BIRTHDAY_IN_MILLIS);
+        assertEquals(TomorrowConverter.TOMORROW_DATE, backAndForth.dateWithTomorrowConverter);
         assertEquals(Maths.TWO, backAndForth.maths);
         assertEquals(Maths.TWO, backAndForth.mathsWithConverter);
         assertEquals(4, backAndForth.duration);

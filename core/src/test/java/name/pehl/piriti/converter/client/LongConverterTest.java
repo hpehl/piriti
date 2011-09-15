@@ -3,11 +3,6 @@ package name.pehl.piriti.converter.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-
-import name.pehl.piriti.converter.client.LongConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,38 +10,22 @@ import org.junit.Test;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 19 $
  */
-public class LongConverterTest extends LongConverter
+public class LongConverterTest
 {
     private LongConverter underTest;
-
-
-    @Override
-    protected Long parseLong(String value, String format)
-    {
-        DecimalFormat parser = new DecimalFormat(format);
-        try
-        {
-            Long result = (Long) parser.parse(value);
-            return result;
-        }
-        catch (ParseException e)
-        {
-            throw new NumberFormatException(e.getMessage());
-        }
-    }
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new LongConverterTest();
+        underTest = new LongConverter();
     }
 
 
     @Test
     public void testConvertNull()
     {
-        Long result = underTest.convert(null, null);
+        Long result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -54,7 +33,7 @@ public class LongConverterTest extends LongConverter
     @Test
     public void testConvertEmpty()
     {
-        Long result = underTest.convert("", null);
+        Long result = underTest.convert("");
         assertNull(result);
     }
 
@@ -62,23 +41,22 @@ public class LongConverterTest extends LongConverter
     @Test
     public void testConvertBlank()
     {
-        Long result = underTest.convert("    ", null);
+        Long result = underTest.convert("    ");
         assertNull(result);
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertFoo()
     {
-        Long result = underTest.convert("foo", null);
-        assertNull(result);
+        underTest.convert("foo");
     }
 
 
     @Test
     public void testConvertPositive()
     {
-        Long result = underTest.convert("23", null);
+        Long result = underTest.convert("23");
         assertEquals(23, result.longValue());
     }
 
@@ -86,23 +64,21 @@ public class LongConverterTest extends LongConverter
     @Test
     public void testConvertNegative()
     {
-        Long result = underTest.convert("-23", null);
+        Long result = underTest.convert("-23");
         assertEquals(-23, result.longValue());
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertLessThanMin()
     {
-        Long result = underTest.convert("-9223372036854775809", null);
-        assertNull(result);
+        underTest.convert("-9223372036854775809");
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertMoreThanMax()
     {
-        Long result = underTest.convert("9223372036854775808", null);
-        assertNull(result);
+        underTest.convert("9223372036854775808");
     }
 }

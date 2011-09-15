@@ -10,6 +10,7 @@
     <inherits name="name.pehl.piriti.property.Property" />
     <inherits name="name.pehl.totoe.xml.XML" />
     
+    <source path="client" />
     <super-source path="jre" />
 
     <!-- Generator for XmlReader -->

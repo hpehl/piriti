@@ -1,15 +1,18 @@
 package name.pehl.piriti.client.converter;
 
-import static name.pehl.piriti.client.converter.Maths.*;
-import name.pehl.piriti.converter.client.Converter;
+import static name.pehl.piriti.client.converter.Maths.MANY;
+import static name.pehl.piriti.client.converter.Maths.ONE;
+import static name.pehl.piriti.client.converter.Maths.THREE;
+import static name.pehl.piriti.client.converter.Maths.TWO;
+import name.pehl.piriti.converter.client.AbstractConverter;
 
-public class MathsConverter implements Converter<Maths>
+public class MathsConverter extends AbstractConverter<Maths>
 {
     @Override
-    public Maths convert(String value, String format)
+    public Maths convert(String value)
     {
         Maths result = null;
-        if (value != null && value.length() != 0)
+        if (isValid(value))
         {
             try
             {
@@ -39,7 +42,7 @@ public class MathsConverter implements Converter<Maths>
 
 
     @Override
-    public String serialize(Maths value, String format)
+    public String serialize(Maths value)
     {
         String result = null;
         if (value != null)

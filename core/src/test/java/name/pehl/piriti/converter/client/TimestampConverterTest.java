@@ -5,8 +5,6 @@ import static org.junit.Assert.assertNull;
 
 import java.sql.Timestamp;
 
-import name.pehl.piriti.converter.client.TimestampConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,20 +15,20 @@ import org.junit.Test;
 
 public class TimestampConverterTest
 {
-    private TimestampConverter underTest;
+    private TestableTimestampConverter underTest;
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new TimestampConverter();
+        underTest = new TestableTimestampConverter();
     }
 
 
     @Test
     public void testConvertNull()
     {
-        Timestamp result = underTest.convert(null, null);
+        Timestamp result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -38,7 +36,7 @@ public class TimestampConverterTest
     @Test
     public void testConvertEmpty()
     {
-        Timestamp result = underTest.convert("", null);
+        Timestamp result = underTest.convert("");
         assertNull(result);
     }
 
@@ -46,7 +44,7 @@ public class TimestampConverterTest
     @Test
     public void testConvertBlank()
     {
-        Timestamp result = underTest.convert("    ", null);
+        Timestamp result = underTest.convert("    ");
         assertNull(result);
     }
 
@@ -54,7 +52,7 @@ public class TimestampConverterTest
     @Test
     public void testConvertFoo()
     {
-        Timestamp result = underTest.convert("foo", null);
+        Timestamp result = underTest.convert("foo");
         assertNull(result);
     }
 
@@ -63,7 +61,7 @@ public class TimestampConverterTest
     public void testConvertDate()
     {
         String value = "1973-09-02 11:22:33";
-        Timestamp result = underTest.convert(value, null);
+        Timestamp result = underTest.convert(value);
         assertEquals(Timestamp.valueOf(value), result);
     }
 }

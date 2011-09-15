@@ -1,67 +1,35 @@
 package name.pehl.piriti.converter.client;
 
 import java.sql.Date;
+import java.util.logging.Level;
 
 /**
- * Converter for {@link Date}.
+ * Converter for {@link java.sqlDate}.
  * 
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class SqlDateConverter extends AbstractConverter<Date>
+public class SqlDateConverter extends AbstractDateConverter<Date>
 {
-    /**
-     * Converts the specified value to a sql date. Therefore
-     * {@link Date#valueOf(String)} is used.
-     * 
-     * @param value
-     *            The string to be converted. May be <code>null</code>.
-     * @param format
-     *            Ignored
-     * @return {@code null} if the value is {@code null} or empty, otherwise the
-     *         converted date
-     * @see name.pehl.piriti.converter.client.Converter#convert(java.lang.String,
-     *      java.lang.String)
-     */
     @Override
-    public Date convert(String value, String format)
+    protected Date convertWithoutFormat(String value)
     {
-        Date timestamp = null;
-        if (value != null && value.trim().length() != 0)
+        Date sqlDate = null;
+        try
         {
-            try
-            {
-                timestamp = Date.valueOf(value);
-            }
-            catch (IllegalArgumentException e)
-            {
-                // nop
-            }
+            sqlDate = Date.valueOf(value);
         }
-        return timestamp;
+        catch (IllegalArgumentException e)
+        {
+            logger.log(Level.SEVERE, "Cannot parse SQL date '" + value + "': " + e.getMessage(), e);
+        }
+        return sqlDate;
     }
 
 
-    /**
-     * Serializes the specified date to a string using {@link Date#toString()}
-     * 
-     * @param value
-     *            the sql date to serialize
-     * @param format
-     *            Ignored
-     * @return The string representation of the date as specified by
-     *         {@link Date#toString()} or {@code null} if the value is
-     *         {@code null}.
-     * @see name.pehl.piriti.converter.client.Converter#serialize(java.lang.Object,
-     *      java.lang.String)
-     */
     @Override
-    public String serialize(Date value, String format)
+    protected Date newInstance(java.util.Date parsed)
     {
-        if (value == null)
-        {
-            return null;
-        }
-        return value.toString();
+        return new Date(parsed.getTime());
     }
 }

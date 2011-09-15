@@ -8,6 +8,23 @@ package name.pehl.piriti.converter.client;
  */
 public abstract class AbstractConverter<T> implements Converter<T>
 {
+    protected String format;
+
+
+    @Override
+    public void setFormat(String format)
+    {
+        this.format = format;
+    }
+
+
+    @Override
+    public String getFormat()
+    {
+        return format;
+    }
+
+
     /**
      * Checks whether the value is valid.
      * 
@@ -32,7 +49,7 @@ public abstract class AbstractConverter<T> implements Converter<T>
      *      java.lang.String)
      */
     @Override
-    public String serialize(T value, String format)
+    public String serialize(T value)
     {
         if (value != null)
         {

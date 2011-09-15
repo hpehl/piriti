@@ -13,15 +13,13 @@ public class ObjectConverter extends AbstractConverter<Object>
      * 
      * @param value
      *            The string to be converted. May be <code>null</code>
-     * @param format
-     *            Ignored
      * @return {@code null} if the value is {@code null} or empty, otherwise the
      *         value itself
      * @see name.pehl.piriti.converter.client.Converter#convert(java.lang.String,
      *      java.lang.String)
      */
     @Override
-    public Object convert(String value, String format)
+    public Object convert(String value)
     {
         if (isValid(value))
         {

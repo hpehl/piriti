@@ -1,13 +1,13 @@
 package name.pehl.piriti.client.converter;
 
-import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.AbstractConverter;
 
-public class DurationConverter implements Converter<Integer>
+public class DurationConverter extends AbstractConverter<Integer>
 {
     @Override
-    public Integer convert(String value, String format)
+    public Integer convert(String value)
     {
-        if (value != null && value.length() > 0)
+        if (isValid(value))
         {
             return Integer.valueOf(value.substring(0, value.length() - 1));
         }
@@ -16,7 +16,7 @@ public class DurationConverter implements Converter<Integer>
 
 
     @Override
-    public String serialize(Integer value, String format)
+    public String serialize(Integer value)
     {
         return value + "h";
     }

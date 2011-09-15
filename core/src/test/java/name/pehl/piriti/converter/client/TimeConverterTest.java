@@ -5,8 +5,6 @@ import static org.junit.Assert.assertNull;
 
 import java.sql.Time;
 
-import name.pehl.piriti.converter.client.TimeConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,20 +15,20 @@ import org.junit.Test;
 
 public class TimeConverterTest
 {
-    private TimeConverter underTest;
+    private TestableTimeConverter underTest;
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new TimeConverter();
+        underTest = new TestableTimeConverter();
     }
 
 
     @Test
     public void testConvertNull()
     {
-        Time result = underTest.convert(null, null);
+        Time result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -38,7 +36,7 @@ public class TimeConverterTest
     @Test
     public void testConvertEmpty()
     {
-        Time result = underTest.convert("", null);
+        Time result = underTest.convert("");
         assertNull(result);
     }
 
@@ -46,7 +44,7 @@ public class TimeConverterTest
     @Test
     public void testConvertBlank()
     {
-        Time result = underTest.convert("    ", null);
+        Time result = underTest.convert("    ");
         assertNull(result);
     }
 
@@ -54,7 +52,7 @@ public class TimeConverterTest
     @Test
     public void testConvertFoo()
     {
-        Time result = underTest.convert("foo", null);
+        Time result = underTest.convert("foo");
         assertNull(result);
     }
 
@@ -63,7 +61,7 @@ public class TimeConverterTest
     public void testConvertTime()
     {
         String value = "11:22:33";
-        Time result = underTest.convert(value, null);
+        Time result = underTest.convert(value);
         assertEquals(Time.valueOf(value), result);
     }
 }

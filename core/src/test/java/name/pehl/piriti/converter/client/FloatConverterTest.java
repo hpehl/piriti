@@ -3,11 +3,6 @@ package name.pehl.piriti.converter.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-
-import name.pehl.piriti.converter.client.FloatConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,38 +10,22 @@ import org.junit.Test;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 19 $
  */
-public class FloatConverterTest extends FloatConverter
+public class FloatConverterTest
 {
     private FloatConverter underTest;
-
-
-    @Override
-    protected Float parseFloat(String value, String format)
-    {
-        DecimalFormat parser = new DecimalFormat(format);
-        try
-        {
-            Float result = (Float) parser.parse(value);
-            return result;
-        }
-        catch (ParseException e)
-        {
-            throw new NumberFormatException(e.getMessage());
-        }
-    }
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new FloatConverterTest();
+        underTest = new FloatConverter();
     }
 
 
     @Test
     public void testConvertNull()
     {
-        Float result = underTest.convert(null, null);
+        Float result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -54,7 +33,7 @@ public class FloatConverterTest extends FloatConverter
     @Test
     public void testConvertEmpty()
     {
-        Float result = underTest.convert("", null);
+        Float result = underTest.convert("");
         assertNull(result);
     }
 
@@ -62,25 +41,24 @@ public class FloatConverterTest extends FloatConverter
     @Test
     public void testConvertBlank()
     {
-        Float result = underTest.convert("    ", null);
+        Float result = underTest.convert("    ");
         assertNull(result);
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertFoo()
     {
-        Float result = underTest.convert("foo", null);
-        assertNull(result);
+        underTest.convert("foo");
     }
 
 
     @Test
     public void testConvertPositive()
     {
-        Float result = underTest.convert("23", null);
+        Float result = underTest.convert("23");
         assertEquals(23.0, result.floatValue(), .1);
-        result = underTest.convert("23.123", null);
+        result = underTest.convert("23.123");
         assertEquals(23.123, result.floatValue(), .1);
     }
 
@@ -88,9 +66,9 @@ public class FloatConverterTest extends FloatConverter
     @Test
     public void testConvertNegative()
     {
-        Float result = underTest.convert("-23", null);
+        Float result = underTest.convert("-23");
         assertEquals(-23.0, result.floatValue(), .1);
-        result = underTest.convert("-23.456", null);
+        result = underTest.convert("-23.456");
         assertEquals(-23.456, result.floatValue(), .1);
     }
 }

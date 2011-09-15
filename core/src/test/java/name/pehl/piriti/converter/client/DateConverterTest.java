@@ -3,49 +3,24 @@ package name.pehl.piriti.converter.client;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 19 $
  */
-public class DateConverterTest extends DateConverter
+public class DateConverterTest
 {
-    private static final String DEFAULT_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZ";
-    private DateConverter underTest;
-
-
-    @Override
-    protected Date convertDate(String value, String format)
-    {
-        SimpleDateFormat dtFormat = new SimpleDateFormat(format == null ? DEFAULT_FORMAT : format);
-        try
-        {
-            return dtFormat.parse(value);
-        }
-        catch (ParseException e)
-        {
-            return null;
-        }
-    }
-
-
-    @Before
-    public void setUp() throws Exception
-    {
-        underTest = new DateConverterTest();
-    }
+    private TestableDateConverter underTest;
 
 
     @Test
     public void testConvertNull()
     {
-        Date result = underTest.convert(null, null);
+        underTest = new TestableDateConverter();
+        Date result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -53,7 +28,8 @@ public class DateConverterTest extends DateConverter
     @Test
     public void testConvertEmpty()
     {
-        Date result = underTest.convert("", null);
+        underTest = new TestableDateConverter();
+        Date result = underTest.convert("");
         assertNull(result);
     }
 
@@ -61,7 +37,8 @@ public class DateConverterTest extends DateConverter
     @Test
     public void testConvertBlank()
     {
-        Date result = underTest.convert("    ", null);
+        underTest = new TestableDateConverter();
+        Date result = underTest.convert("    ");
         assertNull(result);
     }
 
@@ -69,7 +46,8 @@ public class DateConverterTest extends DateConverter
     @Test
     public void testConvertFoo()
     {
-        Date result = underTest.convert("foo", null);
+        underTest = new TestableDateConverter();
+        Date result = underTest.convert("foo");
         assertNull(result);
     }
 
@@ -77,10 +55,11 @@ public class DateConverterTest extends DateConverter
     @Test
     public void testConvertDefaultFormat()
     {
+        underTest = new TestableDateConverter();
         Date now = new Date();
-        SimpleDateFormat dtFormat = new SimpleDateFormat(DEFAULT_FORMAT);
-        String nowAsString = dtFormat.format(now);
-        Date result = underTest.convert(nowAsString, null);
+        TestableDateTimeFormat dateTimeFormat = new TestableDateTimeFormat();
+        String nowAsString = dateTimeFormat.format(now);
+        Date result = underTest.convert(nowAsString);
         assertEquals(now, result);
     }
 
@@ -88,11 +67,13 @@ public class DateConverterTest extends DateConverter
     @Test
     public void testConvertCustomFormat()
     {
-        Date now = new Date();
         String format = "dd MMM yy HH/mm/ss/SSS";
-        SimpleDateFormat dtFormat = new SimpleDateFormat(format);
-        String nowAsString = dtFormat.format(now);
-        Date result = underTest.convert(nowAsString, format);
+        underTest = new TestableDateConverter();
+        underTest.setFormat(format);
+        Date now = new Date();
+        TestableDateTimeFormat dateTimeFormat = new TestableDateTimeFormat(format);
+        String nowAsString = dateTimeFormat.format(now);
+        Date result = underTest.convert(nowAsString);
         assertEquals(now, result);
     }
 }

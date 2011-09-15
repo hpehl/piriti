@@ -2,10 +2,10 @@ package name.pehl.piriti.client.converter;
 
 import java.util.Date;
 
-import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.AbstractConverter;
 
 @SuppressWarnings("deprecation")
-public class TomorrowConverter implements Converter<Date>
+public class TomorrowConverter extends AbstractConverter<Date>
 {
     public final static String TOMORROW_NAME = "tomorrow";
     public final static Date TOMORROW_DATE = new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000));
@@ -18,7 +18,7 @@ public class TomorrowConverter implements Converter<Date>
 
 
     @Override
-    public Date convert(String value, String format)
+    public Date convert(String value)
     {
         if (TOMORROW_NAME.equals(value))
         {
@@ -29,7 +29,7 @@ public class TomorrowConverter implements Converter<Date>
 
 
     @Override
-    public String serialize(Date value, String format)
+    public String serialize(Date value)
     {
         return TOMORROW_NAME;
     }

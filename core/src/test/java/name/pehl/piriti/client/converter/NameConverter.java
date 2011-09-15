@@ -1,13 +1,13 @@
 package name.pehl.piriti.client.converter;
 
-import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.AbstractConverter;
 
 /**
  * @author $Author: harald.pehl $
  * @version $Date: 2011-02-22 22:55:05 +0100 (Di, 22. Feb 2011) $ $Revision:
  *          1454 $
  */
-public class NameConverter implements Converter<String>
+public class NameConverter extends AbstractConverter<String>
 {
     public final static String DE_EN = "de-en";
     public final static String EN_DE = "en-de";
@@ -16,20 +16,20 @@ public class NameConverter implements Converter<String>
 
 
     @Override
-    public String convert(String value, String format)
+    public String convert(String value)
     {
-        return translate(value, format);
+        return translate(value);
     }
 
 
     @Override
-    public String serialize(String value, String format)
+    public String serialize(String value)
     {
-        return translate(value, format);
+        return translate(value);
     }
 
 
-    private String translate(String value, String format)
+    private String translate(String value)
     {
         String result = null;
         if (DE_EN.equals(format))

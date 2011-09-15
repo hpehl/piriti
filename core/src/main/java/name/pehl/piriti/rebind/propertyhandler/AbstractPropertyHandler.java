@@ -60,24 +60,12 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
     @Override
     public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
     {
+        // Value variable
         writer.write("%s %s = null;", propertyContext.getType().getParameterizedQualifiedSourceName(), propertyContext
                 .getVariableNames().getValueVariable());
 
         // Converter
-        converterVariable = propertyContext.getVariableNames().newVariableName("Converter");
-        writer.write("Converter<%s> %s = null;", propertyContext.getType().getQualifiedSourceName(), converterVariable);
-        if (propertyContext.isClassOrInterface())
-        {
-            if (propertyContext.hasConverter())
-            {
-                writer.write("%s = GWT.create(%s.class);", converterVariable, propertyContext.getConverter().getName());
-            }
-            else
-            {
-                writer.write("%s = converterRegistry.get(%s.class);", converterVariable, propertyContext.getType()
-                        .getQualifiedSourceName());
-            }
-        }
+        declareConverter(writer, propertyContext);
 
         // Reader / Writer
         rwPossible = propertyContext.isClassOrInterface()
@@ -90,6 +78,58 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
         if (propertyContext.getTypeContext().isWriter())
         {
             writerVariable = declareReaderWriter(writer, propertyContext, "Writer");
+        }
+    }
+
+
+    protected void declareConverter(IndentedWriter writer, PropertyContext propertyContext)
+            throws UnableToCompleteException
+    {
+        converterVariable = propertyContext.getVariableNames().newVariableName("Converter");
+        writer.write("Converter<%s> %s = null;", propertyContext.getType().getQualifiedSourceName(), converterVariable);
+        if (propertyContext.isClassOrInterface())
+        {
+            String format = propertyContext.getFormat();
+            if (propertyContext.hasConverter())
+            {
+                // Create the specified custom converter
+                String converterClassname = propertyContext.getConverter().getName();
+                writer.write("%s = GWT.create(%s.class);", converterVariable, converterClassname);
+                if (format != null)
+                {
+                    writer.write("%s.setFormat(\"%s\");", converterVariable, format);
+                }
+            }
+            else
+            {
+                // Try to find a registered converter in the converter registry
+                if (format == null)
+                {
+                    writer.write("%s = converterRegistry.get(%s.class);", converterVariable, propertyContext.getType()
+                            .getQualifiedSourceName());
+                }
+                else
+                {
+                    writer.write("%s = converterRegistry.get(%s.class, \"%s\");", converterVariable, propertyContext
+                            .getType().getQualifiedSourceName(), format);
+                    writer.write("if (%s == null) {", converterVariable);
+                    writer.indent();
+                    // No converter with the specified format found in the
+                    // registry --> Use the default one, set the format and
+                    // register it against the registry
+                    writer.write("%s = converterRegistry.get(%s.class);", converterVariable, propertyContext.getType()
+                            .getQualifiedSourceName());
+                    writer.write("if (%s != null) {", converterVariable);
+                    writer.indent();
+                    writer.write("%s.setFormat(\"%s\");", converterVariable, format);
+                    writer.write("converterRegistry.register(%s.class, %s, \"%s\");", propertyContext.getType()
+                            .getQualifiedSourceName(), converterVariable, format);
+                    writer.outdent();
+                    writer.write("}");
+                    writer.outdent();
+                    writer.write("}");
+                }
+            }
         }
     }
 
@@ -241,17 +281,8 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      */
     protected void useConverterForReading(IndentedWriter writer, PropertyContext propertyContext)
     {
-        if (propertyContext.getFormat() != null)
-        {
-            writer.write("%s = %s.convert(%s, \"%s\");", propertyContext.getVariableNames().getValueVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable(),
-                    propertyContext.getFormat());
-        }
-        else
-        {
-            writer.write("%s = %s.convert(%s, null);", propertyContext.getVariableNames().getValueVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueAsStringVariable());
-        }
+        writer.write("%s = %s.convert(%s);", propertyContext.getVariableNames().getValueVariable(), converterVariable,
+                propertyContext.getVariableNames().getValueAsStringVariable());
     }
 
 

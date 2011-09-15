@@ -3,11 +3,6 @@ package name.pehl.piriti.converter.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-
-import name.pehl.piriti.converter.client.IntegerConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,38 +10,22 @@ import org.junit.Test;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 19 $
  */
-public class IntegerConverterTest extends IntegerConverter
+public class IntegerConverterTest
 {
     private IntegerConverter underTest;
-
-
-    @Override
-    protected Integer parseInteger(String value, String format)
-    {
-        DecimalFormat parser = new DecimalFormat(format);
-        try
-        {
-            Integer result = (Integer) parser.parse(value);
-            return result;
-        }
-        catch (ParseException e)
-        {
-            throw new NumberFormatException(e.getMessage());
-        }
-    }
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new IntegerConverterTest();
+        underTest = new IntegerConverter();
     }
 
 
     @Test
     public void testConvertNull()
     {
-        Integer result = underTest.convert(null, null);
+        Integer result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -54,7 +33,7 @@ public class IntegerConverterTest extends IntegerConverter
     @Test
     public void testConvertEmpty()
     {
-        Integer result = underTest.convert("", null);
+        Integer result = underTest.convert("");
         assertNull(result);
     }
 
@@ -62,23 +41,22 @@ public class IntegerConverterTest extends IntegerConverter
     @Test
     public void testConvertBlank()
     {
-        Integer result = underTest.convert("    ", null);
+        Integer result = underTest.convert("    ");
         assertNull(result);
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertFoo()
     {
-        Integer result = underTest.convert("foo", null);
-        assertNull(result);
+        underTest.convert("foo");
     }
 
 
     @Test
     public void testConvertPositive()
     {
-        Integer result = underTest.convert("23", null);
+        Integer result = underTest.convert("23");
         assertEquals(23, result.intValue());
     }
 
@@ -86,23 +64,21 @@ public class IntegerConverterTest extends IntegerConverter
     @Test
     public void testConvertNegative()
     {
-        Integer result = underTest.convert("-23", null);
+        Integer result = underTest.convert("-23");
         assertEquals(-23, result.intValue());
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertLessThanMin()
     {
-        Integer result = underTest.convert("-2147483649", null);
-        assertNull(result);
+        underTest.convert("-2147483649");
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertMoreThanMax()
     {
-        Integer result = underTest.convert("2147483648", null);
-        assertNull(result);
+        underTest.convert("2147483648");
     }
 }

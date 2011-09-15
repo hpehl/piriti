@@ -14,15 +14,13 @@ public class CharacterConverter extends AbstractConverter<Character>
      * 
      * @param value
      *            The string to be converted. May be <code>null</code>.
-     * @param format
-     *            Ignored
      * @return {@code null} if the value is {@code null}, otherwise the first
      *         character of the value
      * @see name.pehl.piriti.converter.client.Converter#convert(java.lang.String,
      *      java.lang.String)
      */
     @Override
-    public Character convert(String value, String format)
+    public Character convert(String value)
     {
         if (value != null && value.length() > 0)
         {

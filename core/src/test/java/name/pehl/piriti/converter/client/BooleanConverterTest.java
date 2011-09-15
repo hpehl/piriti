@@ -1,8 +1,8 @@
 package name.pehl.piriti.converter.client;
 
-import static org.junit.Assert.*;
-
-import name.pehl.piriti.converter.client.BooleanConverter;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class BooleanConverterTest
     @Test
     public void testConvertNull()
     {
-        Boolean result = underTest.convert(null, null);
+        Boolean result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -34,7 +34,7 @@ public class BooleanConverterTest
     @Test
     public void testConvertEmpty()
     {
-        Boolean result = underTest.convert("", null);
+        Boolean result = underTest.convert("");
         assertNull(result);
     }
 
@@ -42,7 +42,7 @@ public class BooleanConverterTest
     @Test
     public void testConvertBlank()
     {
-        Boolean result = underTest.convert("    ", null);
+        Boolean result = underTest.convert("    ");
         assertNull(result);
     }
 
@@ -50,7 +50,7 @@ public class BooleanConverterTest
     @Test
     public void testConvertFoo()
     {
-        Boolean result = underTest.convert("foo", null);
+        Boolean result = underTest.convert("foo");
         assertFalse(result);
     }
 
@@ -58,7 +58,7 @@ public class BooleanConverterTest
     @Test
     public void testConvertFalse()
     {
-        Boolean result = underTest.convert("false", null);
+        Boolean result = underTest.convert("false");
         assertFalse(result);
     }
 
@@ -66,7 +66,7 @@ public class BooleanConverterTest
     @Test
     public void testConvertTrue()
     {
-        Boolean result = underTest.convert("true", null);
+        Boolean result = underTest.convert("true");
         assertTrue(result);
     }
 }

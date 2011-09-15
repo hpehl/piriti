@@ -7,9 +7,8 @@ package name.pehl.piriti.converter.client;
  * @version $Date$ $Revision:
  *          1097 $
  */
-public class NoopConverter implements Converter<Object>
+public class NoopConverter extends AbstractConverter<Object>
 {
-
     /**
      * Throws an {@link UnsupportedOperationException}.
      * 
@@ -20,7 +19,7 @@ public class NoopConverter implements Converter<Object>
      *      java.lang.String)
      */
     @Override
-    public Object convert(String value, String format)
+    public Object convert(String value)
     {
         throw new UnsupportedOperationException("Not implemented");
     }
@@ -36,7 +35,7 @@ public class NoopConverter implements Converter<Object>
      *      java.lang.String)
      */
     @Override
-    public String serialize(Object value, String format)
+    public String serialize(Object value)
     {
         throw new UnsupportedOperationException("Not implemented");
     }

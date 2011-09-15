@@ -1,16 +1,16 @@
 package name.pehl.piriti.client.inheritance;
 
-import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.AbstractConverter;
 
 /**
  * @author $Author$
  * @version $Date$ $Revision:
  *          1478 $
  */
-public class SizeConverter implements Converter<Size>
+public class SizeConverter extends AbstractConverter<Size>
 {
     @Override
-    public Size convert(String value, String format)
+    public Size convert(String value)
     {
         if ("S".equalsIgnoreCase(value))
         {
@@ -32,7 +32,7 @@ public class SizeConverter implements Converter<Size>
 
 
     @Override
-    public String serialize(Size value, String format)
+    public String serialize(Size value)
     {
         String result = null;
         switch (value)

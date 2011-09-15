@@ -1,6 +1,8 @@
 package name.pehl.piriti.converter.client;
 
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.logging.Level;
 
 /**
  * Converter for {@link Timestamp}.
@@ -8,61 +10,27 @@ import java.sql.Timestamp;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class TimestampConverter extends AbstractConverter<Timestamp>
+public class TimestampConverter extends AbstractDateConverter<Timestamp>
 {
-    /**
-     * Converts the specified value to a timestamp. Therefore
-     * {@link Timestamp#valueOf(String)} is used.
-     * 
-     * @param value
-     *            The string to be converted. May be <code>null</code>.
-     * @param format
-     *            Ignored
-     * @return {@code null} if the value is {@code null} or empty, otherwise the
-     *         converted timestamp
-     * @see name.pehl.piriti.converter.client.Converter#convert(java.lang.String,
-     *      java.lang.String)
-     */
     @Override
-    public Timestamp convert(String value, String format)
+    protected Timestamp convertWithoutFormat(String value)
     {
         Timestamp timestamp = null;
-        if (value != null && value.trim().length() != 0)
+        try
         {
-            try
-            {
-                timestamp = Timestamp.valueOf(value);
-            }
-            catch (IllegalArgumentException e)
-            {
-                // nop
-            }
+            timestamp = Timestamp.valueOf(value);
+        }
+        catch (IllegalArgumentException e)
+        {
+            logger.log(Level.SEVERE, "Cannot parse SQL timestamp '" + value + "': " + e.getMessage(), e);
         }
         return timestamp;
     }
 
 
-    /**
-     * Serializes the specified timestamp to a string using
-     * {@link Timestamp#toString()}
-     * 
-     * @param value
-     *            the timestamp to serialize
-     * @param format
-     *            Ignored
-     * @return The string representation of the timestamp as specified by
-     *         {@link Timestamp#toString()} or {@code null} if the value is
-     *         {@code null}.
-     * @see name.pehl.piriti.converter.client.Converter#serialize(java.lang.Object,
-     *      java.lang.String)
-     */
     @Override
-    public String serialize(Timestamp value, String format)
+    protected Timestamp newInstance(Date parsed)
     {
-        if (value == null)
-        {
-            return null;
-        }
-        return value.toString();
+        return new Timestamp(parsed.getTime());
     }
 }

@@ -3,11 +3,6 @@ package name.pehl.piriti.converter.client;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-
-import name.pehl.piriti.converter.client.DoubleConverter;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,38 +10,22 @@ import org.junit.Test;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 19 $
  */
-public class DoubleConverterTest extends DoubleConverter
+public class DoubleConverterTest
 {
     private DoubleConverter underTest;
-
-
-    @Override
-    protected Double parseDouble(String value, String format)
-    {
-        DecimalFormat parser = new DecimalFormat(format);
-        try
-        {
-            Double result = (Double) parser.parse(value);
-            return result;
-        }
-        catch (ParseException e)
-        {
-            throw new NumberFormatException(e.getMessage());
-        }
-    }
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new DoubleConverterTest();
+        underTest = new DoubleConverter();
     }
 
 
     @Test
     public void testConvertNull()
     {
-        Double result = underTest.convert(null, null);
+        Double result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -54,7 +33,7 @@ public class DoubleConverterTest extends DoubleConverter
     @Test
     public void testConvertEmpty()
     {
-        Double result = underTest.convert("", null);
+        Double result = underTest.convert("");
         assertNull(result);
     }
 
@@ -62,25 +41,24 @@ public class DoubleConverterTest extends DoubleConverter
     @Test
     public void testConvertBlank()
     {
-        Double result = underTest.convert("    ", null);
+        Double result = underTest.convert("    ");
         assertNull(result);
     }
 
 
-    @Test
+    @Test(expected = NumberFormatException.class)
     public void testConvertFoo()
     {
-        Double result = underTest.convert("foo", null);
-        assertNull(result);
+        underTest.convert("foo");
     }
 
 
     @Test
     public void testConvertPositive()
     {
-        Double result = underTest.convert("23", null);
+        Double result = underTest.convert("23");
         assertEquals(23.0, result.doubleValue(), .0);
-        result = underTest.convert("23.123", null);
+        result = underTest.convert("23.123");
         assertEquals(23.123, result.doubleValue(), .0);
     }
 
@@ -88,9 +66,9 @@ public class DoubleConverterTest extends DoubleConverter
     @Test
     public void testConvertNegative()
     {
-        Double result = underTest.convert("-23", null);
+        Double result = underTest.convert("-23");
         assertEquals(-23.0, result.doubleValue(), .0);
-        result = underTest.convert("-23.456", null);
+        result = underTest.convert("-23.456");
         assertEquals(-23.456, result.doubleValue(), .0);
     }
 }

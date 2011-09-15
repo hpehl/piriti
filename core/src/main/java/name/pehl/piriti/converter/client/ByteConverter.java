@@ -14,15 +14,13 @@ public class ByteConverter extends AbstractConverter<Byte>
      * 
      * @param value
      *            The string to be converted. May be <code>null</code>.
-     * @param format
-     *            Ignored
      * @return {@code null} if the value is {@code null}, empty or in the wrong
      *         format, otherwise {@code Byte.valueOf(value)}
      * @see name.pehl.piriti.converter.client.Converter#convert(java.lang.String,
      *      java.lang.String)
      */
     @Override
-    public Byte convert(String value, String format)
+    public Byte convert(String value)
     {
         if (isValid(value))
         {

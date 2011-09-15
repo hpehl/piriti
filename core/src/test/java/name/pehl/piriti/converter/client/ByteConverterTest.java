@@ -1,8 +1,7 @@
 package name.pehl.piriti.converter.client;
 
-import static org.junit.Assert.*;
-
-import name.pehl.piriti.converter.client.ByteConverter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +25,7 @@ public class ByteConverterTest
     @Test
     public void testConvertNull()
     {
-        Byte result = underTest.convert(null, null);
+        Byte result = underTest.convert(null);
         assertNull(result);
     }
 
@@ -34,7 +33,7 @@ public class ByteConverterTest
     @Test
     public void testConvertEmpty()
     {
-        Byte result = underTest.convert("", null);
+        Byte result = underTest.convert("");
         assertNull(result);
     }
 
@@ -42,7 +41,7 @@ public class ByteConverterTest
     @Test
     public void testConvertBlank()
     {
-        Byte result = underTest.convert("    ", null);
+        Byte result = underTest.convert("    ");
         assertNull(result);
     }
 
@@ -50,7 +49,7 @@ public class ByteConverterTest
     @Test
     public void testConvertFoo()
     {
-        Byte result = underTest.convert("foo", null);
+        Byte result = underTest.convert("foo");
         assertNull(result);
     }
 
@@ -58,7 +57,7 @@ public class ByteConverterTest
     @Test
     public void testConvertPositive()
     {
-        Byte result = underTest.convert("23", null);
+        Byte result = underTest.convert("23");
         assertEquals(23, result.byteValue());
     }
 
@@ -66,7 +65,7 @@ public class ByteConverterTest
     @Test
     public void testConvertNegative()
     {
-        Byte result = underTest.convert("-23", null);
+        Byte result = underTest.convert("-23");
         assertEquals(-23, result.byteValue());
     }
 
@@ -74,7 +73,7 @@ public class ByteConverterTest
     @Test
     public void testConvertLessThanMin()
     {
-        Byte result = underTest.convert("-129", null);
+        Byte result = underTest.convert("-129");
         assertNull(result);
     }
 
@@ -82,7 +81,7 @@ public class ByteConverterTest
     @Test
     public void testConvertMoreThanMax()
     {
-        Byte result = underTest.convert("128", null);
+        Byte result = underTest.convert("128");
         assertNull(result);
     }
 }

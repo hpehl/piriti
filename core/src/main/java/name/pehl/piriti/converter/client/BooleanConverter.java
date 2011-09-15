@@ -14,15 +14,13 @@ public class BooleanConverter extends AbstractConverter<Boolean>
      * 
      * @param value
      *            The string to be converted. May be <code>null</code>
-     * @param format
-     *            Ignored
      * @return {@code null} if the value is {@code null} or empty, otherwise
      *         {@code Boolean.valueOf(value)}
      * @see name.pehl.piriti.converter.client.Converter#convert(java.lang.String,
      *      java.lang.String)
      */
     @Override
-    public Boolean convert(String value, String format)
+    public Boolean convert(String value)
     {
         if (isValid(value))
         {

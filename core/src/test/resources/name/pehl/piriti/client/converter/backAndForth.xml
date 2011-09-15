@@ -4,10 +4,11 @@
     in the elements. Otherwise the asserts will fail!
  -->
 <backAndFourth>
-  <date>1973-09-02T11:22:33.444+01:00</date>
-  <millis>/Date(115772400000)/</millis>
+  <dateWithDefaultFormat>1973-09-02T11:22:33.444+01:00</dateWithDefaultFormat>
   <dateWithFormat>20.09.04</dateWithFormat>
-  <dateWithConverter>tomorrow</dateWithConverter>
+  <msDateTimeFormat>/Date(115772400000)/</msDateTimeFormat>
+  <dateWithMillisConverter>115772400000</dateWithMillisConverter>
+  <dateWithTomorrowConverter>tomorrow</dateWithTomorrowConverter>
   <maths>TWO</maths>
   <mathsWithConverter>2</mathsWithConverter>
   <duration>4h</duration>
