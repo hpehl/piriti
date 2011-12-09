@@ -7,7 +7,7 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>superpom</artifactId>
-        <version>17</version>
+        <version>18</version>
     </parent>
 
 
@@ -137,6 +137,7 @@
                     <excludes>
                         <exclude>com.google.gwt:gwt-user</exclude>
                         <exclude>com.google.gwt:gwt-dev</exclude>
+                        <exclude>com.google.gwt:gwt-servlet</exclude> 
                     </excludes>
                 </configuration>
             </plugin>
