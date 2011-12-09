@@ -22,7 +22,10 @@ public class MillisConverter extends AbstractConverter<Date>
     @Override
     public String serialize(Date value)
     {
+        if (value == null)
+        {
+            return "null";
+        }
         return String.valueOf(value.getTime());
     }
-
 }

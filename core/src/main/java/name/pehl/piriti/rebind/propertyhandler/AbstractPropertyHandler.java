@@ -564,17 +564,8 @@ public abstract class AbstractPropertyHandler extends LogFacade implements Prope
      */
     protected void useConverterForWriting(IndentedWriter writer, PropertyContext propertyContext)
     {
-        if (propertyContext.getFormat() != null)
-        {
-            writer.write("%s = %s.serialize(%s, \"%s\");", propertyContext.getVariableNames()
-                    .getValueAsStringVariable(), converterVariable, propertyContext.getVariableNames()
-                    .getValueVariable(), propertyContext.getFormat());
-        }
-        else
-        {
-            writer.write("%s = %s.serialize(%s, null);", propertyContext.getVariableNames().getValueAsStringVariable(),
-                    converterVariable, propertyContext.getVariableNames().getValueVariable());
-        }
+        writer.write("%s = %s.serialize(%s);", propertyContext.getVariableNames().getValueAsStringVariable(),
+                converterVariable, propertyContext.getVariableNames().getValueVariable());
     }
 
 
