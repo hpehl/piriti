@@ -1,0 +1,97 @@
+package ${typeContext.rwType.package.name};
+
+import static java.util.logging.Level.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.json.client.*;
+
+import name.pehl.totoe.commons.client.*;
+import name.pehl.totoe.json.client.*;
+
+import name.pehl.piriti.commons.client.InstanceContextHolder;
+import name.pehl.piriti.commons.client.*;
+import name.pehl.piriti.converter.client.*;
+import name.pehl.piriti.json.client.*;
+
+public class ${classname} implements ${typeContext.rwType.qualifiedSourceName} 
+{
+    // --------------------------------------------------------- private fields
+    
+    private static Logger logger = Logger.getLogger("${typeContext.rwType.qualifiedSourceName}");
+    
+    private final HandlerManager handlerManager;
+    private final ConverterRegistry converterRegistry;
+    private final JsonRegistry jsonRegistry;
+    private final Map<String, ${typeContext.type.qualifiedSourceName}> idMap;
+    
+
+
+    // ----------------------------------------------------------- constructors
+
+    public ${classname}() 
+    {
+	    this.handlerManager = new HandlerManager(this);
+	    this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
+	    this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();
+	    this.jsonRegistry.register(${typeContext.type.qualifiedSourceName}.class, this);
+	    this.idMap = new HashMap<String, ${typeContext.type.qualifiedSourceName}>();
+    }
+    
+    
+    
+    // --------------------------------------------------------- event handling
+    
+    public HandlerRegistration addModelReadHandler(ModelReadHandler<${typeContext.type.parameterizedQualifiedSourceName}> handler) 
+    {
+        return handlerManager.addHandler(ModelReadEvent.getType(), handler);
+    }
+
+    public void fireEvent(GwtEvent<?> event) 
+    {
+        handlerManager.fireEvent(event);
+    }
+
+    
+    
+    // ----------------------------------------------------------- read methods
+    
+    public List<${typeContext.type.parameterizedQualifiedSourceName}> readList(String jsonString)
+    {
+        List<${typeContext.type.parameterizedQualifiedSourceName}> models = null;
+        if (jsonString != null && jsonString.trim().length() != 0)
+        {
+            JSONObject jsonObject = JSONParser.parseStrict(jsonString).isObject();
+            if (jsonObject != null)
+            {
+                Set<String> keys = jsonObject.keySet();
+                if (keys != null && !keys.isEmpty())
+                {
+                    String arrayKey = keys.iterator().next();
+                    JSONValue jsonValue = jsonObject.get(arrayKey);
+                    if (jsonValue != null)
+                    {
+                        JSONArray jsonArray = jsonValue.isArray();
+                        if (jsonArray != null)
+                        {
+                            models = new ArrayList<${typeContext.type.parameterizedQualifiedSourceName}>();
+                            models = readList(jsonArray);
+                        }
+                    }
+                }
+            }
+        }
+        return models;
+    }
+}
