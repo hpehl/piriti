@@ -1,0 +1,40 @@
+#set($valueType = $propertyContext.type.qualifiedSourceName)
+#set($value = $propertyContext.variableNames.valueVariable)
+#set($jsonValue = $propertyContext.variableNames.newVariableName("AsJsonValue"))
+#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+
+Character $value = null;
+JSONValue $jsonValue = null;
+Converter<$valueType> $converter = null;
+#if ($propertyContext.hasConverter()) #customConverter() #else #tryDefaultConverter() #end
+
+#getOrSelectJsonValue()
+if ($jsonValue != null)
+{
+    if (${jsonValue}.isNull() == null) 
+    {
+        JSONString jsonString = $jsonValue.isString();
+        if (jsonString != null)
+        {
+            String stringValue = jsonString.stringValue();
+            if (stringValue != null)
+            {
+                if ($converter != null)
+                {
+                    $value = ${converter}.convert(stringValue);
+                }
+                else
+                {
+                    if (stringValue.length() != 0)
+                    {
+                        $value = stringValue.charAt(0);
+                    }
+                }
+            }
+        }
+    }
+	if ($value != null) 
+    {
+        #assignValue()
+	}
+}

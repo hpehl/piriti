@@ -1,0 +1,54 @@
+#set($valueType = $propertyContext.type.qualifiedSourceName)
+#set($value = $propertyContext.variableNames.valueVariable)
+#set($jsonValue = $propertyContext.variableNames.newVariableName("AsJsonValue"))
+#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+
+$valueType $value = null;
+JSONValue $jsonValue = null;
+Converter<String> $converter = null;
+#if ($propertyContext.hasConverter()) #customConverter() #else #tryDefaultConverter() #end
+
+#getOrSelectJsonValue()
+if ($jsonValue != null)
+{
+    if (${jsonValue}.isNull() == null) 
+    {
+        JSONString jsonString = ${jsonValue}.isString();
+        if (jsonString != null)
+        {
+            String stringValue = jsonString.stringValue();
+            if (stringValue != null)
+            {
+                if ($converter != null)
+                {
+                    $value = ${converter}.convert(stringValue);
+                }
+                else
+                {
+                    try 
+                    {
+                        $value = ${propertyContext.enumType.qualifiedSourceName}.valueOf(stringValue);
+                    }
+                    catch (IllegalArgumentException e1) 
+                    {
+                        try 
+                        {
+                            $value = ${propertyContext.enumType.qualifiedSourceName}.valueOf(stringValue.toUpperCase());
+                        }
+                        catch (IllegalArgumentException e2) 
+                        {
+			                if (logger.isLoggable(ERROR)) 
+			                {
+			                    logger.log(ERROR, "Cannot convert \"" + stringValue + "\" or \"" + stringValue.toUpperCase() + "\" to enum property $propertyContext.name in ${modelType}. Property will be skipped.");
+			                }
+                        }
+                    }
+                }
+            }
+        }
+    }
+	if ($value != null) 
+    {
+        #assignValue()
+	}
+}

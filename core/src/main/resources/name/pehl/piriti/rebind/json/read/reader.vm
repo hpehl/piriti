@@ -25,8 +25,8 @@ import name.pehl.piriti.commons.client.*;
 import name.pehl.piriti.converter.client.*;
 import name.pehl.piriti.json.client.*;
 
-#set( $qn = $typeContext.type.qualifiedSourceName)
-#set( $pqn = $typeContext.type.parameterizedQualifiedSourceName)
+#set($modelType = $typeContext.type.qualifiedSourceName)
+#set($modelParameterizedType = $typeContext.type.parameterizedQualifiedSourceName)
 
 public class $classname implements $typeContext.rwType.qualifiedSourceName 
 {
@@ -37,7 +37,7 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
     private final HandlerManager handlerManager;
     private final ConverterRegistry converterRegistry;
     private final JsonRegistry jsonRegistry;
-    private final Map<String, $qn> idMap;
+    private final Map<String, $modelType> idMap;
     
 
 
@@ -48,15 +48,15 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
 	    this.handlerManager = new HandlerManager(this);
 	    this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
 	    this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();
-	    this.jsonRegistry.register($qn.class, this);
-	    this.idMap = new HashMap<String, $qn>();
+	    this.jsonRegistry.register(${modelType}.class, this);
+	    this.idMap = new HashMap<String, $modelType>();
     }
     
     
     
     // --------------------------------------------------------- event handling
     
-    public HandlerRegistration addModelReadHandler(ModelReadHandler<$pqn> handler) 
+    public HandlerRegistration addModelReadHandler(ModelReadHandler<$modelParameterizedType> handler) 
     {
         return handlerManager.addHandler(ModelReadEvent.getType(), handler);
     }
@@ -70,9 +70,9 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
     
     // ------------------------------------------------------ read list methods
 
-    public List<$pqn> readList(String jsonString)
+    public List<$modelParameterizedType> readList(String jsonString)
     {
-        List<$pqn> models = null;
+        List<$modelParameterizedType> models = null;
         if (jsonString != null && jsonString.trim().length() != 0)
         {
             JSONObject jsonObject = JSONParser.parseStrict(jsonString).isObject();
@@ -88,7 +88,7 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
                         JSONArray jsonArray = jsonValue.isArray();
                         if (jsonArray != null)
                         {
-                            models = new ArrayList<$pqn>();
+                            models = new ArrayList<$modelParameterizedType>();
                             models = readList(jsonArray);
                         }
                     }
@@ -98,9 +98,9 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
         return models;
     }
     
-    public List<$pqn> readList(String jsonString, String arrayKey)
+    public List<$modelParameterizedType> readList(String jsonString, String arrayKey)
     {
-        List<$pqn> models = null;
+        List<$modelParameterizedType> models = null;
         if (jsonString != null && jsonString.trim().length() != 0 && arrayKey != null)
         {
             JSONObject jsonObject = JSONParser.parseStrict(jsonString).isObject();
@@ -112,7 +112,7 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
                     JSONArray jsonArray = jsonValue.isArray();
                     if (jsonArray != null) 
                     {
-	                    models = new ArrayList<$pqn>();
+	                    models = new ArrayList<$modelParameterizedType>();
 	                    models = readList(jsonArray);
                     }
                 }
@@ -121,9 +121,9 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
         return models;
     }
     
-    public List<$pqn> readList(JSONObject jsonObject) 
+    public List<$modelParameterizedType> readList(JSONObject jsonObject) 
     {
-        List<$pqn> models = null;
+        List<$modelParameterizedType> models = null;
         if (jsonObject != null) 
         {
             Set<String> keys = jsonObject.keySet();
@@ -136,7 +136,7 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
                     JSONArray jsonArray = jsonValue.isArray();
                     if (jsonArray != null) 
                     {
-                        models = new ArrayList<$pqn>();
+                        models = new ArrayList<$modelParameterizedType>();
                         models = readList(jsonArray);
                     }
                 }
@@ -145,9 +145,9 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
         return models;
     }
     
-    public List<$pqn> readList(JSONObject jsonObject, String arrayKey) 
+    public List<$modelParameterizedType> readList(JSONObject jsonObject, String arrayKey) 
     {
-        List<$pqn> models = null;
+        List<$modelParameterizedType> models = null;
         if (jsonObject != null && arrayKey != null)
         {
             JSONValue jsonValue = jsonObject.get(arrayKey);
@@ -156,7 +156,7 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
                 JSONArray jsonArray = jsonValue.isArray();
                 if (jsonArray != null) 
                 {
-                    models = new ArrayList<$pqn>();
+                    models = new ArrayList<$modelParameterizedType>();
                     models = readList(jsonArray);
                 }
             }
@@ -165,15 +165,15 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
     }
 
 
-    public List<$pqn> readList(JSONArray jsonArray)
+    public List<$modelParameterizedType> readList(JSONArray jsonArray)
     {
-        List<$pqn> models = null;
-        List<InstanceContextHolder<$pqn, JSONObject>> instanceContextHolders = null;
+        List<$modelParameterizedType> models = null;
+        List<InstanceContextHolder<$modelParameterizedType, JSONObject>> instanceContextHolders = null;
         
         if (jsonArray != null) 
         {
-            models = new ArrayList<$pqn>();
-            instanceContextHolders = new ArrayList<InstanceContextHolder<$pqn, JSONObject>>();
+            models = new ArrayList<$modelParameterizedType>();
+            instanceContextHolders = new ArrayList<InstanceContextHolder<$modelParameterizedType, JSONObject>>();
 
             if (logger.isLoggable(FINE)) 
             {
@@ -188,12 +188,12 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
                     JSONObject currentJsonObject = currentJsonValue.isObject();
                     if (currentJsonObject != null) 
                     {
-                        $pqn model = readIds(currentJsonObject);
+                        $modelParameterizedType model = readIds(currentJsonObject);
                         if (model != null) 
                         {
                             models.add(model);
                             instanceContextHolders.add(
-                                new InstanceContextHolder<$pqn, JSONObject>(model, currentJsonObject));
+                                new InstanceContextHolder<$modelParameterizedType, JSONObject>(model, currentJsonObject));
                         }
                     }
                 }
@@ -203,9 +203,9 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
             {
                 logger.log(FINE, "Second iteration over generated models to map properties and IDREFs");
             }
-            for (InstanceContextHolder<$pqn, JSONObject> ich : instanceContextHolders) 
+            for (InstanceContextHolder<$modelParameterizedType, JSONObject> ich : instanceContextHolders) 
             {
-                $pqn model = ich.getInstance();
+                $modelParameterizedType model = ich.getInstance();
                 readProperties(ich.getContext(), model);
                 readIdRefs(ich.getContext(), model);
                 ModelReadEvent.fire(this, model);
@@ -218,9 +218,9 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
 
     // ---------------------------------------------------- read single methods
 
-    public $pqn read(String jsonString) 
+    public $modelParameterizedType read(String jsonString) 
     {
-        $pqn model = null;
+        $modelParameterizedType model = null;
         if (jsonString != null && jsonString.trim().length() != 0) 
         {
             JSONObject jsonObject = JSONParser.parseStrict(jsonString).isObject();
@@ -232,9 +232,9 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
         return model;
     }
     
-    public $pqn read(JSONObject jsonObject) 
+    public $modelParameterizedType read(JSONObject jsonObject) 
     {
-        $pqn model = null;
+        $modelParameterizedType model = null;
         if (jsonObject != null) 
         {
             model = internalRead(jsonObject);
@@ -243,13 +243,13 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
     }
     
     
-    private $pqn internalRead(JSONObject jsonObject) 
+    private $modelParameterizedType internalRead(JSONObject jsonObject) 
     {
         if (jsonObject == null) 
         {
             return null;
         }
-        $pqn model = readIds(jsonObject);
+        $modelParameterizedType model = readIds(jsonObject);
         readProperties(jsonObject, model);
         readIdRefs(jsonObject, model);
         ModelReadEvent.fire(this, model);
@@ -260,32 +260,33 @@ public class $classname implements $typeContext.rwType.qualifiedSourceName
     
     // ----------------------------------------- ids, properties and references
 
-    private $pqn readIds(JSONObject jsonObject)
+    private $modelParameterizedType readIds(JSONObject jsonObject)
     {
         if (jsonObject != null) 
         {
-            ##TODO
+            ## TODO
         }
         return null;
     }
     
-    private $pqn readProperties(JSONObject jsonObject, $pqn model) 
+    private $modelParameterizedType readProperties(JSONObject jsonObject, $modelParameterizedType model) 
     {
         if (jsonObject != null) 
         {
-            #foreach( $entry in $properties.entrySet() )
-                #set( $propertyContext = $entry.key )
-                #set( $propertyHandler = $entry.value )
-		        propertyHandler.log(writer, propertyContext);
-		        propertyHandler.declare(writer, propertyContext);
-		        propertyHandler.readInput(writer, propertyContext, propertyHandlerLookup);
-		        propertyHandler.assign(writer, propertyContext);
+            #foreach($entry in $properties.entrySet())
+                #set($propertyContext = $entry.key)
+                #set($propertyHandler = $entry.value)
+                #logProperty()
+                #parse($propertyHandler.template)
+                ##propertyHandler.declare(writer, propertyContext);
+                ##propertyHandler.readInput(writer, propertyContext, propertyHandlerLookup);
+                ##propertyHandler.assign(writer, propertyContext);
             #end
         }
         return model;
     }
     
-    private $pqn readIdRefs(JSONObject jsonObject, $pqn model) 
+    private $modelParameterizedType readIdRefs(JSONObject jsonObject, $modelParameterizedType model) 
     {
         if (jsonObject != null) 
         {

@@ -465,6 +465,9 @@ public abstract class AbstractCreator extends LogFacade
             PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
             if (propertyHandler != null && propertyHandler.isValid(writer, propertyContext))
             {
+                // TODO Check if the property is assignable
+                // Reader: Accessible field or callabel setter
+                // Writer: Accessible field or callabel getter
                 validProperties.put(propertyContext, propertyHandler);
             }
             else
