@@ -6,7 +6,7 @@
 $valueType $value = null;
 JSONValue $jsonValue = null;
 Converter<String> $converter = null;
-#if ($propertyContext.hasConverter()) #customConverter() #end
+#if ($propertyContext.hasConverter()) #customConverter() #else #tryDefaultConverter() #end
 
 #getOrSelectJsonValue()
 if ($jsonValue != null)
@@ -16,8 +16,8 @@ if ($jsonValue != null)
     {
         int size = jsonArray.size();
     }
-	if ($value != null) 
+    if ($value != null) 
     {
         #assignValue()
-	}
+    }
 }

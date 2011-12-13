@@ -1,12 +1,10 @@
 #set($valueType = $propertyContext.type.qualifiedSourceName)
 #set($value = $propertyContext.variableNames.valueVariable)
-#set($jsonValue = $propertyContext.variableNames.newVariableName("AsJsonValue"))
+#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
 #set($converter = $propertyContext.variableNames.newVariableName("Converter"))
 
 $valueType $value = null;
 JSONValue $jsonValue = null;
-Converter<String> $converter = null;
-#if ($propertyContext.hasConverter()) #customConverter() #else #tryDefaultConverter() #end
 
 #getOrSelectJsonValue()
 if ($jsonValue != null)
@@ -19,28 +17,31 @@ if ($jsonValue != null)
             String stringValue = jsonString.stringValue();
             if (stringValue != null)
             {
+				Converter<$valueType> $converter = null;
+				#if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
                 if ($converter != null)
                 {
                     $value = ${converter}.convert(stringValue);
                 }
                 else
                 {
-                    try 
+                    boolean error = true;
+                    String[] stringValues = new String[]{stringValue, stringValue.toUpperCase(), stringValue.toLowerCase()};
+                    for (String s : stringValues)
                     {
-                        $value = ${propertyContext.enumType.qualifiedSourceName}.valueOf(stringValue);
+	                    try 
+	                    {
+	                        $value = ${propertyContext.enumType.qualifiedSourceName}.valueOf(stringValue);
+	                        error = false;
+	                        break;
+	                    }
+                        catch (IllegalArgumentException e) {} 
                     }
-                    catch (IllegalArgumentException e1) 
+                    if (error)
                     {
-                        try 
+                        if (logger.isLoggable(ERROR)) 
                         {
-                            $value = ${propertyContext.enumType.qualifiedSourceName}.valueOf(stringValue.toUpperCase());
-                        }
-                        catch (IllegalArgumentException e2) 
-                        {
-			                if (logger.isLoggable(ERROR)) 
-			                {
-			                    logger.log(ERROR, "Cannot convert \"" + stringValue + "\" or \"" + stringValue.toUpperCase() + "\" to enum property $propertyContext.name in ${modelType}. Property will be skipped.");
-			                }
+                            logger.log(ERROR, "Cannot convert any of " + stringValues + " to enum property $propertyContext.name in ${modelType} using ${valueType}.valueOf(String).");
                         }
                     }
                 }

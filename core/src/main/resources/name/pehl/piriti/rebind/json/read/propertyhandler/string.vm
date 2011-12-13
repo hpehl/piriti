@@ -1,11 +1,9 @@
 #set($value = $propertyContext.variableNames.valueVariable)
-#set($jsonValue = $propertyContext.variableNames.newVariableName("AsJsonValue"))
+#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
 #set($converter = $propertyContext.variableNames.newVariableName("Converter"))
 
 String $value = null;
 JSONValue $jsonValue = null;
-Converter<String> $converter = null;
-#if ($propertyContext.hasConverter()) #customConverter() #end
 
 #getOrSelectJsonValue()
 if ($jsonValue != null)
@@ -13,6 +11,8 @@ if ($jsonValue != null)
     #if ($propertyContext.native)
         $value = ${jsonValue}.toString();
     #else
+		Converter<String> $converter = null;
+		#if ($propertyContext.hasConverter()) #customConverter() #end
 	    if (${jsonValue}.isNull() == null) 
 	    {
 	        JSONString jsonString = ${jsonValue}.isString();
@@ -26,8 +26,8 @@ if ($jsonValue != null)
 	        }
 	    }
     #end
-	if ($value != null) 
+    if ($value != null) 
     {
         #assignValue()
-	}
+    }
 }

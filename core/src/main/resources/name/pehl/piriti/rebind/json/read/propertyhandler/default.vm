@@ -1,0 +1,64 @@
+#set($valueType = $propertyContext.type.qualifiedSourceName)
+#set($parameterizedValueType = $propertyContext.type.parameterizedQualifiedSourceName)
+#set($value = $propertyContext.variableNames.valueVariable)
+#set($reader = $propertyContext.variableNames.newVariableName("Reader"))
+#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
+#set($jsonObject = $propertyContext.variableNames.newVariableName("JsonObject"))
+
+$valueType $value = null;
+JSONValue $jsonValue = null;
+
+#getOrSelectJsonValue()
+if ($jsonValue != null)
+{
+    #if ($propertyContext.native)
+        #if($TypeUtils.isJsonValue($propertyContext.type))
+            $value = $jsonValue;
+        #elseif($TypeUtils.isJsonValueSubtype($propertyContext.type))
+            if ($jsonValue instanceof $valueType) 
+            {
+                $value = ($valueType)$jsonValue;
+            }
+        #else
+            if (logger.isLoggable(ERROR)) 
+            {
+                logger.log(ERROR, "Cannot map property $propertyContext.name in ${modelType} nativly: Type $valueType must be an instance of JSONValue.");
+            }
+        #end
+    #else
+		JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
+		if ($reader != null)
+		{
+            JSONObject $jsonObject = $jsonValue.isObject();
+            if ($jsonObject != null)
+            {
+                $value = ${reader}.read($jsonObject);
+            }
+		}
+		else
+		{
+		    if (${jsonValue}.isNull() == null) 
+		    {
+		        JSONString jsonString = ${jsonValue}.isString();
+		        if (jsonString != null)
+		        {
+		            String stringValue = jsonString.stringValue();
+		            if (stringValue != null)
+		            {
+			            Converter<$valueType> $converter = null;
+			            #if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
+			            if ($converter != null)
+		                {
+		                    $value = ${converter}.convert(stringValue);
+		                }
+		            }
+		        }
+		    }
+		}
+    #end
+    if ($value != null) 
+    {
+        #assignValue()
+    }
+}

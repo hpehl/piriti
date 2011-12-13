@@ -1,12 +1,10 @@
 #set($valueType = $propertyContext.type.qualifiedSourceName)
 #set($value = $propertyContext.variableNames.valueVariable)
-#set($jsonValue = $propertyContext.variableNames.newVariableName("AsJsonValue"))
+#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
 #set($converter = $propertyContext.variableNames.newVariableName("Converter"))
 
 $valueType $value = null;
 JSONValue $jsonValue = null;
-Converter<String> $converter = null;
-#if ($propertyContext.hasConverter()) #customConverter() #else #tryDefaultConverter() #end
 
 #getOrSelectJsonValue()
 if ($jsonValue != null)
@@ -19,16 +17,11 @@ if ($jsonValue != null)
             String stringValue = jsonString.stringValue();
             if (stringValue != null)
             {
+                Converter<$valueType> $converter = null;
+                #if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
                 if ($converter != null)
                 {
                     $value = ${converter}.convert(stringValue);
-                }
-                else
-                {
-	                if (logger.isLoggable(ERROR)) 
-	                {
-	                    logger.log(ERROR, "No converter found for property $propertyContext.name with type $valueType  in ${modelType}. There should be a default converter for that type! Did you deregister the default converter? Property will be skipped.");
-	                }
                 }
             }
         }

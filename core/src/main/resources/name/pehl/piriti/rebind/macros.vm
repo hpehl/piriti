@@ -1,3 +1,4 @@
+## Logs info when a property mapping starts
 #macro(logProperty)
 if (logger.isLoggable(FINE)) 
 {
@@ -6,13 +7,16 @@ if (logger.isLoggable(FINE))
 #end
 
 
+## Creates the custom converter
 #macro(customConverter)
     $converter = GWT.create(${propertyContext.converter.name}.class);
     #if ($propertyContext.format) ${converter}.setFormat("$propertyContext.format"); #end
 #end
 
 
-#macro(tryDefaultConverter)
+
+## Tries to get the default converter from the converter registry 
+#macro(defaultConverter)
     #if ($propertyContext.format)
         $converter = converterRegistry.get(${valueType}.class, "$propertyContext.format");
         if ($converter == null)
@@ -26,6 +30,13 @@ if (logger.isLoggable(FINE))
                 ${converter}.setFormat("$propertyContext.format");
                 converterRegistry.register(${valueType}.class, ${converter}, "$propertyContext.format");
             }
+            else
+            {
+			    if (logger.isLoggable(ERROR)) 
+			    {
+			        logger.log(ERROR, "No converter found for property $propertyContext.name with type $valueType in ${modelType}. There should be a default converter for that type! Did you deregister the default converter?");
+			    }
+            }
         }
     #else
         $converter = converterRegistry.get(${valueType}.class);
@@ -33,6 +44,7 @@ if (logger.isLoggable(FINE))
 #end
 
 
+## Gets or selects the json value
 #macro(getOrSelectJsonValue)
     ## TODO: Write JsonUtils.isJsonPath()
     #if ($jsonUtils.isJson($propertyContext.path))
@@ -43,6 +55,7 @@ if (logger.isLoggable(FINE))
 #end
 
 
+## Assigns the mapped value to the model property 
 #macro(assignValue)
     #if ($propertyContext.setter)
         $propertyContext.setter.name setter = GWT.create(${propertyContext.setter.name}.class);
@@ -55,7 +68,7 @@ if (logger.isLoggable(FINE))
         #else
             if (logger.isLoggable(ERROR)) 
             {
-                logger.log(ERROR, "No accessible field or setter found in $modelType for property $propertyContext.name during mapping. This should not happen at this point. Something went wrong in the initialization phase. Property will be skipped.");
+                logger.log(ERROR, "No accessible field or setter found in $modelType for property $propertyContext.name during mapping. This should not happen at this point. Something went wrong in the initialization phase.");
             }
         #end
     #end
