@@ -10,161 +10,109 @@ import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JEnumType;
+import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
 
 /**
  * Class which contains information needed to generate code for the evaluation,
- * conversion and assignment of one property. An instance of this class is
- * passed to the {@link PropertyHandler}.
+ * conversion and assignment of one property.
  * 
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public class PropertyContext extends LogFacade
+public class PropertyContext
 {
     // -------------------------------------------------------- private members
 
-    private final int order;
-    private final TypeContext typeContext;
-    private final JType type;
-    private final JPrimitiveType primitiveType;
-    private final String name;
-    private final String path;
-    private final Class<? extends Converter<?>> converter;
-    private final String format;
-    private final WhitespaceHandling whitespaceHandling;
-    private final Class<? extends InstanceCreator<?, ?>> instanceCreator;
-    private final Class<? extends PropertyGetter<?, ?>> getter;
-    private final Class<? extends PropertySetter<?, ?>> setter;
-    private final ReferenceType referenceType;
-    private final boolean native_;
-    private VariableNames variableNames;
+    private int order;
+
+    /**
+     * The type context this property belongs to
+     */
+    private TypeContext typeContext;
+
+    /**
+     * The property type itself
+     */
+    private JType type;
+
+    private JPrimitiveType primitiveType;
+
+    /**
+     * The name of the property
+     */
+    private String name;
+
+    /**
+     * The path information for the mapping
+     */
+    private String path;
+
+    /**
+     * A custom converter
+     */
+    private Class<? extends Converter<?>> converter;
+
+    private String format;
+
+    /**
+     * Whether to strip whitespace and newlines from the input
+     */
+    private WhitespaceHandling whitespaceHandling;
+
+    /**
+     * A custom instance creator
+     */
+    private Class<? extends InstanceCreator<?, ?>> instanceCreator;
+
+    /**
+     * A custom property getter
+     */
+    private Class<? extends PropertyGetter<?, ?>> getter;
+
+    /**
+     * A custom property setter
+     */
+    private Class<? extends PropertySetter<?, ?>> setter;
+
+    private ReferenceType referenceType;
+
+    /**
+     * Whether to read the property nativly
+     */
+    private boolean native_;
+
+    private Variables variables;
+
+    /**
+     * Information about access from the generated reader / writer
+     * <ul>
+     * <li>Index 0: Field access
+     * <li>Index 1: Callable getter
+     * <li>Index 2: Callable setter
+     * </ul>
+     */
+    private boolean[] access;
+    private PropertyContext child;
+    private PropertyContext parent;
+    private String template;
 
 
     // ----------------------------------------------------------- constructors
 
-    /**
-     * Construct a new instance of this class
-     * 
-     * @param order
-     * @param typeContext
-     *            The type context this property belongs to
-     * @param type
-     *            The property type itself
-     * @param name
-     *            The name of the property
-     * @param path
-     *            The path information for the mapping
-     * @param converter
-     *            A custom converter
-     * @param format
-     *            The format
-     * @param whitespaceHandling
-     *            Whether to strip whitespace and newlines from the input
-     * @param instanceCreator
-     *            A custom instance creator
-     * @param getter
-     *            A custom property getter
-     * @param setter
-     *            A custom property setter
-     * @param referenceType
-     *            The refereence type.
-     * @param native_
-     *            Whether to read the property nativly
-     * @param logger
-     *            the looger
-     * @throws UnableToCompleteException
-     */
-    public PropertyContext(int order, TypeContext typeContext, JType type, String name, String path,
-            Class<? extends Converter<?>> converter, String format, WhitespaceHandling whitespaceHandling,
-            Class<? extends InstanceCreator<?, ?>> instanceCreator, Class<? extends PropertyGetter<?, ?>> getter,
-            Class<? extends PropertySetter<?, ?>> setter, ReferenceType referenceType, boolean native_,
-            TreeLogger logger) throws UnableToCompleteException
+    public PropertyContext(int order, TypeContext typeContext, JType type, String name)
     {
-        super(logger);
-
         this.order = order;
         this.typeContext = typeContext;
-        JPrimitiveType primitiveType = type.isPrimitive();
-        if (primitiveType != null) // isPrimitive() is not yet available!
-        {
-            try
-            {
-                // Use the boxed type for primitives
-                this.type = typeContext.getTypeOracle().getType(primitiveType.getQualifiedBoxedSourceName());
-                this.primitiveType = primitiveType;
-            }
-            catch (NotFoundException e)
-            {
-                throw new UnableToCompleteException();
-            }
-        }
-        else
-        {
-            this.type = type;
-            this.primitiveType = null;
-        }
-        // Name and path
+        this.type = type;
         this.name = name;
-        if (path == null || path.length() == 0)
-        {
-            this.path = null;
-        }
-        else
-        {
-            this.path = path;
-        }
-
-        // Converter and format stuff
-        this.converter = converter == NoopConverter.class ? null : converter;
-        if (format == null || format.length() == 0)
-        {
-            this.format = null;
-        }
-        else
-        {
-            this.format = format;
-        }
-        this.whitespaceHandling = whitespaceHandling;
-
-        // InstanceCreator, getter, setter and reference type
-        this.instanceCreator = instanceCreator == NoopInstanceCreator.class ? null : instanceCreator;
-        this.getter = getter == NoopPropertyGetter.class ? null : getter;
-        this.setter = setter == NoopPropertySetter.class ? null : setter;
-        this.referenceType = referenceType;
-
-        // Native flag
-        this.native_ = native_;
-    }
-
-
-    // -------------------------------------------------- create nested context
-
-    public PropertyContext createNested(JType type, String path) throws UnableToCompleteException
-    {
-        String nestedValueVariable = getVariableNames().newVariableName("NestedValue");
-        String nestedInputVariable = getVariableNames().newVariableName("NestedInput");
-        VariableNames nestedVariableNames = new VariableNames(nestedValueVariable, getVariableNames().getInputType(),
-                nestedInputVariable, getVariableNames().getReaderType(), getVariableNames().getWriterType(),
-                getVariableNames().getRegistryType(), getVariableNames().getRegistryVariable(), getVariableNames()
-                        .getBuilderVariable());
-
-        TypeContext nestedTypeContext = getTypeContext().clone(nestedVariableNames);
-
-        PropertyContext nested = new PropertyContext(TypeContext.nextOrder(), nestedTypeContext, type, getName(), path,
-                getConverter(), getFormat(), getWhitespaceHandling(), instanceCreator, null, null, null, false, logger);
-        nested.setVariableNames(nestedVariableNames);
-        return nested;
     }
 
 
@@ -227,16 +175,7 @@ public class PropertyContext extends LogFacade
     public String toString()
     {
         StringBuilder builder = new StringBuilder().append("PropertyContext [")
-                .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name);
-        if (path != null)
-        {
-            builder.append(", path=\"").append(path).append("\"");
-        }
-        if (format != null)
-        {
-            builder.append(", format=\"").append(format).append("\"");
-        }
-        builder.append("]");
+                .append(type.getParameterizedQualifiedSourceName()).append(" ").append(name).append("]");
         return builder.toString();
     }
 
@@ -448,15 +387,57 @@ public class PropertyContext extends LogFacade
     }
 
 
-    public VariableNames getVariableNames()
+    public Variables getVariables()
     {
-        return variableNames;
+        return variables;
     }
 
 
-    void setVariableNames(VariableNames variableNames)
+    void setVariables(Variables variableNames)
     {
-        this.variableNames = variableNames;
+        this.variables = variableNames;
+    }
+
+
+    public boolean isAccessibleField()
+    {
+        return access[0];
+    }
+
+
+    public boolean isCallableGetter()
+    {
+        return access[1];
+    }
+
+
+    public boolean isCallableSetter()
+    {
+        return access[2];
+    }
+
+
+    public boolean hasParent()
+    {
+        return parent != null;
+    }
+
+
+    public boolean hasChild()
+    {
+        return child != null;
+    }
+
+
+    public String getTemplate()
+    {
+        return template;
+    }
+
+
+    public void setTemplate(String template)
+    {
+        this.template = template;
     }
 
     // ---------------------------------------------------------- inner classes
@@ -467,6 +448,218 @@ public class PropertyContext extends LogFacade
         public int compare(PropertyContext context1, PropertyContext context2)
         {
             return context1.order - context2.order;
+        }
+    }
+
+    /**
+     * Builder for {@link PropertyContext}.
+     * 
+     * @author upudxv4
+     */
+    public static class Builder
+    {
+        private final int order;
+        private final TypeContext typeContext;
+        private final JType type;
+        private final String name;
+        private String path;
+        private Class<? extends Converter<?>> converter;
+        private String format;
+        private WhitespaceHandling whitespaceHandling;
+        private Class<? extends InstanceCreator<?, ?>> instanceCreator;
+        private Class<? extends PropertyGetter<?, ?>> getter;
+        private Class<? extends PropertySetter<?, ?>> setter;
+        private ReferenceType referenceType;
+        private boolean native_;
+        private Variables variableNames;
+        private PropertyContext parent;
+
+
+        public Builder(int order, TypeContext typeContext, JType type, String name)
+        {
+            this.order = order;
+            this.typeContext = typeContext;
+            this.type = type;
+            this.name = name;
+        }
+
+
+        public Builder(PropertyContext parent, JType nestedType)
+        {
+            String nestedValue = parent.getVariables().newVariableName("NestedValue");
+            Variables nestedVariables = new Variables(nestedValue);
+            TypeContext nestedTypeContext = parent.getTypeContext().clone(nestedVariables);
+            this.order = TypeContext.nextOrder();
+            this.typeContext = nestedTypeContext;
+            this.type = nestedType;
+            this.name = parent.getName();
+            this.converter = parent.getConverter();
+            this.format = parent.format;
+            this.whitespaceHandling = parent.getWhitespaceHandling();
+            this.instanceCreator = parent.getInstanceCreator();
+            this.getter = parent.getGetter();
+            this.setter = parent.getSetter();
+            this.referenceType = parent.getReferenceType();
+            this.native_ = parent.isNative();
+            this.variableNames = nestedVariables;
+            this.parent = parent;
+        }
+
+
+        public Builder path(String path)
+        {
+            this.path = path;
+            return this;
+        }
+
+
+        public Builder converter(Class<? extends Converter<?>> converter)
+        {
+            this.converter = converter;
+            return this;
+        }
+
+
+        public Builder format(String format)
+        {
+            this.format = format;
+            return this;
+        }
+
+
+        public Builder whitespaceHandling(WhitespaceHandling whitespaceHandling)
+        {
+            this.whitespaceHandling = whitespaceHandling;
+            return this;
+        }
+
+
+        public Builder instanceCreator(Class<? extends InstanceCreator<?, ?>> instanceCreator)
+        {
+            this.instanceCreator = instanceCreator;
+            return this;
+        }
+
+
+        public Builder getter(Class<? extends PropertyGetter<?, ?>> getter)
+        {
+            this.getter = getter;
+            return this;
+        }
+
+
+        public Builder setter(Class<? extends PropertySetter<?, ?>> setter)
+        {
+            this.setter = setter;
+            return this;
+        }
+
+
+        public Builder referenceType(ReferenceType referenceType)
+        {
+            this.referenceType = referenceType;
+            return this;
+        }
+
+
+        public Builder native_(boolean native_)
+        {
+            this.native_ = native_;
+            return this;
+        }
+
+
+        public Builder variableNames(Variables variableNames)
+        {
+            this.variableNames = variableNames;
+            return this;
+        }
+
+
+        public PropertyContext build()
+        {
+            PropertyContext context = new PropertyContext(order, typeContext, type, name);
+            JPrimitiveType primitiveType = type.isPrimitive();
+            if (primitiveType != null)
+            {
+                // Use the boxed type for primitives
+                context.type = typeContext.getTypeOracle().findType(primitiveType.getQualifiedBoxedSourceName());
+                context.primitiveType = primitiveType;
+            }
+            if (path == null || path.length() == 0)
+            {
+                context.path = null;
+            }
+            else
+            {
+                context.path = path;
+            }
+            context.converter = converter == NoopConverter.class ? null : converter;
+            if (format == null || format.length() == 0)
+            {
+                context.format = null;
+            }
+            else
+            {
+                context.format = format;
+            }
+            context.whitespaceHandling = whitespaceHandling;
+            context.instanceCreator = instanceCreator == NoopInstanceCreator.class ? null : instanceCreator;
+            context.getter = getter == NoopPropertyGetter.class ? null : getter;
+            context.setter = setter == NoopPropertySetter.class ? null : setter;
+            context.referenceType = referenceType;
+            context.native_ = native_;
+            context.access = checkAccess(primitiveType != null ? primitiveType : type);
+            context.variables = variableNames;
+            if (parent != null)
+            {
+                context.parent = parent;
+                context.parent.child = context;
+            }
+            return context;
+        }
+
+
+        private boolean[] checkAccess(JType type)
+        {
+            boolean access[] = new boolean[] {false, false, false};
+            JField field = TypeUtils.findField(typeContext.getType(), name);
+            if (field != null)
+            {
+                // Index 0: field
+                JClassType enclosingType = field.getEnclosingType();
+                boolean samePackage = typeContext.getRwType().getPackage() == enclosingType.getPackage();
+                access[0] = !field.isFinal()
+                        && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected()));
+
+                // Index 1: getter
+                JMethod getter = null;
+                if (samePackage)
+                {
+                    getter = TypeUtils.findGetter(typeContext.getType(), name, type, Modifier.DEFAULT,
+                            Modifier.PROTECTED, Modifier.PUBLIC);
+                }
+                else
+                {
+                    getter = TypeUtils.findGetter(typeContext.getType(), name, type, Modifier.PUBLIC);
+                }
+                access[1] = getter != null;
+
+                // Index 2: setter
+                JMethod setter = null;
+                if (samePackage)
+                {
+                    setter = TypeUtils.findSetter(typeContext.getType(), name, type, Modifier.DEFAULT,
+                            Modifier.PROTECTED, Modifier.PUBLIC);
+                }
+                else
+                {
+                    setter = TypeUtils.findSetter(typeContext.getType(), name, type, Modifier.PUBLIC);
+                }
+                access[2] = setter != null;
+            }
+
+            return access;
         }
     }
 }

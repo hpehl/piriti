@@ -2,7 +2,7 @@
 #macro(logProperty)
 if (logger.isLoggable(FINE)) 
 {
-    logger.log(FINE, "Processing $propertyHandler.class.simpleNme: $propertyContext");
+    logger.log(FINE, "Processing ${propertyHandler.class.name}: $propertyContext");
 }
 #end
 
@@ -12,7 +12,6 @@ if (logger.isLoggable(FINE))
     $converter = GWT.create(${propertyContext.converter.name}.class);
     #if ($propertyContext.format) ${converter}.setFormat("$propertyContext.format"); #end
 #end
-
 
 
 ## Tries to get the default converter from the converter registry 
@@ -32,9 +31,9 @@ if (logger.isLoggable(FINE))
             }
             else
             {
-			    if (logger.isLoggable(ERROR)) 
+			    if (logger.isLoggable(SEVERE)) 
 			    {
-			        logger.log(ERROR, "No converter found for property $propertyContext.name with type $valueType in ${modelType}. There should be a default converter for that type! Did you deregister the default converter?");
+			        logger.log(SEVERE, "No converter found for property $propertyContext.name with type $valueType in ${modelType}. There should be a default converter for that type! Did you deregister the default converter?");
 			    }
             }
         }
@@ -66,9 +65,9 @@ if (logger.isLoggable(FINE))
         #elseif ($propertyContext.callableSetter) 
             model.${propertyContext.callableSetter.name}($value);
         #else
-            if (logger.isLoggable(ERROR)) 
+            if (logger.isLoggable(SEVERE)) 
             {
-                logger.log(ERROR, "No accessible field or setter found in $modelType for property $propertyContext.name during mapping. This should not happen at this point. Something went wrong in the initialization phase.");
+                logger.log(SEVERE, "No accessible field or setter found in $modelType for property $propertyContext.name during mapping. This should not happen at this point. Something went wrong in the initialization phase.");
             }
         #end
     #end

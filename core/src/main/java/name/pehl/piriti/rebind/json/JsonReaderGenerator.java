@@ -1,11 +1,10 @@
 package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.json.client.JsonReader;
-import name.pehl.piriti.rebind.AbstractCreator;
-import name.pehl.piriti.rebind.AbstractGenerator;
+import name.pehl.piriti.rebind.VelocityCreator;
+import name.pehl.piriti.rebind.VelocityGenerator;
 
 import com.google.gwt.core.ext.GeneratorContext;
-import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -15,7 +14,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 137 $
  */
-public class JsonReaderGenerator extends AbstractGenerator
+public class JsonReaderGenerator extends VelocityGenerator
 {
     /**
      * Creates a {@link JsonReaderCreator}.
@@ -23,7 +22,6 @@ public class JsonReaderGenerator extends AbstractGenerator
      * @param context
      * @param interfaceType
      * @param implName
-     * @param logger
      * @return {@link JsonReaderCreator}
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.AbstractGenerator#createCreator(com.google.gwt.core.ext.GeneratorContext,
@@ -31,9 +29,9 @@ public class JsonReaderGenerator extends AbstractGenerator
      *      com.google.gwt.core.ext.TreeLogger)
      */
     @Override
-    protected AbstractCreator createCreator(GeneratorContext context, JClassType interfaceType, String implName,
-            TreeLogger logger) throws UnableToCompleteException
+    protected VelocityCreator createCreator(GeneratorContext context, JClassType interfaceType, String implName)
+            throws UnableToCompleteException
     {
-        return new JsonReaderCreator(context, interfaceType, implName, JsonReader.class.getCanonicalName(), logger);
+        return new JsonReaderCreator(context, interfaceType, implName, JsonReader.class.getCanonicalName());
     }
 }

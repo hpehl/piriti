@@ -1,21 +1,9 @@
 package name.pehl.piriti.rebind.propertyhandler;
 
-import java.util.logging.Level;
-
-import name.pehl.piriti.rebind.CodeGeneration;
-import name.pehl.piriti.rebind.IndentedWriter;
-import name.pehl.piriti.rebind.LogFacade;
-import name.pehl.piriti.rebind.Modifier;
+import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.TypeUtils;
-import name.pehl.piriti.rebind.VariableNames;
 
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JType;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Abstract base class for {@linkplain PropertyHandler}s with default
@@ -24,608 +12,103 @@ import com.google.gwt.core.ext.typeinfo.JType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public abstract class AbstractPropertyHandler extends LogFacade implements PropertyHandler
+public abstract class AbstractPropertyHandler implements PropertyHandler
 {
-    // -------------------------------------------------------- private members
+    // -------------------------------------------------------------- constants
 
-    protected String converterVariable;
-    protected boolean rwPossible;
-    protected String readerVariable;
-    protected String writerVariable;
-
-
-    // ----------------------------------------------------------- constructors
-
-    public AbstractPropertyHandler(TreeLogger logger)
-    {
-        super(logger);
-    }
+    /**
+     * JSONPath special characters.
+     */
+    protected static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?',
+            '(', ')',};
 
 
     // ---------------------------------------------------- overwritten methods
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void log(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
+    public boolean isValid(PropertyContext propertyContext)
     {
-        CodeGeneration.log(writer, Level.FINE, "Processing %s: %s", getClass().getSimpleName(), propertyContext);
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void declare(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        // Value variable
-        writer.write("%s %s = null;", propertyContext.getType().getParameterizedQualifiedSourceName(), propertyContext
-                .getVariableNames().getValueVariable());
-
-        // Converter
-        declareConverter(writer, propertyContext);
-
-        // Reader / Writer
-        rwPossible = propertyContext.isClassOrInterface()
-                && !(TypeUtils.isJavaType(propertyContext.getType()) || TypeUtils.isGwtType(propertyContext.getType()))
-                && !(propertyContext.isArray() || TypeUtils.isCollection(propertyContext.getType()));
         if (propertyContext.getTypeContext().isReader())
         {
-            readerVariable = declareReaderWriter(writer, propertyContext, "Reader");
+            if (!(propertyContext.isAccessibleField() || propertyContext.isCallableGetter()))
+            {
+                skipProperty(propertyContext, "No accessible field or getter for \"" + propertyContext.getName()
+                        + "\" in " + propertyContext.getTypeContext());
+                return false;
+            }
         }
-        if (propertyContext.getTypeContext().isWriter())
+        else if (propertyContext.getTypeContext().isWriter())
         {
-            writerVariable = declareReaderWriter(writer, propertyContext, "Writer");
+            if (!(propertyContext.isAccessibleField() || propertyContext.isCallableSetter()))
+            {
+                skipProperty(propertyContext, "No accessible field or setter for \"" + propertyContext.getName()
+                        + "\" in " + propertyContext.getTypeContext());
+                return false;
+            }
+            if (propertyContext.getTypeContext().isJson() && isJsonPath(propertyContext.getPath()))
+            {
+                skipProperty(propertyContext, "The path \"" + propertyContext.getPath()
+                        + "\" is a JSONPath expressions which is not supported for writing");
+                return false;
+
+            }
+            // TODO Same for XML and XPath
         }
+        return true;
     }
 
 
-    protected void declareConverter(IndentedWriter writer, PropertyContext propertyContext)
-            throws UnableToCompleteException
-    {
-        converterVariable = propertyContext.getVariableNames().newVariableName("Converter");
-        writer.write("Converter<%s> %s = null;", propertyContext.getType().getQualifiedSourceName(), converterVariable);
-        if (propertyContext.isClassOrInterface())
-        {
-            String format = propertyContext.getFormat();
-            if (propertyContext.hasConverter())
-            {
-                // Create the specified custom converter
-                String converterClassname = propertyContext.getConverter().getName();
-                writer.write("%s = GWT.create(%s.class);", converterVariable, converterClassname);
-                if (format != null)
-                {
-                    writer.write("%s.setFormat(\"%s\");", converterVariable, format);
-                }
-            }
-            else
-            {
-                // Try to find a registered converter in the converter registry
-                if (format == null)
-                {
-                    writer.write("%s = converterRegistry.get(%s.class);", converterVariable, propertyContext.getType()
-                            .getQualifiedSourceName());
-                }
-                else
-                {
-                    writer.write("%s = converterRegistry.get(%s.class, \"%s\");", converterVariable, propertyContext
-                            .getType().getQualifiedSourceName(), format);
-                    writer.write("if (%s == null) {", converterVariable);
-                    writer.indent();
-                    // No converter with the specified format found in the
-                    // registry --> Use the default one, set the format and
-                    // register it against the registry
-                    writer.write("%s = converterRegistry.get(%s.class);", converterVariable, propertyContext.getType()
-                            .getQualifiedSourceName());
-                    writer.write("if (%s != null) {", converterVariable);
-                    writer.indent();
-                    writer.write("%s.setFormat(\"%s\");", converterVariable, format);
-                    writer.write("converterRegistry.register(%s.class, %s, \"%s\");", propertyContext.getType()
-                            .getQualifiedSourceName(), converterVariable, format);
-                    writer.outdent();
-                    writer.write("}");
-                    writer.outdent();
-                    writer.write("}");
-                }
-            }
-        }
-    }
-
-
-    protected String declareReaderWriter(IndentedWriter writer, PropertyContext propertyContext, String rw)
-    {
-        String rwType = "Reader".equals(rw) ? propertyContext.getVariableNames().getReaderType() : propertyContext
-                .getVariableNames().getWriterType();
-        String rwVariable = propertyContext.getVariableNames().newVariableName(rw);
-        writer.write("%s<%s> %s = null;", rwType, propertyContext.getType().getParameterizedQualifiedSourceName(),
-                rwVariable);
-        if (rwPossible)
-        {
-            writer.write("%s = %s.get%s(%s.class);", rwVariable, propertyContext.getVariableNames()
-                    .getRegistryVariable(), rw, propertyContext.getType().getQualifiedSourceName());
-            if (propertyContext.hasInstanceCreator() && propertyContext.getTypeContext().isReader())
-            {
-                // If no reader was found try to use a configured instance
-                // creator
-                writer.write("if (%s == null) {", rwVariable);
-                writer.indent();
-                String instanceCreatorVariable = propertyContext.getVariableNames().newVariableName("InstanceCreator");
-                String dummyInstanceVariable = propertyContext.getVariableNames().newVariableName("DummyInstance");
-                writer.write("%1$s %2$s = GWT.create(%1$s.class);", propertyContext.getInstanceCreator().getName(),
-                        instanceCreatorVariable);
-                writer.write("%s %s = %s.newInstance(%s);", propertyContext.getType()
-                        .getParameterizedQualifiedSourceName(), dummyInstanceVariable, instanceCreatorVariable,
-                        propertyContext.getVariableNames().getInputVariable());
-                writer.write("%s = (%s<%s>) %s.get%s(%s.getClass());", rwVariable, rwType, propertyContext.getType()
-                        .getParameterizedQualifiedSourceName(), propertyContext.getVariableNames()
-                        .getRegistryVariable(), rw, dummyInstanceVariable);
-                writer.outdent();
-                writer.write("}");
-            }
-        }
-        return rwVariable;
-    }
-
-
-    // ---------------------------------------------------------- read property
-
-    /**
-     * If the native flag is set,
-     * {@link #readInputNatively(IndentedWriter, PropertyContext)} is called.
-     * Otherwise if a reader was registered
-     * {@link #readInputUsingReader(IndentedWriter, PropertyContext)} is called.
-     * If no reader was found, the input is read as string by calling
-     * {@link #readInputAsString(IndentedWriter, PropertyContext)} and
-     * optionally converted by calling
-     * {@link #useConverterForReading(IndentedWriter, PropertyContext)}. If the
-     * input cannot be read as string
-     * {@link #readInputDirectly(IndentedWriter, PropertyContext)} is called.
-     * 
-     * @param writer
-     * @param propertyContext
-     * @param propertyHandlerLookup
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#readInput(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry)
-     */
     @Override
-    public void readInput(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
+    public void setTemplate(PropertyContext propertyContext)
     {
-        if (propertyContext.isNative())
+        StringBuilder template = basePath(propertyContext);
+        template.append(getClass().getSimpleName()).append(".vm");
+        propertyContext.setTemplate(template.toString());
+    }
+
+
+    protected StringBuilder basePath(PropertyContext propertyContext)
+    {
+        StringBuilder basePath = new StringBuilder();
+        basePath.append(getClass().getPackage().getName().replace('.', '/'));
+        if (propertyContext.getTypeContext().isJson())
         {
-            readInputNatively(writer, propertyContext);
+            basePath.append("/json/");
         }
-        else
+        else if (propertyContext.getTypeContext().isXml())
         {
-            if (rwPossible)
-            {
-                writer.write("if (%s != null) {", readerVariable);
-                writer.indent();
-                readInputUsingReader(writer, propertyContext);
-                writer.outdent();
-                writer.write("} else {");
-                writer.indent();
-            }
-            readInputAsString(writer, propertyContext);
-            writer.write("if (%s != null && %s != null) {", propertyContext.getVariableNames()
-                    .getValueAsStringVariable(), converterVariable);
-            writer.indent();
-            useConverterForReading(writer, propertyContext);
-            writer.outdent();
-            writer.write("} else {");
-            writer.indent();
-            readInputDirectly(writer, propertyContext);
-            writer.outdent();
-            writer.write("}");
-            if (rwPossible)
-            {
-                writer.outdent();
-                writer.write("}");
-            }
+            basePath.append("/xml/");
         }
-    }
-
-
-    /**
-     * Responsible to assign the property to the native JSON / XML instance in
-     * case the property was marked with {@code @}Native.
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void readInputNatively(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    /**
-     * Responsible to read the JSON / XML using a registered reader.
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void readInputUsingReader(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    /**
-     * Responsible to read the property as string and assigning it to
-     * {@link PropertyContext#getValueAsStringVariable()}.
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void readInputAsString(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    /**
-     * Generates code to convert
-     * {@link VariableNames#getValueAsStringVariable()} using a specified or
-     * registered converter into {@link VariableNames#getValueVariable()}
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void useConverterForReading(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writer.write("%s = %s.convert(%s);", propertyContext.getVariableNames().getValueVariable(), converterVariable,
-                propertyContext.getVariableNames().getValueAsStringVariable());
-    }
-
-
-    /**
-     * Responsible to read the property direclty from the input without
-     * conversion.
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void readInputDirectly(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    // ----------------------------------------------------------------- assign
-
-    /**
-     * {@inheritDoc}
-     * <p>
-     * The assignement is only done if
-     * {@link PropertyContext#getValueVariable()} is not null.
-     */
-    @Override
-    public void assign(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        writer.write("if (%s != null) {", propertyContext.getVariableNames().getValueVariable());
-        writer.indent();
-        if (propertyContext.getSetter() == null)
+        if (propertyContext.getTypeContext().isReader())
         {
-            assignFieldOrSetter(writer, propertyContext);
+            basePath.append("/reader/");
         }
-        else
+        else if (propertyContext.getTypeContext().isWriter())
         {
-            writer.write("%1$s setter = GWT.create(%1$s.class);", propertyContext.getSetter().getName());
-            writer.write("setter.set(model, %s);", propertyContext.getVariableNames().getValueVariable());
+            basePath.append("/writer/");
         }
-        writer.outdent();
-        writer.write("}");
-    }
-
-
-    protected void assignFieldOrSetter(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        JField field = TypeUtils.findField(propertyContext.getTypeContext().getType(), propertyContext.getName());
-        if (field == null)
-        {
-            String reason = String.format("Cannot assign %s: No field found in %s.", propertyContext.getName(),
-                    propertyContext.getTypeContext().getType().getQualifiedSourceName());
-            skipProperty(writer, propertyContext, reason);
-        }
-
-        JClassType enclosingType = field.getEnclosingType();
-        boolean samePackage = propertyContext.getTypeContext().getRwType().getPackage() == enclosingType.getPackage();
-        if (!field.isFinal() && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
-        {
-            writer.write("model.%s = %s;", propertyContext.getName(), propertyContext.getVariableNames()
-                    .getValueVariable());
-        }
-        else
-        {
-            JMethod setter = null;
-            JType parameter = propertyContext.isPrimitive() ? propertyContext.getPrimitiveType() : propertyContext
-                    .getType();
-            if (samePackage)
-            {
-                setter = TypeUtils.findSetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        parameter, Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
-            }
-            else
-            {
-                setter = TypeUtils.findSetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        parameter, Modifier.PUBLIC);
-            }
-            if (setter != null)
-            {
-                writer.write("model.%s(%s);", setter.getName(), propertyContext.getVariableNames().getValueVariable());
-            }
-            else
-            {
-                String reason = String.format("Cannot assign %s: No accessible field or setter found in %s.",
-                        propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
-                skipProperty(writer, propertyContext, reason);
-            }
-        }
-    }
-
-
-    // ------------------------------------------------- methods used in writer
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void readProperty(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-        if (propertyContext.getGetter() == null)
-        {
-            readFieldOrGetter(writer, propertyContext);
-        }
-        else
-        {
-            writer.write("%1$s getter = GWT.create(%1$s.class);", propertyContext.getGetter().getName());
-            writer.write("%s = getter.get(model);", propertyContext.getVariableNames().getValueVariable());
-        }
-    }
-
-
-    protected void readFieldOrGetter(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        JField field = TypeUtils.findField(propertyContext.getTypeContext().getType(), propertyContext.getName());
-        if (field == null)
-        {
-            String reason = String.format("Cannot read %s: No accessible field found in %s.",
-                    propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
-            skipProperty(writer, propertyContext, reason);
-        }
-
-        JClassType enclosingType = field.getEnclosingType();
-        boolean samePackage = propertyContext.getTypeContext().getRwType().getPackage() == enclosingType.getPackage();
-        if (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected()))
-        {
-            writer.write("%s = model.%s;", propertyContext.getVariableNames().getValueVariable(),
-                    propertyContext.getName());
-        }
-        else
-        {
-            JMethod getter = null;
-            JType returnType = propertyContext.isPrimitive() ? propertyContext.getPrimitiveType() : propertyContext
-                    .getType();
-            if (samePackage)
-            {
-                getter = TypeUtils.findGetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        returnType, Modifier.DEFAULT, Modifier.PROTECTED, Modifier.PUBLIC);
-            }
-            else
-            {
-                getter = TypeUtils.findGetter(propertyContext.getTypeContext().getType(), propertyContext.getName(),
-                        returnType, Modifier.PUBLIC);
-            }
-            if (getter != null)
-            {
-                writer.write("%s = model.%s();", propertyContext.getVariableNames().getValueVariable(),
-                        getter.getName());
-            }
-            else
-            {
-                String reason = String.format("Cannot read %s: No accessible field or setter found in %s.",
-                        propertyContext.getName(), propertyContext.getTypeContext().getType().getQualifiedSourceName());
-                skipProperty(writer, propertyContext, reason);
-            }
-        }
-    }
-
-
-    /**
-     * Empty implementation
-     * 
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupStart(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
-    @Override
-    public void markupStart(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
-    }
-
-
-    /**
-     * If conversion is supported a custom or registered converter is used to
-     * convert the property to string.
-     * <p>
-     * If conversion is not supported {@link String#valueOf(Object))} is used.
-     * 
-     * @param writer
-     * @param propertyContext
-     * @param propertyHandlerLookup
-     * @throws UnableToCompleteException
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#writeValue(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext,
-     *      name.pehl.piriti.rebind.propertyhandler.PropertyHandlerRegistry)
-     */
-    @Override
-    public void writeValue(IndentedWriter writer, PropertyContext propertyContext,
-            PropertyHandlerLookup propertyHandlerLookup) throws UnableToCompleteException
-    {
-        if (propertyContext.isNative())
-        {
-            writeValueNatively(writer, propertyContext);
-        }
-        else
-        {
-            writer.write("if (%s != null) {", writerVariable);
-            writer.indent();
-            writeValueUsingWriter(writer, propertyContext);
-            writer.outdent();
-            writer.write("} else {");
-            writer.indent();
-            if (shouldUseConverterForWriting(propertyContext))
-            {
-                writer.write("if (%s != null) {", converterVariable);
-                writer.indent();
-                useConverterForWriting(writer, propertyContext);
-                writeValueAsString(writer, propertyContext);
-                writer.outdent();
-                writer.write("} else {");
-                writer.indent();
-            }
-            if (propertyContext.getType().isPrimitive() == null)
-            {
-                // if null, append default value
-                writer.write("if (%s == null) {", propertyContext.getVariableNames().getValueVariable());
-                writer.indent();
-                writer.write("%s.append(\"%s\");", propertyContext.getVariableNames().getBuilderVariable(),
-                        defaultValue());
-                writer.outdent();
-                writer.write("} else {");
-                writer.indent();
-                writeValueDirectly(writer, propertyContext);
-                writer.outdent();
-                writer.write("}");
-            }
-            else
-            {
-                writeValueDirectly(writer, propertyContext);
-            }
-            if (shouldUseConverterForWriting(propertyContext))
-            {
-                writer.outdent();
-                writer.write("}");
-            }
-            writer.outdent();
-            writer.write("}");
-        }
-    }
-
-
-    protected boolean shouldUseConverterForWriting(PropertyContext propertyContext)
-    {
-        return propertyContext.hasConverter() || propertyContext.getFormat() != null;
-    }
-
-
-    /**
-     * Responsible to write the property nativley in case the property was
-     * marked with {@code @}Native.
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void writeValueNatively(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    /**
-     * Responsible to write the JSON / XML using a registered writer.
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void writeValueUsingWriter(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    /**
-     * Generates code to serialize {@link VariableNames#getValueVariable()} to
-     * {@link VariableNames#getValueAsStringVariable()} using a specified or
-     * registered converter
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void useConverterForWriting(IndentedWriter writer, PropertyContext propertyContext)
-    {
-        writer.write("%s = %s.serialize(%s);", propertyContext.getVariableNames().getValueAsStringVariable(),
-                converterVariable, propertyContext.getVariableNames().getValueVariable());
-    }
-
-
-    /**
-     * Responsible to write the property as string.
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void writeValueAsString(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    /**
-     * Responsible to write the property directly (i.e. as the properties type).
-     * <p>
-     * Empty implementation
-     * 
-     * @param writer
-     * @param propertyContext
-     */
-    protected void writeValueDirectly(IndentedWriter writer, PropertyContext propertyContext)
-    {
-    }
-
-
-    protected String defaultValue()
-    {
-        return "null";
-    }
-
-
-    /**
-     * Empty implementation
-     * 
-     * @see name.pehl.piriti.rebind.propertyhandler.PropertyHandler#markupEnd(name.pehl.piriti.rebind.IndentedWriter,
-     *      name.pehl.piriti.rebind.PropertyContext)
-     */
-    @Override
-    public void markupEnd(IndentedWriter writer, PropertyContext propertyContext) throws UnableToCompleteException
-    {
+        return basePath;
     }
 
 
     // --------------------------------------------------------- helper methods
 
     /**
-     * Generates code comments if a property was skipped (contains the reason
-     * why the field was skipped)
+     * Return <code>true</code> if the path contains {@link #JSON_PATH_SYMBOLS},
+     * <code>false</code> otherwise.
      * 
-     * @param writer
-     * @param propertyContext
-     * @param reason
+     * @param path
+     * @return <code>true</code> if the path contains {@link #JSON_PATH_SYMBOLS}
+     *         , <code>false</code> otherwise.
      */
-    protected void skipProperty(IndentedWriter writer, PropertyContext propertyContext, String reason)
+    protected boolean isJsonPath(String path)
     {
-        warn("Skipping property %s. Reason: %s.", propertyContext, reason);
-        CodeGeneration.log(writer, Level.WARNING, "Skipping property %s. Reason: %s.", propertyContext, reason);
+        return StringUtils.containsAny(path, JSON_PATH_SYMBOLS);
+    }
+
+
+    protected void skipProperty(PropertyContext propertyContext, String reason)
+    {
+        Logger.get().warn("Skipping property %s. Reason: %s.", propertyContext, reason);
     }
 }

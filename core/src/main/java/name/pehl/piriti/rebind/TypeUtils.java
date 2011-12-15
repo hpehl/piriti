@@ -31,6 +31,15 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public final class TypeUtils
 {
+    protected static Map<String, String> interfaceToImplementation = new HashMap<String, String>();
+    static
+    {
+        interfaceToImplementation.put(Collection.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
+        interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
+        interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
+    }
+
 
     /**
      * Private constructor to ensure that the class acts as a true utility class
@@ -38,6 +47,18 @@ public final class TypeUtils
      */
     private TypeUtils()
     {
+    }
+
+
+    public static String collectionImplementationFor(String classname)
+    {
+        String impl = interfaceToImplementation.get(classname);
+        if (impl != null)
+        {
+            return impl;
+        }
+        // It's assumed that classname is already an implementation!
+        return classname;
     }
 
 

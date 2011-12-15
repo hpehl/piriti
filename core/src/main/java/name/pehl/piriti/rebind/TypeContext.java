@@ -12,13 +12,12 @@ import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.MapUpTo;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
+import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
-import com.google.gwt.core.ext.TreeLogger;
-import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.NotFoundException;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
@@ -28,7 +27,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class TypeContext extends LogFacade
+public class TypeContext
 {
     // -------------------------------------------------------------- constants
 
@@ -36,15 +35,16 @@ public class TypeContext extends LogFacade
 
     // -------------------------------------------------------- private members
 
+    private final PropertyHandlerLookup propertyHandlerLookup;
     private final TypeOracle typeOracle;
     private final JClassType type;
     private final JClassType rwType;
     private Class<? extends InstanceCreator<?, ?>> instanceCreator;
     private JClassType stopAt;
-    private final Map<String, PropertyContext> properties;
     private PropertyContext id;
+    private final Map<String, PropertyContext> properties;
     private final Map<String, PropertyContext> references;
-    private VariableNames variableNames;
+    private Variables variables;
 
 
     // ----------------------------------------------------------- constructors
@@ -58,63 +58,57 @@ public class TypeContext extends LogFacade
      *            The type of the class
      * @param rwType
      *            The type of the reader or writer interface
-     * @param logger
-     * @throws UnableToCompleteException
      */
-    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType, VariableNames variableNames,
-            TreeLogger logger) throws UnableToCompleteException
-    {
-        super(logger);
+    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType, Variables variables)
 
+    {
+        this.propertyHandlerLookup = new PropertyHandlerLookup();
         this.typeOracle = typeOracle;
         this.type = type;
         this.rwType = rwType;
 
-        this.variableNames = variableNames;
+        this.variables = variables;
         this.references = new HashMap<String, PropertyContext>();
         this.properties = new HashMap<String, PropertyContext>();
 
         // For instanceCreator and stopAt evaluate
         // 1. the type and
         // 2. the rwType
-        try
+        this.instanceCreator = null;
+        if (this.type.isAnnotationPresent(CreateWith.class))
         {
-            this.instanceCreator = null;
-            if (this.type.isAnnotationPresent(CreateWith.class))
-            {
-                this.instanceCreator = this.type.getAnnotation(CreateWith.class).value();
-            }
-            if (this.rwType.isAnnotationPresent(CreateWith.class))
-            {
-                this.instanceCreator = this.rwType.getAnnotation(CreateWith.class).value();
-            }
-
-            this.stopAt = null;
-            if (this.type.isAnnotationPresent(MapUpTo.class))
-            {
-                this.stopAt = this.typeOracle.getType(this.type.getAnnotation(MapUpTo.class).value().getName())
-                        .getSuperclass();
-            }
-            if (this.rwType.isAnnotationPresent(MapUpTo.class))
-            {
-                this.stopAt = this.typeOracle.getType(this.rwType.getAnnotation(MapUpTo.class).value().getName())
-                        .getSuperclass();
-            }
-            if (this.stopAt == null)
-            {
-                this.stopAt = this.typeOracle.getType(Object.class.getName());
-            }
+            this.instanceCreator = this.type.getAnnotation(CreateWith.class).value();
         }
-        catch (NotFoundException e)
+        if (this.rwType.isAnnotationPresent(CreateWith.class))
         {
-            die("Cannot find type: " + e.getMessage());
+            this.instanceCreator = this.rwType.getAnnotation(CreateWith.class).value();
+        }
+
+        this.stopAt = null;
+        if (this.type.isAnnotationPresent(MapUpTo.class))
+        {
+            this.stopAt = this.typeOracle.findType(this.type.getAnnotation(MapUpTo.class).value().getName())
+                    .getSuperclass();
+        }
+        if (this.rwType.isAnnotationPresent(MapUpTo.class))
+        {
+            this.stopAt = this.typeOracle.findType(this.rwType.getAnnotation(MapUpTo.class).value().getName())
+                    .getSuperclass();
+        }
+        if (this.stopAt == null)
+        {
+            this.stopAt = this.typeOracle.findType(Object.class.getName());
+        }
+        if (stopAt == null)
+        {
+            throw new AssertionError("Type info for java.lang.Object not found!");
         }
     }
 
 
-    public TypeContext clone(VariableNames variableNames) throws UnableToCompleteException
+    public TypeContext clone(Variables variableNames)
     {
-        return new TypeContext(this.typeOracle, this.type, this.rwType, variableNames, logger);
+        return new TypeContext(this.typeOracle, this.type, this.rwType, variableNames);
     }
 
 
@@ -136,6 +130,21 @@ public class TypeContext extends LogFacade
 
     // -------------------------------------- methods related to the class type
 
+    public boolean isJson()
+    {
+        Set<? extends JClassType> hierarchy = rwType.getFlattenedSupertypeHierarchy();
+        for (JClassType type : hierarchy)
+        {
+            if (JsonReader.class.getName().equals(type.getQualifiedSourceName())
+                    || JsonWriter.class.getName().equals(type.getQualifiedSourceName()))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public boolean isXml()
     {
         Set<? extends JClassType> hierarchy = rwType.getFlattenedSupertypeHierarchy();
@@ -155,20 +164,36 @@ public class TypeContext extends LogFacade
 
     public void addProperty(PropertyContext propertyContext)
     {
-        properties.put(propertyContext.getName(), propertyContext);
-        variableNames = variableNames.next();
-        propertyContext.setVariableNames(variableNames);
+        PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+        if (propertyHandler != null && propertyHandler.isValid(propertyContext))
+        {
+            properties.put(propertyContext.getName(), propertyContext);
+            variables = variables.next();
+            propertyContext.setVariables(variables);
+        }
+        else
+        {
+            Logger.get().warn("No property handler found or invalid property: %s", propertyContext);
+        }
     }
 
 
     public void addReference(PropertyContext propertyContext)
     {
-        references.put(propertyContext.getName(), propertyContext);
-        variableNames = variableNames.next();
-        propertyContext.setVariableNames(variableNames);
+        PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+        if (propertyHandler != null && propertyHandler.isValid(propertyContext))
+        {
+            references.put(propertyContext.getName(), propertyContext);
+            variables = variables.next();
+            propertyContext.setVariables(variables);
 
-        // Prevent duplicate processing
-        removeProperty(propertyContext);
+            // Prevent duplicate processing
+            removeProperty(propertyContext);
+        }
+        else
+        {
+            Logger.get().warn("No property handler found or invalid property: %s", propertyContext);
+        }
     }
 
 
@@ -263,9 +288,9 @@ public class TypeContext extends LogFacade
     }
 
 
-    public VariableNames getVariableNames()
+    public Variables getVariables()
     {
-        return variableNames;
+        return variables;
     }
 
 
@@ -277,12 +302,16 @@ public class TypeContext extends LogFacade
 
     public void setId(PropertyContext propertyContext)
     {
-        this.id = propertyContext;
-        variableNames = variableNames.next();
-        this.id.setVariableNames(variableNames);
+        PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
+        if (propertyHandler != null && propertyHandler.isValid(propertyContext))
+        {
+            this.id = propertyContext;
+            variables = variables.next();
+            this.id.setVariables(variables);
 
-        // Prevent duplicate processing
-        removeProperty(propertyContext);
+            // Prevent duplicate processing
+            removeProperty(propertyContext);
+        }
     }
 
 

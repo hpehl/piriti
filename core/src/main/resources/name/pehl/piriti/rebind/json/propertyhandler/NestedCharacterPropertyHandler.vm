@@ -1,0 +1,27 @@
+#set($valueType = $propertyContext.type.qualifiedSourceName)
+#set($value = $propertyContext.variableNames.valueVariable)
+#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+
+#logProperty()
+Character $value = null;
+JSONString jsonString = nestedJsonValue.isString();
+if (jsonString != null)
+{
+    String stringValue = nestedJsonValue.stringValue();
+    if (stringValue != null)
+    {
+		Converter<Character> $converter = null;
+		#if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
+        if ($converter != null)
+        {
+            $value = ${converter}.convert(stringValue);
+        }
+        else
+        {
+            if (stringValue.length() != 0)
+            {
+                $value = stringValue.charAt(0);
+            }
+        }
+    }
+}

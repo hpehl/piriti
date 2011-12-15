@@ -1,0 +1,60 @@
+#set($valueType = $propertyContext.type.qualifiedSourceName)
+#set($value = $propertyContext.variableNames.valueVariable)
+#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
+#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+
+#logProperty()
+$valueType $value = null;
+JSONValue $jsonValue = null;
+
+#getOrSelectJsonValue()
+if ($jsonValue != null)
+{
+    if (${jsonValue}.isNull() == null) 
+    {
+        JSONNumber jsonNumber = ${jsonValue}.isNumber();
+        if (jsonNumber != null)
+        {
+            Double doubleValue = new Double(jsonNumber.doubleValue());
+            #if($TypeUtils.isByte($propertyContext.type))
+                $value = doubleValue.byteValue();
+            #elseif($TypeUtils.isShort($propertyContext.type))
+                $value = doubleValue.shortValue();
+            #elseif($TypeUtils.isInteger($propertyContext.type))
+                $value = doubleValue.intValue();
+            #elseif($TypeUtils.isLong($propertyContext.type))
+                $value = doubleValue.longValue();
+            #elseif($TypeUtils.isFloat($propertyContext.type))
+                $value = doubleValue.floatValue();
+            #elseif($TypeUtils.isDouble($propertyContext.type))
+                $value = doubleValue;
+            #else
+	            if (logger.isLoggable(SEVERE)) 
+	            {
+	                logger.log(SEVERE, "$valueType is no valid numeric type for the property $propertyContext.name in ${modelType}. Property will be skipped.");
+	            }
+            #end
+        }
+        else
+        {
+	        JSONString jsonString = ${jsonValue}.isString();
+	        if (jsonString != null)
+	        {
+	            String stringValue = jsonString.stringValue();
+	            if (stringValue != null)
+	            {
+		            Converter<$valueType> $converter = null;
+		            #if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
+		            if ($converter != null)
+		            {
+		                $value = ${converter}.convert(stringValue);
+		            }
+	            }
+	        }
+        }
+    }
+	if ($value != null) 
+    {
+        #assignValue()
+	}
+}

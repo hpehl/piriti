@@ -1,11 +1,10 @@
 package name.pehl.piriti.rebind.xml;
 
-import name.pehl.piriti.rebind.AbstractCreator;
-import name.pehl.piriti.rebind.AbstractGenerator;
+import name.pehl.piriti.rebind.VelocityCreator;
+import name.pehl.piriti.rebind.VelocityGenerator;
 import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.ext.GeneratorContext;
-import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -15,7 +14,7 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */
-public class XmlReaderGenerator extends AbstractGenerator
+public class XmlReaderGenerator extends VelocityGenerator
 {
     /**
      * Creates a {@link XmlReaderCreator}.
@@ -23,7 +22,6 @@ public class XmlReaderGenerator extends AbstractGenerator
      * @param context
      * @param interfaceType
      * @param implName
-     * @param logger
      * @return {@link XmlReaderCreator}
      * @throws UnableToCompleteException
      * @see name.pehl.piriti.rebind.AbstractGenerator#createCreator(com.google.gwt.core.ext.GeneratorContext,
@@ -31,9 +29,9 @@ public class XmlReaderGenerator extends AbstractGenerator
      *      com.google.gwt.core.ext.TreeLogger)
      */
     @Override
-    protected AbstractCreator createCreator(GeneratorContext context, JClassType interfaceType, String implName,
-            TreeLogger logger) throws UnableToCompleteException
+    protected VelocityCreator createCreator(GeneratorContext context, JClassType interfaceType, String implName)
+            throws UnableToCompleteException
     {
-        return new XmlReaderCreator(context, interfaceType, implName, XmlReader.class.getCanonicalName(), logger);
+        return new XmlReaderCreator(context, interfaceType, implName, XmlReader.class.getCanonicalName());
     }
 }

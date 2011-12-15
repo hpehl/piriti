@@ -30,26 +30,19 @@ import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.property.client.Setter;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
-import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 public class PojoTypeProcessor extends AbstractTypeProcessor
 {
-    public PojoTypeProcessor(TreeLogger logger)
-    {
-        super(logger);
-    }
-
-
     @Override
     @SuppressWarnings("unchecked")
     protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes)
             throws UnableToCompleteException
     {
         // normal mappings
-        debug("Collect normal mappings...");
+        Logger.get().debug("Collect normal mappings...");
         List<JField> fields = new ArrayList<JField>();
         collectFields(typeContext.getType(), fields, Collections.<Class<? extends Annotation>> emptySet(),
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class, IdRef.class)));
@@ -58,14 +51,14 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             PropertyContext propertyContext = createPropertyContext(typeContext, field, null);
             if (propertyContext != null)
             {
-                debug("Adding property %s to %s", propertyContext, typeContext);
+                Logger.get().debug("Adding property %s to %s", propertyContext, typeContext);
                 typeContext.addProperty(propertyContext);
             }
         }
-        debug("Normal mappings done");
+        Logger.get().debug("Normal mappings done");
 
         // id
-        debug("Looking for id...");
+        Logger.get().debug("Looking for id...");
         List<JField> idFields = new ArrayList<JField>();
         collectFields(typeContext.getType(), idFields, new HashSet<Class<? extends Annotation>>(asList(Id.class)),
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, IdRef.class)));
@@ -73,7 +66,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         {
             if (idFields.size() > 1)
             {
-                die("%s id mappings defined in the type hirarchy of %s. Only one id mapping is allowed!",
+                Logger.get().die("%s id mappings defined in the type hirarchy of %s. Only one id mapping is allowed!",
                         idFields.size(), typeContext.getType().getParameterizedQualifiedSourceName());
             }
             else
@@ -81,15 +74,15 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 PropertyContext propertyContext = createPropertyContext(typeContext, idFields.get(0), ID);
                 if (propertyContext != null)
                 {
-                    debug("Settings id %s for %s", propertyContext, typeContext);
+                    Logger.get().debug("Settings id %s for %s", propertyContext, typeContext);
                     typeContext.setId(propertyContext);
                 }
             }
         }
-        debug("Id done");
+        Logger.get().debug("Id done");
 
         // idref
-        debug("Collect reference mappings...");
+        Logger.get().debug("Collect reference mappings...");
         List<JField> idRefFields = new ArrayList<JField>();
         collectFields(typeContext.getType(), idRefFields,
                 new HashSet<Class<? extends Annotation>>(asList(IdRef.class)),
@@ -99,11 +92,11 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             PropertyContext propertyContext = createPropertyContext(typeContext, field, IDREF);
             if (propertyContext != null)
             {
-                debug("Adding reference %s to %s", propertyContext, typeContext);
+                Logger.get().debug("Adding reference %s to %s", propertyContext, typeContext);
                 typeContext.addReference(propertyContext);
             }
         }
-        debug("Reference mappings done");
+        Logger.get().debug("Reference mappings done");
     }
 
 
@@ -148,16 +141,16 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     {
         if (field.isTransient() || field.isStatic())
         {
-            debug("Skipping %s field %s in %s", (field.isTransient() ? "transient" : "static"), field.getName(), field
-                    .getEnclosingType().getParameterizedQualifiedSourceName());
+            Logger.get().debug("Skipping %s field %s in %s", (field.isTransient() ? "transient" : "static"),
+                    field.getName(), field.getEnclosingType().getParameterizedQualifiedSourceName());
             return true;
         }
         for (Class<? extends Annotation> a : annotationsToSkip)
         {
             if (field.isAnnotationPresent(a))
             {
-                debug("Skipping field %s in %s as it is annotated with @%s", field.getName(), field.getEnclosingType()
-                        .getParameterizedQualifiedSourceName(), a.getClass().getName());
+                Logger.get().debug("Skipping field %s in %s as it is annotated with @%s", field.getName(),
+                        field.getEnclosingType().getParameterizedQualifiedSourceName(), a.getClass().getName());
                 return true;
             }
         }
@@ -178,15 +171,16 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 return true;
             }
         }
-        debug("Skipping field %s in %s as it is not annotated with any of %s", field.getName(), field
-                .getEnclosingType().getParameterizedQualifiedSourceName(), mustHaveAnnotations);
+        Logger.get().debug("Skipping field %s in %s as it is not annotated with any of %s", field.getName(),
+                field.getEnclosingType().getParameterizedQualifiedSourceName(), mustHaveAnnotations);
         return false;
     }
 
 
     protected PropertyContext createPropertyContext(TypeContext typeContext, JField field, ReferenceType referenceType)
-            throws UnableToCompleteException
     {
+        PropertyContext propertyContext = null;
+
         int order = getOrder(field);
         String path = getPath(field);
         Class<? extends Converter<?>> converter = getConverter(field);
@@ -196,9 +190,11 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
         Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
         boolean native_ = getNative(field);
-        PropertyContext propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(),
-                path, converter, format, whitespaceHandling, instanceCreator, getter, setter, referenceType, native_,
-                logger);
+
+        propertyContext = new PropertyContext.Builder(order, typeContext, field.getType(), field.getName()).path(path)
+                .converter(converter).format(format).whitespaceHandling(whitespaceHandling)
+                .instanceCreator(instanceCreator).getter(getter).setter(setter).referenceType(referenceType)
+                .native_(native_).build();
         return propertyContext;
     }
 

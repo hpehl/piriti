@@ -13,19 +13,12 @@ import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
-import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
 
 public class RwTypeProcessor extends AbstractTypeProcessor
 {
-    public RwTypeProcessor(TreeLogger logger)
-    {
-        super(logger);
-    }
-
-
     @Override
     protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes)
             throws UnableToCompleteException
@@ -33,7 +26,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         JClassType rwType = typeContext.getRwType();
         if (rwType.isAnnotationPresent(Mappings.class))
         {
-            debug("Collect normal mappings...");
+            Logger.get().debug("Collect normal mappings...");
             int index = 0;
             Mappings mappingsAnno = rwType.getAnnotation(Mappings.class);
             Mapping[] mappings = mappingsAnno.value();
@@ -42,13 +35,13 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                 PropertyContext propertyContext = createPropertyContext(index++, typeContext, mapping, null);
                 if (propertyContext != null)
                 {
-                    debug("Adding property %s to %s", propertyContext, typeContext);
+                    Logger.get().debug("Adding property %s to %s", propertyContext, typeContext);
                     typeContext.addProperty(propertyContext);
                 }
             }
-            debug("Normal mappings done");
+            Logger.get().debug("Normal mappings done");
 
-            debug("Looking for id...");
+            Logger.get().debug("Looking for id...");
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
@@ -56,13 +49,13 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                         idMapping, ID);
                 if (propertyContext != null)
                 {
-                    debug("Settings id %s for %s", propertyContext, typeContext);
+                    Logger.get().debug("Settings id %s for %s", propertyContext, typeContext);
                     typeContext.setId(propertyContext);
                 }
             }
-            debug("Id done");
+            Logger.get().debug("Id done");
 
-            debug("Collect reference mappings...");
+            Logger.get().debug("Collect reference mappings...");
             Mapping[] idRefMappings = mappingsAnno.references();
             for (Mapping idRefMapping : idRefMappings)
             {
@@ -70,11 +63,11 @@ public class RwTypeProcessor extends AbstractTypeProcessor
                         idRefMapping, IDREF);
                 if (propertyContext != null)
                 {
-                    debug("Adding reference %s to %s", propertyContext, typeContext);
+                    Logger.get().debug("Adding reference %s to %s", propertyContext, typeContext);
                     typeContext.addReference(propertyContext);
                 }
             }
-            debug("Reference mappings done");
+            Logger.get().debug("Reference mappings done");
         }
     }
 
@@ -94,13 +87,17 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Class<? extends PropertyGetter<?, ?>> getter = mapping.getter();
             Class<? extends PropertySetter<?, ?>> setter = mapping.setter();
             boolean native_ = mapping.native_();
-            propertyContext = new PropertyContext(order, typeContext, field.getType(), field.getName(), path, converter,
-                    format, whitespaceHandling, instanceCreator, getter, setter, referenceType, native_, logger);
+
+            propertyContext = new PropertyContext.Builder(order, typeContext, field.getType(), field.getName())
+                    .path(path).converter(converter).format(format).whitespaceHandling(whitespaceHandling)
+                    .instanceCreator(instanceCreator).getter(getter).setter(setter).referenceType(referenceType)
+                    .native_(native_).build();
+            return propertyContext;
         }
         else
         {
-            die("Field %s cannot be found in type hirarchy of %s!", mapping.value(), typeContext.getType()
-                    .getParameterizedQualifiedSourceName());
+            Logger.get().die("Field %s cannot be found in type hirarchy of %s!", mapping.value(),
+                    typeContext.getType().getParameterizedQualifiedSourceName());
         }
         return propertyContext;
     }

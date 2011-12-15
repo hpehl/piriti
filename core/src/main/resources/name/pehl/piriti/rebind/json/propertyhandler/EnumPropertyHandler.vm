@@ -1,0 +1,56 @@
+#set($valueType = $propertyContext.type.qualifiedSourceName)
+#set($value = $propertyContext.variableNames.valueVariable)
+#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
+#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+
+#logProperty()
+$valueType $value = null;
+JSONValue $jsonValue = null;
+
+#getOrSelectJsonValue()
+if ($jsonValue != null)
+{
+    if (${jsonValue}.isNull() == null) 
+    {
+        JSONString jsonString = ${jsonValue}.isString();
+        if (jsonString != null)
+        {
+            String stringValue = jsonString.stringValue();
+            if (stringValue != null)
+            {
+				Converter<$valueType> $converter = null;
+				#if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
+                if ($converter != null)
+                {
+                    $value = ${converter}.convert(stringValue);
+                }
+                else
+                {
+                    boolean error = true;
+                    String[] stringValues = new String[]{stringValue, stringValue.toUpperCase(), stringValue.toLowerCase()};
+                    for (String s : stringValues)
+                    {
+	                    try 
+	                    {
+	                        $value = ${propertyContext.enumType.qualifiedSourceName}.valueOf(stringValue);
+	                        error = false;
+	                        break;
+	                    }
+                        catch (IllegalArgumentException e) {} 
+                    }
+                    if (error)
+                    {
+                        if (logger.isLoggable(SEVERE)) 
+                        {
+                            logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum property $propertyContext.name in ${modelType} using ${valueType}.valueOf(String).");
+                        }
+                    }
+                }
+            }
+        }
+    }
+	if ($value != null) 
+    {
+        #assignValue()
+	}
+}

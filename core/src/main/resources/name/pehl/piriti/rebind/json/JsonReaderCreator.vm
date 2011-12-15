@@ -6,27 +6,32 @@ package ${typeContext.rwType.package.name};
 import static java.util.logging.Level.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import name.pehl.piriti.commons.client.InstanceContextHolder;
+import name.pehl.piriti.commons.client.ModelReadEvent;
+import name.pehl.piriti.commons.client.ModelReadHandler;
+import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.ConverterGinjector;
+import name.pehl.piriti.converter.client.ConverterRegistry;
+import name.pehl.piriti.json.client.JsonGinjector;
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonRegistry;
+
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.json.client.*;
-
-import name.pehl.totoe.commons.client.*;
-import name.pehl.totoe.json.client.*;
-
-import name.pehl.piriti.commons.client.InstanceContextHolder;
-import name.pehl.piriti.commons.client.*;
-import name.pehl.piriti.converter.client.*;
-import name.pehl.piriti.json.client.*;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 
 public class $implName implements $typeContext.rwType.qualifiedSourceName 
 {
@@ -45,11 +50,11 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
 
     public $implName() 
     {
-	    this.handlerManager = new HandlerManager(this);
-	    this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
-	    this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();
-	    this.jsonRegistry.register(${modelType}.class, this);
-	    this.idMap = new HashMap<String, $modelType>();
+        this.handlerManager = new HandlerManager(this);
+        this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
+        this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();
+        this.jsonRegistry.register(${modelType}.class, this);
+        this.idMap = new HashMap<String, $modelType>();
     }
     
     
@@ -104,7 +109,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         if (jsonString != null && jsonString.trim().length() != 0 && arrayKey != null)
         {
             JSONObject jsonObject = JSONParser.parseStrict(jsonString).isObject();
-            if (jsonObject != null) {
+            if (jsonObject != null)
             {
                 JSONValue jsonValue = jsonObject.get(arrayKey);
                 if (jsonValue != null) 
@@ -112,8 +117,8 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
                     JSONArray jsonArray = jsonValue.isArray();
                     if (jsonArray != null) 
                     {
-	                    models = new ArrayList<$modelParameterizedType>();
-	                    models = readList(jsonArray);
+                        models = new ArrayList<$modelParameterizedType>();
+                        models = readList(jsonArray);
                     }
                 }
             }
@@ -188,7 +193,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
                     JSONObject currentJsonObject = currentJsonValue.isObject();
                     if (currentJsonObject != null) 
                     {
-                        $modelParameterizedType model = readIds(currentJsonObject);
+                        $modelParameterizedType model = readId(currentJsonObject);
                         if (model != null) 
                         {
                             models.add(model);
@@ -249,7 +254,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         {
             return null;
         }
-        $modelParameterizedType model = readIds(jsonObject);
+        $modelParameterizedType model = readId(jsonObject);
         readProperties(jsonObject, model);
         readIdRefs(jsonObject, model);
         ModelReadEvent.fire(this, model);
@@ -265,27 +270,27 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         return this.idMap.get(id);
     }
 
-    private $modelParameterizedType readIds(JSONObject jsonObject)
+    private $modelParameterizedType readId(JSONObject jsonObject)
     {
-        if (jsonObject != null) 
-        {
-            ## TODO
-        }
-        return null;
+        ##TODO: Handle Id annotations
+        $modelParameterizedType model = null;
+        #if ($typeContext.instanceCreator)
+            $typeContext.instanceCreator.name instanceCreator = GWT.create(${typeContext.instanceCreator.name}.class);
+            model = instanceCreator.newInstance(jsonObject);
+        #else
+            model = GWT.create(${modelType}.class); 
+        #end
+        return model;
     }
     
     private $modelParameterizedType readProperties(JSONObject jsonObject, $modelParameterizedType model) 
     {
         if (jsonObject != null) 
         {
-            #foreach($entry in $properties.entrySet())
+            #foreach ($entry in $properties.entrySet())
                 #set($propertyContext = $entry.key)
                 #set($propertyHandler = $entry.value)
-                #logProperty()
-                #parse($propertyHandler.template)
-                ##propertyHandler.declare(writer, propertyContext);
-                ##propertyHandler.readInput(writer, propertyContext, propertyHandlerLookup);
-                ##propertyHandler.assign(writer, propertyContext);
+                #parse($propertyHandler.findTemplate($propertyContext))
             #end
         }
         return model;
