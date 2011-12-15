@@ -1,13 +1,12 @@
-#set($valueType = $propertyContext.type.qualifiedSourceName)
-#set($parameterizedValueType = $propertyContext.type.parameterizedQualifiedSourceName)
-#set($value = $propertyContext.variableNames.valueVariable)
-#set($reader = $propertyContext.variableNames.newVariableName("Reader"))
-#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
-#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
-#set($jsonObject = $propertyContext.variableNames.newVariableName("JsonObject"))
+#set($valueType = $property.type.qualifiedSourceName)
+#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+#set($value = $property.variables.value)
+#set($reader = $property.variables.newVariable("Reader"))
+#set($converter = $property.variables.newVariable("Converter"))
+#set($jsonValue = $property.variables.newVariable("JsonValue"))
+#set($jsonObject = $property.variables.newVariable("JsonObject"))
 
-#logProperty()
-#foreach ($concreteType in $propertyHandler.concreteTypes)
+#foreach ($concreteType in $property.concreteTypes)
     // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
     new ${concreteType.parameterizedQualifiedSourceName}();
 #end
@@ -30,7 +29,7 @@ else
         if (stringValue != null)
         {
             Converter<$parameterizedValueType> $converter = null;
-            #if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
+            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
             if ($converter != null)
             {
                 $value = ${converter}.convert(stringValue);

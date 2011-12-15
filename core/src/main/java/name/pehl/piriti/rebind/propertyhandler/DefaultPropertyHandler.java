@@ -14,9 +14,6 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
  */
 public class DefaultPropertyHandler extends AbstractPropertyHandler
 {
-    private List<JClassType> concreteTypes;
-
-
     @Override
     public boolean isValid(PropertyContext propertyContext)
     {
@@ -29,8 +26,9 @@ public class DefaultPropertyHandler extends AbstractPropertyHandler
             skipProperty(propertyContext, "Type is no class or interface");
             return false;
         }
-        concreteTypes = new ArrayList<JClassType>();
+        List<JClassType> concreteTypes = new ArrayList<JClassType>();
         collectConcreteTypes(concreteTypes, propertyContext.getClassOrInterfaceType());
+        propertyContext.setConcreteTypes(concreteTypes);
         return true;
     }
 

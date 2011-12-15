@@ -34,11 +34,11 @@ public class Variables
 
     public String getValueAsString()
     {
-        return newVariableName(AS_STRING_SUFFIX);
+        return newVariable(AS_STRING_SUFFIX);
     }
 
 
-    public String newVariableName(String suffix)
+    public String newVariable(String suffix)
     {
         return getValue() + suffix;
     }

@@ -1,5 +1,5 @@
 #set($valueType = $propertyContext.type.qualifiedSourceName)
-#set($value = $propertyContext.variableNames.valueVariable)
+#set($value = $property.variables.value)
 #set($componentType = $propertyContext.arrayType.componentType.parameterizedQualifiedSourceName)
 #set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
 #set($converter = $propertyContext.variableNames.newVariableName("Converter"))

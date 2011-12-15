@@ -3,8 +3,6 @@ package name.pehl.piriti.rebind.propertyhandler;
 import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.PropertyContext;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
  * Abstract base class for {@linkplain PropertyHandler}s with default
  * implementations and common code.
@@ -14,15 +12,6 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class AbstractPropertyHandler implements PropertyHandler
 {
-    // -------------------------------------------------------------- constants
-
-    /**
-     * JSONPath special characters.
-     */
-    protected static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?',
-            '(', ')',};
-
-
     // ---------------------------------------------------- overwritten methods
 
     @Override
@@ -45,7 +34,7 @@ public abstract class AbstractPropertyHandler implements PropertyHandler
                         + "\" in " + propertyContext.getTypeContext());
                 return false;
             }
-            if (propertyContext.getTypeContext().isJson() && isJsonPath(propertyContext.getPath()))
+            if (propertyContext.getTypeContext().isJson() && propertyContext.isJsonPath())
             {
                 skipProperty(propertyContext, "The path \"" + propertyContext.getPath()
                         + "\" is a JSONPath expressions which is not supported for writing");
@@ -70,42 +59,28 @@ public abstract class AbstractPropertyHandler implements PropertyHandler
     protected StringBuilder basePath(PropertyContext propertyContext)
     {
         StringBuilder basePath = new StringBuilder();
-        basePath.append(getClass().getPackage().getName().replace('.', '/'));
+        basePath.append(getClass().getPackage().getName().replace('.', '/')).append("/");
         if (propertyContext.getTypeContext().isJson())
         {
-            basePath.append("/json/");
+            basePath.append("json/");
         }
         else if (propertyContext.getTypeContext().isXml())
         {
-            basePath.append("/xml/");
+            basePath.append("xml/");
         }
         if (propertyContext.getTypeContext().isReader())
         {
-            basePath.append("/reader/");
+            basePath.append("reader/");
         }
         else if (propertyContext.getTypeContext().isWriter())
         {
-            basePath.append("/writer/");
+            basePath.append("writer/");
         }
         return basePath;
     }
 
 
     // --------------------------------------------------------- helper methods
-
-    /**
-     * Return <code>true</code> if the path contains {@link #JSON_PATH_SYMBOLS},
-     * <code>false</code> otherwise.
-     * 
-     * @param path
-     * @return <code>true</code> if the path contains {@link #JSON_PATH_SYMBOLS}
-     *         , <code>false</code> otherwise.
-     */
-    protected boolean isJsonPath(String path)
-    {
-        return StringUtils.containsAny(path, JSON_PATH_SYMBOLS);
-    }
-
 
     protected void skipProperty(PropertyContext propertyContext, String reason)
     {

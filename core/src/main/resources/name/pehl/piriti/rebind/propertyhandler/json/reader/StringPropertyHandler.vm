@@ -1,6 +1,6 @@
-#set($value = $propertyContext.variableNames.valueVariable)
-#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
-#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+#set($value = $property.variables.value)
+#set($jsonValue = $property.variables.newVariable("JsonValue"))
+#set($converter = $property.variables.newVariable("Converter"))
 
 #logProperty()
 String $value = null;
@@ -9,10 +9,10 @@ JSONValue $jsonValue = null;
 #getOrSelectJsonValue()
 if ($jsonValue != null)
 {
-    #if ($propertyContext.native)
+    #if ($property.native)
         $value = ${jsonValue}.toString();
     #else
-		#if ($propertyContext.hasConverter())
+		#if ($property.hasConverter())
             Converter<String> $converter = null; 
             #customConverter() 
         #end
@@ -22,7 +22,7 @@ if ($jsonValue != null)
 	        if (jsonString != null)
 	        {
 	            $value = jsonString.stringValue();
-	            #if ($propertyContext.hasConverter())
+	            #if ($property.hasConverter())
 		            if ($value != null && $converter != null)
 		            {
 		                $value = ${converter}.convert($value);

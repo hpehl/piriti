@@ -1,13 +1,13 @@
-#set($valueType = $propertyContext.type.qualifiedSourceName)
-#set($parameterizedValueType = $propertyContext.type.parameterizedQualifiedSourceName)
-#set($value = $propertyContext.variableNames.valueVariable)
-#set($reader = $propertyContext.variableNames.newVariableName("Reader"))
-#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
-#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
-#set($jsonObject = $propertyContext.variableNames.newVariableName("JsonObject"))
+#set($valueType = $property.type.qualifiedSourceName)
+#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+#set($value = $property.variables.value)
+#set($reader = $property.variables.newVariable("Reader"))
+#set($converter = $property.variables.newVariable("Converter"))
+#set($jsonValue = $property.variables.newVariable("JsonValue"))
+#set($jsonObject = $property.variables.newVariable("JsonObject"))
 
 #logProperty()
-#foreach ($concreteType in $propertyHandler.concreteTypes)
+#foreach ($concreteType in $property.concreteTypes)
     // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
     new ${concreteType.parameterizedQualifiedSourceName}();
 #end
@@ -18,10 +18,10 @@ JSONValue $jsonValue = null;
 #getOrSelectJsonValue()
 if ($jsonValue != null)
 {
-    #if ($propertyContext.native)
-        #if($TypeUtils.isJsonValue($propertyContext.type))
+    #if ($property.native)
+        #if($TypeUtils.isJsonValue($property.type))
             $value = $jsonValue;
-        #elseif($TypeUtils.isJsonValueSubtype($propertyContext.type))
+        #elseif($TypeUtils.isJsonValueSubtype($property.type))
             if ($jsonValue instanceof $valueType) 
             {
                 $value = ($parameterizedValueType)$jsonValue;
@@ -29,7 +29,7 @@ if ($jsonValue != null)
         #else
             if (logger.isLoggable(SEVERE)) 
             {
-                logger.log(SEVERE, "Cannot map property $propertyContext.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of JSONValue.");
+                logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of JSONValue.");
             }
         #end
     #else
@@ -53,7 +53,7 @@ if ($jsonValue != null)
 		            if (stringValue != null)
 		            {
 			            Converter<$parameterizedValueType> $converter = null;
-			            #if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
+			            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
 			            if ($converter != null)
 		                {
 		                    $value = ${converter}.convert(stringValue);

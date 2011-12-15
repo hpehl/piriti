@@ -2,22 +2,22 @@
 #macro(logProperty)
 if (logger.isLoggable(FINE)) 
 {
-    logger.log(FINE, "Processing ${propertyHandler.class.name}: $propertyContext");
+    logger.log(FINE, "Processing $property");
 }
 #end
 
 
 ## Creates the custom converter
 #macro(customConverter)
-    $converter = GWT.create(${propertyContext.converter.name}.class);
-    #if ($propertyContext.format) ${converter}.setFormat("$propertyContext.format"); #end
+    $converter = GWT.create(${property.converter.name}.class);
+    #if ($property.format) ${converter}.setFormat("$property.format"); #end
 #end
 
 
 ## Tries to get the default converter from the converter registry 
 #macro(defaultConverter)
-    #if ($propertyContext.format)
-        $converter = converterRegistry.get(${valueType}.class, "$propertyContext.format");
+    #if ($property.format)
+        $converter = converterRegistry.get(${valueType}.class, "$property.format");
         if ($converter == null)
         {
             // No converter with the specified format found in the
@@ -26,14 +26,14 @@ if (logger.isLoggable(FINE))
             $converter = converterRegistry.get(${valueType}.class);
             if ($converter != null)
             {
-                ${converter}.setFormat("$propertyContext.format");
-                converterRegistry.register(${valueType}.class, ${converter}, "$propertyContext.format");
+                ${converter}.setFormat("$property.format");
+                converterRegistry.register(${valueType}.class, ${converter}, "$property.format");
             }
             else
             {
 			    if (logger.isLoggable(SEVERE)) 
 			    {
-			        logger.log(SEVERE, "No converter found for property $propertyContext.name with type $valueType in ${modelType}. There should be a default converter for that type! Did you deregister the default converter?");
+			        logger.log(SEVERE, "No converter found for property $property.name with type $valueType in ${modelType}. There should be a default converter for that type! Did you deregister the default converter?");
 			    }
             }
         }
@@ -45,29 +45,28 @@ if (logger.isLoggable(FINE))
 
 ## Gets or selects the json value
 #macro(getOrSelectJsonValue)
-    ## TODO: Write JsonUtils.isJsonPath()
-    #if ($jsonUtils.isJson($propertyContext.path))
-        $jsonValue = JsonPath.select(jsonObject, "$propertyContext.pathOrName");
+    #if ($property.jsonPath)
+        $jsonValue = JsonPath.select(jsonObject, "$property.pathOrName");
     #else
-        $jsonValue = jsonObject.get("$propertyContext.pathOrName");
+        $jsonValue = jsonObject.get("$property.pathOrName");
     #end
 #end
 
 
 ## Assigns the mapped value to the model property 
 #macro(assignValue)
-    #if ($propertyContext.setter)
-        $propertyContext.setter.name setter = GWT.create(${propertyContext.setter.name}.class);
+    #if ($property.setter)
+        $property.setter.name setter = GWT.create(${property.setter.name}.class);
         setter.set(model, $value);
     #else
-        #if ($propertyContext.accessibleField) 
-            model.$propertyContext.name = $value;
-        #elseif ($propertyContext.callableSetter) 
-            model.${propertyContext.callableSetter.name}($value);
+        #if ($property.accessibleField) 
+            model.$property.name = $value;
+        #elseif ($property.callableSetter) 
+            model.${property.callableSetter.name}($value);
         #else
             if (logger.isLoggable(SEVERE)) 
             {
-                logger.log(SEVERE, "No accessible field or setter found in $modelType for property $propertyContext.name during mapping. This should not happen at this point. Something went wrong in the initialization phase.");
+                logger.log(SEVERE, "No accessible field or setter found in $modelType for property $property.name during mapping. This should not happen at this point. Something went wrong in the initialization phase.");
             }
         #end
     #end

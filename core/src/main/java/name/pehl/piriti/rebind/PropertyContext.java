@@ -1,6 +1,7 @@
 package name.pehl.piriti.rebind;
 
 import java.util.Comparator;
+import java.util.List;
 
 import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.NoopInstanceCreator;
@@ -11,6 +12,8 @@ import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -29,6 +32,13 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class PropertyContext
 {
+    // -------------------------------------------------------------- constants
+
+    /**
+     * JSONPath special characters.
+     */
+    static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(', ')',};
+
     // -------------------------------------------------------- private members
 
     private int order;
@@ -103,6 +113,7 @@ public class PropertyContext
     private PropertyContext child;
     private PropertyContext parent;
     private String template;
+    private List<JClassType> concreteTypes;
 
 
     // ----------------------------------------------------------- constructors
@@ -327,6 +338,20 @@ public class PropertyContext
     }
 
 
+    /**
+     * Return <code>true</code> if the path contains {@link #JSON_PATH_SYMBOLS},
+     * <code>false</code> otherwise.
+     * 
+     * @param path
+     * @return <code>true</code> if the path contains {@link #JSON_PATH_SYMBOLS}
+     *         , <code>false</code> otherwise.
+     */
+    public boolean isJsonPath()
+    {
+        return StringUtils.containsAny(path, JSON_PATH_SYMBOLS);
+    }
+
+
     public String getFormat()
     {
         return format;
@@ -429,6 +454,12 @@ public class PropertyContext
     }
 
 
+    public PropertyContext getChild()
+    {
+        return child;
+    }
+
+
     public String getTemplate()
     {
         return template;
@@ -438,6 +469,18 @@ public class PropertyContext
     public void setTemplate(String template)
     {
         this.template = template;
+    }
+
+
+    public List<JClassType> getConcreteTypes()
+    {
+        return concreteTypes;
+    }
+
+
+    public void setConcreteTypes(List<JClassType> concreteTypes)
+    {
+        this.concreteTypes = concreteTypes;
     }
 
     // ---------------------------------------------------------- inner classes
@@ -486,7 +529,7 @@ public class PropertyContext
 
         public Builder(PropertyContext parent, JType nestedType)
         {
-            String nestedValue = parent.getVariables().newVariableName("NestedValue");
+            String nestedValue = parent.getVariables().newVariable("NestedValue");
             Variables nestedVariables = new Variables(nestedValue);
             TypeContext nestedTypeContext = parent.getTypeContext().clone(nestedVariables);
             this.order = TypeContext.nextOrder();

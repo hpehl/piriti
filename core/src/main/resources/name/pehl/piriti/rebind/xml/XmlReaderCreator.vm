@@ -1,0 +1,102 @@
+#set($modelType = $typeContext.type.qualifiedSourceName)
+#set($modelParameterizedType = $typeContext.type.parameterizedQualifiedSourceName)
+
+package ${typeContext.rwType.package.name};
+
+import java.util.List;
+import java.util.logging.Logger;
+
+import name.pehl.totoe.xml.client.Document;
+import name.pehl.totoe.xml.client.Element;
+import name.pehl.totoe.xml.client.XmlParseException;
+
+import name.pehl.piriti.commons.client.ModelReadEvent;
+import name.pehl.piriti.commons.client.ModelReadHandler;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+
+public class $implName implements $typeContext.rwType.qualifiedSourceName 
+{
+    // --------------------------------------------------------- private fields
+    
+    private static Logger logger = Logger.getLogger("$typeContext.rwType.qualifiedSourceName");
+    private final HandlerManager handlerManager;
+    
+    
+    // ----------------------------------------------------------- constructors
+
+    public $implName() 
+    {
+        this.handlerManager = new HandlerManager(this);
+    }
+    
+    
+    // --------------------------------------------------------- event handling
+    
+    public HandlerRegistration addModelReadHandler(ModelReadHandler<$modelParameterizedType> handler) 
+    {
+        return handlerManager.addHandler(ModelReadEvent.getType(), handler);
+    }
+
+    public void fireEvent(GwtEvent<?> event) 
+    {
+        handlerManager.fireEvent(event);
+    }
+    
+    
+    // ------------------------------------------------------ read list methods
+
+    public List<$modelParameterizedType> readList(String xml) throws XmlParseException
+    {
+        return null;
+    }
+
+    public List<$modelParameterizedType> readList(Document document)
+    {
+        return null;
+    }
+
+    public List<$modelParameterizedType> readList(Document document, String xpath)
+    {
+        return null;
+    }
+    
+    public List<$modelParameterizedType> readList(Element element)
+    {
+        return null;
+    }
+    
+    public List<$modelParameterizedType> readList(Element element, String xpath)
+    {
+        return null;
+    }
+
+
+    // ---------------------------------------------------- read single methods
+    
+    public $modelParameterizedType read(String xml) throws XmlParseException
+    {
+        return null;
+    }
+    
+    public $modelParameterizedType read(Document document)
+    {
+        return null;
+    }
+
+    public $modelParameterizedType read(Element element)
+    {
+        return null;
+    }
+
+
+    // ----------------------------------------- ids, properties and references
+
+    public $modelParameterizedType idRef(String id)
+    {
+        return null;
+    }
+}

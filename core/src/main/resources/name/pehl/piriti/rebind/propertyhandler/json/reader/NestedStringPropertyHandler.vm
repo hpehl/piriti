@@ -1,10 +1,8 @@
-#set($value = $propertyContext.variableNames.valueVariable)
-#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+#set($value = $property.variables.value)
+#set($converter = $property.variables.newVariable("Converter"))
 
-#logProperty()
 String $value = null;
-
-#if ($propertyContext.hasConverter())
+#if ($property.hasConverter())
     Converter<String> $converter = null; 
     #customConverter() 
 #end
@@ -12,7 +10,7 @@ JSONString jsonString = nestedJsonValue.isString();
 if (jsonString != null)
 {
     $value = jsonString.stringValue();
-    #if ($propertyContext.hasConverter())
+    #if ($property.hasConverter())
         if ($value != null && $converter != null)
         {
             $value = ${converter}.convert($value);

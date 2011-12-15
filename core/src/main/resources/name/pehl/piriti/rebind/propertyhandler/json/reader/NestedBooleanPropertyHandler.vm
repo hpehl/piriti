@@ -1,8 +1,7 @@
-#set($valueType = $propertyContext.type.qualifiedSourceName)
-#set($value = $propertyContext.variableNames.valueVariable)
-#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+#set($valueType = $property.type.qualifiedSourceName)
+#set($value = $property.variables.value)
+#set($converter = $property.variables.newVariable("Converter"))
 
-#logProperty()
 Boolean $value = null;
 JSONBoolean jsonBoolean = nestedJsonValue.isBoolean();
 if (jsonBoolean != null)
@@ -18,7 +17,7 @@ else
         if (stringValue != null)
         {
 	        Converter<Boolean> $converter = null;
-            #if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
+            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
             if ($converter != null)
             {
                 $value = ${converter}.convert(stringValue);

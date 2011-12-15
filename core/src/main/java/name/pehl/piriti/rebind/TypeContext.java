@@ -167,9 +167,10 @@ public class TypeContext
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            properties.put(propertyContext.getName(), propertyContext);
-            variables = variables.next();
             propertyContext.setVariables(variables);
+            variables = variables.next();
+            propertyHandler.setTemplate(propertyContext);
+            properties.put(propertyContext.getName(), propertyContext);
         }
         else
         {
@@ -183,9 +184,10 @@ public class TypeContext
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            references.put(propertyContext.getName(), propertyContext);
-            variables = variables.next();
             propertyContext.setVariables(variables);
+            variables = variables.next();
+            propertyHandler.setTemplate(propertyContext);
+            references.put(propertyContext.getName(), propertyContext);
 
             // Prevent duplicate processing
             removeProperty(propertyContext);
@@ -305,9 +307,10 @@ public class TypeContext
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            this.id = propertyContext;
+            propertyContext.setVariables(variables);
             variables = variables.next();
-            this.id.setVariables(variables);
+            propertyHandler.setTemplate(propertyContext);
+            this.id = propertyContext;
 
             // Prevent duplicate processing
             removeProperty(propertyContext);

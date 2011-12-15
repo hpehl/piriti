@@ -101,8 +101,6 @@ public abstract class VelocityCreator
             context.put("TypeUtils", TypeUtils.class);
             context.put("typeContext", typeContext);
             context.put("implName", implName);
-            context.put("properties", typeContext.getProperties());
-            context.put("references", typeContext.getReferences());
 
             // merge template
             velocityEngine.mergeTemplate(getTemplate(), "UTF-8", context, printWriter);

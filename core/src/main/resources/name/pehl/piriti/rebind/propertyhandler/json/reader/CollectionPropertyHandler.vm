@@ -1,10 +1,10 @@
-#set($valueType = $propertyContext.type.qualifiedSourceName)
-#set($parameterizedValueType = $propertyContext.type.parameterizedQualifiedSourceName)
-#set($value = $propertyContext.variableNames.valueVariable)
+#set($valueType = $property.type.qualifiedSourceName)
+#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+#set($value = $property.variables.value)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
-#set($componentType = $propertyContext.type.isParameterized().typeArgs[0].parameterizedQualifiedSourceName)
-#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
-#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+#set($componentType = $property.type.isParameterized().typeArgs[0].parameterizedQualifiedSourceName)
+#set($jsonValue = $property.variables.newVariable("JsonValue"))
+#set($converter = $property.variables.newVariable("Converter"))
 
 #logProperty()
 $parameterizedValueType $value = null;
@@ -19,28 +19,25 @@ if ($jsonValue != null)
         int size = jsonArray.size();
         $value = new $collectionImplementation<$componentType>();
         Converter<$componentType> $converter = null;
-        #if ($propertyContext.hasConverter())
+        #if ($property.hasConverter())
             #customConverter() 
         #else 
             ## Temporarily set $valueType to $componentType to use #defaultConverter() macro   
             #set($valueType = $componentType)
             #defaultConverter()
             ## Switch back...
-            #set($valueType = $propertyContext.type.qualifiedSourceName)
+            #set($valueType = $property.type.qualifiedSourceName)
         #end
         for (int i = 0; i < size; i++)
         {
             JSONValue nestedJsonValue = jsonArray.get(i);
             if (nestedJsonValue != null && nestedJsonValue.isNull() == null) 
             {
-                #set($nestedTemplate = $propertyHandler.findTemplate($propertyContext.nestedContext))
-                #set($propertyContextBackup = $propertyContext)
-                #set($propertyHandlerBackup = $propertyHandler)
                 #set($valueBackup = $value)
-                #set($propertyHandler = $propertyHandler.nestedPropertyHandler)
-                #set($propertyContext = $propertyHandler.nestedPropertyContext)
-                #set($value = $value)
-                #parse($nestedTemplate)
+                #set($propertyBackup = $property)
+                #set($property = $property.child)
+                #set($value = $property.variables.value)
+                #parse($property.template)
 				if ($value != null) 
 				{
 				    ${valueBackup}.add($value);
@@ -49,8 +46,7 @@ if ($jsonValue != null)
         }
     }
     ## Restore variables overwritten in nested template
-    #set($propertyContext = $propertyContextBackup)
-    #set($propertyHandler = $propertyHandlerBackup)
+    #set($property = $propertyBackup)
     #set($value = $valueBackup)
     if ($value != null) 
     {
