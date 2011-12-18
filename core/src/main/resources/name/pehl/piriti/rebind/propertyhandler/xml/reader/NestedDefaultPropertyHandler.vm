@@ -1,0 +1,39 @@
+#set($valueType = $property.type.qualifiedSourceName)
+#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+#set($value = $property.variables.value)
+#set($reader = $property.variables.newVariable("Reader"))
+#set($converter = $property.variables.newVariable("Converter"))
+#set($jsonValue = $property.variables.newVariable("JsonValue"))
+#set($jsonObject = $property.variables.newVariable("JsonObject"))
+
+#foreach ($concreteType in $property.concreteTypes)
+    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
+    new ${concreteType.parameterizedQualifiedSourceName}();
+#end
+$parameterizedValueType $value = null;
+JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
+if ($reader != null)
+{
+    JSONObject $jsonObject = nestedJsonValue.isObject();
+    if ($jsonObject != null)
+    {
+        $value = ${reader}.read($jsonObject);
+    }
+}
+else
+{
+    JSONString jsonString = nestedJsonValue.isString();
+    if (jsonString != null)
+    {
+        String stringValue = jsonString.stringValue();
+        if (stringValue != null)
+        {
+            Converter<$parameterizedValueType> $converter = null;
+            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
+            if ($converter != null)
+            {
+                $value = ${converter}.convert(stringValue);
+            }
+        }
+    }
+}

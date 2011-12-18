@@ -1,0 +1,19 @@
+#set($valueType = $property.type.qualifiedSourceName)
+#set($value = $property.variables.value)
+#set($converter = $property.variables.newVariable("Converter"))
+
+$valueType $value = null;
+JSONString jsonString = nestedJsonValue.isString();
+if (jsonString != null)
+{
+    String stringValue = jsonString.stringValue();
+    if (stringValue != null)
+    {
+        Converter<$valueType> $converter = null;
+        #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
+        if ($converter != null)
+        {
+            $value = ${converter}.convert(stringValue);
+        }
+    }
+}

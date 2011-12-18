@@ -53,7 +53,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
         this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();
         this.jsonRegistry.register(${modelType}.class, this);
-        this.idMap = new HashMap<String, $modelType>();
+        this.idMap = new HashMap<String, $modelParameterizedType>();
     }
     
     

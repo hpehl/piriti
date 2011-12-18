@@ -34,19 +34,20 @@ public class PropertyContext
 {
     // -------------------------------------------------------------- constants
 
-    /**
-     * JSONPath special characters.
-     */
     static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(', ')',};
+
+    static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']', '/', '@',};
+
+    static final String NESTED_PATH_PATH_REGEX = "\\w+(/\\w+)?";
 
     // -------------------------------------------------------- private members
 
-    private int order;
+    private final int order;
 
     /**
      * The type context this property belongs to
      */
-    private TypeContext typeContext;
+    private final TypeContext typeContext;
 
     /**
      * The property type itself
@@ -58,7 +59,7 @@ public class PropertyContext
     /**
      * The name of the property
      */
-    private String name;
+    private final String name;
 
     /**
      * The path information for the mapping
@@ -349,6 +350,20 @@ public class PropertyContext
     public boolean isJsonPath()
     {
         return StringUtils.containsAny(path, JSON_PATH_SYMBOLS);
+    }
+
+
+    /**
+     * Return <code>true</code> if the path contains {@link #XML_PATH_SYMBOLS},
+     * <code>false</code> otherwise.
+     * 
+     * @param path
+     * @return <code>true</code> if the path contains {@link #XML_PATH_SYMBOLS}
+     *         , <code>false</code> otherwise.
+     */
+    public boolean isXmlPath()
+    {
+        return StringUtils.containsAny(path, XML_PATH_SYMBOLS);
     }
 
 
