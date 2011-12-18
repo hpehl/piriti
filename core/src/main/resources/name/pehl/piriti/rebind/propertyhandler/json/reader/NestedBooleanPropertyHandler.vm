@@ -1,12 +1,10 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($value = $property.variables.value)
-#set($converter = $property.variables.newVariable("Converter"))
+#set($nestedValueType = $property.child.type.qualifiedSourceName)
 
-Boolean $value = null;
+Boolean $nestedValue = null;
 JSONBoolean jsonBoolean = nestedJsonValue.isBoolean();
 if (jsonBoolean != null)
 {
-    $value = jsonBoolean.booleanValue();
+    $nestedValue = jsonBoolean.booleanValue();
 }
 else
 {
@@ -16,11 +14,9 @@ else
         String stringValue = jsonString.stringValue();
         if (stringValue != null)
         {
-	        Converter<Boolean> $converter = null;
-            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
             if ($converter != null)
             {
-                $value = ${converter}.convert(stringValue);
+                $nestedValue = ${converter}.convert(stringValue);
             }
         }
     }

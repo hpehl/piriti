@@ -31,7 +31,7 @@ if ($jsonValue != null)
             #else
 	            if (logger.isLoggable(SEVERE)) 
 	            {
-	                logger.log(SEVERE, "$valueType is no valid numeric type for the property $property.name in ${modelType}. Property will be skipped.");
+	                logger.log(SEVERE, "$valueType is no valid numeric type for the property $property.name in ${modelType}.");
 	            }
             #end
         }

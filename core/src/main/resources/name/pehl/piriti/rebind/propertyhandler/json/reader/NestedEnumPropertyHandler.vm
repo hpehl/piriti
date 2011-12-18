@@ -1,19 +1,15 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($value = $property.variables.value)
-#set($converter = $property.variables.newVariable("Converter"))
+#set($nestedValueType = $property.child.type.qualifiedSourceName)
 
-$valueType $value = null;
+$nestedValueType $nestedValue = null;
 JSONString jsonString = nestedJsonValue.isString();
 if (jsonString != null)
 {
     String stringValue = jsonString.stringValue();
     if (stringValue != null)
     {
-		Converter<$valueType> $converter = null;
-		#if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
         if ($converter != null)
         {
-            $value = ${converter}.convert(stringValue);
+            $nestedValue = ${converter}.convert(stringValue);
         }
         else
         {
@@ -23,7 +19,7 @@ if (jsonString != null)
             {
                 try 
                 {
-                    $value = ${property.enumType.qualifiedSourceName}.valueOf(stringValue);
+                    $nestedValue = ${property.child.enumType.qualifiedSourceName}.valueOf(stringValue);
                     error = false;
                     break;
                 }
@@ -33,7 +29,7 @@ if (jsonString != null)
             {
                 if (logger.isLoggable(SEVERE)) 
                 {
-                    logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum property $property.name in ${modelType} using ${valueType}.valueOf(String).");
+                    logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum property $property.child.name in ${modelType} using ${nestedValueType}.valueOf(String).");
             }
         }
     }

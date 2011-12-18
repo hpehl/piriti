@@ -33,21 +33,15 @@ if ($jsonValue != null)
             JSONValue nestedJsonValue = jsonArray.get(i);
             if (nestedJsonValue != null && nestedJsonValue.isNull() == null) 
             {
-                #set($valueBackup = $value)
-                #set($propertyBackup = $property)
-                #set($property = $property.child)
-                #set($value = $property.variables.value)
-                #parse($property.template)
-				if ($value != null) 
+                #set($nestedValue = $property.child.variables.value)
+                #parse($property.child.template)
+				if ($nestedValue != null) 
 				{
-				    ${valueBackup}.add($value);
+				    ${value}.add($nestedValue);
 				}
             }
         }
     }
-    ## Restore variables overwritten in nested template
-    #set($property = $propertyBackup)
-    #set($value = $valueBackup)
     if ($value != null) 
     {
         #assignValue()
