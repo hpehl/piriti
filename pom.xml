@@ -45,6 +45,14 @@
             <url>http://pehl-parent.googlecode.com/svn/repository</url>
         </repository>
     </repositories>
+    
+    
+    <properties>
+        <commons.lang.version>2.6</commons.lang.version>
+        <commons.collections.version>3.2.1</commons.collections.version>
+        <oro.version>2.0.8</oro.version>
+        <velocity.version>1.7</velocity.version>
+    </properties>
 
 
     <modules>
@@ -52,6 +60,32 @@
         <module>playground</module>
         <module>restlet</module>
     </modules>
+    
+    
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>oro</groupId>
+                <artifactId>oro</artifactId>
+                <version>${oro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons.lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${commons.collections.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity</artifactId>
+                <version>${velocity.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
     <!-- Global dependencies used in all modules -->
