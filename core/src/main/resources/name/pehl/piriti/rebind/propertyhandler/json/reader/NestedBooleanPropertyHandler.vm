@@ -1,5 +1,3 @@
-#set($nestedValueType = $property.child.type.qualifiedSourceName)
-
 Boolean $nestedValue = null;
 JSONBoolean jsonBoolean = nestedJsonValue.isBoolean();
 if (jsonBoolean != null)

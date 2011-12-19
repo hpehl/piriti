@@ -32,7 +32,7 @@ if ($jsonValue != null)
                     {
 	                    try 
 	                    {
-	                        $value = ${property.enumType.qualifiedSourceName}.valueOf(stringValue);
+	                        $value = ${property.enumType.qualifiedSourceName}.valueOf(s);
 	                        error = false;
 	                        break;
 	                    }

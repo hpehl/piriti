@@ -1,10 +1,10 @@
 #set($valueType = $property.type.qualifiedSourceName)
 #set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
 #set($value = $property.variables.value)
+#set($valueAsString = $property.variables.valueAsString)
+#set($nodeValue = $property.variables.newVariable("NodeValue"))
 #set($reader = $property.variables.newVariable("Reader"))
 #set($converter = $property.variables.newVariable("Converter"))
-#set($jsonValue = $property.variables.newVariable("JsonValue"))
-#set($jsonObject = $property.variables.newVariable("JsonObject"))
 
 #logProperty()
 #foreach ($concreteType in $property.concreteTypes)
@@ -13,58 +13,46 @@
 #end
 
 $parameterizedValueType $value = null;
-JSONValue $jsonValue = null;
-
-#getOrSelectJsonValue()
-if ($jsonValue != null)
-{
-    #if ($property.native)
-        #if($TypeUtils.isJsonValue($property.type))
-            $value = $jsonValue;
-        #elseif($TypeUtils.isJsonValueSubtype($property.type))
-            if ($jsonValue instanceof $valueType) 
-            {
-                $value = ($parameterizedValueType)$jsonValue;
-            }
-        #else
-            if (logger.isLoggable(SEVERE)) 
-            {
-                logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of JSONValue.");
-            }
-        #end
+#if ($property.native)
+    Node $nodeValue = element.selectNode("$property.pathOrName");
+    #if($TypeUtils.isNode($property.type))
+        $value = $nodeValue;
+    #elseif($TypeUtils.isNodeSubtype($property.type))
+        if ($nodeValue instanceof $valueType) 
+        {
+            $value = ($parameterizedValueType)$nodeValue;
+        }
     #else
-		JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
-		if ($reader != null)
-		{
-            JSONObject $jsonObject = ${jsonValue}.isObject();
-            if ($jsonObject != null)
-            {
-                $value = ${reader}.read($jsonObject);
-            }
-		}
-		else
-		{
-		    if (${jsonValue}.isNull() == null) 
-		    {
-		        JSONString jsonString = ${jsonValue}.isString();
-		        if (jsonString != null)
-		        {
-		            String stringValue = jsonString.stringValue();
-		            if (stringValue != null)
-		            {
-			            Converter<$parameterizedValueType> $converter = null;
-			            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-			            if ($converter != null)
-		                {
-		                    $value = ${converter}.convert(stringValue);
-		                }
-		            }
-		        }
-		    }
-		}
+        if (logger.isLoggable(SEVERE)) 
+        {
+            logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of name.pehl.totoe.xml.client.Node.");
+        }
     #end
-    if ($value != null) 
+#else
+    XmlReader<$parameterizedValueType> $reader = xmlRegistry.getReader(${valueType}.class);
+    if ($reader != null)
     {
-        #assignValue()
+        Node $nodeValue = element.selectNode("$property.pathOrName");
+        if ($nodeValue != null && $nodeValue instanceof Element)
+        {
+            $value = ${reader}.read((Element)$nodeValue);
+        }
     }
+    else
+    {
+        String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
+		if ($valueAsString != null)
+		{
+		    Converter<$parameterizedValueType> $converter = null;
+		    #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
+		    if ($converter != null)
+		    {
+		        $value = ${converter}.convert($valueAsString);
+		    }
+		}    
+    }
+#end
+if ($value != null) 
+{
+    #assignValue()
 }

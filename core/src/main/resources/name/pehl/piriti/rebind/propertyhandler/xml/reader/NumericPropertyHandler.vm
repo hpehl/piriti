@@ -5,13 +5,16 @@
 
 #logProperty()
 $valueType $value = null;
-Converter<$valueType> $converter = null;
 String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
-#if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-if ($converter != null && $valueAsString != null)
+if ($valueAsString != null)
 {
-    $value = ${converter}.convert($valueAsString);
-}
+    Converter<$valueType> $converter = null;
+    #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
+    if ($converter != null)
+    {
+        $value = ${converter}.convert($valueAsString);
+    }
+}    
 if ($value != null) 
 {
     #assignValue()

@@ -19,7 +19,7 @@ if (jsonString != null)
             {
                 try 
                 {
-                    $nestedValue = ${property.child.enumType.qualifiedSourceName}.valueOf(stringValue);
+                    $nestedValue = ${property.child.enumType.qualifiedSourceName}.valueOf(s);
                     error = false;
                     break;
                 }

@@ -1,3 +1,4 @@
+#set($valueType = $property.type.qualifiedSourceName)
 #set($value = $property.variables.value)
 #set($jsonValue = $property.variables.newVariable("JsonValue"))
 #set($converter = $property.variables.newVariable("Converter"))
