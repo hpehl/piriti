@@ -32,6 +32,23 @@ public class ArrayPropertyHandler extends AbstractPropertyHandler
             skipProperty(propertyContext, "Arrays of collections / maps are not supported");
             return false;
         }
+        JPrimitiveType primitiveComponentType = elementType.isPrimitive();
+        if (primitiveComponentType != null)
+        {
+            elementType = propertyContext.getTypeContext().getTypeOracle()
+                    .findType(primitiveComponentType.getQualifiedBoxedSourceName());
+
+        }
+        PropertyContext nestedContext = new PropertyContext.Builder(propertyContext, elementType).build();
+        PropertyHandler nestedHandler = new PropertyHandlerLookup().lookup(nestedContext);
+        if (nestedHandler == null)
+        {
+            skipProperty(propertyContext, "No property handler found for element type" + nestedContext);
+        }
+        if (!nestedHandler.isValid(nestedContext))
+        {
+            skipProperty(propertyContext, "Element type " + nestedContext + " is not valid");
+        }
         return true;
     }
 
@@ -52,7 +69,10 @@ public class ArrayPropertyHandler extends AbstractPropertyHandler
         StringBuilder nestedTemplate = basePath(propertyContext);
         PropertyContext nestedContext = new PropertyContext.Builder(propertyContext, elementType).build();
         PropertyHandler nestedHandler = new PropertyHandlerLookup().lookup(nestedContext);
-        nestedTemplate.append("Nested").append(nestedHandler.getClass().getSimpleName()).append(".vm");
+        if (nestedHandler.isValid(nestedContext))
+        {
+            nestedTemplate.append("Nested").append(nestedHandler.getClass().getSimpleName()).append(".vm");
+        }
         nestedContext.setTemplate(nestedTemplate.toString());
     }
 }

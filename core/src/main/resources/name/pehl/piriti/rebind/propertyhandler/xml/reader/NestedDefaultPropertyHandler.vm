@@ -1,39 +1,22 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
-#set($value = $property.variables.value)
-#set($reader = $property.variables.newVariable("Reader"))
-#set($converter = $property.variables.newVariable("Converter"))
-#set($jsonValue = $property.variables.newVariable("JsonValue"))
-#set($jsonObject = $property.variables.newVariable("JsonObject"))
+#set($nestedValueType = $property.child.type.qualifiedSourceName)
+#set($nestedParameterizedValueType = $property.child.type.parameterizedQualifiedSourceName)
+#set($nestedReader = $property.child.variables.newVariable("Reader"))
 
-#foreach ($concreteType in $property.concreteTypes)
+#foreach ($concreteType in $property.child.concreteTypes)
     // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
     new ${concreteType.parameterizedQualifiedSourceName}();
 #end
-$parameterizedValueType $value = null;
-JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
-if ($reader != null)
+$nestedParameterizedValueType $nestedValue = null;
+XmlReader<$nestedParameterizedValueType> $nestedReader = xmlRegistry.getReader(${nestedValueType}.class);
+if ($nestedReader != null)
 {
-    JSONObject $jsonObject = nestedJsonValue.isObject();
-    if ($jsonObject != null)
-    {
-        $value = ${reader}.read($jsonObject);
-    }
+    $nestedValue = ${nestedReader}.read(nestedElement);
 }
 else
 {
-    JSONString jsonString = nestedJsonValue.isString();
-    if (jsonString != null)
-    {
-        String stringValue = jsonString.stringValue();
-        if (stringValue != null)
-        {
-            Converter<$parameterizedValueType> $converter = null;
-            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-            if ($converter != null)
-            {
-                $value = ${converter}.convert(stringValue);
-            }
-        }
-    }
+    String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
+	if ($nestedValueAsString != null && $converter != null)
+	{
+	    $nestedValue = ${converter}.convert($nestedValueAsString);
+	}
 }

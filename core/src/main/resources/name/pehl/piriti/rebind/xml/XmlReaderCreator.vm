@@ -19,6 +19,7 @@ import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.ConverterGinjector;
 import name.pehl.piriti.converter.client.ConverterRegistry;
 import name.pehl.piriti.xml.client.XmlGinjector;
+import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlRegistry;
 import name.pehl.totoe.xml.client.Document;
 import name.pehl.totoe.xml.client.Element;

@@ -164,11 +164,16 @@ public class TypeContext
 
     public void addProperty(PropertyContext propertyContext)
     {
+        // TODO Refactor
+        // Variables must be present in
+        // ArrayPropertyHandler.isValid(PropertyContext)
+        // and CollectionPropertyHandler.isValid(PropertyContext)
+        propertyContext.setVariables(variables);
+        variables = variables.next();
+
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            propertyContext.setVariables(variables);
-            variables = variables.next();
             propertyHandler.setTemplate(propertyContext);
             properties.put(propertyContext.getName(), propertyContext);
         }
@@ -181,11 +186,16 @@ public class TypeContext
 
     public void addReference(PropertyContext propertyContext)
     {
+        // TODO Refactor
+        // Variables must be present in
+        // ArrayPropertyHandler.isValid(PropertyContext)
+        // and CollectionPropertyHandler.isValid(PropertyContext)
+        propertyContext.setVariables(variables);
+        variables = variables.next();
+
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            propertyContext.setVariables(variables);
-            variables = variables.next();
             propertyHandler.setTemplate(propertyContext);
             references.put(propertyContext.getName(), propertyContext);
 

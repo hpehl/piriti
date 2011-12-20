@@ -1,41 +1,8 @@
 #set($nestedValueType = $property.child.type.qualifiedSourceName)
 
 $nestedValueType $nestedValue = null;
-JSONNumber jsonNumber = nestedJsonValue.isNumber();
-if (jsonNumber != null)
+String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
+if ($nestedValueAsString != null && $converter != null)
 {
-    Double doubleValue = new Double(jsonNumber.doubleValue());
-    #if($TypeUtils.isByte($property.child.type))
-        $nestedValue = doubleValue.byteValue();
-    #elseif($TypeUtils.isShort($property.child.type))
-        $nestedValue = doubleValue.shortValue();
-    #elseif($TypeUtils.isInteger($property.child.type))
-        $nestedValue = doubleValue.intValue();
-    #elseif($TypeUtils.isLong($property.child.type))
-        $nestedValue = doubleValue.longValue();
-    #elseif($TypeUtils.isFloat($property.child.type))
-        $nestedValue = doubleValue.floatValue();
-    #elseif($TypeUtils.isDouble($property.child.type))
-        $nestedValue = doubleValue;
-    #else
-        if (logger.isLoggable(SEVERE)) 
-        {
-            logger.log(SEVERE, "$nestedValueType is no valid numeric type for the property $property.child.name in ${modelType}.");
-        }
-    #end
-}
-else
-{
-    JSONString jsonString = nestedJsonValue.isString();
-    if (jsonString != null)
-    {
-        String stringValue = jsonString.stringValue();
-        if (stringValue != null)
-        {
-            if ($converter != null)
-            {
-                $nestedValue = ${converter}.convert(stringValue);
-            }
-        }
-    }
+    $nestedValue = ${converter}.convert($nestedValueAsString);
 }

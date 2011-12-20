@@ -5,9 +5,11 @@
 
 #logProperty()
 Boolean $value = null;
-String $valueAsString = element.getText($property.whitespaceHandling);
+String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
 if ($valueAsString != null)
 {
+    Converter<Boolean> $converter = null;
+    #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
     if ($converter != null)
     {
         $value = ${converter}.convert($valueAsString);

@@ -36,6 +36,16 @@ public class CollectionPropertyHandler extends AbstractPropertyHandler
             skipProperty(propertyContext, "Collections of collections / maps are not supported");
             return false;
         }
+        PropertyContext nestedContext = new PropertyContext.Builder(propertyContext, elementType).build();
+        PropertyHandler nestedHandler = new PropertyHandlerLookup().lookup(nestedContext);
+        if (nestedHandler == null)
+        {
+            skipProperty(propertyContext, "No property handler found for element type" + nestedContext);
+        }
+        if (!nestedHandler.isValid(nestedContext))
+        {
+            skipProperty(propertyContext, "Element type " + nestedContext + " is not valid");
+        }
         return true;
     }
 

@@ -1,26 +1,16 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($value = $property.variables.value)
-#set($converter = $property.variables.newVariable("Converter"))
-
-Character $value = null;
-JSONString jsonString = nestedJsonValue.isString();
-if (jsonString != null)
+Character $nestedValue = null;
+String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
+if ($nestedValueAsString != null)
 {
-    String stringValue = nestedJsonValue.stringValue();
-    if (stringValue != null)
+    if ($converter != null)
     {
-		Converter<Character> $converter = null;
-		#if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-        if ($converter != null)
-        {
-            $value = ${converter}.convert(stringValue);
-        }
-        else
-        {
-            if (stringValue.length() != 0)
-            {
-                $value = stringValue.charAt(0);
-            }
-        }
+	    $nestedValue = ${converter}.convert($nestedValueAsString);
+    }
+    else
+    {
+	    if (${nestedValueAsString}.length() != 0)
+	    {
+	        $nestedValue = ${nestedValueAsString}.charAt(0);
+	    }
     }
 }

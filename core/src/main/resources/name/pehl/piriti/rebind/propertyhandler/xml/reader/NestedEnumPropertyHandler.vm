@@ -1,39 +1,32 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($value = $property.variables.value)
-#set($converter = $property.variables.newVariable("Converter"))
+#set($nestedValueType = $property.child.type.qualifiedSourceName)
 
-$valueType $value = null;
-JSONString jsonString = nestedJsonValue.isString();
-if (jsonString != null)
+$nestedValueType $nestedValue = null;
+String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
+if ($nestedValueAsString != null)
 {
-    String stringValue = jsonString.stringValue();
-    if (stringValue != null)
+    if ($converter != null)
     {
-		Converter<$valueType> $converter = null;
-		#if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-        if ($converter != null)
+        $nestedValue = ${converter}.convert($nestedValueAsString);
+    }
+    else
+    {
+        boolean error = true;
+        String[] stringValues = new String[]{$nestedValueAsString, ${nestedValueAsString}.toUpperCase(), ${nestedValueAsString}.toLowerCase()};
+        for (String s : stringValues)
         {
-            $value = ${converter}.convert(stringValue);
-        }
-        else
-        {
-            boolean error = true;
-            String[] stringValues = new String[]{stringValue, stringValue.toUpperCase(), stringValue.toLowerCase()};
-            for (String s : stringValues)
+            try 
             {
-                try 
-                {
-                    $value = ${property.enumType.qualifiedSourceName}.valueOf(stringValue);
-                    error = false;
-                    break;
-                }
-                catch (IllegalArgumentException e) {} 
+                $nestedValue = ${property.child.enumType.qualifiedSourceName}.valueOf(s);
+                error = false;
+                break;
             }
-            if (error)
+            catch (IllegalArgumentException e) {} 
+        }
+        if (error)
+        {
+            if (logger.isLoggable(SEVERE)) 
             {
-                if (logger.isLoggable(SEVERE)) 
-                {
-                    logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum property $property.name in ${modelType} using ${valueType}.valueOf(String).");
+                logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum property $property.name in ${modelType} using ${nestedValueType}.valueOf(String).");
             }
         }
     }
