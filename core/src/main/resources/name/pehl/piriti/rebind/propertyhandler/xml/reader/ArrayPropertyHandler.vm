@@ -1,42 +1,49 @@
-#set($valueType = $propertyContext.type.qualifiedSourceName)
+#set($valueType = $property.type.qualifiedSourceName)
+#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
 #set($value = $property.variables.value)
-#set($componentType = $propertyContext.arrayType.componentType.parameterizedQualifiedSourceName)
-#set($jsonValue = $propertyContext.variableNames.newVariableName("JsonValue"))
-#set($converter = $propertyContext.variableNames.newVariableName("Converter"))
+#set($converter = $property.variables.newVariable("Converter"))
+#set($elements = $property.variables.newVariable("Elements"))
+#set($asList = $property.variables.newVariable("AsList"))
+
+#if ($property.arrayType.componentType.isPrimitive())
+    #set($componentType = $property.arrayType.componentType.qualifiedBoxedSourceName)
+#else
+    #set($componentType = $property.arrayType.componentType.parameterizedQualifiedSourceName)
+#end
 
 #logProperty()
 $valueType $value = null;
-JSONValue $jsonValue = null;
-
-#getOrSelectJsonValue()
-if ($jsonValue != null)
+List<Element> $elements = filterElements(element.selectNodes("$property.pathOrName"));
+if (!${elements}.isEmpty())
 {
-    JSONArray jsonArray = ${jsonValue}.isArray();
-    if (jsonArray != null)
+    List<$componentType> $asList = new ArrayList<$componentType>(${elements}.size());
+    Converter<$componentType> $converter = null;
+    #if ($property.hasConverter())
+        #customConverter() 
+    #else 
+        ## Temporarily set $valueType to $componentType to use #defaultConverter() macro   
+        #set($valueType = $componentType)
+        #defaultConverter()
+        ## Switch back...
+        #set($valueType = $property.type.qualifiedSourceName)
+    #end
+    for (Element nestedElement : $elements)
     {
-        int size = jsonArray.size();
-        $value = new $componentType[size];
-        Converter<String> $converter = null;
-        #if ($propertyContext.hasConverter()) #customConverter() #else #defaultConverter() #end
-        for (int i = 0; i < size; i++)
+        #set($nestedValue = $property.child.variables.value)
+        #parse($property.child.template)
+        if ($nestedValue != null) 
         {
-            JSONValue nestedJsonValue = jsonArray.get(i);
-            if (nestedJsonValue != null && nestedJsonValue.isNull() == null) 
-            {
-                ## TODO: 
-                ## 1. Build nested PropertyContext
-                ## 2. Find related PropertyHandler
-                ## 3. Render relevant template 
-            }
-            else
-            {
-                ## TODO: Don't allow null elements!
-                ${value}[i] = null; 
-            }
+            ${asList}.add($nestedValue);
         }
     }
-    if ($value != null) 
+    int index = 0;
+    $value = new ${property.arrayType.componentType.parameterizedQualifiedSourceName}[${asList}.size()];
+    for ($componentType tmpValue : $asList)
     {
-        #assignValue()
+        ${value}[index++] = tmpValue;
     }
+}
+if ($value != null) 
+{
+    #assignValue()
 }

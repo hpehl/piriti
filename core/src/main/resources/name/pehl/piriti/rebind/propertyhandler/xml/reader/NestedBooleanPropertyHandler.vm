@@ -1,27 +1,6 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($value = $property.variables.value)
-#set($converter = $property.variables.newVariable("Converter"))
-
-Boolean $value = null;
-JSONBoolean jsonBoolean = nestedJsonValue.isBoolean();
-if (jsonBoolean != null)
+Boolean $nestedValue = null;
+String $valueAsString = nestedElement.getText($property.whitespaceHandling);
+if ($valueAsString != null && $converter != null)
 {
-    $value = jsonBoolean.booleanValue();
-}
-else
-{
-    JSONString jsonString = nestedJsonValue.isString();
-    if (jsonString != null)
-    {
-        String stringValue = jsonString.stringValue();
-        if (stringValue != null)
-        {
-	        Converter<Boolean> $converter = null;
-            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-            if ($converter != null)
-            {
-                $value = ${converter}.convert(stringValue);
-            }
-        }
-    }
+    $nestedValue = ${converter}.convert($valueAsString);
 }
