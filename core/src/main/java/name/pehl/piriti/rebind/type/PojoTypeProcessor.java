@@ -30,7 +30,9 @@ import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.property.client.Setter;
 import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.ReferenceType;
+import name.pehl.piriti.rebind.property.InvalidPropertyException;
 import name.pehl.piriti.rebind.property.PropertyContext;
+import name.pehl.piriti.rebind.property.PropertySource;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -51,6 +53,18 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class, IdRef.class)));
         for (JField field : fields)
         {
+            PropertySource propertySource = fromField(field);
+            try
+            {
+                PropertyContext pc = createPropertyContext(typeContext, propertySource);
+                Logger.get().debug("Adding property %s to %s", pc, typeContext);
+                typeContext.addProperty(pc);
+            }
+            catch (InvalidPropertyException e)
+            {
+                // TODO Logging
+            }
+
             PropertyContext propertyContext = createPropertyContext(typeContext, field, null);
             if (propertyContext != null)
             {
@@ -144,7 +158,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
     {
         if (field.isTransient() || field.isStatic())
         {
-            Logger.get().debug("Skipping %s field %s in %s", (field.isTransient() ? "transient" : "static"),
+            Logger.get().debug("Skipping %s field %s in %s", field.isTransient() ? "transient" : "static",
                     field.getName(), field.getEnclosingType().getParameterizedQualifiedSourceName());
             return true;
         }
@@ -177,6 +191,12 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         Logger.get().debug("Skipping field %s in %s as it is not annotated with any of %s", field.getName(),
                 field.getEnclosingType().getParameterizedQualifiedSourceName(), mustHaveAnnotations);
         return false;
+    }
+
+
+    private PropertySource fromField(JField field)
+    {
+        return null;
     }
 
 

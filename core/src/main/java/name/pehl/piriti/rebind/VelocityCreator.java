@@ -26,9 +26,9 @@ public abstract class VelocityCreator
 
     // -------------------------------------------------------- private members
 
-    private GeneratorContext generatorContext;
-    private JClassType rwType;
-    private String implName;
+    private final GeneratorContext generatorContext;
+    private final JClassType rwType;
+    private final String implName;
     private JClassType type;
 
 
@@ -85,12 +85,13 @@ public abstract class VelocityCreator
 
     // ------------------------------------------------------- template methods
 
-    public void merge() throws UnableToCompleteException
+    public void createCode() throws UnableToCompleteException
     {
         PrintWriter printWriter = generatorContext.tryCreate(Logger.get().getTreeLogger(), rwType.getPackage()
                 .getName(), implName);
         if (printWriter != null)
         {
+            // TODO Refactor: From here on use Guice to resolve dependencies
             TypeContext typeContext = null;
             TypeProcessor typeProcessor = new PojoTypeProcessor();
             typeProcessor.setNext(new RwTypeProcessor());

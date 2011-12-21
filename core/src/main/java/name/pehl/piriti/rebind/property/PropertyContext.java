@@ -42,8 +42,6 @@ public class PropertyContext
 
     static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']', '/', '@',};
 
-    static final String NESTED_PATH_PATH_REGEX = "\\w+(/\\w+)?";
-
     // -------------------------------------------------------- private members
 
     private final int order;

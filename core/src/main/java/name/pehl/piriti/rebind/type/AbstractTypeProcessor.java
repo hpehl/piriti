@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import name.pehl.piriti.rebind.Logger;
+import name.pehl.piriti.rebind.property.InvalidPropertyException;
+import name.pehl.piriti.rebind.property.PropertyContext;
+import name.pehl.piriti.rebind.property.PropertySource;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -71,6 +74,14 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
 
     protected abstract void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes)
             throws UnableToCompleteException;
+
+
+    protected PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource)
+            throws InvalidPropertyException
+    {
+        // TODO Use PropertyCreator to create the property context
+        return null;
+    }
 
 
     protected boolean skipType(JClassType type)
