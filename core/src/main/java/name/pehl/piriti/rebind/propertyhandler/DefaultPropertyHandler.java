@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.type.TypeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 

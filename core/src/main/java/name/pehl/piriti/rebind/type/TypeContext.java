@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.type;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +12,9 @@ import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.MapUpTo;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.rebind.Logger;
+import name.pehl.piriti.rebind.PropertyContext;
+import name.pehl.piriti.rebind.PropertyContext.PropertyContextOrder;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
 import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
 import name.pehl.piriti.xml.client.XmlReader;

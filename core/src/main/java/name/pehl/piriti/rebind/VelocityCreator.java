@@ -5,6 +5,12 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.Properties;
 
+import name.pehl.piriti.rebind.type.PojoTypeProcessor;
+import name.pehl.piriti.rebind.type.RwTypeProcessor;
+import name.pehl.piriti.rebind.type.TypeContext;
+import name.pehl.piriti.rebind.type.TypeProcessor;
+import name.pehl.piriti.rebind.type.TypeUtils;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 

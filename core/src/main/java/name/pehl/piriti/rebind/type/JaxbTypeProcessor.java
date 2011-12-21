@@ -1,6 +1,8 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.type;
 
 import java.util.Set;
+
+import name.pehl.piriti.rebind.AbstractTypeProcessor;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;

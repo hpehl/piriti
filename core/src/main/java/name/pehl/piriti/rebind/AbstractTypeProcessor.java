@@ -3,6 +3,9 @@ package name.pehl.piriti.rebind;
 import java.util.HashSet;
 import java.util.Set;
 
+import name.pehl.piriti.rebind.type.TypeContext;
+import name.pehl.piriti.rebind.type.TypeProcessor;
+
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -45,7 +48,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
 
     /**
      * @param typeContext
-     * @see name.pehl.piriti.rebind.TypeProcessor#process(name.pehl.piriti.rebind.TypeContext)
+     * @see name.pehl.piriti.rebind.type.TypeProcessor#process(name.pehl.piriti.rebind.type.TypeContext)
      */
     @Override
     public final void process(TypeContext typeContext) throws UnableToCompleteException

@@ -11,6 +11,8 @@ import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
+import name.pehl.piriti.rebind.type.TypeContext;
+import name.pehl.piriti.rebind.type.TypeUtils;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import org.apache.commons.lang.StringUtils;

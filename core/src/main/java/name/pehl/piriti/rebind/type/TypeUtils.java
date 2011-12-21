@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.type;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +14,8 @@ import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
+import name.pehl.piriti.rebind.Modifier;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;

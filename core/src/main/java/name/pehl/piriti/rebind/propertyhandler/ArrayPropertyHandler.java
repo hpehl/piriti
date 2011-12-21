@@ -1,7 +1,7 @@
 package name.pehl.piriti.rebind.propertyhandler;
 
 import name.pehl.piriti.rebind.PropertyContext;
-import name.pehl.piriti.rebind.TypeUtils;
+import name.pehl.piriti.rebind.type.TypeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
