@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.property;
 
 /**
  * @author $Author$
