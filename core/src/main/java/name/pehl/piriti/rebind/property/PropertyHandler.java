@@ -1,6 +1,5 @@
 package name.pehl.piriti.rebind.property;
 
-import name.pehl.piriti.rebind.PropertyContext;
 
 /**
  * Interface for generating code for one property.

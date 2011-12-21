@@ -1,10 +1,9 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.type;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import name.pehl.piriti.rebind.type.TypeContext;
-import name.pehl.piriti.rebind.type.TypeProcessor;
+import name.pehl.piriti.rebind.Logger;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;

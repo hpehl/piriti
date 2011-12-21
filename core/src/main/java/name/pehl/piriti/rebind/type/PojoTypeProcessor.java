@@ -28,11 +28,9 @@ import name.pehl.piriti.property.client.Getter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.property.client.Setter;
-import name.pehl.piriti.rebind.AbstractTypeProcessor;
 import name.pehl.piriti.rebind.Logger;
-import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.ReferenceType;
-import name.pehl.piriti.rebind.PropertyContext.Builder;
+import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.UnableToCompleteException;

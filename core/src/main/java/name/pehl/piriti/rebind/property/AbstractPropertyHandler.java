@@ -1,7 +1,6 @@
 package name.pehl.piriti.rebind.property;
 
 import name.pehl.piriti.rebind.Logger;
-import name.pehl.piriti.rebind.PropertyContext;
 
 /**
  * Abstract base class for {@linkplain PropertyHandler}s with default

@@ -1,4 +1,4 @@
-package name.pehl.piriti.rebind;
+package name.pehl.piriti.rebind.property;
 
 import java.util.Comparator;
 import java.util.List;
@@ -11,6 +11,9 @@ import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
+import name.pehl.piriti.rebind.Modifier;
+import name.pehl.piriti.rebind.ReferenceType;
+import name.pehl.piriti.rebind.Variables;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
 import name.pehl.totoe.commons.client.WhitespaceHandling;

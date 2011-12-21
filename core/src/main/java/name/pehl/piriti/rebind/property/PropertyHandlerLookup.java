@@ -2,7 +2,6 @@ package name.pehl.piriti.rebind.property;
 
 import static name.pehl.piriti.rebind.ReferenceType.ID;
 import static name.pehl.piriti.rebind.ReferenceType.IDREF;
-import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
