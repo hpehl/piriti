@@ -41,19 +41,21 @@ public class CollectionPropertyHandler extends AbstractPropertyHandler
         if (nestedHandler == null)
         {
             skipProperty(propertyContext, "No property handler found for element type" + nestedContext);
+            return false;
         }
         if (!nestedHandler.isValid(nestedContext))
         {
             skipProperty(propertyContext, "Element type " + nestedContext + " is not valid");
+            return false;
         }
         return true;
     }
 
 
     @Override
-    public void setTemplate(PropertyContext propertyContext)
+    public void calculateTemplate(PropertyContext propertyContext)
     {
-        super.setTemplate(propertyContext);
+        super.calculateTemplate(propertyContext);
 
         JType elementType = TypeUtils.getTypeVariable(propertyContext.getType());
         StringBuilder nestedTemplate = basePath(propertyContext);

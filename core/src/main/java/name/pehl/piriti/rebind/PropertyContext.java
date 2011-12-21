@@ -61,6 +61,8 @@ public class PropertyContext
      */
     private final String name;
 
+    private final Variables variables;
+
     /**
      * The path information for the mapping
      */
@@ -100,8 +102,6 @@ public class PropertyContext
      */
     private boolean native_;
 
-    private Variables variables;
-
     /**
      * Information about access from the generated reader / writer
      * <ul>
@@ -119,12 +119,13 @@ public class PropertyContext
 
     // ----------------------------------------------------------- constructors
 
-    public PropertyContext(int order, TypeContext typeContext, JType type, String name)
+    public PropertyContext(int order, TypeContext typeContext, JType type, String name, Variables variables)
     {
         this.order = order;
         this.typeContext = typeContext;
         this.type = type;
         this.name = name;
+        this.variables = variables;
     }
 
 
@@ -433,12 +434,6 @@ public class PropertyContext
     }
 
 
-    void setVariables(Variables variableNames)
-    {
-        this.variables = variableNames;
-    }
-
-
     public boolean isAccessibleField()
     {
         return access[0];
@@ -520,6 +515,7 @@ public class PropertyContext
         private final TypeContext typeContext;
         private final JType type;
         private final String name;
+        private final Variables variables;
         private String path;
         private Class<? extends Converter<?>> converter;
         private String format;
@@ -529,7 +525,6 @@ public class PropertyContext
         private Class<? extends PropertySetter<?, ?>> setter;
         private ReferenceType referenceType;
         private boolean native_;
-        private Variables variableNames;
         private PropertyContext parent;
 
 
@@ -539,18 +534,17 @@ public class PropertyContext
             this.typeContext = typeContext;
             this.type = type;
             this.name = name;
+            this.variables = new Variables(order);
         }
 
 
         public Builder(PropertyContext parent, JType nestedType)
         {
-            String nestedValue = parent.getVariables().newVariable("NestedValue");
-            Variables nestedVariables = new Variables(nestedValue);
-            TypeContext nestedTypeContext = parent.getTypeContext().clone(nestedVariables);
             this.order = TypeContext.nextOrder();
-            this.typeContext = nestedTypeContext;
+            this.typeContext = parent.getTypeContext();
             this.type = nestedType;
             this.name = parent.getName();
+            this.variables = new Variables(order, parent.getVariables().newVariable("NestedValue"));
             this.converter = parent.getConverter();
             this.format = parent.format;
             this.whitespaceHandling = parent.getWhitespaceHandling();
@@ -559,7 +553,6 @@ public class PropertyContext
             this.setter = parent.getSetter();
             this.referenceType = parent.getReferenceType();
             this.native_ = parent.isNative();
-            this.variableNames = nestedVariables;
             this.parent = parent;
         }
 
@@ -627,16 +620,9 @@ public class PropertyContext
         }
 
 
-        public Builder variableNames(Variables variableNames)
-        {
-            this.variableNames = variableNames;
-            return this;
-        }
-
-
         public PropertyContext build()
         {
-            PropertyContext context = new PropertyContext(order, typeContext, type, name);
+            PropertyContext context = new PropertyContext(order, typeContext, type, name, variables);
             JPrimitiveType primitiveType = type.isPrimitive();
             if (primitiveType != null)
             {
@@ -668,7 +654,6 @@ public class PropertyContext
             context.referenceType = referenceType;
             context.native_ = native_;
             context.access = checkAccess(primitiveType != null ? primitiveType : type);
-            context.variables = variableNames;
             if (parent != null)
             {
                 context.parent = parent;

@@ -48,7 +48,7 @@ public abstract class AbstractPropertyHandler implements PropertyHandler
 
 
     @Override
-    public void setTemplate(PropertyContext propertyContext)
+    public void calculateTemplate(PropertyContext propertyContext)
     {
         StringBuilder template = basePath(propertyContext);
         template.append(getClass().getSimpleName()).append(".vm");

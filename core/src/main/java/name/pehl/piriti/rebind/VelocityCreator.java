@@ -88,10 +88,9 @@ public abstract class VelocityCreator
             TypeContext typeContext = null;
             TypeProcessor typeProcessor = new PojoTypeProcessor();
             typeProcessor.setNext(new RwTypeProcessor());
-            Variables variables = new Variables("value");
 
             // collect properties, id and references
-            typeContext = new TypeContext(generatorContext.getTypeOracle(), type, rwType, variables);
+            typeContext = new TypeContext(generatorContext.getTypeOracle(), type, rwType);
             typeProcessor.process(typeContext);
 
             // setup velocity engine and context
@@ -116,7 +115,7 @@ public abstract class VelocityCreator
      * 
      * @return the velocity template which should be merged.
      */
-    protected String getTemplate()
+    private String getTemplate()
     {
         return getClass().getName().replace('.', '/') + ".vm";
     }

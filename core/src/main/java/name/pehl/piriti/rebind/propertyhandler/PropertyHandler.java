@@ -18,5 +18,5 @@ public interface PropertyHandler
      * 
      * @return
      */
-    void setTemplate(PropertyContext propertyContext);
+    void calculateTemplate(PropertyContext propertyContext);
 }

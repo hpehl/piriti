@@ -44,7 +44,6 @@ public class TypeContext
     private PropertyContext id;
     private final Map<String, PropertyContext> properties;
     private final Map<String, PropertyContext> references;
-    private Variables variables;
 
 
     // ----------------------------------------------------------- constructors
@@ -59,15 +58,13 @@ public class TypeContext
      * @param rwType
      *            The type of the reader or writer interface
      */
-    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType, Variables variables)
-
+    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType)
     {
         this.propertyHandlerLookup = new PropertyHandlerLookup();
         this.typeOracle = typeOracle;
         this.type = type;
         this.rwType = rwType;
 
-        this.variables = variables;
         this.references = new HashMap<String, PropertyContext>();
         this.properties = new HashMap<String, PropertyContext>();
 
@@ -103,12 +100,6 @@ public class TypeContext
         {
             throw new AssertionError("Type info for java.lang.Object not found!");
         }
-    }
-
-
-    public TypeContext clone(Variables variableNames)
-    {
-        return new TypeContext(this.typeOracle, this.type, this.rwType, variableNames);
     }
 
 
@@ -164,17 +155,10 @@ public class TypeContext
 
     public void addProperty(PropertyContext propertyContext)
     {
-        // TODO Refactor
-        // Variables must be present in
-        // ArrayPropertyHandler.isValid(PropertyContext)
-        // and CollectionPropertyHandler.isValid(PropertyContext)
-        propertyContext.setVariables(variables);
-        variables = variables.next();
-
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            propertyHandler.setTemplate(propertyContext);
+            propertyHandler.calculateTemplate(propertyContext);
             properties.put(propertyContext.getName(), propertyContext);
         }
         else
@@ -186,17 +170,10 @@ public class TypeContext
 
     public void addReference(PropertyContext propertyContext)
     {
-        // TODO Refactor
-        // Variables must be present in
-        // ArrayPropertyHandler.isValid(PropertyContext)
-        // and CollectionPropertyHandler.isValid(PropertyContext)
-        propertyContext.setVariables(variables);
-        variables = variables.next();
-
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            propertyHandler.setTemplate(propertyContext);
+            propertyHandler.calculateTemplate(propertyContext);
             references.put(propertyContext.getName(), propertyContext);
 
             // Prevent duplicate processing
@@ -300,12 +277,6 @@ public class TypeContext
     }
 
 
-    public Variables getVariables()
-    {
-        return variables;
-    }
-
-
     public PropertyContext getId()
     {
         return id;
@@ -317,9 +288,7 @@ public class TypeContext
         PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
         if (propertyHandler != null && propertyHandler.isValid(propertyContext))
         {
-            propertyContext.setVariables(variables);
-            variables = variables.next();
-            propertyHandler.setTemplate(propertyContext);
+            propertyHandler.calculateTemplate(propertyContext);
             this.id = propertyContext;
 
             // Prevent duplicate processing

@@ -7,19 +7,20 @@ package name.pehl.piriti.rebind;
  */
 public class Variables
 {
+    private static final String VALUE = "value";
     private static final String AS_STRING_SUFFIX = "AsString";
 
     private final int index;
     private final String value;
 
 
-    public Variables(String value)
+    public Variables(int index)
     {
-        this(0, value);
+        this(index, VALUE);
     }
 
 
-    private Variables(int index, String value)
+    public Variables(int index, String value)
     {
         this.index = index;
         this.value = value;
@@ -41,11 +42,5 @@ public class Variables
     public String newVariable(String suffix)
     {
         return getValue() + suffix;
-    }
-
-
-    Variables next()
-    {
-        return new Variables(index + 1, value);
     }
 }

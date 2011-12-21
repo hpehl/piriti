@@ -44,19 +44,21 @@ public class ArrayPropertyHandler extends AbstractPropertyHandler
         if (nestedHandler == null)
         {
             skipProperty(propertyContext, "No property handler found for element type" + nestedContext);
+            return false;
         }
         if (!nestedHandler.isValid(nestedContext))
         {
             skipProperty(propertyContext, "Element type " + nestedContext + " is not valid");
+            return false;
         }
         return true;
     }
 
 
     @Override
-    public void setTemplate(PropertyContext propertyContext)
+    public void calculateTemplate(PropertyContext propertyContext)
     {
-        super.setTemplate(propertyContext);
+        super.calculateTemplate(propertyContext);
 
         JType elementType = propertyContext.getArrayType().getComponentType();
         JPrimitiveType primitiveComponentType = elementType.isPrimitive();
