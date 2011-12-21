@@ -508,6 +508,47 @@ public class PropertyContext
         }
     }
 
+    public static class Variables
+    {
+        private static final String VALUE = "value";
+        private static final String AS_STRING_SUFFIX = "AsString";
+        private static int globalIndex = 0;
+
+        private final int index;
+        private final String value;
+
+
+        public Variables()
+        {
+            this(VALUE);
+        }
+
+
+        public Variables(String value)
+        {
+            this.index = globalIndex++;
+            this.value = value;
+        }
+
+
+        public String getValue()
+        {
+            return value + index;
+        }
+
+
+        public String getValueAsString()
+        {
+            return newVariable(AS_STRING_SUFFIX);
+        }
+
+
+        public String newVariable(String suffix)
+        {
+            return getValue() + suffix;
+        }
+    }
+
     /**
      * Builder for {@link PropertyContext}.
      * 
@@ -538,7 +579,7 @@ public class PropertyContext
             this.typeContext = typeContext;
             this.type = type;
             this.name = name;
-            this.variables = new Variables(order);
+            this.variables = new Variables();
         }
 
 
@@ -548,7 +589,7 @@ public class PropertyContext
             this.typeContext = parent.getTypeContext();
             this.type = nestedType;
             this.name = parent.getName();
-            this.variables = new Variables(order, parent.getVariables().newVariable("NestedValue"));
+            this.variables = new Variables(parent.getVariables().newVariable("NestedValue"));
             this.converter = parent.getConverter();
             this.format = parent.format;
             this.whitespaceHandling = parent.getWhitespaceHandling();
