@@ -15,8 +15,8 @@ import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.PropertyContext;
 import name.pehl.piriti.rebind.PropertyContext.PropertyContextOrder;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandler;
-import name.pehl.piriti.rebind.propertyhandler.PropertyHandlerLookup;
+import name.pehl.piriti.rebind.property.PropertyHandler;
+import name.pehl.piriti.rebind.property.PropertyHandlerLookup;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
