@@ -17,7 +17,7 @@ public class TemplateFinder
         String jsonxml = typeContext.isJson() ? "json" : "xml";
         String rw = typeContext.isReader() ? "reader" : "writer";
         path.append(jsonxml).append("/").append(rw).append("/property/");
-        return null;
+        return path.toString();
     }
 
 
