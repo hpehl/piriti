@@ -23,21 +23,45 @@ import com.google.gwt.core.ext.typeinfo.JType;
  */
 public class PropertyContextCreator
 {
+    // -------------------------------------------------------- private members
+
+    private final TemplateFinder templateFinder;
+
+
+    // ----------------------------------------------------------- constructors
+
+    public PropertyContextCreator()
+    {
+        this.templateFinder = new TemplateFinder();
+    }
+
+
     // --------------------------------------------------------- public methods
 
     public PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource)
             throws InvalidPropertyException
     {
-        Set<PropertyAccess> access = checkAccess(typeContext, propertySource);
+        Set<PropertyAccess> access = calculateAccess(typeContext, propertySource);
         validateProperty(typeContext, propertySource, access);
-        PropertyContext propertyContext = createPropertyContext(typeContext, propertySource, access);
+        PropertyContext propertyContext = new PropertyContext(propertySource, access);
+
+        // find and assign templates
+        String path = templateFinder.getPath(typeContext);
+        String template = path + templateFinder.getTemplate(propertyContext.getType());
+        propertyContext.setTemplate(template);
+        if (propertyContext.getElementType() != null)
+        {
+            String elementTypeTemplate = path + "elementtype/"
+                    + templateFinder.getTemplate(propertyContext.getElementType());
+            propertyContext.setElementTypeTemplate(elementTypeTemplate);
+        }
         return propertyContext;
     }
 
 
     // --------------------------------------------------------- helper methods
 
-    private Set<PropertyAccess> checkAccess(TypeContext typeContext, PropertySource propertySource)
+    private Set<PropertyAccess> calculateAccess(TypeContext typeContext, PropertySource propertySource)
     {
         Set<PropertyAccess> access = new HashSet<PropertyAccess>();
         JField field = TypeUtils.findField(typeContext.getType(), propertySource.getName());
@@ -165,19 +189,5 @@ public class PropertyContextCreator
         {
             throw new InvalidPropertyException(typeContext, propertySource, "Maps are not supported");
         }
-    }
-
-
-    private PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource,
-            Set<PropertyAccess> access)
-    {
-        String template = lookupTemplate(typeContext, propertySource);
-        return null;
-    }
-
-
-    private String lookupTemplate(TypeContext typeContext, PropertySource propertySource)
-    {
-        return null;
     }
 }

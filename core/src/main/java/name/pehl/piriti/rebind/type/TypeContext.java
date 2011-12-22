@@ -13,10 +13,7 @@ import name.pehl.piriti.commons.client.MapUpTo;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.GeneratorContextHolder;
-import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.property.PropertyContext;
-import name.pehl.piriti.rebind.property.PropertyHandler;
-import name.pehl.piriti.rebind.property.PropertyHandlerLookup;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
 
@@ -38,7 +35,6 @@ public class TypeContext
 
     // -------------------------------------------------------- private members
 
-    private final PropertyHandlerLookup propertyHandlerLookup;
     private final JClassType type;
     private final JClassType rwType;
     private Class<? extends InstanceCreator<?, ?>> instanceCreator;
@@ -60,7 +56,6 @@ public class TypeContext
      */
     public TypeContext(JClassType type, JClassType rwType)
     {
-        this.propertyHandlerLookup = new PropertyHandlerLookup();
         this.type = type;
         this.rwType = rwType;
 
@@ -154,34 +149,16 @@ public class TypeContext
 
     public void addProperty(PropertyContext propertyContext)
     {
-        PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-        if (propertyHandler != null && propertyHandler.isValid(propertyContext))
-        {
-            propertyHandler.calculateTemplate(propertyContext);
-            properties.put(propertyContext.getName(), propertyContext);
-        }
-        else
-        {
-            Logger.get().warn("No property handler found or invalid property: %s", propertyContext);
-        }
+        properties.put(propertyContext.getName(), propertyContext);
     }
 
 
     public void addReference(PropertyContext propertyContext)
     {
-        PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-        if (propertyHandler != null && propertyHandler.isValid(propertyContext))
-        {
-            propertyHandler.calculateTemplate(propertyContext);
-            references.put(propertyContext.getName(), propertyContext);
+        references.put(propertyContext.getName(), propertyContext);
 
-            // Prevent duplicate processing
-            removeProperty(propertyContext);
-        }
-        else
-        {
-            Logger.get().warn("No property handler found or invalid property: %s", propertyContext);
-        }
+        // Prevent duplicate processing
+        removeProperty(propertyContext);
     }
 
 
@@ -278,15 +255,10 @@ public class TypeContext
 
     public void setId(PropertyContext propertyContext)
     {
-        PropertyHandler propertyHandler = propertyHandlerLookup.lookup(propertyContext);
-        if (propertyHandler != null && propertyHandler.isValid(propertyContext))
-        {
-            propertyHandler.calculateTemplate(propertyContext);
-            this.id = propertyContext;
+        this.id = propertyContext;
 
-            // Prevent duplicate processing
-            removeProperty(propertyContext);
-        }
+        // Prevent duplicate processing
+        removeProperty(propertyContext);
     }
 
 

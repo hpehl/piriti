@@ -384,6 +384,44 @@ public final class TypeUtils
 
 
     /**
+     * Finds all concrete subtypes starting from {@code type}. If {@code type}
+     * itself is concrete the list will only contains {@code type}.
+     * 
+     * @param types
+     * @param type
+     */
+    public static void collectConcreteTypes(List<JClassType> concreteTypes, JType type)
+    {
+        if (type != null)
+        {
+            JClassType classOrInterface = type.isClassOrInterface();
+            if (classOrInterface != null)
+            {
+                if (classOrInterface.isAbstract() || classOrInterface.isInterface() != null)
+                {
+                    JClassType[] subtypes = classOrInterface.getSubtypes();
+                    if (subtypes != null && subtypes.length != 0)
+                    {
+                        for (JClassType subtype : subtypes)
+                        {
+                            collectConcreteTypes(concreteTypes, subtype);
+                        }
+                    }
+                }
+                else
+                {
+                    if (!(TypeUtils.isJavaType(classOrInterface) || TypeUtils.isGwtType(classOrInterface))
+                            && TypeUtils.isDefaultInstantiable(classOrInterface))
+                    {
+                        concreteTypes.add(classOrInterface);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
      * Tries to find the given field with the given modifier in the given type
      * or in the supertypes of the given type. If {@code modifiers} is
      * <code>null</code>, the fields modifiers are not evaluated, otherwise the

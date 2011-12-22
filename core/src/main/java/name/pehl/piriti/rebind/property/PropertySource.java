@@ -4,7 +4,6 @@ import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
-import name.pehl.piriti.rebind.ReferenceType;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -36,6 +35,9 @@ public interface PropertySource
     WhitespaceHandling getWhitespaceHandling();
 
 
+    boolean isNative();
+
+
     Class<? extends InstanceCreator<?, ?>> getInstanceCreator();
 
 
@@ -43,10 +45,4 @@ public interface PropertySource
 
 
     Class<? extends PropertySetter<?, ?>> getSetter();
-
-
-    ReferenceType getReferenceType();
-
-
-    boolean isNative();
 }

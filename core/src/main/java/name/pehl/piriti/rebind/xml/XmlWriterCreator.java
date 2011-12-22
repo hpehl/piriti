@@ -18,4 +18,11 @@ public class XmlWriterCreator extends VelocityCreator
     {
         super(rwType, implName, rwClassname);
     }
+
+
+    @Override
+    protected String getTemplate()
+    {
+        return "name/pehl/piriti/rebind/xml/writer/writer.vm";
+    }
 }

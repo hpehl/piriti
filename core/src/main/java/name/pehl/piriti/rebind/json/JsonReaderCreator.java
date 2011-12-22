@@ -18,4 +18,11 @@ public class JsonReaderCreator extends VelocityCreator
     {
         super(rwType, implName, rwClassname);
     }
+
+
+    @Override
+    protected String getTemplate()
+    {
+        return "name/pehl/piriti/rebind/json/reader/reader.vm";
+    }
 }

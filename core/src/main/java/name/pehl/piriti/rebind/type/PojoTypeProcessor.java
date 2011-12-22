@@ -27,14 +27,13 @@ import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.property.client.Setter;
 import name.pehl.piriti.rebind.Logger;
-import name.pehl.piriti.rebind.ReferenceType;
-import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.rebind.property.PropertySource;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 public class PojoTypeProcessor extends AbstractTypeProcessor
 {
@@ -50,7 +49,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class, IdRef.class)));
         for (JField field : fields)
         {
-            addProperty(typeContext, fromField(field));
+            addProperty(typeContext, new FieldPropertySource(field));
         }
         Logger.get().debug("Normal mappings done");
 
@@ -68,7 +67,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             }
             else
             {
-                setId(typeContext, fromField(idFields.get(0)));
+                setId(typeContext, new FieldPropertySource(idFields.get(0)));
             }
         }
         Logger.get().debug("Id done");
@@ -80,7 +79,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class)));
         for (JField refField : refFields)
         {
-            addReference(typeContext, fromField(refField));
+            addReference(typeContext, new FieldPropertySource(refField));
         }
         Logger.get().debug("Reference mappings done");
     }
@@ -162,126 +161,134 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         return false;
     }
 
+    // ---------------------------------------------------------- inner classes
 
-    private PropertySource fromField(JField field)
+    static class FieldPropertySource implements PropertySource
     {
-        return null;
-    }
+        final JField field;
 
 
-    protected PropertyContext createPropertyContext(TypeContext typeContext, JField field, ReferenceType referenceType)
-    {
-        PropertyContext propertyContext = null;
-
-        int order = getOrder(field);
-        String path = getPath(field);
-        Class<? extends Converter<?>> converter = getConverter(field);
-        String format = getFormat(field);
-        WhitespaceHandling whitespaceHandling = getWhitespaceHandling(field);
-        Class<? extends InstanceCreator<?, ?>> instanceCreator = getInstanceCreator(field);
-        Class<? extends PropertyGetter<?, ?>> getter = getGetter(field);
-        Class<? extends PropertySetter<?, ?>> setter = getSetter(field);
-        boolean native_ = getNative(field);
-
-        propertyContext = new PropertyContext.Builder(order, typeContext, field.getType(), field.getName()).path(path)
-                .converter(converter).format(format).whitespaceHandling(whitespaceHandling)
-                .instanceCreator(instanceCreator).getter(getter).setter(setter).referenceType(referenceType)
-                .native_(native_).build();
-        return propertyContext;
-    }
-
-
-    protected String getPath(JField field)
-    {
-        String path = null;
-        if (field.isAnnotationPresent(Path.class))
+        FieldPropertySource(JField field)
         {
-            path = field.getAnnotation(Path.class).value();
+            this.field = field;
         }
-        return path;
-    }
 
 
-    protected String getFormat(JField field)
-    {
-        String format = null;
-        if (field.isAnnotationPresent(Format.class))
+        @Override
+        public int getOrder()
         {
-            format = field.getAnnotation(Format.class).value();
+            int order = TypeContext.nextOrder();
+            if (field.isAnnotationPresent(Order.class))
+            {
+                order = field.getAnnotation(Order.class).value();
+            }
+            return order;
         }
-        return format;
-    }
 
 
-    protected WhitespaceHandling getWhitespaceHandling(JField field)
-    {
-        WhitespaceHandling whitespaceHandling = REMOVE;
-        if (field.isAnnotationPresent(Whitespace.class))
+        @Override
+        public JType getType()
         {
-            whitespaceHandling = field.getAnnotation(Whitespace.class).value();
+            return field.getType();
         }
-        return whitespaceHandling;
-    }
 
 
-    protected Class<? extends InstanceCreator<?, ?>> getInstanceCreator(JField field)
-    {
-        Class<? extends InstanceCreator<?, ?>> instanceCreator = null;
-        if (field.isAnnotationPresent(CreateWith.class))
+        @Override
+        public String getName()
         {
-            instanceCreator = field.getAnnotation(CreateWith.class).value();
+            return field.getName();
         }
-        return instanceCreator;
-    }
 
 
-    protected int getOrder(JField field)
-    {
-        int order = TypeContext.nextOrder();
-        if (field.isAnnotationPresent(Order.class))
+        @Override
+        public String getPath()
         {
-            order = field.getAnnotation(Order.class).value();
+            String path = null;
+            if (field.isAnnotationPresent(Path.class))
+            {
+                path = field.getAnnotation(Path.class).value();
+            }
+            return path;
         }
-        return order;
-    }
 
 
-    protected Class<? extends Converter<?>> getConverter(JField field)
-    {
-        Class<? extends Converter<?>> converter = null;
-        if (field.isAnnotationPresent(Convert.class))
+        @Override
+        public Class<? extends Converter<?>> getConverter()
         {
-            converter = field.getAnnotation(Convert.class).value();
+            Class<? extends Converter<?>> converter = null;
+            if (field.isAnnotationPresent(Convert.class))
+            {
+                converter = field.getAnnotation(Convert.class).value();
+            }
+            return converter;
         }
-        return converter;
-    }
 
 
-    protected Class<? extends PropertyGetter<?, ?>> getGetter(JField field)
-    {
-        Class<? extends PropertyGetter<?, ?>> getter = null;
-        if (field.isAnnotationPresent(Getter.class))
+        @Override
+        public String getFormat()
         {
-            getter = field.getAnnotation(Getter.class).value();
+            String format = null;
+            if (field.isAnnotationPresent(Format.class))
+            {
+                format = field.getAnnotation(Format.class).value();
+            }
+            return format;
         }
-        return getter;
-    }
 
 
-    protected Class<? extends PropertySetter<?, ?>> getSetter(JField field)
-    {
-        Class<? extends PropertySetter<?, ?>> setter = null;
-        if (field.isAnnotationPresent(Setter.class))
+        @Override
+        public WhitespaceHandling getWhitespaceHandling()
         {
-            setter = field.getAnnotation(Setter.class).value();
+            WhitespaceHandling whitespaceHandling = REMOVE;
+            if (field.isAnnotationPresent(Whitespace.class))
+            {
+                whitespaceHandling = field.getAnnotation(Whitespace.class).value();
+            }
+            return whitespaceHandling;
         }
-        return setter;
-    }
 
 
-    protected boolean getNative(JField field)
-    {
-        boolean nativ = field.isAnnotationPresent(Native.class);
-        return nativ;
+        @Override
+        public boolean isNative()
+        {
+            boolean nativ = field.isAnnotationPresent(Native.class);
+            return nativ;
+        }
+
+
+        @Override
+        public Class<? extends InstanceCreator<?, ?>> getInstanceCreator()
+        {
+            Class<? extends InstanceCreator<?, ?>> instanceCreator = null;
+            if (field.isAnnotationPresent(CreateWith.class))
+            {
+                instanceCreator = field.getAnnotation(CreateWith.class).value();
+            }
+            return instanceCreator;
+        }
+
+
+        @Override
+        public Class<? extends PropertyGetter<?, ?>> getGetter()
+        {
+            Class<? extends PropertyGetter<?, ?>> getter = null;
+            if (field.isAnnotationPresent(Getter.class))
+            {
+                getter = field.getAnnotation(Getter.class).value();
+            }
+            return getter;
+        }
+
+
+        @Override
+        public Class<? extends PropertySetter<?, ?>> getSetter()
+        {
+            Class<? extends PropertySetter<?, ?>> setter = null;
+            if (field.isAnnotationPresent(Setter.class))
+            {
+                setter = field.getAnnotation(Setter.class).value();
+            }
+            return setter;
+        }
     }
 }

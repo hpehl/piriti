@@ -118,10 +118,7 @@ public abstract class VelocityCreator
      * 
      * @return the velocity template which should be merged.
      */
-    private String getTemplate()
-    {
-        return getClass().getName().replace('.', '/') + ".vm";
-    }
+    protected abstract String getTemplate();
 
 
     /**

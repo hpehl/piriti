@@ -9,14 +9,13 @@ import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.Logger;
-import name.pehl.piriti.rebind.ReferenceType;
-import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.rebind.property.PropertySource;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JField;
+import com.google.gwt.core.ext.typeinfo.JType;
 
 public class RwTypeProcessor extends AbstractTypeProcessor
 {
@@ -32,7 +31,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping[] mappings = mappingsAnno.value();
             for (Mapping mapping : mappings)
             {
-                addProperty(typeContext, fromAnnotation(mapping));
+                addProperty(typeContext, new AnnotationPropertySource(typeContext, mapping));
             }
             Logger.get().debug("Normal mappings done");
 
@@ -40,7 +39,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
-                setId(typeContext, fromAnnotation(idMapping));
+                setId(typeContext, new AnnotationPropertySource(typeContext, idMapping));
             }
             Logger.get().debug("Id done");
 
@@ -48,46 +47,99 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping[] refMappings = mappingsAnno.references();
             for (Mapping refMapping : refMappings)
             {
-                addProperty(typeContext, fromAnnotation(refMapping));
+                addProperty(typeContext, new AnnotationPropertySource(typeContext, refMapping));
             }
             Logger.get().debug("Reference mappings done");
         }
     }
 
-
-    private PropertySource fromAnnotation(Mapping mapping)
+    static class AnnotationPropertySource implements PropertySource
     {
-        return null;
-    }
+        final Mapping mapping;
+        final JField field;
 
 
-    protected PropertyContext createPropertyContext(int order, TypeContext typeContext, Mapping mapping,
-            ReferenceType referenceType) throws UnableToCompleteException
-    {
-        PropertyContext propertyContext = null;
-        JField field = TypeUtils.findField(typeContext.getType(), mapping.value());
-        if (field != null)
+        AnnotationPropertySource(TypeContext typeContext, Mapping mapping)
         {
-            String path = mapping.path();
-            Class<? extends Converter<?>> converter = mapping.convert();
-            String format = mapping.format();
-            WhitespaceHandling whitespaceHandling = mapping.whitespace();
-            Class<? extends InstanceCreator<?, ?>> instanceCreator = mapping.createWith();
-            Class<? extends PropertyGetter<?, ?>> getter = mapping.getter();
-            Class<? extends PropertySetter<?, ?>> setter = mapping.setter();
-            boolean native_ = mapping.native_();
+            this.mapping = mapping;
+            this.field = TypeUtils.findField(typeContext.getType(), mapping.value());
+        }
 
-            propertyContext = new PropertyContext.Builder(order, typeContext, field.getType(), field.getName())
-                    .path(path).converter(converter).format(format).whitespaceHandling(whitespaceHandling)
-                    .instanceCreator(instanceCreator).getter(getter).setter(setter).referenceType(referenceType)
-                    .native_(native_).build();
-            return propertyContext;
-        }
-        else
+
+        @Override
+        public int getOrder()
         {
-            Logger.get().die("Field %s cannot be found in type hirarchy of %s!", mapping.value(),
-                    typeContext.getType().getParameterizedQualifiedSourceName());
+            return TypeContext.nextOrder();
         }
-        return propertyContext;
+
+
+        @Override
+        public JType getType()
+        {
+            return field.getType();
+        }
+
+
+        @Override
+        public String getName()
+        {
+            return field.getName();
+        }
+
+
+        @Override
+        public String getPath()
+        {
+            return mapping.path();
+        }
+
+
+        @Override
+        public Class<? extends Converter<?>> getConverter()
+        {
+            return mapping.convert();
+        }
+
+
+        @Override
+        public String getFormat()
+        {
+            return mapping.format();
+        }
+
+
+        @Override
+        public WhitespaceHandling getWhitespaceHandling()
+        {
+            return mapping.whitespace();
+        }
+
+
+        @Override
+        public boolean isNative()
+        {
+            return mapping.native_();
+        }
+
+
+        @Override
+        public Class<? extends InstanceCreator<?, ?>> getInstanceCreator()
+        {
+            return mapping.createWith();
+        }
+
+
+        @Override
+        public Class<? extends PropertyGetter<?, ?>> getGetter()
+        {
+            return mapping.getter();
+        }
+
+
+        @Override
+        public Class<? extends PropertySetter<?, ?>> getSetter()
+        {
+            return mapping.setter();
+        }
     }
 }

@@ -1,20 +1,17 @@
 package name.pehl.piriti.rebind.property;
 
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
+
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 
 import name.pehl.piriti.commons.client.InstanceCreator;
-import name.pehl.piriti.commons.client.NoopInstanceCreator;
 import name.pehl.piriti.converter.client.Converter;
-import name.pehl.piriti.converter.client.NoopConverter;
-import name.pehl.piriti.property.client.NoopPropertyGetter;
-import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.GeneratorContextHolder;
-import name.pehl.piriti.rebind.Modifier;
-import name.pehl.piriti.rebind.ReferenceType;
-import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
@@ -22,9 +19,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JEnumType;
-import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
@@ -50,91 +44,145 @@ public class PropertyContext
     private final int order;
 
     /**
-     * The type context this property belongs to
-     */
-    private final TypeContext typeContext;
-
-    /**
-     * The property type itself
+     * The property type itself. This is in any case not a primitive type. In
+     * case the original type was primitive this is the boxed counterpart and
+     * primitiveType holds the original primitive type.
      */
     private JType type;
 
+    /**
+     * The original primitive type or null if type is not primitive
+     */
     private JPrimitiveType primitiveType;
 
+    /**
+     * In case the type is an array or collection this member holds the element
+     * type, null otherwise. If used the element type is guaranteed to be not
+     * primitive, but the boxed counterpart.
+     */
+    private JType elementType;
+
+    /**
+     * If the type is an abstract class or an interface this list contains all
+     * its concrete subtypes. Otherwise the list contains just the type itself.
+     */
+    private final List<JClassType> concreteTypes;
     /**
      * The name of the property
      */
     private final String name;
 
-    private final Variables variables;
-
     /**
      * The path information for the mapping
      */
-    private String path;
+    private final String path;
 
     /**
-     * A custom converter
+     * A custom converter or null if undefined.
      */
-    private Class<? extends Converter<?>> converter;
+    private final Class<? extends Converter<?>> converter;
 
-    private String format;
+    private final String format;
 
     /**
      * Whether to strip whitespace and newlines from the input
      */
-    private WhitespaceHandling whitespaceHandling;
-
-    /**
-     * A custom instance creator
-     */
-    private Class<? extends InstanceCreator<?, ?>> instanceCreator;
-
-    /**
-     * A custom property getter
-     */
-    private Class<? extends PropertyGetter<?, ?>> getter;
-
-    /**
-     * A custom property setter
-     */
-    private Class<? extends PropertySetter<?, ?>> setter;
-
-    private ReferenceType referenceType;
+    private final WhitespaceHandling whitespaceHandling;
 
     /**
      * Whether to read the property nativly
      */
-    private boolean native_;
+    private final boolean native_;
 
     /**
-     * Information about access from the generated reader / writer
-     * <ul>
-     * <li>Index 0: Field access
-     * <li>Index 1: Callable getter
-     * <li>Index 2: Callable setter
-     * </ul>
+     * A custom instance creator or null if undefined.
      */
-    private boolean[] access;
-    private PropertyContext child;
-    private PropertyContext parent;
+    private final Class<? extends InstanceCreator<?, ?>> instanceCreator;
+
+    /**
+     * A custom property getter or null if undefined.
+     */
+    private final Class<? extends PropertyGetter<?, ?>> getter;
+
+    /**
+     * A custom property setter or null if undefined.
+     */
+    private final Class<? extends PropertySetter<?, ?>> setter;
+
+    /**
+     * Information about the accessibility of the property
+     */
+    private final Set<PropertyAccess> access;
+
+    private final Variables variables;
+
+    /**
+     * Template for code generation
+     */
     private String template;
-    private List<JClassType> concreteTypes;
+
+    /**
+     * Template for the element type
+     */
+    private String elementTypeTemplate;
 
 
     // ----------------------------------------------------------- constructors
 
-    public PropertyContext(int order, TypeContext typeContext, JType type, String name, Variables variables)
+    public PropertyContext(PropertySource propertySource, Set<PropertyAccess> access)
     {
-        this.order = order;
-        this.typeContext = typeContext;
-        this.type = type;
-        this.name = name;
-        this.variables = variables;
+        this.order = propertySource.getOrder();
+
+        // Types
+        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+        JPrimitiveType primitiveType = propertySource.getType().isPrimitive();
+        if (primitiveType != null)
+        {
+            this.type = typeOracle.findType(primitiveType.getQualifiedBoxedSourceName());
+            this.primitiveType = primitiveType;
+        }
+        else
+        {
+            this.type = propertySource.getType();
+            this.primitiveType = null;
+        }
+        JArrayType arrayType = this.type.isArray();
+        if (arrayType != null)
+        {
+            this.elementType = arrayType.getComponentType();
+            JPrimitiveType primitiveElementType = this.elementType.isPrimitive();
+            if (primitiveElementType != null)
+            {
+                this.elementType = typeOracle.findType(primitiveElementType.getQualifiedBoxedSourceName());
+            }
+        }
+        if (TypeUtils.isCollection(this.type))
+        {
+            this.elementType = TypeUtils.getTypeVariable(this.type);
+        }
+        this.concreteTypes = new ArrayList<JClassType>();
+        TypeUtils.collectConcreteTypes(concreteTypes, this.type);
+
+        // name and path
+        this.name = propertySource.getName();
+        this.path = propertySource.getPath();
+
+        // converter and format
+        this.converter = propertySource.getConverter();
+        this.format = propertySource.getFormat();
+        this.whitespaceHandling = propertySource.getWhitespaceHandling();
+        this.native_ = propertySource.isNative();
+
+        // instance creator, setter and getter
+        this.instanceCreator = propertySource.getInstanceCreator();
+        this.getter = propertySource.getGetter();
+        this.setter = propertySource.getSetter();
+        this.access = access;
+
+        // variables
+        this.variables = new Variables();
     }
 
-
-    // --------------------------------------------------------- object methods
 
     @Override
     public int hashCode()
@@ -198,168 +246,38 @@ public class PropertyContext
     }
 
 
-    // --------------------------------- methods related to the properties type
-
-    /**
-     * Whether the properties type is primitive.
-     * 
-     * @return <code>true</code> if the properties type is primitive,
-     *         <code>false</code> otherwise.
-     */
-    public boolean isPrimitive()
-    {
-        return getPrimitiveType() != null;
-    }
-
-
-    /**
-     * The properties primitive type.
-     * 
-     * @return the properties primitive type.
-     */
-    public JPrimitiveType getPrimitiveType()
-    {
-        return primitiveType;
-    }
-
-
-    /**
-     * Whether the properties type is an enum.
-     * 
-     * @return <code>true</code> if the properties type is an enum,
-     *         <code>false</code> othwerwise.
-     */
-    public boolean isEnum()
-    {
-        return getEnumType() != null;
-    }
-
-
-    /**
-     * The properties enum type.
-     * 
-     * @return the properties enum type.
-     */
-    public JEnumType getEnumType()
-    {
-        return type.isEnum();
-    }
-
-
-    /**
-     * Whether the properties type is a class or interface.
-     * 
-     * @return <code>true</code> if the properties type is a class or interface,
-     *         <code>false</code> otherwise.
-     */
-    public boolean isClassOrInterface()
-    {
-        return getClassOrInterfaceType() != null;
-    }
-
-
-    /**
-     * The properties class or interface type.
-     * 
-     * @return the properties class or interface type.
-     */
-    public JClassType getClassOrInterfaceType()
-    {
-        return type.isClassOrInterface();
-    }
-
-
-    /**
-     * Whether the properties type is an array.
-     * 
-     * @return <code>true</code> if the properties type is an array,
-     *         <code>false</code> otherwise.
-     */
-    public boolean isArray()
-    {
-        return getArrayType() != null;
-    }
-
-
-    /**
-     * The properties array type.
-     * 
-     * @return the properties array type.
-     */
-    public JArrayType getArrayType()
-    {
-        return type.isArray();
-    }
-
-
-    /**
-     * Finds all concrete subtypes starting from {@code type}. If {@code type}
-     * itself is concrete the list will only contains {@code type}.
-     * 
-     * @param types
-     * @param type
-     */
-    private void collectConcreteTypes(List<JClassType> concreteTypes, JClassType type)
-    {
-        if (type != null)
-        {
-            if (type.isAbstract() || type.isInterface() != null)
-            {
-                JClassType[] subtypes = type.getSubtypes();
-                if (subtypes != null && subtypes.length != 0)
-                {
-                    for (JClassType subtype : subtypes)
-                    {
-                        collectConcreteTypes(concreteTypes, subtype);
-                    }
-                }
-            }
-            else
-            {
-                if (!(TypeUtils.isJavaType(type) || TypeUtils.isGwtType(type)) && TypeUtils.isDefaultInstantiable(type))
-                {
-                    concreteTypes.add(type);
-                }
-            }
-        }
-    }
-
-
     // ------------------------------------------------------------- properties
 
-    public TypeContext getTypeContext()
-    {
-        return typeContext;
-    }
-
-
-    /**
-     * The properties type.
-     * 
-     * @return the properties type.
-     */
     public JType getType()
     {
         return type;
     }
 
 
-    /**
-     * The name of the property.
-     * 
-     * @return the name of the property.
-     */
+    public JPrimitiveType getPrimitiveType()
+    {
+        return primitiveType;
+    }
+
+
+    public JType getElementType()
+    {
+        return elementType;
+    }
+
+
+    public List<JClassType> getConcreteTypes()
+    {
+        return concreteTypes;
+    }
+
+
     public String getName()
     {
         return name;
     }
 
 
-    /**
-     * The path information for the mapping.
-     * 
-     * @return the path information for the mapping.
-     */
     public String getPath()
     {
         return path;
@@ -406,6 +324,12 @@ public class PropertyContext
     }
 
 
+    public Class<? extends Converter<?>> getConverter()
+    {
+        return converter;
+    }
+
+
     public String getFormat()
     {
         return format;
@@ -418,27 +342,15 @@ public class PropertyContext
     }
 
 
-    public Class<? extends Converter<?>> getConverter()
+    public boolean isNative()
     {
-        return converter;
-    }
-
-
-    public boolean hasConverter()
-    {
-        return converter != null;
+        return native_;
     }
 
 
     public Class<? extends InstanceCreator<?, ?>> getInstanceCreator()
     {
         return instanceCreator;
-    }
-
-
-    public boolean hasInstanceCreator()
-    {
-        return instanceCreator != null;
     }
 
 
@@ -454,15 +366,21 @@ public class PropertyContext
     }
 
 
-    public ReferenceType getReferenceType()
+    public boolean isAccessibleField()
     {
-        return referenceType;
+        return access.contains(FIELD);
     }
 
 
-    public boolean isNative()
+    public boolean isCallableGetter()
     {
-        return native_;
+        return access.contains(GETTER);
+    }
+
+
+    public boolean isCallableSetter()
+    {
+        return access.contains(SETTER);
     }
 
 
@@ -472,63 +390,27 @@ public class PropertyContext
     }
 
 
-    public boolean isAccessibleField()
-    {
-        return access[0];
-    }
-
-
-    public boolean isCallableGetter()
-    {
-        return access[1];
-    }
-
-
-    public boolean isCallableSetter()
-    {
-        return access[2];
-    }
-
-
-    public boolean hasParent()
-    {
-        return parent != null;
-    }
-
-
-    public boolean hasChild()
-    {
-        return child != null;
-    }
-
-
-    public PropertyContext getChild()
-    {
-        return child;
-    }
-
-
     public String getTemplate()
     {
         return template;
     }
 
 
-    public void setTemplate(String template)
+    void setTemplate(String template)
     {
         this.template = template;
     }
 
 
-    public List<JClassType> getConcreteTypes()
+    public String getElementTypeTemplate()
     {
-        return concreteTypes;
+        return elementTypeTemplate;
     }
 
 
-    public void setConcreteTypes(List<JClassType> concreteTypes)
+    void setElementTypeTemplate(String elementTypeTemplate)
     {
-        this.concreteTypes = concreteTypes;
+        this.elementTypeTemplate = elementTypeTemplate;
     }
 
     // ---------------------------------------------------------- inner classes
@@ -539,250 +421,6 @@ public class PropertyContext
         public int compare(PropertyContext context1, PropertyContext context2)
         {
             return context1.order - context2.order;
-        }
-    }
-
-    public static class Variables
-    {
-        private static final String VALUE = "value";
-        private static final String AS_STRING_SUFFIX = "AsString";
-        private static int globalIndex = 0;
-
-        private final int index;
-        private final String value;
-
-
-        public Variables()
-        {
-            this(VALUE);
-        }
-
-
-        public Variables(String value)
-        {
-            this.index = globalIndex++;
-            this.value = value;
-        }
-
-
-        public String getValue()
-        {
-            return value + index;
-        }
-
-
-        public String getValueAsString()
-        {
-            return newVariable(AS_STRING_SUFFIX);
-        }
-
-
-        public String newVariable(String suffix)
-        {
-            return getValue() + suffix;
-        }
-    }
-
-    /**
-     * Builder for {@link PropertyContext}.
-     * 
-     * @author upudxv4
-     */
-    public static class Builder
-    {
-        private final int order;
-        private final TypeContext typeContext;
-        private final JType type;
-        private final String name;
-        private final Variables variables;
-        private String path;
-        private Class<? extends Converter<?>> converter;
-        private String format;
-        private WhitespaceHandling whitespaceHandling;
-        private Class<? extends InstanceCreator<?, ?>> instanceCreator;
-        private Class<? extends PropertyGetter<?, ?>> getter;
-        private Class<? extends PropertySetter<?, ?>> setter;
-        private ReferenceType referenceType;
-        private boolean native_;
-        private PropertyContext parent;
-
-
-        public Builder(int order, TypeContext typeContext, JType type, String name)
-        {
-            this.order = order;
-            this.typeContext = typeContext;
-            this.type = type;
-            this.name = name;
-            this.variables = new Variables();
-        }
-
-
-        public Builder(PropertyContext parent, JType nestedType)
-        {
-            this.order = TypeContext.nextOrder();
-            this.typeContext = parent.getTypeContext();
-            this.type = nestedType;
-            this.name = parent.getName();
-            this.variables = new Variables(parent.getVariables().newVariable("NestedValue"));
-            this.converter = parent.getConverter();
-            this.format = parent.format;
-            this.whitespaceHandling = parent.getWhitespaceHandling();
-            this.instanceCreator = parent.getInstanceCreator();
-            this.getter = parent.getGetter();
-            this.setter = parent.getSetter();
-            this.referenceType = parent.getReferenceType();
-            this.native_ = parent.isNative();
-            this.parent = parent;
-        }
-
-
-        public Builder path(String path)
-        {
-            this.path = path;
-            return this;
-        }
-
-
-        public Builder converter(Class<? extends Converter<?>> converter)
-        {
-            this.converter = converter;
-            return this;
-        }
-
-
-        public Builder format(String format)
-        {
-            this.format = format;
-            return this;
-        }
-
-
-        public Builder whitespaceHandling(WhitespaceHandling whitespaceHandling)
-        {
-            this.whitespaceHandling = whitespaceHandling;
-            return this;
-        }
-
-
-        public Builder instanceCreator(Class<? extends InstanceCreator<?, ?>> instanceCreator)
-        {
-            this.instanceCreator = instanceCreator;
-            return this;
-        }
-
-
-        public Builder getter(Class<? extends PropertyGetter<?, ?>> getter)
-        {
-            this.getter = getter;
-            return this;
-        }
-
-
-        public Builder setter(Class<? extends PropertySetter<?, ?>> setter)
-        {
-            this.setter = setter;
-            return this;
-        }
-
-
-        public Builder referenceType(ReferenceType referenceType)
-        {
-            this.referenceType = referenceType;
-            return this;
-        }
-
-
-        public Builder native_(boolean native_)
-        {
-            this.native_ = native_;
-            return this;
-        }
-
-
-        public PropertyContext build()
-        {
-            PropertyContext context = new PropertyContext(order, typeContext, type, name, variables);
-            JPrimitiveType primitiveType = type.isPrimitive();
-            if (primitiveType != null)
-            {
-                // Use the boxed type for primitives
-                TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
-                context.type = typeOracle.findType(primitiveType.getQualifiedBoxedSourceName());
-                context.primitiveType = primitiveType;
-            }
-            if (path == null || path.length() == 0)
-            {
-                context.path = null;
-            }
-            else
-            {
-                context.path = path;
-            }
-            context.converter = converter == NoopConverter.class ? null : converter;
-            if (format == null || format.length() == 0)
-            {
-                context.format = null;
-            }
-            else
-            {
-                context.format = format;
-            }
-            context.whitespaceHandling = whitespaceHandling;
-            context.instanceCreator = instanceCreator == NoopInstanceCreator.class ? null : instanceCreator;
-            context.getter = getter == NoopPropertyGetter.class ? null : getter;
-            context.setter = setter == NoopPropertySetter.class ? null : setter;
-            context.referenceType = referenceType;
-            context.native_ = native_;
-            context.access = checkAccess(primitiveType != null ? primitiveType : type);
-            if (parent != null)
-            {
-                context.parent = parent;
-                context.parent.child = context;
-            }
-            return context;
-        }
-
-
-        private boolean[] checkAccess(JType type)
-        {
-            boolean access[] = new boolean[] {false, false, false};
-            JField field = TypeUtils.findField(typeContext.getType(), name);
-            if (field != null)
-            {
-                // Index 0: field
-                JClassType enclosingType = field.getEnclosingType();
-                boolean samePackage = typeContext.getRwType().getPackage() == enclosingType.getPackage();
-                access[0] = !field.isFinal()
-                        && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected()));
-
-                // Index 1: getter
-                JMethod getter = null;
-                if (samePackage)
-                {
-                    getter = TypeUtils.findGetter(typeContext.getType(), name, type, Modifier.DEFAULT,
-                            Modifier.PROTECTED, Modifier.PUBLIC);
-                }
-                else
-                {
-                    getter = TypeUtils.findGetter(typeContext.getType(), name, type, Modifier.PUBLIC);
-                }
-                access[1] = getter != null;
-
-                // Index 2: setter
-                JMethod setter = null;
-                if (samePackage)
-                {
-                    setter = TypeUtils.findSetter(typeContext.getType(), name, type, Modifier.DEFAULT,
-                            Modifier.PROTECTED, Modifier.PUBLIC);
-                }
-                else
-                {
-                    setter = TypeUtils.findSetter(typeContext.getType(), name, type, Modifier.PUBLIC);
-                }
-                access[2] = setter != null;
-            }
-
-            return access;
         }
     }
 }
