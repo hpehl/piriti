@@ -3,7 +3,6 @@ package name.pehl.piriti.rebind.type;
 import java.util.HashSet;
 import java.util.Set;
 
-import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.property.InvalidPropertyException;
 import name.pehl.piriti.rebind.property.PropertyContext;
@@ -27,7 +26,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
     public AbstractTypeProcessor()
     {
         skipTypes = new HashSet<JClassType>();
-        propertyContextCreator = new PropertyContextCreator(GeneratorContextHolder.get().getContext().getTypeOracle());
+        propertyContextCreator = new PropertyContextCreator();
     }
 
 

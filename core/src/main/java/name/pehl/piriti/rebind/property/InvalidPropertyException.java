@@ -1,5 +1,7 @@
 package name.pehl.piriti.rebind.property;
 
+import name.pehl.piriti.rebind.type.TypeContext;
+
 /**
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
@@ -7,45 +9,10 @@ package name.pehl.piriti.rebind.property;
 @SuppressWarnings("serial")
 public class InvalidPropertyException extends Exception
 {
-    /**
-     * Construct a new instance of this class
-     */
-    InvalidPropertyException()
+    public InvalidPropertyException(TypeContext typeContext, PropertySource propertySource, String message)
     {
-        super();
-    }
-
-
-    /**
-     * Construct a new instance of this class
-     * 
-     * @param message
-     * @param cause
-     */
-    InvalidPropertyException(String message, Throwable cause)
-    {
-        super(message, cause);
-    }
-
-
-    /**
-     * Construct a new instance of this class
-     * 
-     * @param message
-     */
-    InvalidPropertyException(String message)
-    {
-        super(message);
-    }
-
-
-    /**
-     * Construct a new instance of this class
-     * 
-     * @param cause
-     */
-    InvalidPropertyException(Throwable cause)
-    {
-        super(cause);
+        super(String.format("Invalid property %s %s in %s: %s", propertySource.getType()
+                .getParameterizedQualifiedSourceName(), propertySource.getName(), typeContext.getType()
+                .getParameterizedQualifiedSourceName(), message));
     }
 }

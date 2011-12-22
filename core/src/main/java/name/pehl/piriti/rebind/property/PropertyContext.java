@@ -40,9 +40,10 @@ public class PropertyContext
 {
     // -------------------------------------------------------------- constants
 
-    static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(', ')',};
+    public static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(',
+            ')',};
 
-    static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']', '/', '@',};
+    public static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']', '/', '@',};
 
     // -------------------------------------------------------- private members
 
@@ -288,6 +289,39 @@ public class PropertyContext
     public JArrayType getArrayType()
     {
         return type.isArray();
+    }
+
+
+    /**
+     * Finds all concrete subtypes starting from {@code type}. If {@code type}
+     * itself is concrete the list will only contains {@code type}.
+     * 
+     * @param types
+     * @param type
+     */
+    private void collectConcreteTypes(List<JClassType> concreteTypes, JClassType type)
+    {
+        if (type != null)
+        {
+            if (type.isAbstract() || type.isInterface() != null)
+            {
+                JClassType[] subtypes = type.getSubtypes();
+                if (subtypes != null && subtypes.length != 0)
+                {
+                    for (JClassType subtype : subtypes)
+                    {
+                        collectConcreteTypes(concreteTypes, subtype);
+                    }
+                }
+            }
+            else
+            {
+                if (!(TypeUtils.isJavaType(type) || TypeUtils.isGwtType(type)) && TypeUtils.isDefaultInstantiable(type))
+                {
+                    concreteTypes.add(type);
+                }
+            }
+        }
     }
 
 
