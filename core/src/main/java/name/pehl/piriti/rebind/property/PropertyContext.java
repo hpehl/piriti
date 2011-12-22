@@ -11,6 +11,7 @@ import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
+import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.Modifier;
 import name.pehl.piriti.rebind.ReferenceType;
 import name.pehl.piriti.rebind.type.TypeContext;
@@ -26,6 +27,7 @@ import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
  * Class which contains information needed to generate code for the evaluation,
@@ -670,7 +672,8 @@ public class PropertyContext
             if (primitiveType != null)
             {
                 // Use the boxed type for primitives
-                context.type = typeContext.getTypeOracle().findType(primitiveType.getQualifiedBoxedSourceName());
+                TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+                context.type = typeOracle.findType(primitiveType.getQualifiedBoxedSourceName());
                 context.primitiveType = primitiveType;
             }
             if (path == null || path.length() == 0)

@@ -1,12 +1,14 @@
 package name.pehl.piriti.rebind.property;
 
+import name.pehl.piriti.rebind.type.TypeContext;
+
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class PropertyCreator
+public class PropertyContextCreator
 {
     private final TypeOracle typeOracle;
 
@@ -16,13 +18,14 @@ public class PropertyCreator
      * 
      * @param typeOracle
      */
-    PropertyCreator(TypeOracle typeOracle)
+    public PropertyContextCreator(TypeOracle typeOracle)
     {
         this.typeOracle = typeOracle;
     }
 
 
-    public PropertyContext createPropertyContext(PropertySource source) throws InvalidPropertyException
+    public PropertyContext createPropertyContext(TypeContext typeContext, PropertySource source)
+            throws InvalidPropertyException
     {
         return null;
     }

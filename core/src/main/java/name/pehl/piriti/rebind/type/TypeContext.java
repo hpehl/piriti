@@ -12,6 +12,7 @@ import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.MapUpTo;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.rebind.property.PropertyHandler;
@@ -38,7 +39,6 @@ public class TypeContext
     // -------------------------------------------------------- private members
 
     private final PropertyHandlerLookup propertyHandlerLookup;
-    private final TypeOracle typeOracle;
     private final JClassType type;
     private final JClassType rwType;
     private Class<? extends InstanceCreator<?, ?>> instanceCreator;
@@ -53,17 +53,14 @@ public class TypeContext
     /**
      * Construct a new instance of this class
      * 
-     * @param typeOracle
-     *            The type oracle from the GWT generator API
      * @param type
      *            The type of the class
      * @param rwType
      *            The type of the reader or writer interface
      */
-    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType)
+    public TypeContext(JClassType type, JClassType rwType)
     {
         this.propertyHandlerLookup = new PropertyHandlerLookup();
-        this.typeOracle = typeOracle;
         this.type = type;
         this.rwType = rwType;
 
@@ -84,19 +81,19 @@ public class TypeContext
         }
 
         this.stopAt = null;
+        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
         if (this.type.isAnnotationPresent(MapUpTo.class))
         {
-            this.stopAt = this.typeOracle.findType(this.type.getAnnotation(MapUpTo.class).value().getName())
-                    .getSuperclass();
+            this.stopAt = typeOracle.findType(this.type.getAnnotation(MapUpTo.class).value().getName()).getSuperclass();
         }
         if (this.rwType.isAnnotationPresent(MapUpTo.class))
         {
-            this.stopAt = this.typeOracle.findType(this.rwType.getAnnotation(MapUpTo.class).value().getName())
+            this.stopAt = typeOracle.findType(this.rwType.getAnnotation(MapUpTo.class).value().getName())
                     .getSuperclass();
         }
         if (this.stopAt == null)
         {
-            this.stopAt = this.typeOracle.findType(Object.class.getName());
+            this.stopAt = typeOracle.findType(Object.class.getName());
         }
         if (stopAt == null)
         {
@@ -195,12 +192,6 @@ public class TypeContext
 
 
     // ------------------------------------------------------------- properties
-
-    public TypeOracle getTypeOracle()
-    {
-        return typeOracle;
-    }
-
 
     /**
      * The type of the POJO to be (de)serialized.

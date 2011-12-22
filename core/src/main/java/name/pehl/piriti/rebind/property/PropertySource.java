@@ -6,5 +6,5 @@ package name.pehl.piriti.rebind.property;
  */
 public interface PropertySource
 {
-
+    String getName();
 }

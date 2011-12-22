@@ -22,6 +22,8 @@ public abstract class VelocityGenerator extends Generator
             throws UnableToCompleteException
     {
         Logger.get().setup(treeLogger);
+        GeneratorContextHolder.get().setup(context);
+
         JClassType interfaceType;
         TypeOracle oracle = context.getTypeOracle();
         try
@@ -36,13 +38,13 @@ public abstract class VelocityGenerator extends Generator
         String implName = interfaceType.getName().replace('.', '_') + "Impl";
         String packageName = interfaceType.getPackage().getName();
 
-        VelocityCreator creator = createCreator(context, interfaceType, implName);
+        VelocityCreator creator = createCreator(interfaceType, implName);
         creator.createCode();
 
         return packageName + "." + implName;
     }
 
 
-    protected abstract VelocityCreator createCreator(GeneratorContext context, JClassType interfaceType, String implName)
+    protected abstract VelocityCreator createCreator(JClassType interfaceType, String implName)
             throws UnableToCompleteException;
 }

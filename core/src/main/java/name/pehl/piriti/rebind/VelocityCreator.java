@@ -14,7 +14,6 @@ import name.pehl.piriti.rebind.type.TypeUtils;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
-import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 
@@ -26,7 +25,6 @@ public abstract class VelocityCreator
 
     // -------------------------------------------------------- private members
 
-    private final GeneratorContext generatorContext;
     private final JClassType rwType;
     private final String implName;
     private JClassType type;
@@ -34,12 +32,11 @@ public abstract class VelocityCreator
 
     // ----------------------------------------------------------- constructors
 
-    public VelocityCreator(GeneratorContext generatorContext, JClassType rwType, String implName, String rwClassname)
-            throws UnableToCompleteException
+    public VelocityCreator(JClassType rwType, String implName, String rwClassname) throws UnableToCompleteException
     {
         // Check for possible misuse:
         // GWT.create(XmlReader.class)
-        JClassType rwInterface = generatorContext.getTypeOracle().findType(rwClassname);
+        JClassType rwInterface = GeneratorContextHolder.get().getContext().getTypeOracle().findType(rwClassname);
         if (rwInterface.equals(rwType))
         {
             Logger.get().die(
@@ -77,7 +74,6 @@ public abstract class VelocityCreator
         {
             Logger.get().die("Type parameters for the model are not supported!");
         }
-        this.generatorContext = generatorContext;
         this.rwType = rwType;
         this.implName = implName;
     }
@@ -87,8 +83,8 @@ public abstract class VelocityCreator
 
     public void createCode() throws UnableToCompleteException
     {
-        PrintWriter printWriter = generatorContext.tryCreate(Logger.get().getTreeLogger(), rwType.getPackage()
-                .getName(), implName);
+        PrintWriter printWriter = GeneratorContextHolder.get().getContext()
+                .tryCreate(Logger.get().getTreeLogger(), rwType.getPackage().getName(), implName);
         if (printWriter != null)
         {
             // TODO Refactor: From here on use Guice to resolve dependencies
@@ -97,7 +93,7 @@ public abstract class VelocityCreator
             typeProcessor.setNext(new RwTypeProcessor());
 
             // collect properties, id and references
-            typeContext = new TypeContext(generatorContext.getTypeOracle(), type, rwType);
+            typeContext = new TypeContext(type, rwType);
             typeProcessor.process(typeContext);
 
             // setup velocity engine and context
@@ -110,7 +106,7 @@ public abstract class VelocityCreator
 
             // merge template
             velocityEngine.mergeTemplate(getTemplate(), "UTF-8", context, printWriter);
-            generatorContext.commit(Logger.get().getTreeLogger(), printWriter);
+            GeneratorContextHolder.get().getContext().commit(Logger.get().getTreeLogger(), printWriter);
         }
     }
 

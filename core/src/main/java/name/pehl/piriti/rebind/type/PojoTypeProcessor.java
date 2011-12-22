@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind.type;
 
 import static java.util.Arrays.asList;
-import static name.pehl.piriti.rebind.ReferenceType.ID;
-import static name.pehl.piriti.rebind.ReferenceType.IDREF;
 import static name.pehl.totoe.commons.client.WhitespaceHandling.REMOVE;
 
 import java.lang.annotation.Annotation;
@@ -30,7 +28,6 @@ import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.property.client.Setter;
 import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.ReferenceType;
-import name.pehl.piriti.rebind.property.InvalidPropertyException;
 import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.rebind.property.PropertySource;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
@@ -53,24 +50,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class, IdRef.class)));
         for (JField field : fields)
         {
-            PropertySource propertySource = fromField(field);
-            try
-            {
-                PropertyContext pc = createPropertyContext(typeContext, propertySource);
-                Logger.get().debug("Adding property %s to %s", pc, typeContext);
-                typeContext.addProperty(pc);
-            }
-            catch (InvalidPropertyException e)
-            {
-                // TODO Logging
-            }
-
-            PropertyContext propertyContext = createPropertyContext(typeContext, field, null);
-            if (propertyContext != null)
-            {
-                Logger.get().debug("Adding property %s to %s", propertyContext, typeContext);
-                typeContext.addProperty(propertyContext);
-            }
+            addProperty(typeContext, fromField(field));
         }
         Logger.get().debug("Normal mappings done");
 
@@ -88,30 +68,19 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
             }
             else
             {
-                PropertyContext propertyContext = createPropertyContext(typeContext, idFields.get(0), ID);
-                if (propertyContext != null)
-                {
-                    Logger.get().debug("Settings id %s for %s", propertyContext, typeContext);
-                    typeContext.setId(propertyContext);
-                }
+                setId(typeContext, fromField(idFields.get(0)));
             }
         }
         Logger.get().debug("Id done");
 
-        // idref
+        // references
         Logger.get().debug("Collect reference mappings...");
-        List<JField> idRefFields = new ArrayList<JField>();
-        collectFields(typeContext.getType(), idRefFields,
-                new HashSet<Class<? extends Annotation>>(asList(IdRef.class)),
+        List<JField> refFields = new ArrayList<JField>();
+        collectFields(typeContext.getType(), refFields, new HashSet<Class<? extends Annotation>>(asList(IdRef.class)),
                 new HashSet<Class<? extends Annotation>>(asList(Transient.class, Id.class)));
-        for (JField field : idRefFields)
+        for (JField refField : refFields)
         {
-            PropertyContext propertyContext = createPropertyContext(typeContext, field, IDREF);
-            if (propertyContext != null)
-            {
-                Logger.get().debug("Adding reference %s to %s", propertyContext, typeContext);
-                typeContext.addReference(propertyContext);
-            }
+            addReference(typeContext, fromField(refField));
         }
         Logger.get().debug("Reference mappings done");
     }

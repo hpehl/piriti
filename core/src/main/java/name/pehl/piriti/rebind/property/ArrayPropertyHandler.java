@@ -1,9 +1,11 @@
 package name.pehl.piriti.rebind.property;
 
+import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.type.TypeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
  * {@link PropertyHandler} for arrays.
@@ -34,8 +36,8 @@ public class ArrayPropertyHandler extends AbstractPropertyHandler
         JPrimitiveType primitiveComponentType = elementType.isPrimitive();
         if (primitiveComponentType != null)
         {
-            elementType = propertyContext.getTypeContext().getTypeOracle()
-                    .findType(primitiveComponentType.getQualifiedBoxedSourceName());
+            TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+            elementType = typeOracle.findType(primitiveComponentType.getQualifiedBoxedSourceName());
 
         }
         PropertyContext nestedContext = new PropertyContext.Builder(propertyContext, elementType).build();
@@ -63,8 +65,8 @@ public class ArrayPropertyHandler extends AbstractPropertyHandler
         JPrimitiveType primitiveComponentType = elementType.isPrimitive();
         if (primitiveComponentType != null)
         {
-            elementType = propertyContext.getTypeContext().getTypeOracle()
-                    .findType(primitiveComponentType.getQualifiedBoxedSourceName());
+            TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+            elementType = typeOracle.findType(primitiveComponentType.getQualifiedBoxedSourceName());
 
         }
         StringBuilder nestedTemplate = basePath(propertyContext);

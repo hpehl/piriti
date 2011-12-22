@@ -1,8 +1,5 @@
 package name.pehl.piriti.rebind.type;
 
-import static name.pehl.piriti.rebind.ReferenceType.ID;
-import static name.pehl.piriti.rebind.ReferenceType.IDREF;
-
 import java.util.Set;
 
 import name.pehl.piriti.commons.client.InstanceCreator;
@@ -14,6 +11,7 @@ import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.ReferenceType;
 import name.pehl.piriti.rebind.property.PropertyContext;
+import name.pehl.piriti.rebind.property.PropertySource;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -30,17 +28,11 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         if (rwType.isAnnotationPresent(Mappings.class))
         {
             Logger.get().debug("Collect normal mappings...");
-            int index = 0;
             Mappings mappingsAnno = rwType.getAnnotation(Mappings.class);
             Mapping[] mappings = mappingsAnno.value();
             for (Mapping mapping : mappings)
             {
-                PropertyContext propertyContext = createPropertyContext(index++, typeContext, mapping, null);
-                if (propertyContext != null)
-                {
-                    Logger.get().debug("Adding property %s to %s", propertyContext, typeContext);
-                    typeContext.addProperty(propertyContext);
-                }
+                addProperty(typeContext, fromAnnotation(mapping));
             }
             Logger.get().debug("Normal mappings done");
 
@@ -48,30 +40,24 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
-                PropertyContext propertyContext = createPropertyContext(TypeContext.nextOrder(), typeContext,
-                        idMapping, ID);
-                if (propertyContext != null)
-                {
-                    Logger.get().debug("Settings id %s for %s", propertyContext, typeContext);
-                    typeContext.setId(propertyContext);
-                }
+                setId(typeContext, fromAnnotation(idMapping));
             }
             Logger.get().debug("Id done");
 
             Logger.get().debug("Collect reference mappings...");
-            Mapping[] idRefMappings = mappingsAnno.references();
-            for (Mapping idRefMapping : idRefMappings)
+            Mapping[] refMappings = mappingsAnno.references();
+            for (Mapping refMapping : refMappings)
             {
-                PropertyContext propertyContext = createPropertyContext(TypeContext.nextOrder(), typeContext,
-                        idRefMapping, IDREF);
-                if (propertyContext != null)
-                {
-                    Logger.get().debug("Adding reference %s to %s", propertyContext, typeContext);
-                    typeContext.addReference(propertyContext);
-                }
+                addProperty(typeContext, fromAnnotation(refMapping));
             }
             Logger.get().debug("Reference mappings done");
         }
+    }
+
+
+    private PropertySource fromAnnotation(Mapping mapping)
+    {
+        return null;
     }
 
 
