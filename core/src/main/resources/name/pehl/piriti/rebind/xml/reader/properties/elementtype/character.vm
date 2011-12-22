@@ -1,0 +1,16 @@
+Character $nestedValue = null;
+String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
+if ($nestedValueAsString != null)
+{
+    if ($converter != null)
+    {
+	    $nestedValue = ${converter}.convert($nestedValueAsString);
+    }
+    else
+    {
+	    if (${nestedValueAsString}.length() != 0)
+	    {
+	        $nestedValue = ${nestedValueAsString}.charAt(0);
+	    }
+    }
+}

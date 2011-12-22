@@ -1,0 +1,12 @@
+String $nestedValue = null;
+JSONString jsonString = nestedJsonValue.isString();
+if (jsonString != null)
+{
+    $nestedValue = jsonString.stringValue();
+    #if ($property.hasConverter())
+        if ($nestedValue != null && $converter != null)
+        {
+            $nestedValue = ${converter}.convert($value);
+        }
+    #end
+}

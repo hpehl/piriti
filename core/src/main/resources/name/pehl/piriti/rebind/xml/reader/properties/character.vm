@@ -1,0 +1,28 @@
+#set($valueType = $property.type.qualifiedSourceName)
+#set($value = $property.variables.value)
+#set($valueAsString = $property.variables.valueAsString)
+#set($converter = $property.variables.newVariable("Converter"))
+
+#logProperty()
+Character $value = null;
+String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
+if ($valueAsString != null)
+{
+    Converter<Character> $converter = null;
+    #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
+    if ($converter != null)
+    {
+        $value = ${converter}.convert($valueAsString);
+    }
+    else
+    {
+        if (${valueAsString}.length() != 0)
+        {
+            $value = ${valueAsString}.charAt(0);
+        }
+    }
+}
+if ($value != null) 
+{
+    #assignValue()
+}

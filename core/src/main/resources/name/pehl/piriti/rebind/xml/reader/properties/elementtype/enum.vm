@@ -1,0 +1,33 @@
+#set($nestedValueType = $property.child.type.qualifiedSourceName)
+
+$nestedValueType $nestedValue = null;
+String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
+if ($nestedValueAsString != null)
+{
+    if ($converter != null)
+    {
+        $nestedValue = ${converter}.convert($nestedValueAsString);
+    }
+    else
+    {
+        boolean error = true;
+        String[] stringValues = new String[]{$nestedValueAsString, ${nestedValueAsString}.toUpperCase(), ${nestedValueAsString}.toLowerCase()};
+        for (String s : stringValues)
+        {
+            try 
+            {
+                $nestedValue = ${property.child.enumType.qualifiedSourceName}.valueOf(s);
+                error = false;
+                break;
+            }
+            catch (IllegalArgumentException e) {} 
+        }
+        if (error)
+        {
+            if (logger.isLoggable(SEVERE)) 
+            {
+                logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum property $property.name in ${modelType} using ${nestedValueType}.valueOf(String).");
+            }
+        }
+    }
+}

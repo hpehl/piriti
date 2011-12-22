@@ -1,0 +1,240 @@
+#set($modelType = $typeContext.type.qualifiedSourceName)
+#set($modelParameterizedType = $typeContext.type.parameterizedQualifiedSourceName)
+
+package ${typeContext.rwType.package.name};
+
+import static java.util.logging.Level.*;
+import static name.pehl.totoe.commons.client.WhitespaceHandling.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import name.pehl.piriti.commons.client.InstanceContextHolder;
+import name.pehl.piriti.commons.client.ModelReadEvent;
+import name.pehl.piriti.commons.client.ModelReadHandler;
+import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.ConverterGinjector;
+import name.pehl.piriti.converter.client.ConverterRegistry;
+import name.pehl.piriti.xml.client.XmlGinjector;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlRegistry;
+import name.pehl.totoe.xml.client.Document;
+import name.pehl.totoe.xml.client.Element;
+import name.pehl.totoe.xml.client.Node;
+import name.pehl.totoe.xml.client.XmlParseException;
+import name.pehl.totoe.xml.client.XmlParser;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+
+public class $implName implements $typeContext.rwType.qualifiedSourceName 
+{
+    // --------------------------------------------------------- private fields
+    
+    private static Logger logger = Logger.getLogger("$typeContext.rwType.qualifiedSourceName");
+    private final HandlerManager handlerManager;
+    private final ConverterRegistry converterRegistry;
+    private final XmlRegistry xmlRegistry;
+    private final Map<String, $modelType> idMap;
+    
+    
+    // ----------------------------------------------------------- constructors
+
+    public $implName() 
+    {
+        this.handlerManager = new HandlerManager(this);
+        this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
+        this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();
+        this.xmlRegistry.register(${modelType}.class, this);
+        this.idMap = new HashMap<String, $modelParameterizedType>();
+    }
+    
+    
+    // --------------------------------------------------------- event handling
+    
+    public HandlerRegistration addModelReadHandler(ModelReadHandler<$modelParameterizedType> handler) 
+    {
+        return handlerManager.addHandler(ModelReadEvent.getType(), handler);
+    }
+
+    public void fireEvent(GwtEvent<?> event) 
+    {
+        handlerManager.fireEvent(event);
+    }
+    
+    
+    // ------------------------------------------------------ read list methods
+
+    public List<$modelParameterizedType> readList(String xml) throws XmlParseException
+    {
+        return readList(new XmlParser().parse(xml));
+    }
+
+    public List<$modelParameterizedType> readList(Document document)
+    {
+        if (document == null || document.getRoot() == null) 
+        {
+            return null;
+        }
+        return internalReadList(filterElements(document.getRoot().getChildren()));
+    }
+
+    public List<$modelParameterizedType> readList(Document document, String xpath)
+    {
+        if (document == null) 
+        {
+            return null;
+        }
+        return internalReadList(filterElements(document.selectNodes(xpath)));
+    }
+    
+    public List<$modelParameterizedType> readList(Element element)
+    {
+        if (element == null) 
+        {
+            return null;
+        }
+        return internalReadList(filterElements(element.getChildren()));
+    }
+    
+    public List<$modelParameterizedType> readList(Element element, String xpath)
+    {
+        if (element == null) 
+        {
+            return null;
+        }
+        return internalReadList(filterElements(element.selectNodes(xpath)));
+    }
+    
+    private List<$modelParameterizedType> internalReadList(List<Element> elements) 
+    {
+        List<$modelParameterizedType> models = null;
+        List<InstanceContextHolder<$modelParameterizedType, Element>> instanceContextHolders = null;
+        
+        if (!elements.isEmpty()) 
+        {
+            models = new ArrayList<$modelParameterizedType>();
+            instanceContextHolders = new ArrayList<InstanceContextHolder<$modelParameterizedType, Element>>();
+
+            if (logger.isLoggable(FINE)) 
+            {
+                logger.log(FINE, "First iteration over JSON array to create models and process IDs");
+            }
+            for (Element element : elements) 
+            {
+                $modelParameterizedType model = readId(element);
+                if (model != null) 
+                {
+                    models.add(model);
+                    instanceContextHolders.add(
+                        new InstanceContextHolder<$modelParameterizedType, Element>(model, element));
+                }
+            }
+            
+            if (logger.isLoggable(FINE)) 
+            {
+                logger.log(FINE, "Second iteration over generated models to map properties and IDREFs");
+            }
+            for (InstanceContextHolder<$modelParameterizedType, Element> ich : instanceContextHolders) 
+            {
+                $modelParameterizedType model = ich.getInstance();
+                readProperties(ich.getContext(), model);
+                readIdRefs(ich.getContext(), model);
+                ModelReadEvent.fire(this, model);
+            }
+        }
+        return models;
+    }
+    
+
+    // ---------------------------------------------------- read single methods
+    
+    public $modelParameterizedType read(String xml) throws XmlParseException
+    {
+        return read(new XmlParser().parse(xml));
+    }
+    
+    public $modelParameterizedType read(Document document)
+    {
+        if (document == null) 
+        {
+            return null;
+        }
+        return read(document.getRoot());
+    }
+
+    public $modelParameterizedType read(Element element)
+    {
+        if (element == null) 
+        {
+            return null;
+        }
+        $modelParameterizedType model = readId(element);
+        readProperties(element, model);
+        readIdRefs(element, model);
+        ModelReadEvent.fire(this, model);
+        return model;
+    }
+
+
+    // ----------------------------------------- ids, properties and references
+
+    public $modelParameterizedType idRef(String id)
+    {
+        return this.idMap.get(id);
+    }
+    
+    private $modelParameterizedType readId(Element element)
+    {
+        ##TODO: Handle Id annotations
+        $modelParameterizedType model = null;
+        #if ($typeContext.instanceCreator)
+            $typeContext.instanceCreator.name instanceCreator = GWT.create(${typeContext.instanceCreator.name}.class);
+            model = instanceCreator.newInstance(jsonObject);
+        #else
+            model = GWT.create(${modelType}.class); 
+        #end
+        return model;
+    }
+    
+    private $modelParameterizedType readProperties(Element element, $modelParameterizedType model) 
+    {
+        if (element != null) 
+        {
+            #foreach ($property in $typeContext.properties)
+                #parse($property.template)
+            #end
+        }
+        return model;
+    }
+    
+    private $modelParameterizedType readIdRefs(Element element, $modelParameterizedType model) 
+    {
+        if (element != null) 
+        {
+            ## TODO: handleIdRefs(writer);
+        }
+        return model;
+    }
+
+    
+    // --------------------------------------------------------- helper methods
+    
+    private List<Element> filterElements(List<Node> nodes) 
+    {
+        List<Element> elements = new ArrayList<Element>();
+        for (Node node : nodes) 
+        {
+            if (node instanceof Element) 
+            {
+                elements.add((Element) node);
+            }
+        }
+        return elements;
+    }
+}

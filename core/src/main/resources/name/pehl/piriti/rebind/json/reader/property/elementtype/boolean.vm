@@ -1,0 +1,21 @@
+Boolean $nestedValue = null;
+JSONBoolean jsonBoolean = nestedJsonValue.isBoolean();
+if (jsonBoolean != null)
+{
+    $nestedValue = jsonBoolean.booleanValue();
+}
+else
+{
+    JSONString jsonString = nestedJsonValue.isString();
+    if (jsonString != null)
+    {
+        String stringValue = jsonString.stringValue();
+        if (stringValue != null)
+        {
+            if ($converter != null)
+            {
+                $nestedValue = ${converter}.convert(stringValue);
+            }
+        }
+    }
+}

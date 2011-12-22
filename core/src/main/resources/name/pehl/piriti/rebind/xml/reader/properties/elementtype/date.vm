@@ -1,0 +1,8 @@
+#set($nestedValueType = $property.child.type.qualifiedSourceName)
+
+$nestedValueType $nestedValue = null;
+String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
+if ($nestedValueAsString != null && $converter != null)
+{
+    $nestedValue = ${converter}.convert($nestedValueAsString);
+}
