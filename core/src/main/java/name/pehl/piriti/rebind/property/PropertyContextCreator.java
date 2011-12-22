@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -124,41 +122,46 @@ public class PropertyContextCreator
     }
 
 
-    private void validatePropertyType(TypeContext typeContext, PropertySource propertySource) throws InvalidPropertyException
+    private void validatePropertyType(TypeContext typeContext, PropertySource propertySource)
+            throws InvalidPropertyException
     {
-        JType propertyType = 
-        JArrayType arrayType = type.isArray();
+        JType propertyType = propertySource.getType();
+        JArrayType arrayType = propertyType.isArray();
         if (arrayType != null)
         {
             JType elementType = arrayType.getComponentType();
             if (elementType.isArray() != null)
             {
-                throw new InvalidPropertyException(typeContext, propertySource, "Multi-dimensional arrays are not supported");
+                throw new InvalidPropertyException(typeContext, propertySource,
+                        "Multi-dimensional arrays are not supported");
             }
             if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
             {
-                throw new InvalidPropertyException(typeContext, propertySource, "Arrays of collections / maps are not supported");
+                throw new InvalidPropertyException(typeContext, propertySource,
+                        "Arrays of collections / maps are not supported");
             }
         }
 
-        if (TypeUtils.isCollection(type))
+        if (TypeUtils.isCollection(propertyType))
         {
-            JType elementType = TypeUtils.getTypeVariable(type);
+            JType elementType = TypeUtils.getTypeVariable(propertyType);
             if (elementType == null)
             {
                 throw new InvalidPropertyException(typeContext, propertySource, "No type parameter found");
             }
             if (elementType.isArray() != null)
             {
-                throw new InvalidPropertyException(typeContext, propertySource, "Collections of arrays are not supported");
+                throw new InvalidPropertyException(typeContext, propertySource,
+                        "Collections of arrays are not supported");
             }
             if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
             {
-                throw new InvalidPropertyException(typeContext, propertySource, "Collections of collections / maps are not supported");
+                throw new InvalidPropertyException(typeContext, propertySource,
+                        "Collections of collections / maps are not supported");
             }
         }
 
-        if (TypeUtils.isMap(type))
+        if (TypeUtils.isMap(propertyType))
         {
             throw new InvalidPropertyException(typeContext, propertySource, "Maps are not supported");
         }
