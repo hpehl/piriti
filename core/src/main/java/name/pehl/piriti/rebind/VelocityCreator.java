@@ -87,24 +87,20 @@ public abstract class VelocityCreator
                 .tryCreate(Logger.get().getTreeLogger(), rwType.getPackage().getName(), implName);
         if (printWriter != null)
         {
-            // TODO Refactor: From here on use Guice to resolve dependencies
-            TypeContext typeContext = null;
+            // collect properties, id and references
             TypeProcessor typeProcessor = new PojoTypeProcessor();
             typeProcessor.setNext(new RwTypeProcessor());
-
-            // collect properties, id and references
-            typeContext = new TypeContext(type, rwType);
+            TypeContext typeContext = new TypeContext(type, rwType);
             typeProcessor.process(typeContext);
 
-            // setup velocity engine and context
-            VelocityEngine velocityEngine = createVelocityEngine();
+            // setup velocity context
             VelocityContext context = new VelocityContext();
-            VelocityContextHolder.get().setup(context);
             context.put("TypeUtils", TypeUtils.class);
             context.put("typeContext", typeContext);
             context.put("implName", implName);
 
             // merge template
+            VelocityEngine velocityEngine = createVelocityEngine();
             velocityEngine.mergeTemplate(getTemplate(), "UTF-8", context, printWriter);
             GeneratorContextHolder.get().getContext().commit(Logger.get().getTreeLogger(), printWriter);
         }
