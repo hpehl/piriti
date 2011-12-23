@@ -1,19 +1,8 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($value = $property.variables.value)
-#set($valueAsString = $property.variables.valueAsString)
-#set($converter = $property.variables.newVariable("Converter"))
-
-#logProperty()
-$valueType $value = null;
+#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
 String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
 if ($valueAsString != null)
 {
-    Converter<$valueType> $converter = null;
-    #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-    if ($converter != null)
-    {
-        $value = ${converter}.convert($valueAsString);
-    }
+    #convert($valueAsString)
 }    
 if ($value != null) 
 {

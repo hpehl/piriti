@@ -2,24 +2,7 @@ JSONNumber jsonNumber = currentJsonValue.isNumber();
 if (jsonNumber != null)
 {
     Double doubleValue = new Double(jsonNumber.doubleValue());
-    #if($TypeUtils.isByte($property.elementType))
-        $currentValue = doubleValue.byteValue();
-    #elseif($TypeUtils.isShort($property.elementType))
-        $currentValue = doubleValue.shortValue();
-    #elseif($TypeUtils.isInteger($property.elementType))
-        $currentValue = doubleValue.intValue();
-    #elseif($TypeUtils.isLong($property.elementType))
-        $currentValue = doubleValue.longValue();
-    #elseif($TypeUtils.isFloat($property.elementType))
-        $currentValue = doubleValue.floatValue();
-    #elseif($TypeUtils.isDouble($property.elementType))
-        $currentValue = doubleValue;
-    #else
-        if (logger.isLoggable(SEVERE)) 
-        {
-            logger.log(SEVERE, "$elementType is no valid numeric element type for the property $parameterizedValueType $property.name in ${modelType}.");
-        }
-    #end
+    #valueOfNumeric("doubleValue", $currentValue, $property.elementType)
 }
 else
 {

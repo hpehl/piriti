@@ -38,7 +38,7 @@ if ($jsonValue != null)
 		            String stringValue = jsonString.stringValue();
 		            if (stringValue != null)
 		            {
-                        #convert()
+                        #convert("stringValue")
 		            }
 		        }
 		    }

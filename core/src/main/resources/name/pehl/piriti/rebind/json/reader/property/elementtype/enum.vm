@@ -10,24 +10,7 @@ if (jsonString != null)
         }
         else
         {
-            boolean error = true;
-            String[] stringValues = new String[]{stringValue, stringValue.toUpperCase(), stringValue.toLowerCase()};
-            for (String s : stringValues)
-            {
-                try 
-                {
-                    $currentValue = ${elementType}.valueOf(s);
-                    error = false;
-                    break;
-                }
-                catch (IllegalArgumentException e) {} 
-            }
-            if (error)
-            {
-                if (logger.isLoggable(SEVERE)) 
-                {
-                    logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum $parameterizedValueType $property.name in ${modelType} using ${elementType}.valueOf(String).");
-            }
+            #valueOfEnum("stringValue", $currentValue, $elementType)       
         }
     }
 }

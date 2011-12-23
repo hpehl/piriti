@@ -9,28 +9,10 @@ if ($jsonValue != null)
             String stringValue = jsonString.stringValue();
             if (stringValue != null)
             {
-                #convert()
+                #convert("stringValue")
                 else
                 {
-                    boolean error = true;
-                    String[] stringValues = new String[]{stringValue, stringValue.toUpperCase(), stringValue.toLowerCase()};
-                    for (String s : stringValues)
-                    {
-	                    try 
-	                    {
-	                        $value = ${valueType}.valueOf(s);
-	                        error = false;
-	                        break;
-	                    }
-                        catch (IllegalArgumentException e) {} 
-                    }
-                    if (error)
-                    {
-                        if (logger.isLoggable(SEVERE)) 
-                        {
-                            logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum $property.name in ${modelType} using ${valueType}.valueOf(String).");
-                        }
-                    }
+                    #valueOfEnum("stringValue", $value, $valueType)
                 }
             }
         }

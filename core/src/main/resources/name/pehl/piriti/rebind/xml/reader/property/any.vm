@@ -1,18 +1,6 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
-#set($value = $property.variables.value)
-#set($valueAsString = $property.variables.valueAsString)
+#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
 #set($nodeValue = $property.variables.newVariable("NodeValue"))
-#set($reader = $property.variables.newVariable("Reader"))
-#set($converter = $property.variables.newVariable("Converter"))
-
-#logProperty()
-#foreach ($concreteType in $property.concreteTypes)
-    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
-    new ${concreteType.parameterizedQualifiedSourceName}();
-#end
-
-$parameterizedValueType $value = null;
+#newConcreteTypes()
 #if ($property.native)
     Node $nodeValue = element.selectNode("$property.pathOrName");
     #if($TypeUtils.isNode($property.type))
@@ -41,15 +29,10 @@ $parameterizedValueType $value = null;
     else
     {
         String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
-		if ($valueAsString != null)
-		{
-		    Converter<$parameterizedValueType> $converter = null;
-		    #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-		    if ($converter != null)
-		    {
-		        $value = ${converter}.convert($valueAsString);
-		    }
-		}    
+        if ($valueAsString != null)
+        {
+            #convert($valueAsString)
+        }    
     }
 #end
 if ($value != null) 

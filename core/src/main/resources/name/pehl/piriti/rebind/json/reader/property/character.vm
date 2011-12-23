@@ -9,7 +9,7 @@ if ($jsonValue != null)
             String stringValue = jsonString.stringValue();
             if (stringValue != null)
             {
-                #convert()
+                #convert("stringValue")
                 else
                 {
                     if (stringValue.length() != 0)

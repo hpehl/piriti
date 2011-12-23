@@ -23,41 +23,88 @@ if (logger.isLoggable(FINE))
 
 
 ## Tries to get the default converter from the converter registry 
-#macro(defaultConverter $type)
+#macro(defaultConverter $pType)
     #if ($property.format)
-        $converter = converterRegistry.get(${type}.class, "$property.format");
+        $converter = converterRegistry.get(${pType}.class, "$property.format");
         if ($converter == null)
         {
             // No converter with the specified format found in the
             // registry --> Use the default one, set the format and
             // register it against the registry
-            $converter = converterRegistry.get(${type}.class);
+            $converter = converterRegistry.get(${pType}.class);
             if ($converter != null)
             {
                 ${converter}.setFormat("$property.format");
-                converterRegistry.register(${type}.class, ${converter}, "$property.format");
+                converterRegistry.register(${pType}.class, ${converter}, "$property.format");
             }
             else
             {
                 if (logger.isLoggable(SEVERE)) 
                 {
-                    logger.log(SEVERE, "No converter found for property $property.name with type $type in ${modelType}.");
+                    logger.log(SEVERE, "No converter found for property $property.name with type $pType in ${modelType}.");
                 }
             }
         }
     #else
-        $converter = converterRegistry.get(${type}.class);
+        $converter = converterRegistry.get(${pType}.class);
     #end
 #end
 
 
 ## Macro which combines the two converter macros from above
-#macro(convert)
+#macro(convert $pString)
     Converter<$parameterizedValueType> $converter = null;
     #if ($property.hasConverter()) #customConverter() #else #defaultConverter($parameterizedValueType) #end
     if ($converter != null)
     {
-        $value = ${converter}.convert(stringValue);
+        $value = ${converter}.convert($pString);
+    }
+#end
+
+
+## Tries to parse the numeric value
+#macro(valueOfNumeric $pDouble $pValue $pType)
+    #if($TypeUtils.isByte($pType))
+        $pValue = ${pDouble}.byteValue();
+    #elseif($TypeUtils.isShort($pType))
+        $pValue = ${pDouble}.shortValue();
+    #elseif($TypeUtils.isInteger($pType))
+        $pValue = ${pDouble}.intValue();
+    #elseif($TypeUtils.isLong($pType))
+        $pValue = ${pDouble}.longValue();
+    #elseif($TypeUtils.isFloat($pType))
+        $pValue = ${pDouble}.floatValue();
+    #elseif($TypeUtils.isDouble($pType))
+        $pValue = ${pDouble};
+    #else
+        if (logger.isLoggable(SEVERE)) 
+        {
+            logger.log(SEVERE, "$pType is no valid numeric type.");
+        }
+    #end
+#end
+
+
+## Tries to parse the enum with Enum.valueOf(String)
+#macro(valueOfEnum $pString $pValue $pType)
+    boolean error = true;
+    String[] stringValues = new String[]{$pString, ${pString}.toUpperCase(), ${pString}.toLowerCase()};
+    for (String s : stringValues)
+    {
+        try 
+        {
+            $pValue = ${pType}.valueOf(s);
+            error = false;
+            break;
+        }
+        catch (IllegalArgumentException e) {} 
+    }
+    if (error)
+    {
+        if (logger.isLoggable(SEVERE)) 
+        {
+            logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum using ${pType}.valueOf(String).");
+        }
     }
 #end
 
