@@ -1,44 +1,28 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
-#set($value = $property.variables.value)
+#parse("name/pehl/piriti/rebind/json/reader/property/commons.vm")
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
-#set($componentType = $property.type.isParameterized().typeArgs[0].parameterizedQualifiedSourceName)
-#set($jsonValue = $property.variables.newVariable("JsonValue"))
-#set($converter = $property.variables.newVariable("Converter"))
-
-#logProperty()
-$parameterizedValueType $value = null;
-JSONValue $jsonValue = null;
-
-#getOrSelectJsonValue()
+#newConcreteTypes()
 if ($jsonValue != null)
 {
     JSONArray jsonArray = ${jsonValue}.isArray();
     if (jsonArray != null)
     {
         int size = jsonArray.size();
-        $value = new $collectionImplementation<$componentType>();
-        Converter<$componentType> $converter = null;
-        #if ($property.hasConverter())
-            #customConverter() 
-        #else 
-            ## Temporarily set $valueType to $componentType to use #defaultConverter() macro   
-            #set($valueType = $componentType)
-            #defaultConverter()
-            ## Switch back...
-            #set($valueType = $property.type.qualifiedSourceName)
-        #end
+        $value = new $collectionImplementation<$elementType>();
+        Converter<$elementType> $converter = null;
+        #if ($property.hasConverter()) #customConverter() #else #defaultConverter($elementType) #end
         for (int i = 0; i < size; i++)
         {
-            JSONValue nestedJsonValue = jsonArray.get(i);
-            if (nestedJsonValue != null && nestedJsonValue.isNull() == null) 
+            JSONValue currentJsonValue = jsonArray.get(i);
+            if (currentJsonValue != null && currentJsonValue.isNull() == null) 
             {
-                #set($nestedValue = $property.child.variables.value)
-                #parse($property.child.template)
-				if ($nestedValue != null) 
-				{
-				    ${value}.add($nestedValue);
-				}
+                #set($currentValue = $property.variables.newVariable("CurrentValue"))
+                $elementType $currentValue = null;
+                #parse($property.elementTypeTemplate)
+                if ($currentValue != null) 
+                {
+                    ${value}.add($currentValue);
+                }
             }
         }
     }

@@ -75,7 +75,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.BOOLEAN)
+            return (primitive != null && primitive.equals(JPrimitiveType.BOOLEAN))
                     || type.getQualifiedSourceName().equals(Boolean.class.getName());
         }
         return false;
@@ -93,7 +93,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.BYTE)
+            return (primitive != null && primitive.equals(JPrimitiveType.BYTE))
                     || type.getQualifiedSourceName().equals(Byte.class.getName());
         }
         return false;
@@ -111,7 +111,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.CHAR)
+            return (primitive != null && primitive.equals(JPrimitiveType.CHAR))
                     || type.getQualifiedSourceName().equals(Character.class.getName());
         }
         return false;
@@ -145,7 +145,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.DOUBLE)
+            return (primitive != null && primitive.equals(JPrimitiveType.DOUBLE))
                     || type.getQualifiedSourceName().equals(Double.class.getName());
         }
         return false;
@@ -163,7 +163,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.FLOAT)
+            return (primitive != null && primitive.equals(JPrimitiveType.FLOAT))
                     || type.getQualifiedSourceName().equals(Float.class.getName());
         }
         return false;
@@ -181,7 +181,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.INT)
+            return (primitive != null && primitive.equals(JPrimitiveType.INT))
                     || type.getQualifiedSourceName().equals(Integer.class.getName());
         }
         return false;
@@ -199,7 +199,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.LONG)
+            return (primitive != null && primitive.equals(JPrimitiveType.LONG))
                     || type.getQualifiedSourceName().equals(Long.class.getName());
         }
         return false;
@@ -217,7 +217,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return primitive != null && primitive.equals(JPrimitiveType.SHORT)
+            return (primitive != null && primitive.equals(JPrimitiveType.SHORT))
                     || type.getQualifiedSourceName().equals(Short.class.getName());
         }
         return false;

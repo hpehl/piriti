@@ -1,6 +1,8 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.*;
+import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
+import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -8,7 +10,11 @@ import java.util.List;
 import java.util.Set;
 
 import name.pehl.piriti.commons.client.InstanceCreator;
+import name.pehl.piriti.commons.client.NoopInstanceCreator;
 import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.NoopConverter;
+import name.pehl.piriti.property.client.NoopPropertyGetter;
+import name.pehl.piriti.property.client.NoopPropertySetter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.GeneratorContextHolder;
@@ -41,7 +47,7 @@ public class PropertyContext
 
     // -------------------------------------------------------- private members
 
-    private final int order;
+    private int order;
 
     /**
      * The property type itself. This is in any case not a primitive type. In
@@ -51,14 +57,8 @@ public class PropertyContext
     private JType type;
 
     /**
-     * The original primitive type or null if type is not primitive
-     */
-    private JPrimitiveType primitiveType;
-
-    /**
      * In case the type is an array or collection this member holds the element
-     * type, null otherwise. If used the element type is guaranteed to be not
-     * primitive, but the boxed counterpart.
+     * type, null otherwise.
      */
     private JType elementType;
 
@@ -66,55 +66,55 @@ public class PropertyContext
      * If the type is an abstract class or an interface this list contains all
      * its concrete subtypes. Otherwise the list contains just the type itself.
      */
-    private final List<JClassType> concreteTypes;
+    private List<JClassType> concreteTypes;
     /**
      * The name of the property
      */
-    private final String name;
+    private String name;
 
     /**
      * The path information for the mapping
      */
-    private final String path;
+    private String path;
 
     /**
      * A custom converter or null if undefined.
      */
-    private final Class<? extends Converter<?>> converter;
+    private Class<? extends Converter<?>> converter;
 
-    private final String format;
+    private String format;
 
     /**
      * Whether to strip whitespace and newlines from the input
      */
-    private final WhitespaceHandling whitespaceHandling;
+    private WhitespaceHandling whitespaceHandling;
 
     /**
      * Whether to read the property nativly
      */
-    private final boolean native_;
+    private boolean native_;
 
     /**
      * A custom instance creator or null if undefined.
      */
-    private final Class<? extends InstanceCreator<?, ?>> instanceCreator;
+    private Class<? extends InstanceCreator<?, ?>> instanceCreator;
 
     /**
      * A custom property getter or null if undefined.
      */
-    private final Class<? extends PropertyGetter<?, ?>> getter;
+    private Class<? extends PropertyGetter<?, ?>> getter;
 
     /**
      * A custom property setter or null if undefined.
      */
-    private final Class<? extends PropertySetter<?, ?>> setter;
+    private Class<? extends PropertySetter<?, ?>> setter;
 
     /**
      * Information about the accessibility of the property
      */
-    private final Set<PropertyAccess> access;
+    private Set<PropertyAccess> access;
 
-    private final Variables variables;
+    private Variables variables;
 
     /**
      * Template for code generation
@@ -139,44 +139,68 @@ public class PropertyContext
         if (primitiveType != null)
         {
             this.type = typeOracle.findType(primitiveType.getQualifiedBoxedSourceName());
-            this.primitiveType = primitiveType;
         }
         else
         {
             this.type = propertySource.getType();
-            this.primitiveType = null;
         }
+        this.concreteTypes = new ArrayList<JClassType>();
         JArrayType arrayType = this.type.isArray();
         if (arrayType != null)
         {
             this.elementType = arrayType.getComponentType();
-            JPrimitiveType primitiveElementType = this.elementType.isPrimitive();
-            if (primitiveElementType != null)
-            {
-                this.elementType = typeOracle.findType(primitiveElementType.getQualifiedBoxedSourceName());
-            }
+            TypeUtils.collectConcreteTypes(concreteTypes, this.elementType);
         }
-        if (TypeUtils.isCollection(this.type))
+        else if (TypeUtils.isCollection(this.type))
         {
             this.elementType = TypeUtils.getTypeVariable(this.type);
+            TypeUtils.collectConcreteTypes(concreteTypes, this.elementType);
         }
-        this.concreteTypes = new ArrayList<JClassType>();
-        TypeUtils.collectConcreteTypes(concreteTypes, this.type);
+        else
+        {
+            TypeUtils.collectConcreteTypes(concreteTypes, this.type);
+        }
 
         // name and path
         this.name = propertySource.getName();
-        this.path = propertySource.getPath();
+        if (StringUtils.isNotEmpty(propertySource.getPath()))
+        {
+            this.path = propertySource.getPath();
+        }
 
         // converter and format
-        this.converter = propertySource.getConverter();
-        this.format = propertySource.getFormat();
-        this.whitespaceHandling = propertySource.getWhitespaceHandling();
+        if (propertySource.getConverter() != null && propertySource.getConverter() != NoopConverter.class)
+        {
+            this.converter = propertySource.getConverter();
+        }
+        if (StringUtils.isNotEmpty(propertySource.getFormat()))
+        {
+            this.format = propertySource.getFormat();
+        }
+        if (propertySource.getWhitespaceHandling() == null)
+        {
+            this.whitespaceHandling = WhitespaceHandling.REMOVE;
+        }
+        else
+        {
+            this.whitespaceHandling = propertySource.getWhitespaceHandling();
+        }
         this.native_ = propertySource.isNative();
 
         // instance creator, setter and getter
-        this.instanceCreator = propertySource.getInstanceCreator();
-        this.getter = propertySource.getGetter();
-        this.setter = propertySource.getSetter();
+        if (propertySource.getInstanceCreator() != null
+                && propertySource.getInstanceCreator() != NoopInstanceCreator.class)
+        {
+            this.instanceCreator = propertySource.getInstanceCreator();
+        }
+        if (propertySource.getGetter() != null && propertySource.getGetter() != NoopPropertyGetter.class)
+        {
+            this.getter = propertySource.getGetter();
+        }
+        if (propertySource.getSetter() != null && propertySource.getSetter() != NoopPropertySetter.class)
+        {
+            this.setter = propertySource.getSetter();
+        }
         this.access = access;
 
         // variables
@@ -251,12 +275,6 @@ public class PropertyContext
     public JType getType()
     {
         return type;
-    }
-
-
-    public JPrimitiveType getPrimitiveType()
-    {
-        return primitiveType;
     }
 
 

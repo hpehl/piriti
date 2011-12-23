@@ -7,37 +7,58 @@ if (logger.isLoggable(FINE))
 #end
 
 
-## Creates the converter
-#macro(converter $type)
-    #if ($property.hasConverter()) 
-	    $converter = GWT.create(${property.converter.name}.class);
-	    #if ($property.format) ${converter}.setFormat("$property.format"); #end
-    #else 
-	    #if ($property.format)
-	        $converter = converterRegistry.get(${type}.class, "$property.format");
-	        if ($converter == null)
-	        {
-	            // No converter with the specified format found in the
-	            // registry --> Use the default one, set the format and
-	            // register it against the registry
-	            $converter = converterRegistry.get(${type}.class);
-	            if ($converter != null)
-	            {
-	                ${converter}.setFormat("$property.format");
-	                converterRegistry.register(${type}.class, ${converter}, "$property.format");
-	            }
-	            else
-	            {
-	                if (logger.isLoggable(SEVERE)) 
-	                {
-	                    logger.log(SEVERE, "No converter found for property $property.name with type $type in ${modelType}.");
-	                }
-	            }
-	        }
-	    #else
-	        $converter = converterRegistry.get(${type}.class);
-	    #end
+#macro(newConcreteTypes)
+	#foreach ($concreteType in $property.concreteTypes)
+	    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
+	    new ${concreteType.parameterizedQualifiedSourceName}();
+	#end
+#end
+
+
+## Creates the custom converter
+#macro(customConverter)
+    $converter = GWT.create(${property.converter.name}.class);
+    #if ($property.format) ${converter}.setFormat("$property.format"); #end
+#end
+
+
+## Tries to get the default converter from the converter registry 
+#macro(defaultConverter $type)
+    #if ($property.format)
+        $converter = converterRegistry.get(${type}.class, "$property.format");
+        if ($converter == null)
+        {
+            // No converter with the specified format found in the
+            // registry --> Use the default one, set the format and
+            // register it against the registry
+            $converter = converterRegistry.get(${type}.class);
+            if ($converter != null)
+            {
+                ${converter}.setFormat("$property.format");
+                converterRegistry.register(${type}.class, ${converter}, "$property.format");
+            }
+            else
+            {
+                if (logger.isLoggable(SEVERE)) 
+                {
+                    logger.log(SEVERE, "No converter found for property $property.name with type $type in ${modelType}.");
+                }
+            }
+        }
+    #else
+        $converter = converterRegistry.get(${type}.class);
     #end
+#end
+
+
+## Macro which combines the two converter macros from above
+#macro(convert)
+    Converter<$parameterizedValueType> $converter = null;
+    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($parameterizedValueType) #end
+    if ($converter != null)
+    {
+        $value = ${converter}.convert(stringValue);
+    }
 #end
 
 

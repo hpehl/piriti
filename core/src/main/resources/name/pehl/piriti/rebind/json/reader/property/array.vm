@@ -1,54 +1,38 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
-#set($value = $property.variables.value)
-#set($jsonValue = $property.variables.newVariable("JsonValue"))
-#set($converter = $property.variables.newVariable("Converter"))
+#parse("name/pehl/piriti/rebind/json/reader/property/commons.vm")
 #set($asList = $property.variables.newVariable("AsList"))
-
-#if ($property.arrayType.componentType.isPrimitive())
-    #set($componentType = $property.arrayType.componentType.qualifiedBoxedSourceName)
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#if ($property.elementType.isPrimitive())
+    #set($boxedElementType = $property.elementType.qualifiedBoxedSourceName)
 #else
-    #set($componentType = $property.arrayType.componentType.parameterizedQualifiedSourceName)
+    #set($boxedElementType = $elementType)
 #end
-
-#logProperty()
-$valueType $value = null;
-JSONValue $jsonValue = null;
-
-#getOrSelectJsonValue()
+#newConcreteTypes()
 if ($jsonValue != null)
 {
     JSONArray jsonArray = ${jsonValue}.isArray();
     if (jsonArray != null)
     {
         int size = jsonArray.size();
-        List<$componentType> $asList = new ArrayList<$componentType>(size);
-        Converter<$componentType> $converter = null;
-        #if ($property.hasConverter())
-            #customConverter() 
-        #else 
-            ## Temporarily set $valueType to $componentType to use #defaultConverter() macro   
-            #set($valueType = $componentType)
-            #defaultConverter()
-            ## Switch back...
-            #set($valueType = $property.type.qualifiedSourceName)
-        #end
+        List<$boxedElementType> $asList = new ArrayList<$boxedElementType>(size);
+        Converter<$boxedElementType> $converter = null;
+        #if ($property.hasConverter()) #customConverter() #else #defaultConverter($boxedElementType) #end
         for (int i = 0; i < size; i++)
         {
-            JSONValue nestedJsonValue = jsonArray.get(i);
-            if (nestedJsonValue != null && nestedJsonValue.isNull() == null) 
+            JSONValue currentJsonValue = jsonArray.get(i);
+            if (currentJsonValue != null && currentJsonValue.isNull() == null) 
             {
-                #set($nestedValue = $property.child.variables.value)
-                #parse($property.child.template)
-                if ($nestedValue != null) 
+                #set($currentValue = $property.variables.newVariable("CurrentValue"))
+                $boxedElementType $currentValue = null;
+                #parse($property.elementTypeTemplate)
+                if ($currentValue != null) 
                 {
-                    ${asList}.add($nestedValue);
+                    ${asList}.add($currentValue);
                 }
             }
         }
         int index = 0;
-        $value = new ${property.arrayType.componentType.parameterizedQualifiedSourceName}[${asList}.size()];
-        for ($componentType tmpValue : $asList)
+        $value = new ${elementType}[${asList}.size()];
+        for ($boxedElementType tmpValue : $asList)
         {
             ${value}[index++] = tmpValue;
         }

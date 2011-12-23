@@ -1,35 +1,22 @@
-#set($nestedValueType = $property.child.type.qualifiedSourceName)
-#set($nestedParameterizedValueType = $property.child.type.parameterizedQualifiedSourceName)
-#set($nestedReader = $property.child.variables.newVariable("Reader"))
-#set($nestedJsonValue = $property.child.variables.newVariable("JsonValue"))
-#set($nestedJsonObject = $property.child.variables.newVariable("JsonObject"))
-
-#foreach ($concreteType in $property.child.concreteTypes)
-    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
-    new ${concreteType.parameterizedQualifiedSourceName}();
-#end
-$nestedParameterizedValueType $nestedValue = null;
-JsonReader<$nestedParameterizedValueType> $nestedReader = jsonRegistry.getReader(${nestedValueType}.class);
-if ($nestedReader != null)
+#set($currentReader = $property.variables.newVariable("CurrentReader"))
+JsonReader<$elementType> $currentReader = jsonRegistry.getReader(${elementType}.class);
+if ($currentReader != null)
 {
-    JSONObject $nestedJsonObject = nestedJsonValue.isObject();
-    if ($nestedJsonObject != null)
+    JSONObject currentJsonObject = currentJsonValue.isObject();
+    if (currentJsonObject != null)
     {
-        $nestedValue = ${nestedReader}.read($nestedJsonObject);
+        $currentValue = ${currentReader}.read(currentJsonObject);
     }
 }
 else
 {
-    JSONString jsonString = nestedJsonValue.isString();
+    JSONString jsonString = currentJsonValue.isString();
     if (jsonString != null)
     {
         String stringValue = jsonString.stringValue();
-        if (stringValue != null)
+        if (stringValue != null && $converter != null)
         {
-            if ($converter != null)
-            {
-                $nestedValue = ${converter}.convert(stringValue);
-            }
+            $currentValue = ${converter}.convert(stringValue);
         }
     }
 }

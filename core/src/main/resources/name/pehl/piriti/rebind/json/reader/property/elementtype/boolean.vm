@@ -1,21 +1,17 @@
-Boolean $nestedValue = null;
-JSONBoolean jsonBoolean = nestedJsonValue.isBoolean();
+JSONBoolean jsonBoolean = currentJsonValue.isBoolean();
 if (jsonBoolean != null)
 {
-    $nestedValue = jsonBoolean.booleanValue();
+    $currentValue = jsonBoolean.booleanValue();
 }
 else
 {
-    JSONString jsonString = nestedJsonValue.isString();
+    JSONString jsonString = currentJsonValue.isString();
     if (jsonString != null)
     {
         String stringValue = jsonString.stringValue();
-        if (stringValue != null)
+        if (stringValue != null && $converter != null)
         {
-            if ($converter != null)
-            {
-                $nestedValue = ${converter}.convert(stringValue);
-            }
+            $currentValue = ${converter}.convert(stringValue);
         }
     }
 }

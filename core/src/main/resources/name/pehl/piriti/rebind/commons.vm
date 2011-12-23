@@ -1,0 +1,4 @@
+#set($valueType = $property.type.qualifiedSourceName)
+#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+#set($value = $property.variables.value)
+#set($converter = $property.variables.newVariable("Converter"))

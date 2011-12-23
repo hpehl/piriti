@@ -1,21 +1,7 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
-#set($value = $property.variables.value)
+#parse("name/pehl/piriti/rebind/json/reader/property/commons.vm")
 #set($reader = $property.variables.newVariable("Reader"))
-#set($converter = $property.variables.newVariable("Converter"))
-#set($jsonValue = $property.variables.newVariable("JsonValue"))
 #set($jsonObject = $property.variables.newVariable("JsonObject"))
-
-#logProperty()
-#foreach ($concreteType in $property.concreteTypes)
-    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
-    new ${concreteType.parameterizedQualifiedSourceName}();
-#end
-
-$parameterizedValueType $value = null;
-JSONValue $jsonValue = null;
-
-#getOrSelectJsonValue()
+#newConcreteTypes()
 if ($jsonValue != null)
 {
     #if ($property.native)
@@ -52,12 +38,7 @@ if ($jsonValue != null)
 		            String stringValue = jsonString.stringValue();
 		            if (stringValue != null)
 		            {
-			            Converter<$parameterizedValueType> $converter = null;
-			            #if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-			            if ($converter != null)
-		                {
-		                    $value = ${converter}.convert(stringValue);
-		                }
+                        #convert()
 		            }
 		        }
 		    }

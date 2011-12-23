@@ -1,15 +1,9 @@
-#set($nestedValueType = $property.child.type.qualifiedSourceName)
-
-$nestedValueType $nestedValue = null;
-JSONString jsonString = nestedJsonValue.isString();
+JSONString jsonString = currentJsonValue.isString();
 if (jsonString != null)
 {
     String stringValue = jsonString.stringValue();
-    if (stringValue != null)
+    if (stringValue != null && $converter != null)
     {
-        if ($converter != null)
-        {
-            $nestedValue = ${converter}.convert(stringValue);
-        }
+        $currentValue = ${converter}.convert(stringValue);
     }
 }

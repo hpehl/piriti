@@ -1,13 +1,4 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($value = $property.variables.value)
-#set($jsonValue = $property.variables.newVariable("JsonValue"))
-#set($converter = $property.variables.newVariable("Converter"))
-
-#logProperty()
-$valueType $value = null;
-JSONValue $jsonValue = null;
-
-#getOrSelectJsonValue()
+#parse("name/pehl/piriti/rebind/json/reader/property/commons.vm")
 if ($jsonValue != null)
 {
     if (${jsonValue}.isNull() == null) 
@@ -18,12 +9,7 @@ if ($jsonValue != null)
             String stringValue = jsonString.stringValue();
             if (stringValue != null)
             {
-				Converter<$valueType> $converter = null;
-				#if ($property.hasConverter()) #customConverter() #else #defaultConverter() #end
-                if ($converter != null)
-                {
-                    $value = ${converter}.convert(stringValue);
-                }
+                #convert()
                 else
                 {
                     boolean error = true;
@@ -42,7 +28,7 @@ if ($jsonValue != null)
                     {
                         if (logger.isLoggable(SEVERE)) 
                         {
-                            logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum property $property.name in ${modelType} using ${valueType}.valueOf(String).");
+                            logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum $property.name in ${modelType} using ${valueType}.valueOf(String).");
                         }
                     }
                 }
