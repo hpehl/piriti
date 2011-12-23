@@ -52,18 +52,6 @@ public final class TypeUtils
     }
 
 
-    public static String collectionImplementationFor(String classname)
-    {
-        String impl = interfaceToImplementation.get(classname);
-        if (impl != null)
-        {
-            return impl;
-        }
-        // It's assumed that classname is already an implementation!
-        return classname;
-    }
-
-
     /**
      * Returns true if the type is boolean or Boolean, false otherwise.
      * 
@@ -75,7 +63,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.BOOLEAN))
+            return primitive != null && primitive.equals(JPrimitiveType.BOOLEAN)
                     || type.getQualifiedSourceName().equals(Boolean.class.getName());
         }
         return false;
@@ -93,7 +81,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.BYTE))
+            return primitive != null && primitive.equals(JPrimitiveType.BYTE)
                     || type.getQualifiedSourceName().equals(Byte.class.getName());
         }
         return false;
@@ -111,7 +99,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.CHAR))
+            return primitive != null && primitive.equals(JPrimitiveType.CHAR)
                     || type.getQualifiedSourceName().equals(Character.class.getName());
         }
         return false;
@@ -145,7 +133,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.DOUBLE))
+            return primitive != null && primitive.equals(JPrimitiveType.DOUBLE)
                     || type.getQualifiedSourceName().equals(Double.class.getName());
         }
         return false;
@@ -163,7 +151,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.FLOAT))
+            return primitive != null && primitive.equals(JPrimitiveType.FLOAT)
                     || type.getQualifiedSourceName().equals(Float.class.getName());
         }
         return false;
@@ -181,7 +169,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.INT))
+            return primitive != null && primitive.equals(JPrimitiveType.INT)
                     || type.getQualifiedSourceName().equals(Integer.class.getName());
         }
         return false;
@@ -199,7 +187,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.LONG))
+            return primitive != null && primitive.equals(JPrimitiveType.LONG)
                     || type.getQualifiedSourceName().equals(Long.class.getName());
         }
         return false;
@@ -217,7 +205,7 @@ public final class TypeUtils
         if (type != null)
         {
             JPrimitiveType primitive = type.isPrimitive();
-            return (primitive != null && primitive.equals(JPrimitiveType.SHORT))
+            return primitive != null && primitive.equals(JPrimitiveType.SHORT)
                     || type.getQualifiedSourceName().equals(Short.class.getName());
         }
         return false;
@@ -344,18 +332,15 @@ public final class TypeUtils
     }
 
 
-    public static boolean isDefaultInstantiable(JType type)
+    public static String collectionImplementationFor(String classname)
     {
-        if (type == null)
+        String impl = interfaceToImplementation.get(classname);
+        if (impl != null)
         {
-            return false;
+            return impl;
         }
-        JClassType classType = type.isClass();
-        if (classType == null)
-        {
-            return false;
-        }
-        return classType.isDefaultInstantiable();
+        // It's assumed that classname is already an implementation!
+        return classname;
     }
 
 
@@ -418,6 +403,21 @@ public final class TypeUtils
                 }
             }
         }
+    }
+
+
+    private static boolean isDefaultInstantiable(JType type)
+    {
+        if (type == null)
+        {
+            return false;
+        }
+        JClassType classType = type.isClass();
+        if (classType == null)
+        {
+            return false;
+        }
+        return classType.isDefaultInstantiable();
     }
 
 
