@@ -1,6 +1,5 @@
-Boolean $nestedValue = null;
-String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
-if ($nestedValueAsString != null && $converter != null)
+String currentAsString = currentElement.getText($property.whitespaceHandling);
+if (currentAsString != null && $converter != null)
 {
-    $nestedValue = ${converter}.convert($nestedValueAsString);
+    $currentValue = ${converter}.convert(currentAsString);
 }

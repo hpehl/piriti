@@ -44,6 +44,10 @@ public class TemplateFinder
         {
             template = "enum.vm";
         }
+        else if (TypeUtils.isDate(type))
+        {
+            template = "date.vm";
+        }
         else if (type.isArray() != null)
         {
             template = "array.vm";

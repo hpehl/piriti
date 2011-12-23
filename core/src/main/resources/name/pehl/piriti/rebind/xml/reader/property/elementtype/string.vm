@@ -1,5 +1,5 @@
-String $nestedValue = nestedElement.getText($property.whitespaceHandling);
-if ($converter != null)
+$currentValue = currentElement.getText($property.whitespaceHandling);
+if ($currentValue != null && $converter != null)
 {
-    $nestedValue = ${converter}.convert($nestedValue);
+    $currentValue = ${converter}.convert($currentValue);
 }

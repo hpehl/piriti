@@ -1,35 +1,22 @@
-#set($valueType = $property.type.qualifiedSourceName)
-#set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
-#set($value = $property.variables.value)
-#set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
-#set($componentType = $property.type.isParameterized().typeArgs[0].parameterizedQualifiedSourceName)
+#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
 #set($elements = $property.variables.newVariable("Elements"))
-#set($converter = $property.variables.newVariable("Converter"))
-
-#logProperty()
-$parameterizedValueType $value = null;
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
+#newConcreteTypes()
 List<Element> $elements = filterElements(element.selectNodes("$property.pathOrName"));
 if (!${elements}.isEmpty())
 {
-    $value = new $collectionImplementation<$componentType>();
-    Converter<$componentType> $converter = null;
-    #if ($property.hasConverter())
-        #customConverter() 
-    #else 
-        ## Temporarily set $valueType to $componentType to use #defaultConverter() macro   
-        #set($valueType = $componentType)
-        #defaultConverter()
-        ## Switch back...
-        #set($valueType = $property.type.qualifiedSourceName)
-    #end
-    for (Element nestedElement : $elements)
+    $value = new $collectionImplementation<$elementType>();
+    Converter<$elementType> $converter = null;
+    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($elementType) #end
+    for (Element currentElement : $elements)
     {
-        #set($nestedValue = $property.child.variables.value)
-        #set($nestedValueAsString = $property.child.variables.valueAsString)
-        #parse($property.child.template)
-        if ($nestedValue != null) 
+        #set($currentValue = $property.variables.newVariable("CurrentValue"))
+        $elementType $currentValue = null;
+        #parse($property.elementTypeTemplate)
+        if ($currentValue != null) 
         {
-            ${value}.add($nestedValue);
+            ${value}.add($currentValue);
         }
     }
 }

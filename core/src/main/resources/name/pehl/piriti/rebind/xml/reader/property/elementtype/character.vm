@@ -1,16 +1,15 @@
-Character $nestedValue = null;
-String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
-if ($nestedValueAsString != null)
+String currentAsString = currentElement.getText($property.whitespaceHandling);
+if (currentAsString != null)
 {
     if ($converter != null)
     {
-	    $nestedValue = ${converter}.convert($nestedValueAsString);
+        $currentValue = ${converter}.convert(currentAsString);
     }
     else
     {
-	    if (${nestedValueAsString}.length() != 0)
+	    if (currentAsString.length() != 0)
 	    {
-	        $nestedValue = ${nestedValueAsString}.charAt(0);
+	        $currentValue = currentAsString.charAt(0);
 	    }
     }
 }

@@ -1,22 +1,14 @@
-#set($nestedValueType = $property.child.type.qualifiedSourceName)
-#set($nestedParameterizedValueType = $property.child.type.parameterizedQualifiedSourceName)
-#set($nestedReader = $property.child.variables.newVariable("Reader"))
-
-#foreach ($concreteType in $property.child.concreteTypes)
-    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
-    new ${concreteType.parameterizedQualifiedSourceName}();
-#end
-$nestedParameterizedValueType $nestedValue = null;
-XmlReader<$nestedParameterizedValueType> $nestedReader = xmlRegistry.getReader(${nestedValueType}.class);
-if ($nestedReader != null)
+#set($currentReader = $property.variables.newVariable("CurrentReader"))
+XmlReader<$elementType> $currentReader = xmlRegistry.getReader(${elementType}.class);
+if ($currentReader != null)
 {
-    $nestedValue = ${nestedReader}.read(nestedElement);
+    $currentValue = ${currentReader}.read(currentElement);
 }
 else
 {
-    String $nestedValueAsString = nestedElement.getText($property.whitespaceHandling);
-	if ($nestedValueAsString != null && $converter != null)
-	{
-	    $nestedValue = ${converter}.convert($nestedValueAsString);
-	}
+    String currentAsString = currentElement.getText($property.whitespaceHandling);
+    if (currentAsString != null && $converter != null)
+    {
+        $currentValue = ${converter}.convert(currentAsString);
+    }
 }
