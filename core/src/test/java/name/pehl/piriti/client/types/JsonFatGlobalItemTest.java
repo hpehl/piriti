@@ -22,7 +22,7 @@ public class JsonFatGlobalItemTest extends AbstractFatGlobalItemTest
 
     // ------------------------------------------------------------ write tests
 
-    public void _testWriteEmptyFatGlobalItem()
+    public void testWriteEmptyFatGlobalItem()
     {
         FatGlobalItem fgi = new FatGlobalItem();
         String json = FatGlobalItem.JSON_WRITER.toJson(fgi);
