@@ -3,53 +3,79 @@
 
 package ${typeContext.rwType.package.name};
 
-import java.util.List;
-import java.util.logging.Logger;
+#writerImports()
 
-import name.pehl.piriti.commons.client.ModelWriteEvent;
-import name.pehl.piriti.commons.client.ModelWriteHandler;
-
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
+import name.pehl.piriti.json.client.JsonGinjector;
+import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.json.client.JsonRegistry;
 
 public class $implName implements $typeContext.rwType.qualifiedSourceName 
 {
+public class $implName implements $typeContext.rwType.qualifiedSourceName 
+{
     // --------------------------------------------------------- private fields
-    
-    private static Logger logger = Logger.getLogger("$typeContext.rwType.qualifiedSourceName");
-    private final HandlerManager handlerManager;
 
+    #readerFields()    
+    private final JsonRegistry jsonRegistry;
+    
 
     // ----------------------------------------------------------- constructors
 
     public $implName() 
     {
-        this.handlerManager = new HandlerManager(this);
+        #writerConstructorBody()
+        this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();
+        this.jsonRegistry.register(${modelType}.class, this);
     }
     
     
-    // --------------------------------------------------------- event handling
-    
-    public HandlerRegistration addModelWriteHandler(ModelWriteHandler<$modelParameterizedType> handler) 
-    {
-        return handlerManager.addHandler(ModelWriteEvent.getType(), handler);
-    }
-
-    public void fireEvent(GwtEvent<?> event) 
-    {
-        handlerManager.fireEvent(event);
-    }
+    #writerEventMethods()    
 
     // ---------------------------------------------------------- write methods
 
     public String toJson(List<$modelParameterizedType> models, String arrayKey)
     {
-        return null;
+        String json = null;
+        if (models != null && arrayKey != null) 
+        {
+            StringBuilder out = new StringBuilder();
+            out.append("{\"").append(arrayKey).append("\":[");
+            for (Iterator<$modelParameterizedType> iter = models.iterator(); iter.hasNext(); ) 
+            {
+                $modelParameterizedType model = iter.next();
+                String modelJson = toJson(model);
+                if (modelJson != null) 
+                {
+                    out.append(modelJson);
+                }
+                if (iter.hasNext()) 
+                {
+                    out.append(",");
+                }
+            }
+            out.append("]}");
+            json = out.toString();
+        }
+        return json;
     }
     
     public String toJson($modelParameterizedType model)
     {
-        return null;
+        String json = null;
+        if (model != null) 
+        {
+            ModelWriteEvent.fire(this, model);
+            StringBuilder out = new StringBuilder();
+            out.append("{");
+            #foreach ($property in $typeContext.properties)
+                #parse($property.template)
+            #end
+            #if ($velocityCount < $typeContext.properties.size() - 1)
+                out.append(",");
+            #end
+            out.append("}");
+            json = out.toString();
+        }
+        return json;
     }
 }

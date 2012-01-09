@@ -1,0 +1,33 @@
+#parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
+#newConcreteTypes()
+if ($jsonValue != null)
+{
+    JSONArray jsonArray = ${jsonValue}.isArray();
+    if (jsonArray != null)
+    {
+        int size = jsonArray.size();
+        $value = new $collectionImplementation<$elementType>();
+        Converter<$elementType> $converter = null;
+        #if ($property.hasConverter()) #customConverter() #else #defaultConverter($elementType) #end
+        for (int i = 0; i < size; i++)
+        {
+            JSONValue currentJsonValue = jsonArray.get(i);
+            if (currentJsonValue != null && currentJsonValue.isNull() == null) 
+            {
+                #set($currentValue = $property.variables.newVariable("CurrentValue"))
+                $elementType $currentValue = null;
+                #parse($property.elementTypeTemplate)
+                if ($currentValue != null) 
+                {
+                    ${value}.add($currentValue);
+                }
+            }
+        }
+    }
+    if ($value != null) 
+    {
+        #assignValue()
+    }
+}

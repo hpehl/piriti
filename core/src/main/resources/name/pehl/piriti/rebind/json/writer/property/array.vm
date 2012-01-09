@@ -1,0 +1,44 @@
+#parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
+#set($asList = $property.variables.newVariable("AsList"))
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#if ($property.elementType.isPrimitive())
+    #set($boxedElementType = $property.elementType.qualifiedBoxedSourceName)
+#else
+    #set($boxedElementType = $elementType)
+#end
+#newConcreteTypes()
+if ($jsonValue != null)
+{
+    JSONArray jsonArray = ${jsonValue}.isArray();
+    if (jsonArray != null)
+    {
+        int size = jsonArray.size();
+        List<$boxedElementType> $asList = new ArrayList<$boxedElementType>(size);
+        Converter<$boxedElementType> $converter = null;
+        #if ($property.hasConverter()) #customConverter() #else #defaultConverter($boxedElementType) #end
+        for (int i = 0; i < size; i++)
+        {
+            JSONValue currentJsonValue = jsonArray.get(i);
+            if (currentJsonValue != null && currentJsonValue.isNull() == null) 
+            {
+                #set($currentValue = $property.variables.newVariable("CurrentValue"))
+                $boxedElementType $currentValue = null;
+                #parse($property.elementTypeTemplate)
+                if ($currentValue != null) 
+                {
+                    ${asList}.add($currentValue);
+                }
+            }
+        }
+        int index = 0;
+        $value = new ${elementType}[${asList}.size()];
+        for ($boxedElementType tmpValue : $asList)
+        {
+            ${value}[index++] = tmpValue;
+        }
+    }
+    if ($value != null) 
+    {
+        #assignValue()
+    }
+}
