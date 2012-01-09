@@ -1,30 +1,14 @@
 #parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
-if ($jsonValue != null)
+if ($value != null)
 {
-    #if ($property.native)
-        $value = ${jsonValue}.toString();
+    #if ($property.hasConverter())
+        $valueAsString = ${converter}.serialize($value);
     #else
-		#if ($property.hasConverter())
-            Converter<String> $converter = null; 
-            #customConverter() 
-        #end
-	    if (${jsonValue}.isNull() == null) 
-	    {
-	        JSONString jsonString = ${jsonValue}.isString();
-	        if (jsonString != null)
-	        {
-	            $value = jsonString.stringValue();
-	            #if ($property.hasConverter())
-		            if ($value != null && $converter != null)
-		            {
-		                $value = ${converter}.convert($value);
-		            }
-	            #end
-	        }
-	    }
-    #end
-    if ($value != null) 
-    {
-        #assignValue()
-    }
+        $valueAsString = $value;
+	#end
+	out.append("\"$valueAsString\"");
+}
+else
+{
+    out.append("null");
 }

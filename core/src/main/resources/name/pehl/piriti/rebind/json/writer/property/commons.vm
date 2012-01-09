@@ -1,6 +1,7 @@
 #parse("name/pehl/piriti/rebind/propertyCommons.vm")
-#set($jsonValue = $property.variables.newVariable("JsonValue"))
+#set($valueAsString = $property.variables.valueAsString)
 #logProperty()
+String $valueAsString = null;
 $parameterizedValueType $value = null;
-JSONValue $jsonValue = null;
-#getOrSelectJsonValue()
+#readValue()
+out.append("\"$property.name\":");

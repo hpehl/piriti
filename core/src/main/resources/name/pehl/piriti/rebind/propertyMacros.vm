@@ -137,3 +137,23 @@ if (logger.isLoggable(FINE))
         #end
     #end
 #end
+
+
+## Reads the value from the model property
+#macro(readValue)
+    #if ($property.getter)
+        $property.getter.name getter = GWT.create(${property.getter.name}.class);
+        $value = getter.get(model);
+    #else
+        #if ($property.accessibleField) 
+            $value = model.$property.name;
+        #elseif ($property.callableGetter) 
+            $value = model.${property.callableGetter.name}();
+        #else
+            if (logger.isLoggable(SEVERE)) 
+            {
+                logger.log(SEVERE, "No accessible field or getter found for property $property.name in ${modelType}.");
+            }
+        #end
+    #end
+#end
