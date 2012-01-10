@@ -1,27 +1,14 @@
 #parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
-if ($jsonValue != null)
+if ($value != null)
 {
-    if (${jsonValue}.isNull() == null) 
+    #serialize()
+    else
     {
-        JSONString jsonString = ${jsonValue}.isString();
-        if (jsonString != null)
-        {
-            String stringValue = jsonString.stringValue();
-            if (stringValue != null)
-            {
-                #convert("stringValue")
-                else
-                {
-                    if (stringValue.length() != 0)
-                    {
-                        $value = stringValue.charAt(0);
-                    }
-                }
-            }
-        }
+        $valueAsString = String.valueOf($value);
     }
-	if ($value != null) 
-    {
-        #assignValue()
-	}
+    out.append(JsonUtils.escapeValue($valueAsString));
+}
+else
+{
+    out.append(JsonUtils.escapeValue(Character.MIN_VALUE));
 }

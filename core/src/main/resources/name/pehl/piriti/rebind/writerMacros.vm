@@ -1,9 +1,11 @@
 #macro(writerImports)
 	import static java.util.logging.Level.*;
 	
+	import java.util.HashMap;
     import java.util.Iterator;
 	import java.util.List;
 	import java.util.logging.Logger;
+    import java.util.Map;
 	
 	import name.pehl.piriti.commons.client.ModelWriteEvent;
 	import name.pehl.piriti.commons.client.ModelWriteHandler;

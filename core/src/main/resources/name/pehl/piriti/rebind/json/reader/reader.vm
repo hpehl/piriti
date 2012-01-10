@@ -253,6 +253,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         if (jsonObject != null) 
         {
             #foreach ($property in $typeContext.properties)
+                // parsing template $property.template
                 #parse($property.template)
             #end
         }

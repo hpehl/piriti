@@ -4,6 +4,7 @@
 package ${typeContext.rwType.package.name};
 
 #writerImports()
+import com.google.gwt.core.client.JsonUtils;
 
 import name.pehl.piriti.json.client.JsonGinjector;
 import name.pehl.piriti.json.client.JsonWriter;
@@ -11,11 +12,9 @@ import name.pehl.piriti.json.client.JsonRegistry;
 
 public class $implName implements $typeContext.rwType.qualifiedSourceName 
 {
-public class $implName implements $typeContext.rwType.qualifiedSourceName 
-{
     // --------------------------------------------------------- private fields
 
-    #readerFields()    
+    #writerFields()    
     private final JsonRegistry jsonRegistry;
     
 
@@ -68,10 +67,11 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
             StringBuilder out = new StringBuilder();
             out.append("{");
             #foreach ($property in $typeContext.properties)
+                // parsing template $property.template
                 #parse($property.template)
-            #end
-            #if ($velocityCount < $typeContext.properties.size() - 1)
-                out.append(",");
+	            #if ($foreach.hasNext) 
+	               out.append(","); 
+                #end
             #end
             out.append("}");
             json = out.toString();

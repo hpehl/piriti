@@ -51,13 +51,24 @@ if (logger.isLoggable(FINE))
 #end
 
 
-## Macro which combines the two converter macros from above
+## Macro which combines the two converter macros from above to convert the input to the value
 #macro(convert $pString)
     Converter<$parameterizedValueType> $converter = null;
     #if ($property.hasConverter()) #customConverter() #else #defaultConverter($parameterizedValueType) #end
     if ($converter != null)
     {
         $value = ${converter}.convert($pString);
+    }
+#end
+
+
+## Macro which combines the two converter macros from above to serialize the value into a string
+#macro(serialize) 
+    Converter<$parameterizedValueType> $converter = null;
+    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($parameterizedValueType) #end
+    if ($converter != null)
+    {
+        $valueAsString = ${converter}.serialize($value);
     }
 #end
 
