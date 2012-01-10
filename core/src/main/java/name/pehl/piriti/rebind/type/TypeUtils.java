@@ -1,5 +1,7 @@
 package name.pehl.piriti.rebind.type;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -116,7 +118,10 @@ public final class TypeUtils
     {
         if (type != null)
         {
-            return type.getQualifiedSourceName().equals(Date.class.getName());
+            return type.getQualifiedSourceName().equals(Date.class.getName())
+                    || type.getQualifiedSourceName().equals(java.sql.Date.class.getName())
+                    || type.getQualifiedSourceName().equals(Time.class.getName())
+                    || type.getQualifiedSourceName().equals(Timestamp.class.getName());
         }
         return false;
     }
