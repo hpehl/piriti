@@ -1,5 +1,5 @@
 #parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
-Converter<$parameterizedValueType> $converter = null;
+Converter<String> $converter = null;
 if ($value != null)
 {
     #if ($property.hasConverter())

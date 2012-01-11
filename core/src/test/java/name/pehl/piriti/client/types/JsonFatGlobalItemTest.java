@@ -51,9 +51,8 @@ public class JsonFatGlobalItemTest extends AbstractFatGlobalItemTest
         assertNotNull(jsonObject.get("characterPrimitive").isString());
         assertEquals(String.valueOf('\0'), jsonObject.get("characterPrimitive").isString().stringValue());
         assertTrue(jsonObject.containsKey("characterObject"));
-        // assertNotNull(jsonObject.get("characterObject").isString());
-        // assertEquals(String.valueOf('\0'),
-        // jsonObject.get("characterObject").isString().stringValue());
+        assertNotNull(jsonObject.get("characterObject").isString());
+        assertEquals(String.valueOf('\0'), jsonObject.get("characterObject").isString().stringValue());
         assertTrue(jsonObject.containsKey("doublePrimitive"));
         assertNotNull(jsonObject.get("doublePrimitive").isNumber());
         assertEquals(0.0, jsonObject.get("doublePrimitive").isNumber().doubleValue());

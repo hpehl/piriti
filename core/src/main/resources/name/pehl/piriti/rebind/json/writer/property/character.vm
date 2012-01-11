@@ -10,5 +10,5 @@ if ($value != null)
 }
 else
 {
-    out.append(JsonUtils.escapeValue(Character.MIN_VALUE));
+    out.append(JsonUtils.escapeValue(String.valueOf(Character.MIN_VALUE)));
 }
