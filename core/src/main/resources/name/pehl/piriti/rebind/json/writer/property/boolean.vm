@@ -4,10 +4,10 @@ if ($value != null)
     #if ($property.hasConverter())
         Converter<Boolean> $converter = null;
         #customConverter()
-        $valueAsString = ${converter}.serialize($value);
+        String $valueAsString = ${converter}.serialize($value);
         out.append(JsonUtils.escapeValue($valueAsString));
     #else
-        $valueAsString = String.valueOf($value);
+        String $valueAsString = String.valueOf($value);
         out.append($valueAsString);
     #end
 }

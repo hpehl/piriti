@@ -1,19 +1,18 @@
-if ($currentValue != null)
+if (currentValue != null)
 {
-	#set($currentWriter = $property.variables.newVariable("CurrentWriter"))
-	JsonWriter<$elementType> $currentWriter = jsonRegistry.getWriter(${elementType}.class);
-    if ($currentWriter != null)
+	JsonWriter<$elementType> currentWriter = jsonRegistry.getWriter(${elementType}.class);
+    if (currentWriter != null)
     {
-        out.append(${currentWriter}.toJson($currentValue));
+        out.append(currentWriter.toJson(currentValue));
     }
     else
     {
 	    #if ($property.hasConverter())
-	        $currentValueAsString = ${converter}.serialize($currentValue);
+	        String currentValueAsString = ${converter}.serialize(currentValue);
 	    #else
-	        $currentValueAsString = String.valueOf($currentValue);
+	        String currentValueAsString = String.valueOf(currentValue);
 	    #end
-	    out.append(JsonUtils.escapeValue($currentValueAsString));
+	    out.append(JsonUtils.escapeValue(currentValueAsString));
     }
 }
 else

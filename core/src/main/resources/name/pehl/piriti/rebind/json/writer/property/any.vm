@@ -10,13 +10,13 @@ if ($value != null)
     }
     else
     {
+        String $valueAsString = null;
         #serialize()
 	    else
 	    {
 	        $valueAsString = String.valueOf($value);
 	    }
 	    out.append(JsonUtils.escapeValue($valueAsString));
-        
     }
 }
 else

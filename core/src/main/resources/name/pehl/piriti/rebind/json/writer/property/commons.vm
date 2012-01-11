@@ -2,6 +2,5 @@
 #set($valueAsString = $property.variables.valueAsString)
 #logProperty()
 $parameterizedValueType $value = null;
-String $valueAsString = null;
 #readValue()
 out.append("\"$property.name\":");

@@ -11,14 +11,11 @@ if ($value != null)
 {
     Converter<$boxedElementType> $converter = null;
     #if ($property.hasConverter()) #customConverter() #else #defaultConverter($boxedElementType) #end
-    for (int $index = 0; $index < ${value}.length; ${index}++)
+    for (int index = 0; index < ${value}.length; index++)
     {
-        #set($currentValue = $property.variables.newVariable("CurrentValue"))
-        #set($currentValueAsString = $property.variables.newVariable("CurrentValueAsString"))
-        $boxedElementType $currentValue = ${value}[${index}];
-        String $currentValueAsString = null;
+        $boxedElementType currentValue = ${value}[index];
         #parse($property.elementTypeTemplate)
-        if ($index < ${value}.length - 1)
+        if (index < ${value}.length - 1)
         {
             out.append(",");
         }

@@ -1,11 +1,11 @@
-if ($currentValuevalue != null)
+if (currentValuevalue != null)
 {
     #if ($property.hasConverter())
-        $currentValueAsString = ${converter}.serialize($currentValue);
+        String currentValueAsString = ${converter}.serialize(currentValue);
     #else
-        $currentValueAsString = String.valueOf($currentValue);
+        String currentValueAsString = String.valueOf(currentValue);
     #end
-    out.append(JsonUtils.escapeValue($currentValueAsString));
+    out.append(JsonUtils.escapeValue(currentValueAsString));
 }
 else
 {

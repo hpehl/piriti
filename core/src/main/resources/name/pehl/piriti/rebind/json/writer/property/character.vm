@@ -1,6 +1,7 @@
 #parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
 if ($value != null)
 {
+    String $valueAsString = null;
     #serialize()
     else
     {

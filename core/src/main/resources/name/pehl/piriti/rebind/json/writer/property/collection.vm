@@ -1,3 +1,22 @@
 #parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
-// Not yet implemented
-out.append("null");
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
+#newConcreteTypes()
+if ($value != null)
+{
+    Converter<$elementType> $converter = null;
+    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($elementType) #end
+    for (Iterator<$elementType> iter = ${value}.iterator(); iter.hasNext(); )
+    {
+        $elementType currentValue = iter.next();
+        #parse($property.elementTypeTemplate)
+        if (iter.hasNext())
+        {
+            out.append(",");
+        }
+    }
+}
+else
+{
+    out.append("null");
+}
