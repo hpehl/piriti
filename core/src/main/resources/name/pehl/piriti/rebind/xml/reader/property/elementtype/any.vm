@@ -1,5 +1,17 @@
+## extra treatment for polymorphic references inside an array or collection
 #set($currentReader = $property.variables.newVariable("CurrentReader"))
-XmlReader<$elementType> $currentReader = xmlRegistry.getReader(${elementType}.class);
+#if ($property.instanceCreator)
+    // There is an InstanceCreator configured for $property.name. Use it to get the actual type for the XmlReader
+    XmlReader<$elementType> $currentReader = null;
+    $property.instanceCreator.name instanceCreator = GWT.create(${property.instanceCreator.name}.class);
+    $elementType tmp = instanceCreator.newInstance(currentElement);
+    if (tmp != null)
+    {
+        $currentReader = (XmlReader<$elementType>)xmlRegistry.getReader(tmp.getClass());
+    }
+#else
+    XmlReader<$elementType> $currentReader = xmlRegistry.getReader(${elementType}.class);
+#end
 if ($currentReader != null)
 {
     $currentValue = ${currentReader}.read(currentElement);

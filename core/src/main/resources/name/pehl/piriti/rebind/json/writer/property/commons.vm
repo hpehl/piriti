@@ -3,4 +3,4 @@
 #logProperty()
 $parameterizedValueType $value = null;
 #readValue()
-out.append("\"$property.name\":");
+out.append("\"$property.pathOrName\":");

@@ -7,7 +7,7 @@
     }
 #else
     $value = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
-	#if ($property.hasConverter())
+	#if ($property.converter)
         Converter<String> $converter = null; 
         #customConverter() 
         if ($value != null && $converter != null)

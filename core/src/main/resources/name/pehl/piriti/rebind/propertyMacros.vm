@@ -10,7 +10,7 @@ if (logger.isLoggable(FINE))
 #macro(newConcreteTypes)
 	#foreach ($concreteType in $property.concreteTypes)
 	    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
-	    new ${concreteType.parameterizedQualifiedSourceName}();
+	    ${concreteType.parameterizedQualifiedSourceName}.class.getName();
 	#end
 #end
 
@@ -54,7 +54,7 @@ if (logger.isLoggable(FINE))
 ## Macro which combines the two converter macros from above to convert the input to the value
 #macro(convert $pString)
     Converter<$parameterizedValueType> $converter = null;
-    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($parameterizedValueType) #end
+    #if ($property.converter) #customConverter() #else #defaultConverter($parameterizedValueType) #end
     if ($converter != null)
     {
         $value = ${converter}.convert($pString);
@@ -65,7 +65,7 @@ if (logger.isLoggable(FINE))
 ## Macro which combines the two converter macros from above to serialize the value into a string
 #macro(serialize) 
     Converter<$parameterizedValueType> $converter = null;
-    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($parameterizedValueType) #end
+    #if ($property.converter) #customConverter() #else #defaultConverter($parameterizedValueType) #end
     if ($converter != null)
     {
         $valueAsString = ${converter}.serialize($value);
@@ -138,8 +138,8 @@ if (logger.isLoggable(FINE))
     #else
         #if ($property.accessibleField) 
             model.$property.name = $value;
-        #elseif ($property.callableSetter) 
-            model.${property.callableSetter.name}($value);
+        #elseif ($property.callableSetter)
+            model.${property.callableSetterName}($value);
         #else
             if (logger.isLoggable(SEVERE)) 
             {
@@ -159,7 +159,7 @@ if (logger.isLoggable(FINE))
         #if ($property.accessibleField) 
             $value = model.$property.name;
         #elseif ($property.callableGetter) 
-            $value = model.${property.callableGetter.name}();
+            $value = model.${property.callableGetterName}(); 
         #else
             if (logger.isLoggable(SEVERE)) 
             {

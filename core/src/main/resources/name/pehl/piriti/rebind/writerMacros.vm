@@ -36,11 +36,13 @@
 
 
 #macro(writerEventMethods)
+    @Override
     public HandlerRegistration addModelWriteHandler(ModelWriteHandler<$modelParameterizedType> handler) 
     {
         return handlerManager.addHandler(ModelWriteEvent.getType(), handler);
     }
 
+    @Override
     public void fireEvent(GwtEvent<?> event) 
     {
         handlerManager.fireEvent(event);

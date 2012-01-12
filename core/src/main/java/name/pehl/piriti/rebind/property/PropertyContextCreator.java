@@ -1,9 +1,11 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.*;
+import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
+import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 import name.pehl.piriti.rebind.Modifier;
 import name.pehl.piriti.rebind.type.TypeContext;
@@ -41,7 +43,7 @@ public class PropertyContextCreator
     public PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource)
             throws InvalidPropertyException
     {
-        Set<PropertyAccess> access = calculateAccess(typeContext, propertySource);
+        Map<PropertyAccess, String> access = calculateAccess(typeContext, propertySource);
         validateProperty(typeContext, propertySource, access);
         PropertyContext propertyContext = new PropertyContext(propertySource, access);
 
@@ -61,9 +63,9 @@ public class PropertyContextCreator
 
     // --------------------------------------------------------- helper methods
 
-    private Set<PropertyAccess> calculateAccess(TypeContext typeContext, PropertySource propertySource)
+    private Map<PropertyAccess, String> calculateAccess(TypeContext typeContext, PropertySource propertySource)
     {
-        Set<PropertyAccess> access = new HashSet<PropertyAccess>();
+        Map<PropertyAccess, String> access = new HashMap<PropertyAccess, String>();
         JField field = TypeUtils.findField(typeContext.getType(), propertySource.getName());
         if (field != null)
         {
@@ -72,7 +74,7 @@ public class PropertyContextCreator
             if (!field.isFinal()
                     && (field.isPublic() || samePackage && (field.isDefaultAccess() || field.isProtected())))
             {
-                access.add(FIELD);
+                access.put(FIELD, field.getName());
             }
 
             JMethod getter = null;
@@ -88,7 +90,7 @@ public class PropertyContextCreator
             }
             if (getter != null)
             {
-                access.add(GETTER);
+                access.put(GETTER, getter.getName());
             }
 
             JMethod setter = null;
@@ -104,27 +106,27 @@ public class PropertyContextCreator
             }
             if (setter != null)
             {
-                access.add(SETTER);
+                access.put(SETTER, setter.getName());
             }
         }
         return access;
     }
 
 
-    private void validateProperty(TypeContext typeContext, PropertySource propertySource, Set<PropertyAccess> access)
-            throws InvalidPropertyException
+    private void validateProperty(TypeContext typeContext, PropertySource propertySource,
+            Map<PropertyAccess, String> access) throws InvalidPropertyException
     {
         validatePropertyType(typeContext, propertySource);
         if (typeContext.isReader())
         {
-            if (!(access.contains(FIELD) || access.contains(GETTER)))
+            if (!(access.containsKey(FIELD) || access.containsKey(GETTER)))
             {
                 throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or getter");
             }
         }
         else if (typeContext.isWriter())
         {
-            if (!(access.contains(FIELD) || access.contains(SETTER)))
+            if (!(access.containsKey(FIELD) || access.containsKey(SETTER)))
             {
                 throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or setter");
             }

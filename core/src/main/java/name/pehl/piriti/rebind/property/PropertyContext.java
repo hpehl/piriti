@@ -7,7 +7,7 @@ import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.NoopInstanceCreator;
@@ -110,9 +110,10 @@ public class PropertyContext
     private Class<? extends PropertySetter<?, ?>> setter;
 
     /**
-     * Information about the accessibility of the property
+     * Information about the accessibility of the property. The key is the
+     * access type the value the name of the field, setter or getter
      */
-    private Set<PropertyAccess> access;
+    private Map<PropertyAccess, String> access;
 
     private Variables variables;
 
@@ -129,7 +130,7 @@ public class PropertyContext
 
     // ----------------------------------------------------------- constructors
 
-    public PropertyContext(PropertySource propertySource, Set<PropertyAccess> access)
+    public PropertyContext(PropertySource propertySource, Map<PropertyAccess, String> access)
     {
         this.order = propertySource.getOrder();
 
@@ -386,19 +387,39 @@ public class PropertyContext
 
     public boolean isAccessibleField()
     {
-        return access.contains(FIELD);
+        return access.containsKey(FIELD);
     }
 
 
     public boolean isCallableGetter()
     {
-        return access.contains(GETTER);
+        return access.containsKey(GETTER);
+    }
+
+
+    public String getCallableGetterName()
+    {
+        if (isCallableGetter())
+        {
+            return access.get(GETTER);
+        }
+        return null;
     }
 
 
     public boolean isCallableSetter()
     {
-        return access.contains(SETTER);
+        return access.containsKey(SETTER);
+    }
+
+
+    public String getCallableSetterName()
+    {
+        if (isCallableSetter())
+        {
+            return access.get(SETTER);
+        }
+        return null;
     }
 
 

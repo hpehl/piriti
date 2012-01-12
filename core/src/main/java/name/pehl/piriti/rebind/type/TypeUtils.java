@@ -25,6 +25,13 @@ import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.json.client.JSONArray;
+import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONNull;
+import com.google.gwt.json.client.JSONNumber;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
 
 /**
  * Utility methods for {@linkplain JType}s.
@@ -332,6 +339,35 @@ public final class TypeUtils
         if (type != null)
         {
             return type.getQualifiedSourceName().startsWith("com.google.gwt.");
+        }
+        return false;
+    }
+
+
+    public static boolean isJsonValue(JType type)
+    {
+        if (type != null)
+        {
+            return JSONValue.class.getName().equals(type.getQualifiedSourceName());
+        }
+        return false;
+    }
+
+
+    public static boolean isJsonValueSubtype(JType type)
+    {
+        if (type != null)
+        {
+            String[] types = new String[] {JSONValue.class.getName(), JSONArray.class.getName(),
+                    JSONBoolean.class.getName(), JSONNull.class.getName(), JSONNumber.class.getName(),
+                    JSONObject.class.getName(), JSONString.class.getName()};
+            for (String currentType : types)
+            {
+                if (currentType.equals(type.getQualifiedSourceName()))
+                {
+                    return true;
+                }
+            }
         }
         return false;
     }

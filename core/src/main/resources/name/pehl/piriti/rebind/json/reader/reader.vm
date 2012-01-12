@@ -13,6 +13,7 @@ import name.pehl.totoe.json.client.JsonPath;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONBoolean;
+import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONNumber;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
@@ -42,6 +43,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
     
     // ------------------------------------------------------ read list methods
 
+    @Override
     public List<$modelParameterizedType> readList(String jsonString)
     {
         List<$modelParameterizedType> models = null;
@@ -66,33 +68,46 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
                     }
                 }
             }
-        }
-        return models;
-    }
-    
-    public List<$modelParameterizedType> readList(String jsonString, String arrayKey)
-    {
-        List<$modelParameterizedType> models = null;
-        if (jsonString != null && jsonString.trim().length() != 0 && arrayKey != null)
-        {
-            JSONObject jsonObject = JSONParser.parseStrict(jsonString).isObject();
-            if (jsonObject != null)
+            else
             {
-                JSONValue jsonValue = jsonObject.get(arrayKey);
-                if (jsonValue != null) 
-                {
-                    JSONArray jsonArray = jsonValue.isArray();
-                    if (jsonArray != null) 
-                    {
-                        models = new ArrayList<$modelParameterizedType>();
-                        models = readList(jsonArray);
-                    }
-                }
+                throw new JSONException("\"" + jsonString + "\" represents invalid json data!");
             }
         }
         return models;
     }
     
+    @Override
+    public List<$modelParameterizedType> readList(String jsonString, String arrayKey)
+    {
+        List<$modelParameterizedType> models = null;
+        if (jsonString != null && jsonString.trim().length() != 0)
+        {
+            JSONObject jsonObject = JSONParser.parseStrict(jsonString).isObject();
+            if (jsonObject != null)
+            {
+                if (arrayKey != null)
+                {
+	                JSONValue jsonValue = jsonObject.get(arrayKey);
+	                if (jsonValue != null) 
+	                {
+	                    JSONArray jsonArray = jsonValue.isArray();
+	                    if (jsonArray != null) 
+	                    {
+	                        models = new ArrayList<$modelParameterizedType>();
+	                        models = readList(jsonArray);
+	                    }
+	                }
+                }
+            }
+            else
+            {
+                throw new JSONException("\"" + jsonString + "\" represents invalid json data!");
+            }
+        }
+        return models;
+    }
+    
+    @Override
     public List<$modelParameterizedType> readList(JSONObject jsonObject) 
     {
         List<$modelParameterizedType> models = null;
@@ -117,6 +132,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         return models;
     }
     
+    @Override
     public List<$modelParameterizedType> readList(JSONObject jsonObject, String arrayKey) 
     {
         List<$modelParameterizedType> models = null;
@@ -137,6 +153,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
     }
 
 
+    @Override
     public List<$modelParameterizedType> readList(JSONArray jsonArray)
     {
         List<$modelParameterizedType> models = null;
@@ -189,6 +206,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
 
     // ---------------------------------------------------- read single methods
 
+    @Override
     public $modelParameterizedType read(String jsonString) 
     {
         $modelParameterizedType model = null;
@@ -199,10 +217,15 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
             {
                 model = internalRead(jsonObject);
             }
+            else
+            {
+                throw new JSONException("\"" + jsonString + "\" represents invalid json data!");
+            }
         }
         return model;
     }
     
+    @Override
     public $modelParameterizedType read(JSONObject jsonObject) 
     {
         $modelParameterizedType model = null;
@@ -230,6 +253,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
     
     // ----------------------------------------- ids, properties and references
 
+    @Override
     public $modelParameterizedType idRef(String id) 
     {
         return this.idMap.get(id);

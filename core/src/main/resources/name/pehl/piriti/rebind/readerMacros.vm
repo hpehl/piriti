@@ -37,11 +37,13 @@
 
 
 #macro(readerEventMethods)
+    @Override
     public HandlerRegistration addModelReadHandler(ModelReadHandler<$modelParameterizedType> handler) 
     {
         return handlerManager.addHandler(ModelReadEvent.getType(), handler);
     }
 
+    @Override
     public void fireEvent(GwtEvent<?> event) 
     {
         handlerManager.fireEvent(event);

@@ -32,6 +32,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
 
     // ---------------------------------------------------------- write methods
 
+    @Override
     public String toJson(List<$modelParameterizedType> models, String arrayKey)
     {
         String json = null;
@@ -58,12 +59,12 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         return json;
     }
     
+    @Override
     public String toJson($modelParameterizedType model)
     {
         String json = null;
         if (model != null) 
         {
-            ModelWriteEvent.fire(this, model);
             StringBuilder out = new StringBuilder();
             out.append("{");
             #foreach ($property in $typeContext.properties)
@@ -75,6 +76,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
             #end
             out.append("}");
             json = out.toString();
+            ModelWriteEvent.fire(this, model);
         }
         return json;
     }

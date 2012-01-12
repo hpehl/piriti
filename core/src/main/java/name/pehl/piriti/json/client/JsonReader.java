@@ -213,10 +213,8 @@ public interface JsonReader<T> extends HasModelReadHandler<T>
      *            The JSON object used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped JSON data, an empty list or
      *         {@code null} (see above).
-     * @throws JSONException
-     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(JSONObject jsonObject) throws JSONException;
+    List<T> readList(JSONObject jsonObject);
 
 
     /**
@@ -278,10 +276,8 @@ public interface JsonReader<T> extends HasModelReadHandler<T>
      *            The key containing the JSON array.
      * @return A list of T instances with the mapped JSON data, an empty list or
      *         {@code null} (see above).
-     * @throws JSONException
-     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(JSONObject jsonObject, String arrayKey) throws JSONException;
+    List<T> readList(JSONObject jsonObject, String arrayKey);
 
 
     /**
@@ -315,10 +311,8 @@ public interface JsonReader<T> extends HasModelReadHandler<T>
      *            The JSON array used as input. May be <code>null</code>.
      * @return A list of T instances with the mapped JSON data, an empty list or
      *         {@code null} (see above).
-     * @throws JSONException
-     *             if the specified string represents no valid JSON data
      */
-    List<T> readList(JSONArray jsonArray) throws JSONException;
+    List<T> readList(JSONArray jsonArray);
 
 
     // ------------------------------------------------------------ read single
@@ -400,4 +394,16 @@ public interface JsonReader<T> extends HasModelReadHandler<T>
      *             if the specified string represents no valid JSON data
      */
     T read(JSONObject jsonObject) throws JSONException;
+
+
+    // ------------------------------------------------------------- references
+
+    /**
+     * Returns the reference for the specified identifier or <code>null</code>
+     * if no reference was found.
+     * 
+     * @param id
+     * @return
+     */
+    T idRef(String id);
 }

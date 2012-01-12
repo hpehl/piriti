@@ -10,7 +10,8 @@
 if ($value != null)
 {
     Converter<$boxedElementType> $converter = null;
-    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($boxedElementType) #end
+    #if ($property.converter) #customConverter() #else #defaultConverter($boxedElementType) #end
+    out.append("[");
     for (int index = 0; index < ${value}.length; index++)
     {
         $boxedElementType currentValue = ${value}[index];
@@ -20,6 +21,7 @@ if ($value != null)
             out.append(",");
         }
     }
+    out.append("]");
 }
 else
 {

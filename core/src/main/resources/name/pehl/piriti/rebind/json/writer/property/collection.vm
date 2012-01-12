@@ -5,7 +5,8 @@
 if ($value != null)
 {
     Converter<$elementType> $converter = null;
-    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($elementType) #end
+    #if ($property.converter) #customConverter() #else #defaultConverter($elementType) #end
+    out.append("[");
     for (Iterator<$elementType> iter = ${value}.iterator(); iter.hasNext(); )
     {
         $elementType currentValue = iter.next();
@@ -15,6 +16,7 @@ if ($value != null)
             out.append(",");
         }
     }
+    out.append("]");
 }
 else
 {

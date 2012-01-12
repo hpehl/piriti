@@ -1,6 +1,6 @@
 if (currentValuevalue != null)
 {
-    #if ($property.hasConverter())
+    #if ($property.converter)
         String currentValueAsString = ${converter}.serialize(currentValue);
     #else
         String currentValueAsString = String.valueOf(currentValue);

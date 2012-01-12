@@ -8,7 +8,7 @@ if (!${elements}.isEmpty())
 {
     $value = new $collectionImplementation<$elementType>();
     Converter<$elementType> $converter = null;
-    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($elementType) #end
+    #if ($property.converter) #customConverter() #else #defaultConverter($elementType) #end
     for (Element currentElement : $elements)
     {
         #set($currentValue = $property.variables.newVariable("CurrentValue"))

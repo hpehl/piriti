@@ -1,7 +1,7 @@
 #parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
 if ($value != null)
 {
-    #if ($property.hasConverter())
+    #if ($property.converter)
         Converter<$parameterizedValueType> $converter = null;
         #customConverter()
         String $valueAsString = ${converter}.serialize($value);

@@ -13,7 +13,7 @@ if (!${elements}.isEmpty())
 {
     List<$boxedElementType> $asList = new ArrayList<$boxedElementType>(${elements}.size());
     Converter<$boxedElementType> $converter = null;
-    #if ($property.hasConverter()) #customConverter() #else #defaultConverter($boxedElementType) #end
+    #if ($property.converter) #customConverter() #else #defaultConverter($boxedElementType) #end
     for (Element currentElement : $elements)
     {
         #set($currentValue = $property.variables.newVariable("CurrentValue"))
