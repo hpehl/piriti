@@ -23,4 +23,11 @@ public class IntegerConverter extends NumberConverter<Integer>
     {
         return new Integer((int) parsed);
     }
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return new IntegerConverter();
+    }
 }

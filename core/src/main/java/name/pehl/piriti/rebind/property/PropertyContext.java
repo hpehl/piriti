@@ -9,14 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import name.pehl.piriti.commons.client.InstanceCreator;
-import name.pehl.piriti.commons.client.NoopInstanceCreator;
-import name.pehl.piriti.converter.client.Converter;
-import name.pehl.piriti.converter.client.NoopConverter;
-import name.pehl.piriti.property.client.NoopPropertyGetter;
-import name.pehl.piriti.property.client.NoopPropertySetter;
-import name.pehl.piriti.property.client.PropertyGetter;
-import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.type.TypeUtils;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
@@ -78,10 +70,14 @@ public class PropertyContext
     private String path;
 
     /**
-     * A custom converter or null if undefined.
+     * The default converter for the type, a custom converter or null if
+     * undefined / unsupported.
      */
-    private Class<? extends Converter<?>> converter;
+    private JClassType converter;
 
+    /**
+     * An optional format for the default or custom converter.
+     */
     private String format;
 
     /**
@@ -97,17 +93,17 @@ public class PropertyContext
     /**
      * A custom instance creator or null if undefined.
      */
-    private Class<? extends InstanceCreator<?, ?>> instanceCreator;
+    private JClassType instanceCreator;
 
     /**
      * A custom property getter or null if undefined.
      */
-    private Class<? extends PropertyGetter<?, ?>> getter;
+    private JClassType getter;
 
     /**
      * A custom property setter or null if undefined.
      */
-    private Class<? extends PropertySetter<?, ?>> setter;
+    private JClassType setter;
 
     /**
      * Information about the accessibility of the property. The key is the
@@ -134,7 +130,7 @@ public class PropertyContext
     {
         this.order = propertySource.getOrder();
 
-        // Types
+        // types
         TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
         JPrimitiveType primitiveType = propertySource.getType().isPrimitive();
         if (primitiveType != null)
@@ -169,11 +165,7 @@ public class PropertyContext
             this.path = propertySource.getPath();
         }
 
-        // converter and format
-        if (propertySource.getConverter() != null && propertySource.getConverter() != NoopConverter.class)
-        {
-            this.converter = propertySource.getConverter();
-        }
+        // format
         if (StringUtils.isNotEmpty(propertySource.getFormat()))
         {
             this.format = propertySource.getFormat();
@@ -188,20 +180,7 @@ public class PropertyContext
         }
         this.native_ = propertySource.isNative();
 
-        // instance creator, setter and getter
-        if (propertySource.getInstanceCreator() != null
-                && propertySource.getInstanceCreator() != NoopInstanceCreator.class)
-        {
-            this.instanceCreator = propertySource.getInstanceCreator();
-        }
-        if (propertySource.getGetter() != null && propertySource.getGetter() != NoopPropertyGetter.class)
-        {
-            this.getter = propertySource.getGetter();
-        }
-        if (propertySource.getSetter() != null && propertySource.getSetter() != NoopPropertySetter.class)
-        {
-            this.setter = propertySource.getSetter();
-        }
+        // access
         this.access = access;
 
         // variables
@@ -343,9 +322,15 @@ public class PropertyContext
     }
 
 
-    public Class<? extends Converter<?>> getConverter()
+    public JClassType getConverter()
     {
         return converter;
+    }
+
+
+    void setConverter(JClassType converter)
+    {
+        this.converter = converter;
     }
 
 
@@ -367,21 +352,39 @@ public class PropertyContext
     }
 
 
-    public Class<? extends InstanceCreator<?, ?>> getInstanceCreator()
+    public JClassType getInstanceCreator()
     {
         return instanceCreator;
     }
 
 
-    public Class<? extends PropertyGetter<?, ?>> getGetter()
+    void setInstanceCreator(JClassType instanceCreator)
+    {
+        this.instanceCreator = instanceCreator;
+    }
+
+
+    public JClassType getGetter()
     {
         return getter;
     }
 
 
-    public Class<? extends PropertySetter<?, ?>> getSetter()
+    void setGetter(JClassType getter)
+    {
+        this.getter = getter;
+    }
+
+
+    public JClassType getSetter()
     {
         return setter;
+    }
+
+
+    void setSetter(JClassType setter)
+    {
+        this.setter = setter;
     }
 
 

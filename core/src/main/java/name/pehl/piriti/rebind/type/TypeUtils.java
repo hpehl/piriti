@@ -447,7 +447,7 @@ public final class TypeUtils
     }
 
 
-    private static boolean isDefaultInstantiable(JType type)
+    public static boolean isDefaultInstantiable(JType type)
     {
         if (type == null)
         {

@@ -37,7 +37,7 @@ public class TypeContext
 
     private final JClassType type;
     private final JClassType rwType;
-    private Class<? extends InstanceCreator<?, ?>> instanceCreator;
+    private JClassType instanceCreator;
     private JClassType stopAt;
     private PropertyContext id;
     private final Map<String, PropertyContext> properties;
@@ -56,6 +56,8 @@ public class TypeContext
      */
     public TypeContext(JClassType type, JClassType rwType)
     {
+        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+
         this.type = type;
         this.rwType = rwType;
 
@@ -68,15 +70,16 @@ public class TypeContext
         this.instanceCreator = null;
         if (this.type.isAnnotationPresent(CreateWith.class))
         {
-            this.instanceCreator = this.type.getAnnotation(CreateWith.class).value();
+            Class<? extends InstanceCreator<?, ?>> clazz = this.type.getAnnotation(CreateWith.class).value();
+            this.instanceCreator = typeOracle.findType(clazz.getName());
         }
         if (this.rwType.isAnnotationPresent(CreateWith.class))
         {
-            this.instanceCreator = this.rwType.getAnnotation(CreateWith.class).value();
+            Class<? extends InstanceCreator<?, ?>> clazz = this.rwType.getAnnotation(CreateWith.class).value();
+            this.instanceCreator = typeOracle.findType(clazz.getName());
         }
 
         this.stopAt = null;
-        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
         if (this.type.isAnnotationPresent(MapUpTo.class))
         {
             this.stopAt = typeOracle.findType(this.type.getAnnotation(MapUpTo.class).value().getName()).getSuperclass();
@@ -235,7 +238,7 @@ public class TypeContext
     }
 
 
-    public Class<? extends InstanceCreator<?, ?>> getInstanceCreator()
+    public JClassType getInstanceCreator()
     {
         return instanceCreator;
     }

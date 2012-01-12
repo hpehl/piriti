@@ -1,7 +1,6 @@
 package name.pehl.piriti.converter.client;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.logging.Level;
 
 /**
@@ -10,10 +9,10 @@ import java.util.logging.Level;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class TimestampConverter extends AbstractDateConverter<Timestamp>
+public class TimestampConverter extends AbstractConverter<Timestamp>
 {
     @Override
-    protected Timestamp convertWithoutFormat(String value)
+    public Timestamp convert(String value)
     {
         Timestamp timestamp = null;
         try
@@ -25,12 +24,5 @@ public class TimestampConverter extends AbstractDateConverter<Timestamp>
             logger.log(Level.SEVERE, "Cannot parse SQL timestamp '" + value + "': " + e.getMessage(), e);
         }
         return timestamp;
-    }
-
-
-    @Override
-    protected Timestamp newInstance(Date parsed)
-    {
-        return new Timestamp(parsed.getTime());
     }
 }

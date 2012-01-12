@@ -7,6 +7,12 @@ import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
 import java.util.HashMap;
 import java.util.Map;
 
+import name.pehl.piriti.commons.client.NoopInstanceCreator;
+import name.pehl.piriti.converter.client.Converter;
+import name.pehl.piriti.converter.client.NoopConverter;
+import name.pehl.piriti.property.client.NoopPropertyGetter;
+import name.pehl.piriti.property.client.NoopPropertySetter;
+import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.Modifier;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
@@ -15,9 +21,11 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JConstructor;
 import com.google.gwt.core.ext.typeinfo.JField;
 import com.google.gwt.core.ext.typeinfo.JMethod;
 import com.google.gwt.core.ext.typeinfo.JType;
+import com.google.gwt.core.ext.typeinfo.TypeOracle;
 
 /**
  * @author $LastChangedBy:$
@@ -27,14 +35,18 @@ public class PropertyContextCreator
 {
     // -------------------------------------------------------- private members
 
+    private final TypeOracle typeOracle;
     private final TemplateFinder templateFinder;
+    private final DefaultConverter defaultConverter;
 
 
     // ----------------------------------------------------------- constructors
 
     public PropertyContextCreator()
     {
+        this.typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
         this.templateFinder = new TemplateFinder();
+        this.defaultConverter = new DefaultConverter();
     }
 
 
@@ -43,11 +55,26 @@ public class PropertyContextCreator
     public PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource)
             throws InvalidPropertyException
     {
+        // validation
+        validatePropertyType(typeContext, propertySource);
         Map<PropertyAccess, String> access = calculateAccess(typeContext, propertySource);
-        validateProperty(typeContext, propertySource, access);
-        PropertyContext propertyContext = new PropertyContext(propertySource, access);
+        validatePropertyAccess(typeContext, propertySource, access);
+        JClassType converter = validateConverter(typeContext, propertySource);
+        JClassType instanceCreator = validateClassAndType(typeContext, propertySource,
+                propertySource.getInstanceCreator(), NoopInstanceCreator.class);
+        JClassType getter = validateClassAndType(typeContext, propertySource, propertySource.getGetter(),
+                NoopPropertyGetter.class);
+        JClassType setter = validateClassAndType(typeContext, propertySource, propertySource.getSetter(),
+                NoopPropertySetter.class);
 
-        // find and assign templates
+        // creation
+        PropertyContext propertyContext = new PropertyContext(propertySource, access);
+        propertyContext.setConverter(converter);
+        propertyContext.setInstanceCreator(instanceCreator);
+        propertyContext.setGetter(getter);
+        propertyContext.setSetter(setter);
+
+        // templates
         String path = templateFinder.getPath(typeContext);
         String template = path + templateFinder.getTemplate(propertyContext.getType());
         propertyContext.setTemplate(template);
@@ -113,41 +140,6 @@ public class PropertyContextCreator
     }
 
 
-    private void validateProperty(TypeContext typeContext, PropertySource propertySource,
-            Map<PropertyAccess, String> access) throws InvalidPropertyException
-    {
-        validatePropertyType(typeContext, propertySource);
-        if (typeContext.isReader())
-        {
-            if (!(access.containsKey(FIELD) || access.containsKey(GETTER)))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or getter");
-            }
-        }
-        else if (typeContext.isWriter())
-        {
-            if (!(access.containsKey(FIELD) || access.containsKey(SETTER)))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or setter");
-            }
-            if (typeContext.isJson()
-                    && StringUtils.containsAny(propertySource.getPath(), PropertyContext.JSON_PATH_SYMBOLS))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "JSONPath expressions are not supported for writing");
-
-            }
-            if (typeContext.isXml()
-                    && StringUtils.containsAny(propertySource.getPath(), PropertyContext.XML_PATH_SYMBOLS))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "XPath expressions which are not supported for writing");
-
-            }
-        }
-    }
-
-
     private void validatePropertyType(TypeContext typeContext, PropertySource propertySource)
             throws InvalidPropertyException
     {
@@ -191,5 +183,108 @@ public class PropertyContextCreator
         {
             throw new InvalidPropertyException(typeContext, propertySource, "Maps are not supported");
         }
+    }
+
+
+    private void validatePropertyAccess(TypeContext typeContext, PropertySource propertySource,
+            Map<PropertyAccess, String> access) throws InvalidPropertyException
+    {
+        if (typeContext.isReader())
+        {
+            if (!(access.containsKey(FIELD) || access.containsKey(GETTER)))
+            {
+                throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or getter");
+            }
+        }
+        else if (typeContext.isWriter())
+        {
+            if (!(access.containsKey(FIELD) || access.containsKey(SETTER)))
+            {
+                throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or setter");
+            }
+            if (typeContext.isJson()
+                    && StringUtils.containsAny(propertySource.getPath(), PropertyContext.JSON_PATH_SYMBOLS))
+            {
+                throw new InvalidPropertyException(typeContext, propertySource,
+                        "JSONPath expressions are not supported for writing");
+
+            }
+            if (typeContext.isXml()
+                    && StringUtils.containsAny(propertySource.getPath(), PropertyContext.XML_PATH_SYMBOLS))
+            {
+                throw new InvalidPropertyException(typeContext, propertySource,
+                        "XPath expressions which are not supported for writing");
+
+            }
+        }
+    }
+
+
+    private JClassType validateConverter(TypeContext typeContext, PropertySource propertySource)
+            throws InvalidPropertyException
+    {
+        JClassType type = null;
+        String format = propertySource.getFormat();
+        Class<? extends Converter<?>> clazz = propertySource.getConverter();
+
+        if (clazz != null && clazz != NoopConverter.class)
+        {
+            // if there's a format specified, the converter must provide a
+            // constructor which accepts a string, otherwise there must be a
+            // default constructor.
+            type = typeOracle.findType(clazz.getName());
+            if (type == null)
+            {
+                throw new InvalidPropertyException(typeContext, propertySource, "Converter " + clazz.getName()
+                        + " cannot be found");
+            }
+            if (StringUtils.isEmpty(format))
+            {
+                if (!TypeUtils.isDefaultInstantiable(type))
+                {
+                    throw new InvalidPropertyException(typeContext, propertySource, "Converter " + clazz.getName()
+                            + " has no default constructor");
+                }
+            }
+            else
+            {
+                TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+                JType stringType = typeOracle.findType(String.class.getName());
+                JConstructor constructor = type.findConstructor(new JType[] {stringType});
+                if (constructor == null)
+                {
+                    throw new InvalidPropertyException(typeContext, propertySource, "Converter " + clazz.getName()
+                            + " has no constructor which accepts the format \"" + format + "\"");
+                }
+            }
+        }
+        else
+        {
+            // Try to find a default converter
+            type = defaultConverter.get(propertySource.getType());
+        }
+
+        return type;
+    }
+
+
+    private JClassType validateClassAndType(TypeContext typeContext, PropertySource propertySource, Class<?> clazz,
+            Class<?> defaultValue) throws InvalidPropertyException
+    {
+        JClassType type = null;
+        if (clazz != null && clazz != defaultValue)
+        {
+            type = typeOracle.findType(clazz.getName());
+            if (type == null)
+            {
+                throw new InvalidPropertyException(typeContext, propertySource, clazz.getName() + " cannot be found");
+            }
+            if (!TypeUtils.isDefaultInstantiable(type))
+            {
+                throw new InvalidPropertyException(typeContext, propertySource, clazz.getName()
+                        + " has no default constructor");
+            }
+        }
+        return type;
     }
 }

@@ -35,4 +35,11 @@ public class ByteConverter extends AbstractConverter<Byte>
         }
         return null;
     }
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return new ByteConverter();
+    }
 }

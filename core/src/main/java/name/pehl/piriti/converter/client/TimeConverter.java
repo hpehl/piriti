@@ -1,7 +1,6 @@
 package name.pehl.piriti.converter.client;
 
 import java.sql.Time;
-import java.util.Date;
 import java.util.logging.Level;
 
 /**
@@ -10,10 +9,10 @@ import java.util.logging.Level;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class TimeConverter extends AbstractDateConverter<Time>
+public class TimeConverter extends AbstractConverter<Time>
 {
     @Override
-    protected Time convertWithoutFormat(String value)
+    public Time convert(String value)
     {
         Time time = null;
         try
@@ -25,12 +24,5 @@ public class TimeConverter extends AbstractDateConverter<Time>
             logger.log(Level.SEVERE, "Cannot parse SQL time '" + value + "': " + e.getMessage(), e);
         }
         return time;
-    }
-
-
-    @Override
-    protected Time newInstance(Date parsed)
-    {
-        return new Time(parsed.getTime());
     }
 }

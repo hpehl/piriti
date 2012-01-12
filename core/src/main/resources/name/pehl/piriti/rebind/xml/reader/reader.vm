@@ -162,7 +162,7 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         ##TODO: Handle Id annotations
         $modelParameterizedType model = null;
         #if ($typeContext.instanceCreator)
-            $typeContext.instanceCreator.name instanceCreator = GWT.create(${typeContext.instanceCreator.name}.class);
+            $typeContext.instanceCreator.qualifiedSourceName instanceCreator = GWT.create(${typeContext.instanceCreator.qualifiedSourceName}.class);
             model = instanceCreator.newInstance(jsonObject);
         #else
             model = GWT.create(${modelType}.class); 

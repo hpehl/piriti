@@ -1,52 +1,50 @@
 package name.pehl.piriti.converter.client;
 
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.google.gwt.i18n.client.NumberFormat;
 
-public abstract class NumberConverter<T extends Number> extends AbstractConverter<T>
+public abstract class NumberConverter<T extends Number> extends FormatableConverter<T>
 {
-    protected final Logger logger;
-    protected NumberFormat numberFormat;
+    protected final NumberFormat numberFormat;
 
 
     public NumberConverter()
     {
-        this.numberFormat = numberFormat();
-        this.logger = Logger.getLogger(getClass().getName());
-    }
-
-
-    @Override
-    public void setFormat(String format)
-    {
-        super.setFormat(format);
-        this.numberFormat = numberFormat();
+        this((String) null);
     }
 
 
     /**
-     * Instantiation happens in an extra method so it can be overwritten in unit
-     * tests.
-     * 
-     * @return
+     * @param format
+     * @throws IllegalArgumentException
+     *             If the format is an illegal number format
      */
-    protected NumberFormat numberFormat()
+    public NumberConverter(String format)
     {
-        NumberFormat numberFormat = null;
-        if (format != null)
+        super(format);
+        if (format == null)
         {
-            try
-            {
-                numberFormat = NumberFormat.getFormat(format);
-            }
-            catch (IllegalArgumentException e)
-            {
-                logger.log(Level.SEVERE, "Unknown NumberFormat '" + format + "': " + e.getMessage(), e);
-            }
+            numberFormat = null;
         }
-        return numberFormat;
+        else
+        {
+            numberFormat = NumberFormat.getFormat(format);
+        }
+    }
+
+
+    /**
+     * @param numberFormat
+     *            Must not be null! Otherwise a {@link NullPointerException}
+     *            will be thrown.
+     * @throws NullPointerException
+     *             if {@code numberFormat is null}
+     */
+    public NumberConverter(NumberFormat numberFormat)
+    {
+        super(numberFormat.getPattern());
+        this.numberFormat = numberFormat;
     }
 
 
@@ -56,7 +54,7 @@ public abstract class NumberConverter<T extends Number> extends AbstractConverte
         T result = null;
         if (isValid(value))
         {
-            if (format == null)
+            if (numberFormat == null)
             {
                 result = convertWithoutFormat(value);
             }
@@ -103,7 +101,7 @@ public abstract class NumberConverter<T extends Number> extends AbstractConverte
         String result = null;
         if (value != null)
         {
-            if (format == null)
+            if (numberFormat == null)
             {
                 result = super.serialize(value);
             }

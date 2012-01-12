@@ -15,61 +15,32 @@ if (logger.isLoggable(FINE))
 #end
 
 
-## Creates the custom converter
-#macro(customConverter)
-    $converter = GWT.create(${property.converter.name}.class);
-    #if ($property.format) ${converter}.setFormat("$property.format"); #end
-#end
-
-
-## Tries to get the default converter from the converter registry 
-#macro(defaultConverter $pType)
-    #if ($property.format)
-        $converter = converterRegistry.get(${pType}.class, "$property.format");
-        if ($converter == null)
-        {
-            // No converter with the specified format found in the
-            // registry --> Use the default one, set the format and
-            // register it against the registry
-            $converter = converterRegistry.get(${pType}.class);
-            if ($converter != null)
-            {
-                ${converter}.setFormat("$property.format");
-                converterRegistry.register(${pType}.class, ${converter}, "$property.format");
-            }
-            else
-            {
-                if (logger.isLoggable(SEVERE)) 
-                {
-                    logger.log(SEVERE, "No converter found for property $property.name with type $pType in ${modelType}.");
-                }
-            }
-        }
-    #else
-        $converter = converterRegistry.get(${pType}.class);
+## Macro to create the converter if there's one specified
+#macro(createConverter)
+    #if ($property.converter)
+        #if ($property.format) 
+            $property.converter.qualifiedSourceName $converter = new ${property.converter.qualifiedSourceName}("$property.format");
+        #else
+            $property.converter.qualifiedSourceName $converter = GWT.create(${property.converter.qualifiedSourceName}.class);
+        #end
+        $value = ${converter}.convert($pString);
     #end
 #end
 
 
-## Macro which combines the two converter macros from above to convert the input to the value
-#macro(convert $pString)
-    Converter<$parameterizedValueType> $converter = null;
-    #if ($property.converter) #customConverter() #else #defaultConverter($parameterizedValueType) #end
-    if ($converter != null)
-    {
-        $value = ${converter}.convert($pString);
-    }
+## Macro to use the converter (string --> value)
+#macro(convert $pString $pValue)
+    #if ($property.converter)
+	    $pValue = ${converter}.convert($pString);
+    #end
 #end
 
 
-## Macro which combines the two converter macros from above to serialize the value into a string
-#macro(serialize) 
-    Converter<$parameterizedValueType> $converter = null;
-    #if ($property.converter) #customConverter() #else #defaultConverter($parameterizedValueType) #end
-    if ($converter != null)
-    {
-        $valueAsString = ${converter}.serialize($value);
-    }
+## Macro to use the converter (value --> string)
+#macro(serialize $pValue $pString) 
+    #if ($property.converter)
+        $pString = ${converter}.serialize($pValue);
+    #end
 #end
 
 
@@ -133,7 +104,7 @@ if (logger.isLoggable(FINE))
 ## Assigns the mapped value to the model property 
 #macro(assignValue)
     #if ($property.setter)
-        $property.setter.name setter = GWT.create(${property.setter.name}.class);
+        $property.setter.qualifiedSourceName setter = GWT.create(${property.setter.qualifiedSourceName}.class);
         setter.set(model, $value);
     #else
         #if ($property.accessibleField) 
@@ -153,7 +124,7 @@ if (logger.isLoggable(FINE))
 ## Reads the value from the model property
 #macro(readValue)
     #if ($property.getter)
-        $property.getter.name getter = GWT.create(${property.getter.name}.class);
+        $property.getter.qualifiedSourceName getter = GWT.create(${property.getter.qualifiedSourceName}.class);
         $value = getter.get(model);
     #else
         #if ($property.accessibleField) 

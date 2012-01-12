@@ -15,13 +15,13 @@ import org.junit.Test;
 
 public class SqlDateConverterTest
 {
-    private TestableSqlDateConverter underTest;
+    private SqlDateConverter underTest;
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new TestableSqlDateConverter();
+        underTest = new SqlDateConverter();
     }
 
 

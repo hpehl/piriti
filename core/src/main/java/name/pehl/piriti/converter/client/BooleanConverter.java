@@ -28,4 +28,11 @@ public class BooleanConverter extends AbstractConverter<Boolean>
         }
         return null;
     }
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return new BooleanConverter();
+    }
 }

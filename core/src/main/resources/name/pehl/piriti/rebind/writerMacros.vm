@@ -10,8 +10,6 @@
 	import name.pehl.piriti.commons.client.ModelWriteEvent;
 	import name.pehl.piriti.commons.client.ModelWriteHandler;
     import name.pehl.piriti.converter.client.Converter;
-    import name.pehl.piriti.converter.client.ConverterGinjector;
-    import name.pehl.piriti.converter.client.ConverterRegistry;
 	
     import com.google.gwt.core.client.GWT;
 	import com.google.gwt.event.shared.GwtEvent;
@@ -23,14 +21,12 @@
 #macro(writerFields)
     private static Logger logger = Logger.getLogger("$typeContext.rwType.qualifiedSourceName");
     private final HandlerManager handlerManager;
-    private final ConverterRegistry converterRegistry;
     private final Map<String, $modelType> idMap;
 #end
 
 
 #macro(writerConstructorBody)
     this.handlerManager = new HandlerManager(this);
-    this.converterRegistry = ConverterGinjector.INJECTOR.getConverterRegistry();
     this.idMap = new HashMap<String, $modelParameterizedType>();
 #end
 

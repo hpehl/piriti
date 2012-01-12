@@ -2,10 +2,6 @@ package name.pehl.piriti.converter.client;
 
 /**
  * Simple converter to convert strings into the specified type T and vice versa.
- * <p>
- * <strong>Please note:</strong> Implementations of this interface must provide
- * a default / no-arg constructor, since they are created with
- * {@link com.google.gwt.core.client.GWT#create(Class)}.
  * 
  * @param <T>
  *            The target type for this converter.
@@ -14,18 +10,6 @@ package name.pehl.piriti.converter.client;
  */
 public interface Converter<T>
 {
-    /**
-     * Method to set a format for the converter. The format must be set before
-     * the first call to {@link #convert(String)} or {@link #serialize(Object)}.
-     * 
-     * @param format
-     */
-    void setFormat(String format);
-
-
-    String getFormat();
-
-
     /**
      * Converts the specified value to the type T.
      * 

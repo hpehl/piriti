@@ -9,10 +9,10 @@ import java.util.logging.Level;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class SqlDateConverter extends AbstractDateConverter<Date>
+public class SqlDateConverter extends AbstractConverter<Date>
 {
     @Override
-    protected Date convertWithoutFormat(String value)
+    public Date convert(String value)
     {
         Date sqlDate = null;
         try
@@ -24,12 +24,5 @@ public class SqlDateConverter extends AbstractDateConverter<Date>
             logger.log(Level.SEVERE, "Cannot parse SQL date '" + value + "': " + e.getMessage(), e);
         }
         return sqlDate;
-    }
-
-
-    @Override
-    protected Date newInstance(java.util.Date parsed)
-    {
-        return new Date(parsed.getTime());
     }
 }

@@ -15,13 +15,13 @@ import org.junit.Test;
 
 public class TimeConverterTest
 {
-    private TestableTimeConverter underTest;
+    private TimeConverter underTest;
 
 
     @Before
     public void setUp() throws Exception
     {
-        underTest = new TestableTimeConverter();
+        underTest = new TimeConverter();
     }
 
 

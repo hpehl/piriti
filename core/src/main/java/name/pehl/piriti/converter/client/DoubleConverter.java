@@ -23,4 +23,11 @@ public class DoubleConverter extends NumberConverter<Double>
     {
         return new Double(parsed);
     }
+
+
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        return new DoubleConverter();
+    }
 }

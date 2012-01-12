@@ -1,5 +1,7 @@
 package name.pehl.piriti.converter.client;
 
+import java.util.logging.Logger;
+
 /**
  * Base class for all converters with some common functionality.
  * 
@@ -8,20 +10,12 @@ package name.pehl.piriti.converter.client;
  */
 public abstract class AbstractConverter<T> implements Converter<T>
 {
-    protected String format;
+    protected final Logger logger;
 
 
-    @Override
-    public void setFormat(String format)
+    public AbstractConverter()
     {
-        this.format = format;
-    }
-
-
-    @Override
-    public String getFormat()
-    {
-        return format;
+        this.logger = Logger.getLogger(getClass().getName());
     }
 
 

@@ -68,8 +68,7 @@ public class DateConverterTest
     public void testConvertCustomFormat()
     {
         String format = "dd MMM yy HH/mm/ss/SSS";
-        underTest = new TestableDateConverter();
-        underTest.setFormat(format);
+        underTest = new TestableDateConverter(format);
         Date now = new Date();
         TestableDateTimeFormat dateTimeFormat = new TestableDateTimeFormat(format);
         String nowAsString = dateTimeFormat.format(now);
