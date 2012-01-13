@@ -20,6 +20,7 @@ import name.pehl.piriti.converter.client.SqlDateConverter;
 import name.pehl.piriti.converter.client.TimeConverter;
 import name.pehl.piriti.converter.client.TimestampConverter;
 import name.pehl.piriti.rebind.GeneratorContextHolder;
+import name.pehl.piriti.rebind.type.TypeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -48,6 +49,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  */
 public class DefaultConverter
 {
+    private final TypeOracle typeOracle;
     private final Map<JClassType, JClassType> registry;
 
 
@@ -58,7 +60,7 @@ public class DefaultConverter
      */
     public DefaultConverter()
     {
-        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+        typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
 
         registry = new HashMap<JClassType, JClassType>();
         registry.put(typeOracle.findType(Boolean.class.getName()),
@@ -84,6 +86,46 @@ public class DefaultConverter
 
     public JClassType get(JType type)
     {
-        return registry.get(type);
+        JClassType converter = null;
+        if (type != null)
+        {
+            if (type.isArray() != null)
+            {
+                JType componentType = type.isArray().getComponentType();
+                if (componentType.isPrimitive() != null)
+                {
+                    String boxedSourceName = componentType.isPrimitive().getQualifiedBoxedSourceName();
+                    JClassType boxedType = typeOracle.findType(boxedSourceName);
+                    converter = registry.get(boxedType);
+                }
+                else if (componentType.isClass() != null)
+                {
+                    converter = registry.get(componentType.isClass());
+                }
+
+            }
+            else if (TypeUtils.isCollection(type))
+            {
+                JClassType typeVariable = TypeUtils.getTypeVariable(type);
+                if (typeVariable != null)
+                {
+                    converter = registry.get(typeVariable.isClass());
+                }
+            }
+            else
+            {
+                if (type.isPrimitive() != null)
+                {
+                    String boxedSourceName = type.isPrimitive().getQualifiedBoxedSourceName();
+                    JClassType boxedType = typeOracle.findType(boxedSourceName);
+                    converter = registry.get(boxedType);
+                }
+                else if (type.isClass() != null)
+                {
+                    converter = registry.get(type.isClass());
+                }
+            }
+        }
+        return converter;
     }
 }

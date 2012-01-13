@@ -15,55 +15,14 @@ if (logger.isLoggable(FINE))
 #end
 
 
-## Macro to create the converter if there's one specified
+## Macro to create the converter
 #macro(createConverter)
-    #if ($property.converter)
-        #if ($property.format) 
-            $property.converter.qualifiedSourceName $converter = new ${property.converter.qualifiedSourceName}("$property.format");
-        #else
-            $property.converter.qualifiedSourceName $converter = GWT.create(${property.converter.qualifiedSourceName}.class);
-        #end
-        $value = ${converter}.convert($pString);
-    #end
-#end
-
-
-## Macro to use the converter (string --> value)
-#macro(convert $pString $pValue)
-    #if ($property.converter)
-	    $pValue = ${converter}.convert($pString);
-    #end
-#end
-
-
-## Macro to use the converter (value --> string)
-#macro(serialize $pValue $pString) 
-    #if ($property.converter)
-        $pString = ${converter}.serialize($pValue);
-    #end
-#end
-
-
-## Tries to parse the numeric value
-#macro(valueOfNumeric $pDouble $pValue $pType)
-    #if($TypeUtils.isByte($pType))
-        $pValue = ${pDouble}.byteValue();
-    #elseif($TypeUtils.isShort($pType))
-        $pValue = ${pDouble}.shortValue();
-    #elseif($TypeUtils.isInteger($pType))
-        $pValue = ${pDouble}.intValue();
-    #elseif($TypeUtils.isLong($pType))
-        $pValue = ${pDouble}.longValue();
-    #elseif($TypeUtils.isFloat($pType))
-        $pValue = ${pDouble}.floatValue();
-    #elseif($TypeUtils.isDouble($pType))
-        $pValue = ${pDouble};
+    #if ($property.format) 
+        $property.converter.qualifiedSourceName $converter = new ${property.converter.qualifiedSourceName}("$property.format");
     #else
-        if (logger.isLoggable(SEVERE)) 
-        {
-            logger.log(SEVERE, "$pType is no valid numeric type.");
-        }
+        $property.converter.qualifiedSourceName $converter = GWT.create(${property.converter.qualifiedSourceName}.class);
     #end
+    $value = ${converter}.convert($pString);
 #end
 
 

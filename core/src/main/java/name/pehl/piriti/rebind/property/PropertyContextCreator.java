@@ -66,6 +66,7 @@ public class PropertyContextCreator
                 NoopPropertyGetter.class);
         JClassType setter = validateClassAndType(typeContext, propertySource, propertySource.getSetter(),
                 NoopPropertySetter.class);
+        validateMandatoryConverters(typeContext, propertySource, converter);
 
         // creation
         PropertyContext propertyContext = new PropertyContext(propertySource, access);
@@ -223,48 +224,49 @@ public class PropertyContextCreator
     private JClassType validateConverter(TypeContext typeContext, PropertySource propertySource)
             throws InvalidPropertyException
     {
-        JClassType type = null;
+        JClassType converterType = null;
         String format = propertySource.getFormat();
-        Class<? extends Converter<?>> clazz = propertySource.getConverter();
+        Class<? extends Converter<?>> converterClass = propertySource.getConverter();
+        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
 
-        if (clazz != null && clazz != NoopConverter.class)
+        if (converterClass != null && converterClass != NoopConverter.class)
         {
             // if there's a format specified, the converter must provide a
             // constructor which accepts a string, otherwise there must be a
             // default constructor.
-            type = typeOracle.findType(clazz.getName());
-            if (type == null)
+            converterType = typeOracle.findType(converterClass.getName());
+            if (converterType == null)
             {
-                throw new InvalidPropertyException(typeContext, propertySource, "Converter " + clazz.getName()
+                throw new InvalidPropertyException(typeContext, propertySource, "Converter " + converterClass.getName()
                         + " cannot be found");
             }
             if (StringUtils.isEmpty(format))
             {
-                if (!TypeUtils.isDefaultInstantiable(type))
+                if (!TypeUtils.isDefaultInstantiable(converterType))
                 {
-                    throw new InvalidPropertyException(typeContext, propertySource, "Converter " + clazz.getName()
-                            + " has no default constructor");
+                    throw new InvalidPropertyException(typeContext, propertySource, "Converter "
+                            + converterClass.getName() + " has no default constructor");
                 }
             }
             else
             {
-                TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
                 JType stringType = typeOracle.findType(String.class.getName());
-                JConstructor constructor = type.findConstructor(new JType[] {stringType});
+                JConstructor constructor = converterType.findConstructor(new JType[] {stringType});
                 if (constructor == null)
                 {
-                    throw new InvalidPropertyException(typeContext, propertySource, "Converter " + clazz.getName()
-                            + " has no constructor which accepts the format \"" + format + "\"");
+                    throw new InvalidPropertyException(typeContext, propertySource, "Converter "
+                            + converterClass.getName() + " has no constructor which accepts the format \"" + format
+                            + "\"");
                 }
             }
         }
         else
         {
             // Try to find a default converter
-            type = defaultConverter.get(propertySource.getType());
+            converterType = defaultConverter.get(propertySource.getType());
         }
 
-        return type;
+        return converterType;
     }
 
 
@@ -286,5 +288,21 @@ public class PropertyContextCreator
             }
         }
         return type;
+    }
+
+
+    private void validateMandatoryConverters(TypeContext typeContext, PropertySource propertySource,
+            JClassType converter) throws InvalidPropertyException
+    {
+        if (converter == null)
+        {
+            JType type = propertySource.getType();
+            if (TypeUtils.isBoolean(type) || TypeUtils.isCharacter(type) || TypeUtils.isDate(type)
+                    || TypeUtils.isNumeric(type) || Object.class.getName().equals(type.getQualifiedSourceName()))
+            {
+                throw new InvalidPropertyException(typeContext, propertySource, "No converter for "
+                        + type.getQualifiedSourceName() + " specified");
+            }
+        }
     }
 }

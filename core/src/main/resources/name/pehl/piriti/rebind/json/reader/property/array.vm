@@ -14,8 +14,9 @@ if ($jsonValue != null)
     {
         int size = jsonArray.size();
         List<$boxedElementType> $asList = new ArrayList<$boxedElementType>(size);
-        Converter<$boxedElementType> $converter = null;
-        #if ($property.converter) #customConverter() #else #defaultConverter($boxedElementType) #end
+        #if ($property.converter)
+            #createConverter()
+        #end
         for (int i = 0; i < size; i++)
         {
             JSONValue currentJsonValue = jsonArray.get(i);

@@ -19,30 +19,27 @@ if ($jsonValue != null)
             }
         #end
     #else
-		JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
-		if ($reader != null)
-		{
-            JSONObject $jsonObject = ${jsonValue}.isObject();
-            if ($jsonObject != null)
-            {
-                $value = ${reader}.read($jsonObject);
-            }
-		}
-		else
-		{
+        #if ($property.converter)
 		    if (${jsonValue}.isNull() == null) 
 		    {
-		        JSONString jsonString = ${jsonValue}.isString();
-		        if (jsonString != null)
+		        String stringValue = ${jsonValue}.toString();
+		        if (stringValue != null)
 		        {
-		            String stringValue = jsonString.stringValue();
-		            if (stringValue != null)
-		            {
-                        #convert("stringValue")
-		            }
+		            #createConverter()
+		            #convert("stringValue", $value)
 		        }
 		    }
-		}
+        #else
+	        JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
+	        if ($reader != null)
+	        {
+	            JSONObject $jsonObject = ${jsonValue}.isObject();
+	            if ($jsonObject != null)
+	            {
+	                $value = ${reader}.read($jsonObject);
+	            }
+	        }
+        #end
     #end
     if ($value != null) 
     {

@@ -4,10 +4,6 @@ if ($jsonValue != null)
     #if ($property.native)
         $value = ${jsonValue}.toString();
     #else
-		#if ($property.converter)
-            Converter<String> $converter = null; 
-            #customConverter() 
-        #end
 	    if (${jsonValue}.isNull() == null) 
 	    {
 	        JSONString jsonString = ${jsonValue}.isString();
@@ -15,10 +11,8 @@ if ($jsonValue != null)
 	        {
 	            $value = jsonString.stringValue();
 	            #if ($property.converter)
-		            if ($value != null && $converter != null)
-		            {
-		                $value = ${converter}.convert($value);
-		            }
+	               #createConverter()
+	               $value = ${converter}.convert($value);
 	            #end
 	        }
 	    }

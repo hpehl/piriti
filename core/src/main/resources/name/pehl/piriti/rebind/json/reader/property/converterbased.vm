@@ -1,0 +1,16 @@
+if ($jsonValue != null)
+{
+    if (${jsonValue}.isNull() == null) 
+    {
+        String stringValue = ${jsonValue}.toString();
+        if (stringValue != null)
+        {
+            #createConverter()
+            #convert("stringValue", $value)
+        }
+    }
+	if ($value != null) 
+    {
+        #assignValue()
+	}
+}

@@ -9,8 +9,9 @@ if ($jsonValue != null)
     {
         int size = jsonArray.size();
         $value = new $collectionImplementation<$elementType>();
-        Converter<$elementType> $converter = null;
-        #if ($property.converter) #customConverter() #else #defaultConverter($elementType) #end
+        #if ($property.converter)
+            #createConverter()
+        #end
         for (int i = 0; i < size; i++)
         {
             JSONValue currentJsonValue = jsonArray.get(i);

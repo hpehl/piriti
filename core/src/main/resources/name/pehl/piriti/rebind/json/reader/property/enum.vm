@@ -9,11 +9,12 @@ if ($jsonValue != null)
             String stringValue = jsonString.stringValue();
             if (stringValue != null)
             {
-                #convert("stringValue")
-                else
-                {
+                #if ($property.converter)
+                    #createConverter()
+                    $value = ${converter}.convert("stringValue");
+                #else
                     #valueOfEnum("stringValue", $value, $valueType)
-                }
+                #end
             }
         }
     }
