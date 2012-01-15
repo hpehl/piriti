@@ -50,7 +50,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 public class DefaultConverter
 {
     private final TypeOracle typeOracle;
-    private final Map<JClassType, JClassType> registry;
+    private final Map<JClassType, String> registry;
 
 
     /**
@@ -61,32 +61,26 @@ public class DefaultConverter
     public DefaultConverter()
     {
         typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
-
-        registry = new HashMap<JClassType, JClassType>();
-        registry.put(typeOracle.findType(Boolean.class.getName()),
-                typeOracle.findType(BooleanConverter.class.getName()));
-        registry.put(typeOracle.findType(Byte.class.getName()), typeOracle.findType(ByteConverter.class.getName()));
-        registry.put(typeOracle.findType(Character.class.getName()),
-                typeOracle.findType(CharacterConverter.class.getName()));
-        registry.put(typeOracle.findType(Date.class.getName()), typeOracle.findType(DateConverter.class.getName()));
-        registry.put(typeOracle.findType(java.sql.Date.class.getName()),
-                typeOracle.findType(SqlDateConverter.class.getName()));
-        registry.put(typeOracle.findType(Double.class.getName()), typeOracle.findType(DoubleConverter.class.getName()));
-        registry.put(typeOracle.findType(Float.class.getName()), typeOracle.findType(FloatConverter.class.getName()));
-        registry.put(typeOracle.findType(Integer.class.getName()),
-                typeOracle.findType(IntegerConverter.class.getName()));
-        registry.put(typeOracle.findType(Long.class.getName()), typeOracle.findType(LongConverter.class.getName()));
-        registry.put(typeOracle.findType(Object.class.getName()), typeOracle.findType(ObjectConverter.class.getName()));
-        registry.put(typeOracle.findType(Short.class.getName()), typeOracle.findType(ShortConverter.class.getName()));
-        registry.put(typeOracle.findType(Time.class.getName()), typeOracle.findType(TimeConverter.class.getName()));
-        registry.put(typeOracle.findType(Timestamp.class.getName()),
-                typeOracle.findType(TimestampConverter.class.getName()));
+        registry = new HashMap<JClassType, String>();
+        registry.put(typeOracle.findType(Boolean.class.getName()), BooleanConverter.class.getName());
+        registry.put(typeOracle.findType(Byte.class.getName()), ByteConverter.class.getName());
+        registry.put(typeOracle.findType(Character.class.getName()), CharacterConverter.class.getName());
+        registry.put(typeOracle.findType(Date.class.getName()), DateConverter.class.getName());
+        registry.put(typeOracle.findType(java.sql.Date.class.getName()), SqlDateConverter.class.getName());
+        registry.put(typeOracle.findType(Double.class.getName()), DoubleConverter.class.getName());
+        registry.put(typeOracle.findType(Float.class.getName()), FloatConverter.class.getName());
+        registry.put(typeOracle.findType(Integer.class.getName()), IntegerConverter.class.getName());
+        registry.put(typeOracle.findType(Long.class.getName()), LongConverter.class.getName());
+        registry.put(typeOracle.findType(Object.class.getName()), ObjectConverter.class.getName());
+        registry.put(typeOracle.findType(Short.class.getName()), ShortConverter.class.getName());
+        registry.put(typeOracle.findType(Time.class.getName()), TimeConverter.class.getName());
+        registry.put(typeOracle.findType(Timestamp.class.getName()), TimestampConverter.class.getName());
     }
 
 
-    public JClassType get(JType type)
+    public String get(JType type)
     {
-        JClassType converter = null;
+        String converter = null;
         if (type != null)
         {
             if (type.isArray() != null)

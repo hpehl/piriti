@@ -1,48 +1,26 @@
-#parse("name/pehl/piriti/rebind/json/reader/property/commons.vm")
 #set($reader = $property.variables.newVariable("Reader"))
 #set($jsonObject = $property.variables.newVariable("JsonObject"))
 #newConcreteTypes()
-if ($jsonValue != null)
-{
-    #if ($property.native)
-        #if($TypeUtils.isJsonValue($property.type))
-            $value = $jsonValue;
-        #elseif($TypeUtils.isJsonValueSubtype($property.type))
-            if ($jsonValue instanceof $valueType) 
-            {
-                $value = ($parameterizedValueType)$jsonValue;
-            }
-        #else
-            if (logger.isLoggable(SEVERE)) 
-            {
-                logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of JSONValue.");
-            }
-        #end
+#if ($property.native)
+    #if($TypeUtils.isJsonValue($property.type))
+        $value = $jsonValue;
+    #elseif($TypeUtils.isJsonValueSubtype($property.type))
+        if ($jsonValue instanceof $valueType) 
+        {
+            $value = ($parameterizedValueType)$jsonValue;
+        }
     #else
-        #if ($property.converter)
-		    if (${jsonValue}.isNull() == null) 
-		    {
-		        String stringValue = ${jsonValue}.toString();
-		        if (stringValue != null)
-		        {
-		            #createConverter()
-		            #convert("stringValue", $value)
-		        }
-		    }
-        #else
-	        JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
-	        if ($reader != null)
-	        {
-	            JSONObject $jsonObject = ${jsonValue}.isObject();
-	            if ($jsonObject != null)
-	            {
-	                $value = ${reader}.read($jsonObject);
-	            }
-	        }
-        #end
+        if (logger.isLoggable(SEVERE)) 
+        {
+            logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of JSONValue.");
+        }
     #end
-    if ($value != null) 
-    {
-        #assignValue()
-    }
-}
+#else
+    #if ($property.converter)
+        #createConverter()
+        $value = readValue($jsonValue, $converter);
+    #else
+        JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
+        $value = readObject($jsonValue, $reader);
+    #end
+#end

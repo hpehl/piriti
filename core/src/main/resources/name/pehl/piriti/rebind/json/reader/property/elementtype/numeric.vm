@@ -1,18 +1,1 @@
-JSONNumber jsonNumber = currentJsonValue.isNumber();
-if (jsonNumber != null)
-{
-    Double doubleValue = new Double(jsonNumber.doubleValue());
-    #valueOfNumeric("doubleValue", $currentValue, $property.elementType)
-}
-else
-{
-    JSONString jsonString = currentJsonValue.isString();
-    if (jsonString != null)
-    {
-        String stringValue = jsonString.stringValue();
-        if (stringValue != null && $converter != null)
-        {
-            $currentValue = ${converter}.convert(stringValue);
-        }
-    }
-}
+currentValue = readValue(currentJsonValue, $converter);

@@ -6,7 +6,7 @@ if ($jsonValue != null)
         if (stringValue != null)
         {
             #createConverter()
-            #convert("stringValue", $value)
+            $value = ${converter}.convert(stringValue);
         }
     }
 	if ($value != null) 

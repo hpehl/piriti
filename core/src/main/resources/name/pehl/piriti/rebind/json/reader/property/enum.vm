@@ -1,25 +1,17 @@
-#parse("name/pehl/piriti/rebind/json/reader/property/commons.vm")
-if ($jsonValue != null)
+if (${jsonValue}.isNull() == null) 
 {
-    if (${jsonValue}.isNull() == null) 
+    JSONString jsonString = ${jsonValue}.isString();
+    if (jsonString != null)
     {
-        JSONString jsonString = ${jsonValue}.isString();
-        if (jsonString != null)
+        String stringValue = jsonString.stringValue();
+        if (stringValue != null)
         {
-            String stringValue = jsonString.stringValue();
-            if (stringValue != null)
-            {
-                #if ($property.converter)
-                    #createConverter()
-                    $value = ${converter}.convert("stringValue");
-                #else
-                    #valueOfEnum("stringValue", $value, $valueType)
-                #end
-            }
+			#if ($property.converter)
+			    #createConverter()
+			    $value = ${converter}.convert(stringValue);
+			#else
+                #valueOfEnum("stringValue", $value, $valueType)
+			#end
         }
     }
-	if ($value != null) 
-    {
-        #assignValue()
-	}
 }

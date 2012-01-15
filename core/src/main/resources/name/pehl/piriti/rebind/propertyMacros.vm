@@ -1,12 +1,3 @@
-## Logs info when a property mapping starts
-#macro(logProperty)
-if (logger.isLoggable(FINE)) 
-{
-    logger.log(FINE, "Processing $property");
-}
-#end
-
-
 #macro(newConcreteTypes)
 	#foreach ($concreteType in $property.concreteTypes)
 	    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
@@ -18,11 +9,10 @@ if (logger.isLoggable(FINE))
 ## Macro to create the converter
 #macro(createConverter)
     #if ($property.format) 
-        $property.converter.qualifiedSourceName $converter = new ${property.converter.qualifiedSourceName}("$property.format");
+        $property.converter $converter = new ${property.converter}("$property.format");
     #else
-        $property.converter.qualifiedSourceName $converter = GWT.create(${property.converter.qualifiedSourceName}.class);
+        $property.converter $converter = GWT.create(${property.converter}.class);
     #end
-    $value = ${converter}.convert($pString);
 #end
 
 
@@ -47,54 +37,4 @@ if (logger.isLoggable(FINE))
             logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum using ${pType}.valueOf(String).");
         }
     }
-#end
-
-
-## Gets or selects the json value
-#macro(getOrSelectJsonValue)
-    #if ($property.jsonPath)
-        $jsonValue = JsonPath.select(jsonObject, "$property.pathOrName");
-    #else
-        $jsonValue = jsonObject.get("$property.pathOrName");
-    #end
-#end
-
-
-## Assigns the mapped value to the model property 
-#macro(assignValue)
-    #if ($property.setter)
-        $property.setter.qualifiedSourceName setter = GWT.create(${property.setter.qualifiedSourceName}.class);
-        setter.set(model, $value);
-    #else
-        #if ($property.accessibleField) 
-            model.$property.name = $value;
-        #elseif ($property.callableSetter)
-            model.${property.callableSetterName}($value);
-        #else
-            if (logger.isLoggable(SEVERE)) 
-            {
-                logger.log(SEVERE, "No accessible field or setter found for property $property.name in ${modelType}.");
-            }
-        #end
-    #end
-#end
-
-
-## Reads the value from the model property
-#macro(readValue)
-    #if ($property.getter)
-        $property.getter.qualifiedSourceName getter = GWT.create(${property.getter.qualifiedSourceName}.class);
-        $value = getter.get(model);
-    #else
-        #if ($property.accessibleField) 
-            $value = model.$property.name;
-        #elseif ($property.callableGetter) 
-            $value = model.${property.callableGetterName}(); 
-        #else
-            if (logger.isLoggable(SEVERE)) 
-            {
-                logger.log(SEVERE, "No accessible field or getter found for property $property.name in ${modelType}.");
-            }
-        #end
-    #end
 #end

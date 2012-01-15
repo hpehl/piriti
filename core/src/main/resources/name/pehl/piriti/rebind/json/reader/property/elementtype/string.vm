@@ -1,11 +1,11 @@
 JSONString jsonString = currentJsonValue.isString();
 if (jsonString != null)
 {
-    $currentValue = jsonString.stringValue();
+    currentValue = jsonString.stringValue();
     #if ($property.converter)
-        if ($currentValue != null && $converter != null)
+        if (currentValue != null && $converter != null)
         {
-            $currentValue = ${converter}.convert($currentValue);
+            currentValue = ${converter}.convert(currentValue);
         }
     #end
 }

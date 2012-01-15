@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -39,7 +37,7 @@ public class PropertyContext
 
     // -------------------------------------------------------- private members
 
-    private int order;
+    private final int order;
 
     /**
      * The property type itself. This is in any case not a primitive type. In
@@ -58,11 +56,11 @@ public class PropertyContext
      * If the type is an abstract class or an interface this list contains all
      * its concrete subtypes. Otherwise the list contains just the type itself.
      */
-    private List<JClassType> concreteTypes;
+    private final List<JClassType> concreteTypes;
     /**
      * The name of the property
      */
-    private String name;
+    private final String name;
 
     /**
      * The path information for the mapping
@@ -70,10 +68,10 @@ public class PropertyContext
     private String path;
 
     /**
-     * The default converter for the type, a custom converter or null if
-     * undefined / unsupported.
+     * The classname of the default or custom converter or null if unsupported /
+     * undefined.
      */
-    private JClassType converter;
+    private String converter;
 
     /**
      * An optional format for the default or custom converter.
@@ -88,30 +86,30 @@ public class PropertyContext
     /**
      * Whether to read the property nativly
      */
-    private boolean native_;
+    private final boolean native_;
 
     /**
-     * A custom instance creator or null if undefined.
+     * The classname of a custom instance creator or null if undefined.
      */
-    private JClassType instanceCreator;
+    private String instanceCreator;
 
     /**
-     * A custom property getter or null if undefined.
+     * The classname of a custom property getter or null if undefined.
      */
-    private JClassType getter;
+    private String getter;
 
     /**
-     * A custom property setter or null if undefined.
+     * The classname of a custom property setter or null if undefined.
      */
-    private JClassType setter;
+    private String setter;
 
     /**
      * Information about the accessibility of the property. The key is the
      * access type the value the name of the field, setter or getter
      */
-    private Map<PropertyAccess, String> access;
+    private final Map<PropertyAccess, String> access;
 
-    private Variables variables;
+    private final Variables variables;
 
     /**
      * Template for code generation
@@ -322,13 +320,13 @@ public class PropertyContext
     }
 
 
-    public JClassType getConverter()
+    public String getConverter()
     {
         return converter;
     }
 
 
-    void setConverter(JClassType converter)
+    void setConverter(String converter)
     {
         this.converter = converter;
     }
@@ -352,37 +350,37 @@ public class PropertyContext
     }
 
 
-    public JClassType getInstanceCreator()
+    public String getInstanceCreator()
     {
         return instanceCreator;
     }
 
 
-    void setInstanceCreator(JClassType instanceCreator)
+    void setInstanceCreator(String instanceCreator)
     {
         this.instanceCreator = instanceCreator;
     }
 
 
-    public JClassType getGetter()
+    public String getGetter()
     {
         return getter;
     }
 
 
-    void setGetter(JClassType getter)
+    void setGetter(String getter)
     {
         this.getter = getter;
     }
 
 
-    public JClassType getSetter()
+    public String getSetter()
     {
         return setter;
     }
 
 
-    void setSetter(JClassType setter)
+    void setSetter(String setter)
     {
         this.setter = setter;
     }

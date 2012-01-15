@@ -1,16 +1,13 @@
-JSONString jsonString = currentJsonValue.isString();
-if (jsonString != null)
+JSONString currentJsonString = currentJsonValue.isString();
+if (currentJsonString != null)
 {
-    String stringValue = jsonString.stringValue();
-    if (stringValue != null)
+    String currentStringValue = currentJsonString.stringValue();
+    if (currentStringValue != null)
     {
-        if ($converter != null)
-        {
-            $currentValue = ${converter}.convert(stringValue);
-        }
-        else
-        {
-            #valueOfEnum("stringValue", $currentValue, $elementType)       
-        }
+        #if ($property.converter)
+            currentValue = ${converter}.convert(currentStringValue);
+        #else
+            #valueOfEnum("currentStringValue", "currentValue", $elementType)
+        #end
     }
 }

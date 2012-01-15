@@ -1,34 +1,25 @@
-#parse("name/pehl/piriti/rebind/json/reader/property/commons.vm")
 #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
 #newConcreteTypes()
-if ($jsonValue != null)
+JSONArray jsonArray = ${jsonValue}.isArray();
+if (jsonArray != null)
 {
-    JSONArray jsonArray = ${jsonValue}.isArray();
-    if (jsonArray != null)
+    int size = jsonArray.size();
+    $value = new $collectionImplementation<$elementType>();
+    #if ($property.converter)
+        #createConverter()
+    #end
+    for (int i = 0; i < size; i++)
     {
-        int size = jsonArray.size();
-        $value = new $collectionImplementation<$elementType>();
-        #if ($property.converter)
-            #createConverter()
-        #end
-        for (int i = 0; i < size; i++)
+        JSONValue currentJsonValue = jsonArray.get(i);
+        if (currentJsonValue != null && currentJsonValue.isNull() == null) 
         {
-            JSONValue currentJsonValue = jsonArray.get(i);
-            if (currentJsonValue != null && currentJsonValue.isNull() == null) 
+            $elementType currentValue = null;
+            #parse($property.elementTypeTemplate)
+            if (currentValue != null) 
             {
-                #set($currentValue = $property.variables.newVariable("CurrentValue"))
-                $elementType $currentValue = null;
-                #parse($property.elementTypeTemplate)
-                if ($currentValue != null) 
-                {
-                    ${value}.add($currentValue);
-                }
+                ${value}.add(currentValue);
             }
         }
-    }
-    if ($value != null) 
-    {
-        #assignValue()
     }
 }

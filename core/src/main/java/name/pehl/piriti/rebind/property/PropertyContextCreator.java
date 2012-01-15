@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,14 +57,18 @@ public class PropertyContextCreator
         validatePropertyType(typeContext, propertySource);
         Map<PropertyAccess, String> access = calculateAccess(typeContext, propertySource);
         validatePropertyAccess(typeContext, propertySource, access);
-        JClassType converter = validateConverter(typeContext, propertySource);
-        JClassType instanceCreator = validateClassAndType(typeContext, propertySource,
-                propertySource.getInstanceCreator(), NoopInstanceCreator.class);
-        JClassType getter = validateClassAndType(typeContext, propertySource, propertySource.getGetter(),
-                NoopPropertyGetter.class);
-        JClassType setter = validateClassAndType(typeContext, propertySource, propertySource.getSetter(),
-                NoopPropertySetter.class);
-        validateMandatoryConverters(typeContext, propertySource, converter);
+
+        String converter = getCustomConverter(typeContext, propertySource);
+        if (converter == null)
+        {
+            converter = defaultConverter.get(propertySource.getType());
+            validateMandatoryConverters(typeContext, propertySource, converter);
+        }
+
+        String instanceCreator = getType(typeContext, propertySource, propertySource.getInstanceCreator(),
+                NoopInstanceCreator.class);
+        String getter = getType(typeContext, propertySource, propertySource.getGetter(), NoopPropertyGetter.class);
+        String setter = getType(typeContext, propertySource, propertySource.getSetter(), NoopPropertySetter.class);
 
         // creation
         PropertyContext propertyContext = new PropertyContext(propertySource, access);
@@ -221,7 +223,7 @@ public class PropertyContextCreator
     }
 
 
-    private JClassType validateConverter(TypeContext typeContext, PropertySource propertySource)
+    private String getCustomConverter(TypeContext typeContext, PropertySource propertySource)
             throws InvalidPropertyException
     {
         JClassType converterType = null;
@@ -260,18 +262,32 @@ public class PropertyContextCreator
                 }
             }
         }
-        else
+        if (converterType != null)
         {
-            // Try to find a default converter
-            converterType = defaultConverter.get(propertySource.getType());
+            return converterType.getQualifiedSourceName();
         }
-
-        return converterType;
+        return null;
     }
 
 
-    private JClassType validateClassAndType(TypeContext typeContext, PropertySource propertySource, Class<?> clazz,
-            Class<?> defaultValue) throws InvalidPropertyException
+    private void validateMandatoryConverters(TypeContext typeContext, PropertySource propertySource, String converter)
+            throws InvalidPropertyException
+    {
+        if (converter == null)
+        {
+            JType type = propertySource.getType();
+            if (TypeUtils.isBoolean(type) || TypeUtils.isCharacter(type) || TypeUtils.isDate(type)
+                    || TypeUtils.isNumeric(type) || Object.class.getName().equals(type.getQualifiedSourceName()))
+            {
+                throw new InvalidPropertyException(typeContext, propertySource, "No converter for "
+                        + type.getQualifiedSourceName() + " specified");
+            }
+        }
+    }
+
+
+    private String getType(TypeContext typeContext, PropertySource propertySource, Class<?> clazz, Class<?> defaultValue)
+            throws InvalidPropertyException
     {
         JClassType type = null;
         if (clazz != null && clazz != defaultValue)
@@ -287,22 +303,10 @@ public class PropertyContextCreator
                         + " has no default constructor");
             }
         }
-        return type;
-    }
-
-
-    private void validateMandatoryConverters(TypeContext typeContext, PropertySource propertySource,
-            JClassType converter) throws InvalidPropertyException
-    {
-        if (converter == null)
+        if (type != null)
         {
-            JType type = propertySource.getType();
-            if (TypeUtils.isBoolean(type) || TypeUtils.isCharacter(type) || TypeUtils.isDate(type)
-                    || TypeUtils.isNumeric(type) || Object.class.getName().equals(type.getQualifiedSourceName()))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource, "No converter for "
-                        + type.getQualifiedSourceName() + " specified");
-            }
+            return type.getQualifiedSourceName();
         }
+        return null;
     }
 }

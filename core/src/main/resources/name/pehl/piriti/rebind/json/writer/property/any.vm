@@ -1,4 +1,3 @@
-#parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
 #set($writer = $property.variables.newVariable("Writer"))
 #newConcreteTypes()
 if ($value != null)
