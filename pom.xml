@@ -55,6 +55,14 @@
     </properties>
 
 
+    <properties>
+        <velocity.version>1.7</velocity.version>
+        <commons.collections.version>3.2.1</commons.collections.version>
+        <commons.lang.version>2.6</commons.lang.version>
+        <oro.version>2.0.8</oro.version>
+    </properties>
+
+    
     <modules>
         <module>core</module>
         <module>playground</module>
@@ -86,8 +94,8 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-
+    
+    
     <!-- Global dependencies used in all modules -->
     <dependencies>
         <dependency>
