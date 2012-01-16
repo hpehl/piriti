@@ -1,6 +1,5 @@
 #set($reader = $property.variables.newVariable("Reader"))
 #set($jsonObject = $property.variables.newVariable("JsonObject"))
-#newConcreteTypes()
 #if ($property.native)
     #if($TypeUtils.isJsonValue($property.type))
         $value = $jsonValue;
@@ -20,7 +19,11 @@
         #createConverter()
         $value = readValue($jsonValue, $converter);
     #else
+		#newConcreteTypes()
         JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
-        $value = readObject($jsonValue, $reader);
+        if ($reader != null)
+        {
+            $value = readObject($jsonValue, $reader);
+        }
     #end
 #end

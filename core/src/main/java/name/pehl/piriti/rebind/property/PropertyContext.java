@@ -1,6 +1,8 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.*;
+import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
+import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -41,8 +43,7 @@ public class PropertyContext
 
     /**
      * The property type itself. This is in any case not a primitive type. In
-     * case the original type was primitive this is the boxed counterpart and
-     * primitiveType holds the original primitive type.
+     * case the original type was primitive this is the boxed counterpart.
      */
     private JType type;
 

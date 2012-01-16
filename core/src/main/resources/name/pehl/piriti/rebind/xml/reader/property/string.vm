@@ -1,22 +1,17 @@
-#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
+#set($nodeValue = $property.variables.newVariable("NodeValue"))
 #if ($property.native)
     Node $nodeValue = element.selectNode("$property.pathOrName");
     if ($nodeValue != null) 
     {
-        $value = $nodeValue.serialize();
+        $value = ${nodeValue}.serialize();
     }
 #else
     $value = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
-	#if ($property.converter)
-        Converter<String> $converter = null; 
-        #customConverter() 
-        if ($value != null && $converter != null)
+    #if ($property.converter)
+        #createConverter()
+        if ($value != null)
         {
             $value = ${converter}.convert($value);
         }
     #end
 #end
-if ($value != null) 
-{
-    #assignValue()
-}

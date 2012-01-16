@@ -1,14 +1,16 @@
 if (currentValue != null)
 {
-    #if ($property.converter)
-        String currentValueAsString = ${converter}.serialize(currentValue);
-        out.append(JsonUtils.escapeValue(currentValueAsString));
-    #else
-        String currentValueAsString = String.valueOf(currentValue);
+    String currentValueAsString = ${converter}.serialize(currentValue);
+    if (isNumber(currentValueAsString))
+    {
         out.append(currentValueAsString);
-    #end
+    }
+    else
+    {
+        out.append(JsonUtils.escapeValue(currentValueAsString));
+    }
 }
 else
 {
-    out.append("0");
+    out.append("null");
 }

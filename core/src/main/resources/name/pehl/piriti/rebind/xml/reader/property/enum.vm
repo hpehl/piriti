@@ -1,14 +1,10 @@
-#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
 String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
 if ($valueAsString != null)
 {
-    #convert($valueAsString)
-    else
-    {
+    #if ($property.converter)
+        #createConverter()
+        $value = ${converter}.convert($valueAsString);
+    #else
         #valueOfEnum($valueAsString, $value, $valueType)
-    }
+    #end
 }    
-if ($value != null) 
-{
-    #assignValue()
-}

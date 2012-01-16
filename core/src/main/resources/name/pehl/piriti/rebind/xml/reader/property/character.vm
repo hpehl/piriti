@@ -1,17 +1,6 @@
-#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
 String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
 if ($valueAsString != null)
 {
-    #convert($valueAsString)
-    else
-    {
-        if (${valueAsString}.length() != 0)
-        {
-            $value = ${valueAsString}.charAt(0);
-        }
-    }
-}
-if ($value != null) 
-{
-    #assignValue()
-}
+    #createConverter()
+    $value = ${converter}.convert($valueAsString);
+}    

@@ -1,5 +1,6 @@
 package name.pehl.piriti.commons.client;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -27,9 +28,6 @@ public abstract class ReaderWriterBase<T>
         super();
         this.logger = Logger.getLogger(getClass().getName());
         this.handlerManager = new HandlerManager(this);
-        this.idMap = newIdMap();
+        this.idMap = new HashMap<String, T>();
     }
-
-
-    protected abstract Map<String, T> newIdMap();
 }

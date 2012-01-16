@@ -2,21 +2,17 @@
 #newConcreteTypes()
 if ($value != null)
 {
-    JsonWriter<$parameterizedValueType> $writer = jsonRegistry.getWriter(${valueType}.class);
-    if ($writer != null)
-    {
-        out.append(${writer}.toJson($value));
-    }
-    else
-    {
-        String $valueAsString = null;
-        #serialize()
-	    else
+    #if ($property.converter)
+        #createConverter()
+        String $valueAsString = ${converter}.serialize($value);
+        out.append(JsonUtils.escapeValue($valueAsString));
+    #else
+	    JsonWriter<$parameterizedValueType> $writer = jsonRegistry.getWriter(${valueType}.class);
+	    if ($writer != null)
 	    {
-	        $valueAsString = String.valueOf($value);
+	        out.append(${writer}.toJson($value));
 	    }
-	    out.append(JsonUtils.escapeValue($valueAsString));
-    }
+    #end
 }
 else
 {

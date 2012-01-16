@@ -1,7 +1,5 @@
-#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
 #set($reader = $property.variables.newVariable("Reader"))
 #set($nodeValue = $property.variables.newVariable("NodeValue"))
-#newConcreteTypes()
 #if ($property.native)
     Node $nodeValue = element.selectNode("$property.pathOrName");
     #if($TypeUtils.isNode($property.type))
@@ -18,25 +16,20 @@
         }
     #end
 #else
-    XmlReader<$parameterizedValueType> $reader = xmlRegistry.getReader(${valueType}.class);
-    if ($reader != null)
-    {
-        Node $nodeValue = element.selectNode("$property.pathOrName");
-        if ($nodeValue != null && $nodeValue instanceof Element)
-        {
-            $value = ${reader}.read((Element)$nodeValue);
-        }
-    }
-    else
-    {
+    #if ($property.converter)
+        #createConverter()
         String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
-        if ($valueAsString != null)
+        $value = ${converter}.convert($valueAsString);
+    #else
+        #newConcreteTypes()
+        Node $nodeValue = element.selectNode("$property.pathOrName");
+        if ($nodeValue instanceof Element)
         {
-            #convert($valueAsString)
-        }    
-    }
+	        XmlReader<$parameterizedValueType> $reader = xmlRegistry.getReader(${valueType}.class);
+	        if ($reader != null)
+	        {
+                $value = ${reader}.read((Element)$nodeValue);
+            }
+        }
+    #end
 #end
-if ($value != null) 
-{
-    #assignValue()
-}

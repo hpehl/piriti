@@ -15,6 +15,22 @@ import name.pehl.piriti.commons.client.AbstractWriter;
  */
 public abstract class AbstractJsonWriter<T> extends AbstractWriter<T> implements JsonWriter<T>
 {
+    // ----------------------------------------------------------------- fields
+
+    protected final JsonRegistry jsonRegistry;
+
+
+    // ----------------------------------------------------------- constructors
+
+    protected AbstractJsonWriter()
+    {
+        super();
+        this.jsonRegistry = JsonGinjector.INJECTOR.getJsonRegistry();
+    }
+
+
+    // ----------------------------------------------------- write list methods
+
     @Override
     public String toJson(List<T> models, String arrayKey)
     {
@@ -40,5 +56,21 @@ public abstract class AbstractJsonWriter<T> extends AbstractWriter<T> implements
             json = out.toString();
         }
         return json;
+    }
+
+
+    // --------------------------------------------------------- helper methods
+
+    protected boolean isBoolean(String booleanValue)
+    {
+        return Boolean.valueOf(booleanValue) != null;
+    }
+
+
+    protected boolean isNumber(String numberValue)
+    {
+        return Byte.valueOf(numberValue) != null || Double.valueOf(numberValue) != null
+                || Float.valueOf(numberValue) != null || Integer.valueOf(numberValue) != null
+                || Long.valueOf(numberValue) != null || Short.valueOf(numberValue) != null;
     }
 }

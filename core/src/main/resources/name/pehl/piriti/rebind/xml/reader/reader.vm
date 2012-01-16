@@ -3,163 +3,41 @@
 
 package ${typeContext.rwType.package.name};
 
-#readerImports()
+import static java.util.logging.Level.*;
 import static name.pehl.totoe.commons.client.WhitespaceHandling.*;
 
-import name.pehl.piriti.xml.client.XmlGinjector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import name.pehl.piriti.commons.client.InstanceContextHolder;
+import name.pehl.piriti.commons.client.ModelReadEvent;
+import name.pehl.piriti.xml.client.AbstractXmlReader;
 import name.pehl.piriti.xml.client.XmlReader;
-import name.pehl.piriti.xml.client.XmlRegistry;
+
 import name.pehl.totoe.xml.client.Document;
 import name.pehl.totoe.xml.client.Element;
 import name.pehl.totoe.xml.client.Node;
 import name.pehl.totoe.xml.client.XmlParseException;
 import name.pehl.totoe.xml.client.XmlParser;
 
-public class $implName implements $typeContext.rwType.qualifiedSourceName 
+import com.google.gwt.core.client.GWT;
+
+public class $implName extends AbstractXmlReader<$modelParameterizedType> implements $typeContext.rwType.qualifiedSourceName 
 {
-    // --------------------------------------------------------- private fields
-    
-    #readerFields()    
-    private final XmlRegistry xmlRegistry;
-    
-    
     // ----------------------------------------------------------- constructors
 
     public $implName() 
     {
-        #readerConstructorBody()
-        this.xmlRegistry = XmlGinjector.INJECTOR.getXmlRegistry();
         this.xmlRegistry.register(${modelType}.class, this);
     }
     
     
-    #readerEventMethods()    
+    // ------------------------------------------------------------ new methods
     
-    
-    // ------------------------------------------------------ read list methods
-
-    public List<$modelParameterizedType> readList(String xml) throws XmlParseException
+    protected $modelParameterizedType newModel()
     {
-        return readList(new XmlParser().parse(xml));
-    }
-
-    public List<$modelParameterizedType> readList(Document document)
-    {
-        if (document == null || document.getRoot() == null) 
-        {
-            return null;
-        }
-        return internalReadList(filterElements(document.getRoot().getChildren()));
-    }
-
-    public List<$modelParameterizedType> readList(Document document, String xpath)
-    {
-        if (document == null) 
-        {
-            return null;
-        }
-        return internalReadList(filterElements(document.selectNodes(xpath)));
-    }
-    
-    public List<$modelParameterizedType> readList(Element element)
-    {
-        if (element == null) 
-        {
-            return null;
-        }
-        return internalReadList(filterElements(element.getChildren()));
-    }
-    
-    public List<$modelParameterizedType> readList(Element element, String xpath)
-    {
-        if (element == null) 
-        {
-            return null;
-        }
-        return internalReadList(filterElements(element.selectNodes(xpath)));
-    }
-    
-    private List<$modelParameterizedType> internalReadList(List<Element> elements) 
-    {
-        List<$modelParameterizedType> models = null;
-        List<InstanceContextHolder<$modelParameterizedType, Element>> instanceContextHolders = null;
-        
-        if (!elements.isEmpty()) 
-        {
-            models = new ArrayList<$modelParameterizedType>();
-            instanceContextHolders = new ArrayList<InstanceContextHolder<$modelParameterizedType, Element>>();
-
-            if (logger.isLoggable(FINE)) 
-            {
-                logger.log(FINE, "First iteration over JSON array to create models and process IDs");
-            }
-            for (Element element : elements) 
-            {
-                $modelParameterizedType model = readId(element);
-                if (model != null) 
-                {
-                    models.add(model);
-                    instanceContextHolders.add(
-                        new InstanceContextHolder<$modelParameterizedType, Element>(model, element));
-                }
-            }
-            
-            if (logger.isLoggable(FINE)) 
-            {
-                logger.log(FINE, "Second iteration over generated models to map properties and IDREFs");
-            }
-            for (InstanceContextHolder<$modelParameterizedType, Element> ich : instanceContextHolders) 
-            {
-                $modelParameterizedType model = ich.getInstance();
-                readProperties(ich.getContext(), model);
-                readIdRefs(ich.getContext(), model);
-                ModelReadEvent.fire(this, model);
-            }
-        }
-        return models;
-    }
-    
-
-    // ---------------------------------------------------- read single methods
-    
-    public $modelParameterizedType read(String xml) throws XmlParseException
-    {
-        return read(new XmlParser().parse(xml));
-    }
-    
-    public $modelParameterizedType read(Document document)
-    {
-        if (document == null) 
-        {
-            return null;
-        }
-        return read(document.getRoot());
-    }
-
-    public $modelParameterizedType read(Element element)
-    {
-        if (element == null) 
-        {
-            return null;
-        }
-        $modelParameterizedType model = readId(element);
-        readProperties(element, model);
-        readIdRefs(element, model);
-        ModelReadEvent.fire(this, model);
-        return model;
-    }
-
-
-    // ----------------------------------------- ids, properties and references
-
-    public $modelParameterizedType idRef(String id)
-    {
-        return this.idMap.get(id);
-    }
-    
-    private $modelParameterizedType readId(Element element)
-    {
-        ##TODO: Handle Id annotations
         $modelParameterizedType model = null;
         #if ($typeContext.instanceCreator)
             $typeContext.instanceCreator.qualifiedSourceName instanceCreator = GWT.create(${typeContext.instanceCreator.qualifiedSourceName}.class);
@@ -170,39 +48,48 @@ public class $implName implements $typeContext.rwType.qualifiedSourceName
         return model;
     }
     
-    private $modelParameterizedType readProperties(Element element, $modelParameterizedType model) 
+    
+    // -------------------------------------------------------- read properties
+    
+    protected $modelParameterizedType readProperties(Element element, $modelParameterizedType model) 
     {
         if (element != null) 
         {
             #foreach ($property in $typeContext.properties)
+                #set($valueType = $property.type.qualifiedSourceName)
+                #set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+                #set($value = $property.variables.value)
+                #set($valueAsString = $property.variables.valueAsString)
+                #set($converter = $property.variables.newVariable("Converter"))
+                
+                // parsing template $property.template
+                if (logger.isLoggable(FINE)) 
+                {
+                    logger.log(FINE, "Processing $parameterizedValueType $property.name");
+                }
+                $parameterizedValueType $value = null;
+                ## Here happens the actual reading / conversion from element to $value
                 #parse($property.template)
+                if ($value != null) 
+                {
+                    #if ($property.setter)
+                        $property.setter setter = GWT.create(${property.setter}.class);
+                        setter.set(model, $value);
+                    #else
+                        #if ($property.accessibleField) 
+                            model.$property.name = $value;
+                        #elseif ($property.callableSetter)
+                            model.${property.callableSetterName}($value);
+                        #else
+                            if (logger.isLoggable(SEVERE)) 
+                            {
+                                logger.log(SEVERE, "No accessible field or setter found for property $property.name in ${modelType}.");
+                            }
+                        #end
+                    #end
+                }
             #end
         }
         return model;
-    }
-    
-    private $modelParameterizedType readIdRefs(Element element, $modelParameterizedType model) 
-    {
-        if (element != null) 
-        {
-            ## TODO: handleIdRefs(writer);
-        }
-        return model;
-    }
-
-    
-    // --------------------------------------------------------- helper methods
-    
-    private List<Element> filterElements(List<Node> nodes) 
-    {
-        List<Element> elements = new ArrayList<Element>();
-        for (Node node : nodes) 
-        {
-            if (node instanceof Element) 
-            {
-                elements.add((Element) node);
-            }
-        }
-        return elements;
     }
 }

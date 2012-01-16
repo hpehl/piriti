@@ -1,4 +1,3 @@
-#parse("name/pehl/piriti/rebind/xml/reader/property/commons.vm")
 #set($elements = $property.variables.newVariable("Elements"))
 #set($asList = $property.variables.newVariable("AsList"))
 #set($elementType = $property.elementType.parameterizedQualifiedSourceName)

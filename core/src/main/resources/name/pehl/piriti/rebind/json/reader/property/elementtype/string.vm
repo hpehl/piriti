@@ -3,7 +3,7 @@ if (jsonString != null)
 {
     currentValue = jsonString.stringValue();
     #if ($property.converter)
-        if (currentValue != null && $converter != null)
+        if (currentValue != null)
         {
             currentValue = ${converter}.convert(currentValue);
         }

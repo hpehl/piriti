@@ -6,11 +6,20 @@ import com.google.gwt.event.shared.HandlerRegistration;
 /**
  * Abstract reader used as base class for JSON and XML readers.
  * 
+ * @param <T>
+ *            The type
+ * @param <C>
+ *            the context type
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public abstract class AbstractReader<T> extends ReaderWriterBase<T> implements HasModelReadHandler<T>
+public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implements HasModelReadHandler<T>
 {
+    // --------------------------------------------------------- new... methods
+
+    protected abstract T newModel();
+
+
     // --------------------------------------------------------- event handlers
 
     @Override

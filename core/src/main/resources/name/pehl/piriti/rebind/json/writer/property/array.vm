@@ -1,4 +1,3 @@
-#parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
 #set($index = $property.variables.newVariable("Index"))
 #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
 #if ($property.elementType.isPrimitive())
@@ -9,8 +8,9 @@
 #newConcreteTypes()
 if ($value != null)
 {
-    Converter<$boxedElementType> $converter = null;
-    #if ($property.converter) #customConverter() #else #defaultConverter($boxedElementType) #end
+    #if ($property.converter)
+        #createConverter()
+    #end
     out.append("[");
     for (int index = 0; index < ${value}.length; index++)
     {

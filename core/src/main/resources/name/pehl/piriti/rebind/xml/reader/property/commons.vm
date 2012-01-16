@@ -1,4 +1,0 @@
-#parse("name/pehl/piriti/rebind/propertyCommons.vm")
-#set($valueAsString = $property.variables.valueAsString)
-#logProperty()
-$parameterizedValueType $value = null;

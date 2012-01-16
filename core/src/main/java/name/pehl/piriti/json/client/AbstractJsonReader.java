@@ -2,6 +2,7 @@ package name.pehl.piriti.json.client;
 
 import static java.util.logging.Level.FINE;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ import com.google.gwt.json.client.JSONValue;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements JsonReader<T>
+public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject> implements JsonReader<T>
 {
     // ----------------------------------------------------------------- fields
 
@@ -41,12 +42,6 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
 
 
     // ------------------------------------------------------ read list methods
-
-    protected abstract List<T> newList();
-
-
-    protected abstract List<InstanceContextHolder<T, JSONObject>> newInstanceContextHolderList();
-
 
     @Override
     public List<T> readList(String jsonString)
@@ -67,7 +62,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
                         JSONArray jsonArray = jsonValue.isArray();
                         if (jsonArray != null)
                         {
-                            models = newList();
+                            models = new ArrayList<T>();
                             models = readList(jsonArray);
                         }
                     }
@@ -99,7 +94,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
                         JSONArray jsonArray = jsonValue.isArray();
                         if (jsonArray != null)
                         {
-                            models = newList();
+                            models = new ArrayList<T>();
                             models = readList(jsonArray);
                         }
                     }
@@ -130,7 +125,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
                     JSONArray jsonArray = jsonValue.isArray();
                     if (jsonArray != null)
                     {
-                        models = newList();
+                        models = new ArrayList<T>();
                         models = readList(jsonArray);
                     }
                 }
@@ -152,7 +147,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
                 JSONArray jsonArray = jsonValue.isArray();
                 if (jsonArray != null)
                 {
-                    models = newList();
+                    models = new ArrayList<T>();
                     models = readList(jsonArray);
                 }
             }
@@ -169,8 +164,8 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
 
         if (jsonArray != null)
         {
-            models = newList();
-            instanceContextHolders = newInstanceContextHolderList();
+            models = new ArrayList<T>();
+            instanceContextHolders = new ArrayList<InstanceContextHolder<T, JSONObject>>();
 
             if (logger.isLoggable(FINE))
             {
@@ -189,7 +184,8 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
                         if (model != null)
                         {
                             models.add(model);
-                            instanceContextHolders.add(newInstanceContextHolder(model, currentJsonObject));
+                            instanceContextHolders.add(new InstanceContextHolder<T, JSONObject>(model,
+                                    currentJsonObject));
                         }
                     }
                 }
@@ -212,12 +208,6 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
 
 
     // ---------------------------------------------------- read single methods
-
-    protected abstract T newModel();
-
-
-    protected abstract InstanceContextHolder<T, JSONObject> newInstanceContextHolder(T model, JSONObject jsonObject);
-
 
     @Override
     public T read(String jsonString)
@@ -294,7 +284,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T> implements
     }
 
 
-    // -------------------------------------------------- property read methods
+    // ------------------------------------------------ read values and objects
 
     protected <V> V readValue(JSONValue jsonValue, Converter<V> converter)
     {

@@ -1,12 +1,7 @@
-#parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
 if ($value != null)
 {
-    String $valueAsString = null;
-    #serialize()
-    else
-    {
-        $valueAsString = String.valueOf($value);
-    }
+    #createConverter()
+    String $valueAsString = ${converter}.serialize($value);
     out.append(JsonUtils.escapeValue($valueAsString));
 }
 else

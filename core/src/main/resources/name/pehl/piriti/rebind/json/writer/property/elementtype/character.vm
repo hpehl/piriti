@@ -1,13 +1,9 @@
-if (currentValuevalue != null)
+if (currentValue != null)
 {
-    #if ($property.converter)
-        String currentValueAsString = ${converter}.serialize(currentValue);
-    #else
-        String currentValueAsString = String.valueOf(currentValue);
-    #end
+    String currentValueAsString = ${converter}.serialize(currentValue);
     out.append(JsonUtils.escapeValue(currentValueAsString));
 }
 else
 {
-    out.append(JsonUtils.escapeValue(String.valueOf(Character.MIN_VALUE)));
+    out.append("null");
 }

@@ -1,17 +1,17 @@
-#parse("name/pehl/piriti/rebind/json/writer/property/commons.vm")
 if ($value != null)
 {
-    #if ($property.converter)
-        Converter<$parameterizedValueType> $converter = null;
-        #customConverter()
-        String $valueAsString = ${converter}.serialize($value);
-        out.append(JsonUtils.escapeValue($valueAsString));
-    #else
-        String $valueAsString = String.valueOf($value);
+    #createConverter()
+    String $valueAsString = ${converter}.serialize($value);
+    if (isNumber($valueAsString))
+    {
         out.append($valueAsString);
-    #end
+    }
+    else
+    {
+        out.append(JsonUtils.escapeValue($valueAsString));
+    }
 }
 else
 {
-    out.append("0");
+    out.append("null");
 }

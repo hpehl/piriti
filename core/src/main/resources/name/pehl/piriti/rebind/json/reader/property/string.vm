@@ -8,8 +8,11 @@
         {
             $value = jsonString.stringValue();
             #if ($property.converter)
-               #createConverter()
-               $value = ${converter}.convert($value);
+                #createConverter()
+                if ($value != null)
+                {
+                    $value = ${converter}.convert($value);
+                }
             #end
         }
     }
