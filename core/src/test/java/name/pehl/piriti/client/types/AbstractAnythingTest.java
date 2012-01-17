@@ -18,10 +18,10 @@ public abstract class AbstractAnythingTest extends AbstractPiritiTest
     protected void assertAnything(Anything anything)
     {
         assertNotNull(anything);
-        assertEquals(anything.thing, ONE_THING);
+        assertEquals(ONE_THING, anything.thing);
         assertNotNull(anything.things);
         assertEquals(2, anything.things.size());
-        assertEquals(anything.things.get(0), ONE_THING);
-        assertEquals(anything.things.get(1), ANOTHER_THING);
+        assertEquals(ONE_THING, anything.things.get(0));
+        assertEquals(ANOTHER_THING, anything.things.get(1));
     }
 }

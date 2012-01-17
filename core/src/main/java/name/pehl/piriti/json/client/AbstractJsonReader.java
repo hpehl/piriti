@@ -15,6 +15,7 @@ import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONException;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
 /**
@@ -293,7 +294,16 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
         {
             if (jsonValue.isNull() == null)
             {
-                String stringValue = jsonValue.toString();
+                String stringValue = null;
+                JSONString jsonString = jsonValue.isString();
+                if (jsonString != null)
+                {
+                    stringValue = jsonString.stringValue();
+                }
+                else
+                {
+                    stringValue = jsonValue.toString();
+                }
                 if (stringValue != null)
                 {
                     result = converter.convert(stringValue);
