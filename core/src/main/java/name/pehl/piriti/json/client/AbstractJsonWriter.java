@@ -69,8 +69,70 @@ public abstract class AbstractJsonWriter<T> extends AbstractWriter<T> implements
 
     protected boolean isNumber(String numberValue)
     {
-        return Byte.valueOf(numberValue) != null || Double.valueOf(numberValue) != null
-                || Float.valueOf(numberValue) != null || Integer.valueOf(numberValue) != null
-                || Long.valueOf(numberValue) != null || Short.valueOf(numberValue) != null;
+        boolean ok = false;
+        try
+        {
+            ok = Byte.valueOf(numberValue) != null;
+        }
+        catch (NumberFormatException e)
+        {
+            ok = false;
+        }
+        if (!ok)
+        {
+            try
+            {
+                ok = Double.valueOf(numberValue) != null;
+            }
+            catch (NumberFormatException e)
+            {
+                ok = false;
+            }
+        }
+        if (!ok)
+        {
+            try
+            {
+                ok = Float.valueOf(numberValue) != null;
+            }
+            catch (NumberFormatException e)
+            {
+                ok = false;
+            }
+        }
+        if (!ok)
+        {
+            try
+            {
+                ok = Integer.valueOf(numberValue) != null;
+            }
+            catch (NumberFormatException e)
+            {
+                ok = false;
+            }
+        }
+        if (!ok)
+        {
+            try
+            {
+                ok = Long.valueOf(numberValue) != null;
+            }
+            catch (NumberFormatException e)
+            {
+                ok = false;
+            }
+        }
+        if (!ok)
+        {
+            try
+            {
+                ok = Short.valueOf(numberValue) != null;
+            }
+            catch (NumberFormatException e)
+            {
+                ok = false;
+            }
+        }
+        return ok;
     }
 }

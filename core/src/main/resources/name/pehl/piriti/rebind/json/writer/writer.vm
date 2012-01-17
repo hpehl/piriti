@@ -65,7 +65,7 @@ public class $implName extends AbstractJsonWriter<$modelParameterizedType> imple
 			            }
 			        #end
 			    #end
-				out.append("\"$property.name\":");
+				out.append(JsonUtils.escapeValue("$property.pathOrName")).append(":");
                 ## Here happens the actual conversion / writing from $value into the StringBuilder
                 #parse($property.template)
 	            #if ($foreach.hasNext) 
