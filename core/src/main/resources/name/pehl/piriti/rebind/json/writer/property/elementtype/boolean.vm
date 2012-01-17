@@ -1,17 +1,9 @@
-if (currentValue != null)
+String currentValueAsString = ${converter}.serialize(currentValue);
+if (isBoolean(currentValueAsString))
 {
-    #createConverter()
-    String currentValueAsString = ${converter}.serialize(currentValue);
-    if (isBoolean(currentValueAsString))
-    {
-        out.append(currentValueAsString);
-    }
-    else
-    {
-        out.append(JsonUtils.escapeValue(currentValueAsString));
-    }
+    out.append(currentValueAsString);
 }
 else
 {
-    out.append("null");
+    out.append(JsonUtils.escapeValue(currentValueAsString));
 }

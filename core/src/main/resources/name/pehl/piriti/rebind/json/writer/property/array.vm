@@ -14,9 +14,17 @@ if ($value != null)
     out.append("[");
     for (int index = 0; index < ${value}.length; index++)
     {
+        boolean elementWritten = true;
         $boxedElementType currentValue = ${value}[index];
-        #parse($property.elementTypeTemplate)
-        if (index < ${value}.length - 1)
+        if (currentValue != null)
+        {
+            #parse($property.elementTypeTemplate)
+        }
+		else
+		{
+		    out.append("null");
+		}
+        if (index < ${value}.length - 1 && elementWritten)
         {
             out.append(",");
         }

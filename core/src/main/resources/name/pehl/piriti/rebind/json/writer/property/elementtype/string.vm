@@ -1,11 +1,4 @@
-if (currentValue != null)
-{
-    #if ($property.converter)
-        currentValue = ${converter}.serialize(currentValue);
-    #end
-    out.append(JsonUtils.escapeValue(currentValue));
-}
-else
-{
-    out.append("null");
-}
+#if ($property.converter)
+    currentValue = ${converter}.serialize(currentValue);
+#end
+out.append(JsonUtils.escapeValue(currentValue));

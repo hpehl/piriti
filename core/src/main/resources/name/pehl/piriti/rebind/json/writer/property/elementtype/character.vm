@@ -1,9 +1,2 @@
-if (currentValue != null)
-{
-    String currentValueAsString = ${converter}.serialize(currentValue);
-    out.append(JsonUtils.escapeValue(currentValueAsString));
-}
-else
-{
-    out.append("null");
-}
+String currentValueAsString = ${converter}.serialize(currentValue);
+out.append(JsonUtils.escapeValue(currentValueAsString));

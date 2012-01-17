@@ -9,9 +9,17 @@ if ($value != null)
     out.append("[");
     for (Iterator<$elementType> iter = ${value}.iterator(); iter.hasNext(); )
     {
+        boolean elementWritten = true;
         $elementType currentValue = iter.next();
-        #parse($property.elementTypeTemplate)
-        if (iter.hasNext())
+        if (currentValue != null)
+        {
+            #parse($property.elementTypeTemplate)
+        }
+        else
+        {
+            out.append("null");
+        }
+        if (iter.hasNext() && elementWritten)
         {
             out.append(",");
         }
