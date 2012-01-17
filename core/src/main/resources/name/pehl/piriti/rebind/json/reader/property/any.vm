@@ -1,17 +1,19 @@
 #set($reader = $property.variables.newVariable("Reader"))
 #set($jsonObject = $property.variables.newVariable("JsonObject"))
 #if ($property.native)
-    #if($TypeUtils.isJsonValue($property.type))
+    #if($valueType == "com.google.gwt.json.client.JSONValue")
         $value = $jsonValue;
-    #elseif($TypeUtils.isJsonValueSubtype($property.type))
+    #else
         if ($jsonValue instanceof $valueType) 
         {
             $value = ($parameterizedValueType)$jsonValue;
         }
-    #else
-        if (logger.isLoggable(SEVERE)) 
+        else
         {
-            logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of JSONValue.");
+	        if (logger.isLoggable(SEVERE)) 
+	        {
+	            logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of JSONValue.");
+	        }
         }
     #end
 #else

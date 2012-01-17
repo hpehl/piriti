@@ -2,17 +2,19 @@
 #set($nodeValue = $property.variables.newVariable("NodeValue"))
 #if ($property.native)
     Node $nodeValue = element.selectNode("$property.pathOrName");
-    #if($TypeUtils.isNode($property.type))
+    #if($valueType == "name.pehl.totoe.xml.client.Node")
         $value = $nodeValue;
-    #elseif($TypeUtils.isNodeSubtype($property.type))
+    #else
         if ($nodeValue instanceof $valueType) 
         {
             $value = ($parameterizedValueType)$nodeValue;
         }
-    #else
-        if (logger.isLoggable(SEVERE)) 
+        else
         {
-            logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of name.pehl.totoe.xml.client.Node.");
+	        if (logger.isLoggable(SEVERE)) 
+	        {
+	            logger.log(SEVERE, "Cannot map property $property.name in ${modelType} nativly: Type $parameterizedValueType must be an instance of name.pehl.totoe.xml.client.Node.");
+	        }
         }
     #end
 #else
