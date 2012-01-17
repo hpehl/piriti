@@ -2,18 +2,7 @@
     String currentValueAsString = ${converter}.serialize(currentValue);
     out.append(JsonUtils.escapeValue(currentValueAsString));
 #else
-    #if ($property.instanceCreator)
-        // There is an InstanceCreator configured for $property.name. Use it to get the actual type for the JsonWriter
-        JsonWriter<$elementType> currentWriter = null;
-        $property.instanceCreator instanceCreator = GWT.create(${property.instanceCreator}.class);
-        $elementType tmp = instanceCreator.newInstance(currentJsonValue);
-        if (tmp != null)
-        {
-            currentWriter = (JsonWriter<$elementType>)jsonRegistry.getEriter(tmp.getClass());
-        }
-    #else
-        JsonWriter<$elementType> currentWriter = jsonRegistry.getWriter(${elementType}.class);
-    #end
+    JsonWriter<$elementType> currentWriter = (JsonWriter<$elementType>)jsonRegistry.getWriter(currentValue.getClass());
     if (currentWriter != null)
     {
         out.append(currentWriter.toJson(currentValue));
