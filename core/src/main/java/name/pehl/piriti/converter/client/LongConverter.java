@@ -23,11 +23,4 @@ public class LongConverter extends NumberConverter<Long>
     {
         return new Long((long) parsed);
     }
-
-
-    @Override
-    public Object clone() throws CloneNotSupportedException
-    {
-        return new LongConverter();
-    }
 }

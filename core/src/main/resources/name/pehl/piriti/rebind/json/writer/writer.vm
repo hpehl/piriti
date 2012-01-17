@@ -27,13 +27,6 @@ public class $implName extends AbstractJsonWriter<$modelParameterizedType> imple
     }
     
     
-    // --------------------------------------------------------- new... methods
-    
-    protected Map<String, $modelParameterizedType> newIdMap()
-    {
-        return new HashMap<String, $modelParameterizedType>();
-    }
-    
     // ---------------------------------------------------------- write methods
 
     @Override

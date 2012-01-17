@@ -6,20 +6,16 @@ List<Element> $elements = filterElements(element.selectNodes("$property.pathOrNa
 if (!${elements}.isEmpty())
 {
     $value = new $collectionImplementation<$elementType>();
-    Converter<$elementType> $converter = null;
-    #if ($property.converter) #customConverter() #else #defaultConverter($elementType) #end
+    #if ($property.converter)
+        #createConverter()
+    #end
     for (Element currentElement : $elements)
     {
-        #set($currentValue = $property.variables.newVariable("CurrentValue"))
-        $elementType $currentValue = null;
+        $elementType currentValue = null;
         #parse($property.elementTypeTemplate)
-        if ($currentValue != null) 
+        if (currentValue != null) 
         {
-            ${value}.add($currentValue);
+            ${value}.add(currentValue);
         }
     }
-}
-if ($value != null) 
-{
-    #assignValue()
 }

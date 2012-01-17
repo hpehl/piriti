@@ -1,12 +1,9 @@
-String currentAsString = currentElement.getText($property.whitespaceHandling);
-if (currentAsString != null)
+String currentValueAsString = currentElement.getText($property.whitespaceHandling);
+if (currentValueAsString != null)
 {
-    if ($converter != null)
-    {
-        $currentValue = ${converter}.convert(currentAsString);
-    }
-    else
-    {
-        #valueOfEnum("currentAsString", $currentValue, $elementType)
-    }
+    #if ($property.converter)
+        currentValue = ${converter}.convert(currentValueAsString);
+    #else
+        #valueOfEnum("currentValueAsString", "currentValue", $elementType)
+    #end
 }

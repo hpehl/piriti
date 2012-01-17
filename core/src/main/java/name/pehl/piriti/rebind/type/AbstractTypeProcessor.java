@@ -89,8 +89,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         }
         catch (InvalidPropertyException e)
         {
-            Logger.get().warn("Property %s in %s is invalid: %s", propertySource.getName(),
-                    typeContext.getType().getQualifiedSourceName(), e.getMessage());
+            invalidProperty(typeContext, propertySource, e);
         }
 
     }
@@ -106,8 +105,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         }
         catch (InvalidPropertyException e)
         {
-            Logger.get().warn("Property %s in %s is invalid: %s", propertySource.getName(),
-                    typeContext.getType().getQualifiedSourceName(), e.getMessage());
+            invalidProperty(typeContext, propertySource, e);
         }
 
     }
@@ -123,9 +121,16 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         }
         catch (InvalidPropertyException e)
         {
-            Logger.get().warn("Property %s in %s is invalid: %s", propertySource.getName(),
-                    typeContext.getType().getQualifiedSourceName(), e.getMessage());
+            invalidProperty(typeContext, propertySource, e);
         }
+    }
+
+
+    private void invalidProperty(TypeContext typeContext, PropertySource propertySource, InvalidPropertyException e)
+    {
+        Logger.get().warn("Property %s %s in %s is invalid: %s",
+                propertySource.getType().getParameterizedQualifiedSourceName(), propertySource.getName(),
+                typeContext.getType().getQualifiedSourceName(), e.getMessage());
     }
 
 

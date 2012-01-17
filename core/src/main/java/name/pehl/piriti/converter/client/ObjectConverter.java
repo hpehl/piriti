@@ -27,11 +27,4 @@ public class ObjectConverter extends AbstractConverter<Object>
         }
         return null;
     }
-
-
-    @Override
-    public Object clone() throws CloneNotSupportedException
-    {
-        return new ObjectConverter();
-    }
 }

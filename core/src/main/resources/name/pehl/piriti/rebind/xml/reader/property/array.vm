@@ -1,5 +1,5 @@
-#set($elements = $property.variables.newVariable("Elements"))
 #set($asList = $property.variables.newVariable("AsList"))
+#set($elements = $property.variables.newVariable("Elements"))
 #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
 #if ($property.elementType.isPrimitive())
     #set($boxedElementType = $property.elementType.qualifiedBoxedSourceName)
@@ -11,16 +11,16 @@ List<Element> $elements = filterElements(element.selectNodes("$property.pathOrNa
 if (!${elements}.isEmpty())
 {
     List<$boxedElementType> $asList = new ArrayList<$boxedElementType>(${elements}.size());
-    Converter<$boxedElementType> $converter = null;
-    #if ($property.converter) #customConverter() #else #defaultConverter($boxedElementType) #end
+    #if ($property.converter)
+        #createConverter()
+    #end
     for (Element currentElement : $elements)
     {
-        #set($currentValue = $property.variables.newVariable("CurrentValue"))
-        $boxedElementType $currentValue = null;
+        $boxedElementType currentValue = null;
         #parse($property.elementTypeTemplate)
-        if ($currentValue != null) 
+        if (currentValue != null) 
         {
-            ${asList}.add($currentValue);
+            ${asList}.add(currentValue);
         }
     }
     int index = 0;
@@ -29,8 +29,4 @@ if (!${elements}.isEmpty())
     {
         ${value}[index++] = tmpValue;
     }
-}
-if ($value != null) 
-{
-    #assignValue()
 }

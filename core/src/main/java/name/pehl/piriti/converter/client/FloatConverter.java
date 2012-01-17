@@ -23,11 +23,4 @@ public class FloatConverter extends NumberConverter<Float>
     {
         return new Float(parsed);
     }
-
-
-    @Override
-    public Object clone() throws CloneNotSupportedException
-    {
-        return new FloatConverter();
-    }
 }

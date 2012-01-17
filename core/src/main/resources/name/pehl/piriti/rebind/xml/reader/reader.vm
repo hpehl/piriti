@@ -7,20 +7,12 @@ import static java.util.logging.Level.*;
 import static name.pehl.totoe.commons.client.WhitespaceHandling.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import name.pehl.piriti.commons.client.InstanceContextHolder;
-import name.pehl.piriti.commons.client.ModelReadEvent;
 import name.pehl.piriti.xml.client.AbstractXmlReader;
 import name.pehl.piriti.xml.client.XmlReader;
-
-import name.pehl.totoe.xml.client.Document;
 import name.pehl.totoe.xml.client.Element;
 import name.pehl.totoe.xml.client.Node;
-import name.pehl.totoe.xml.client.XmlParseException;
-import name.pehl.totoe.xml.client.XmlParser;
 
 import com.google.gwt.core.client.GWT;
 

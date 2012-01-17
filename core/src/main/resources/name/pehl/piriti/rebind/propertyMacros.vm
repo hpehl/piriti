@@ -1,7 +1,7 @@
 #macro(newConcreteTypes)
 	#foreach ($concreteType in $property.concreteTypes)
 	    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
-	    ${concreteType.parameterizedQualifiedSourceName}.class.getName();
+	    new ${concreteType.parameterizedQualifiedSourceName}();
 	#end
 #end
 

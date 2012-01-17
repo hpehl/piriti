@@ -35,11 +35,4 @@ public class ShortConverter extends AbstractConverter<Short>
         }
         return null;
     }
-
-
-    @Override
-    public Object clone() throws CloneNotSupportedException
-    {
-        return new ShortConverter();
-    }
 }

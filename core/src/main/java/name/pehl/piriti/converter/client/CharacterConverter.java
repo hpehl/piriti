@@ -28,11 +28,4 @@ public class CharacterConverter extends AbstractConverter<Character>
         }
         return null;
     }
-
-
-    @Override
-    public Object clone() throws CloneNotSupportedException
-    {
-        return new CharacterConverter();
-    }
 }

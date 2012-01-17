@@ -1,15 +1,5 @@
-String currentAsString = currentElement.getText($property.whitespaceHandling);
-if (currentAsString != null)
+String currentValueAsString = currentElement.getText($property.whitespaceHandling);
+if (currentValueAsString != null)
 {
-    if ($converter != null)
-    {
-        $currentValue = ${converter}.convert(currentAsString);
-    }
-    else
-    {
-	    if (currentAsString.length() != 0)
-	    {
-	        $currentValue = currentAsString.charAt(0);
-	    }
-    }
+    currentValue = ${converter}.convert(currentValueAsString);
 }
