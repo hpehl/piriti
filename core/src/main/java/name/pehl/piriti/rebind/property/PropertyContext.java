@@ -58,6 +58,7 @@ public class PropertyContext
      * its concrete subtypes. Otherwise the list contains just the type itself.
      */
     private final List<JClassType> concreteTypes;
+
     /**
      * The name of the property
      */
