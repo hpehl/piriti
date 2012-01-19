@@ -38,3 +38,26 @@
         }
     }
 #end
+
+
+## Assigns the value to the model property
+#macro(assignValue)
+	if ($value != null)
+	{
+	    #if ($property.setter)
+	        $property.setter setter = GWT.create(${property.setter}.class);
+	        setter.set(model, $value);
+	    #else
+	        #if ($property.accessibleField) 
+	            model.$property.name = $value;
+	        #elseif ($property.callableSetter)
+	            model.${property.callableSetterName}($value);
+	        #else
+	            if (logger.isLoggable(SEVERE)) 
+	            {
+	                logger.log(SEVERE, "No accessible field or setter found for property $property.name in ${modelType}.");
+	            }
+	        #end
+	    #end
+	}
+#end

@@ -41,8 +41,61 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
     }
     
     
-    // -------------------------------------------------------- read properties
-    
+    // ----------------------------------------- ids, properties and references
+
+    protected $modelParameterizedType readId(Element element)
+    {
+        $modelParameterizedType model = newModel();
+        #if ($typeContext.id)
+            #set($property = $typeContext.id)
+            #set($value = $property.variables.value)
+            #set($converter = $property.variables.newVariable("Converter"))
+            if (logger.isLoggable(FINE)) 
+            {
+                logger.log(FINE, "Processing ID String $property.name");
+            }
+            String $value = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
+		    #if ($property.converter)
+		        #createConverter()
+		        if ($value != null)
+		        {
+		            $value = ${converter}.convert(id);
+		        }
+		    #end
+		    #assignValue()
+		    if ($value != null)
+		    {
+                this.idMap.put($value, model);
+            }
+        #end
+        
+        ## Process IDs in arays and collections
+        #foreach ($property in $typeContext.properties)
+            #if ($property.type.isArray() || $TypeUtils.isCollection($property.type))
+                #set($elements = $property.variables.newVariable("Elements"))
+                #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+                #if ($property.elementTypeTemplate.endsWith("any.vm") && !$property.converter)
+	                if (logger.isLoggable(FINE)) 
+	                {
+	                    logger.log(FINE, "Process IDs in $property.type.parameterizedQualifiedSourceName $property.name");
+	                }
+                    #newConcreteTypes()
+                    List<Element> $elements = filterElements(element.selectNodes("$property.pathOrName"));
+                    if (!${elements}.isEmpty())
+                    {
+                        for (Element currentElement : $elements)
+                        {
+                            @SuppressWarnings("unused") $elementType currentValue = null;
+                            #parse($property.elementTypeTemplate)
+                        }
+                    }
+                #end
+            #end
+        #end
+        return model;
+    }
+
+
     protected $modelParameterizedType readProperties(Element element, $modelParameterizedType model) 
     {
         if (element != null) 
@@ -53,7 +106,6 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
                 #set($value = $property.variables.value)
                 #set($valueAsString = $property.variables.valueAsString)
                 #set($converter = $property.variables.newVariable("Converter"))
-                
                 // parsing template $property.template
                 if (logger.isLoggable(FINE)) 
                 {
@@ -62,26 +114,55 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
                 $parameterizedValueType $value = null;
                 ## Here happens the actual reading / conversion from element to $value
                 #parse($property.template)
-                if ($value != null) 
-                {
-                    #if ($property.setter)
-                        $property.setter setter = GWT.create(${property.setter}.class);
-                        setter.set(model, $value);
-                    #else
-                        #if ($property.accessibleField) 
-                            model.$property.name = $value;
-                        #elseif ($property.callableSetter)
-                            model.${property.callableSetterName}($value);
-                        #else
-                            if (logger.isLoggable(SEVERE)) 
-                            {
-                                logger.log(SEVERE, "No accessible field or setter found for property $property.name in ${modelType}.");
-                            }
-                        #end
-                    #end
-                }
+	            #assignValue()
             #end
         }
+        return model;
+    }
+
+
+    protected $modelParameterizedType readIdRefs(Element element, $modelParameterizedType model)
+    {
+        #if (!$typeContext.references.isEmpty())
+	        if (element != null)
+	        {
+		        #foreach ($property in $typeContext.references)
+	                #set($valueType = $property.type.qualifiedSourceName)
+                    #set($reader = $property.variables.newVariable("Reader"))
+                    #set($references = $property.variables.newVariable("References"))
+                    if (logger.isLoggable(FINE)) 
+                    {
+                        logger.log(FINE, "Process references in $property.type.parameterizedQualifiedSourceName $property.name");
+                    }
+                    #newConcreteTypes()
+                    XmlReader<$parameterizedValueType> $reader = xmlRegistry.getReader(${valueType}.class);
+                    if ($reader != null)
+                    {
+                        $parameterizedValueType $value = null;
+	                    String[] $references = element.selectValues("$property.pathOrName", $property.whitespaceHandling);
+		                if (${references}.length == 1)
+		                {
+		                    $references = ${references}[0].split(" ");
+		                }
+			            #if ($property.type.isArray() || $TypeUtils.isCollection($property.type))
+                            // TODO Handle references in arrays / collections
+		                    // value4 = new java.util.ArrayList<name.pehl.piriti.client.references.id.Employee>();
+		                    // for (String reference : value4References)
+		                    // {
+		                    //     name.pehl.piriti.client.references.id.Employee referenceInstance = value4Reader
+		                    //             .idRef(reference);
+		                    //     if (referenceInstance != null)
+		                    //     {
+		                    //         value4.add(referenceInstance);
+		                    //     }
+		                    // }
+			            #else
+                            $value = ${reader}.idRef(${references}[0]);
+		                #end
+                    }
+	            #end        
+	        }
+        #end
         return model;
     }
 }

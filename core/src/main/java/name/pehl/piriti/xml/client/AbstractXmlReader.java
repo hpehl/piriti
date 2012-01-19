@@ -166,35 +166,6 @@ public abstract class AbstractXmlReader<T> extends AbstractReader<T, Element> im
     }
 
 
-    // ----------------------------------------- ids, properties and references
-
-    @Override
-    public T idRef(String id)
-    {
-        return idMap.get(id);
-    }
-
-
-    protected T readId(Element element)
-    {
-        // TODO Implement IDs and IDREFs
-        return newModel();
-    }
-
-
-    protected abstract T readProperties(Element element, T model);
-
-
-    protected T readIdRefs(Element element, T model)
-    {
-        if (element != null)
-        {
-            // TODO Implement IDs and IDREFs
-        }
-        return model;
-    }
-
-
     // --------------------------------------------------------- helper methods
 
     protected List<Element> filterElements(List<Node> nodes)

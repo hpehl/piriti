@@ -3,6 +3,7 @@ package name.pehl.piriti.xml.client;
 import java.util.List;
 
 import name.pehl.piriti.commons.client.HasModelReadHandler;
+import name.pehl.piriti.commons.client.Reader;
 import name.pehl.totoe.xml.client.Document;
 import name.pehl.totoe.xml.client.Element;
 import name.pehl.totoe.xml.client.XmlParseException;
@@ -39,7 +40,7 @@ import name.pehl.totoe.xml.client.XmlParseException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface XmlReader<T> extends HasModelReadHandler<T>
+public interface XmlReader<T> extends Reader<T>, HasModelReadHandler<T>
 {
     // -------------------------------------------------------------- read list
 
@@ -171,16 +172,4 @@ public interface XmlReader<T> extends HasModelReadHandler<T>
      *         {@code element} is {@code null}.
      */
     T read(Element element);
-
-
-    // ------------------------------------------------------------- references
-
-    /**
-     * Returns the reference for the specified identifier or <code>null</code>
-     * if no reference was found.
-     * 
-     * @param id
-     * @return
-     */
-    T idRef(String id);
 }

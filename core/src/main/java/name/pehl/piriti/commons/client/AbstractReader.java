@@ -13,7 +13,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implements HasModelReadHandler<T>
+public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implements Reader<T>, HasModelReadHandler<T>
 {
     // --------------------------------------------------------- new... methods
 
@@ -34,4 +34,22 @@ public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implement
     {
         handlerManager.fireEvent(event);
     }
+
+
+    // ----------------------------------------- ids, properties and references
+
+    @Override
+    public T idRef(String id)
+    {
+        return idMap.get(id);
+    }
+
+
+    protected abstract T readId(C context);
+
+
+    protected abstract T readProperties(C context, T model);
+
+
+    protected abstract T readIdRefs(C context, T model);
 }

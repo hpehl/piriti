@@ -3,6 +3,7 @@ package name.pehl.piriti.json.client;
 import java.util.List;
 
 import name.pehl.piriti.commons.client.HasModelReadHandler;
+import name.pehl.piriti.commons.client.Reader;
 
 import com.google.gwt.json.client.JSONArray;
 import com.google.gwt.json.client.JSONException;
@@ -40,7 +41,7 @@ import com.google.gwt.json.client.JSONObject;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface JsonReader<T> extends HasModelReadHandler<T>
+public interface JsonReader<T> extends Reader<T>, HasModelReadHandler<T>
 {
     // -------------------------------------------------------------- read list
 
@@ -394,16 +395,4 @@ public interface JsonReader<T> extends HasModelReadHandler<T>
      *             if the specified string represents no valid JSON data
      */
     T read(JSONObject jsonObject) throws JSONException;
-
-
-    // ------------------------------------------------------------- references
-
-    /**
-     * Returns the reference for the specified identifier or <code>null</code>
-     * if no reference was found.
-     * 
-     * @param id
-     * @return
-     */
-    T idRef(String id);
 }

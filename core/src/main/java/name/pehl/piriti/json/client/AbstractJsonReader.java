@@ -256,35 +256,6 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
     }
 
 
-    // ----------------------------------------- ids, properties and references
-
-    @Override
-    public T idRef(String id)
-    {
-        return idMap.get(id);
-    }
-
-
-    protected T readId(JSONObject jsonObject)
-    {
-        // TODO Implement IDs and IDREFs
-        return newModel();
-    }
-
-
-    protected abstract T readProperties(JSONObject jsonObject, T model);
-
-
-    protected T readIdRefs(JSONObject jsonObject, T model)
-    {
-        if (jsonObject != null)
-        {
-            // TODO Implement IDs and IDREFs
-        }
-        return model;
-    }
-
-
     // ------------------------------------------------ read values and objects
 
     protected <V> V readValue(JSONValue jsonValue, Converter<V> converter)

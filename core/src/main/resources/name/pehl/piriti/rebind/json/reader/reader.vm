@@ -46,8 +46,54 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
         return model;
     }
 
-    // -------------------------------------------------------- read properties
-    
+    // ----------------------------------------- ids, properties and references
+
+    protected $modelParameterizedType readId(JSONObject jsonObject)
+    {
+        #if ($typeContext.id)
+            $modelParameterizedType model = newModel();
+            #set($property = $typeContext.id)
+            #set($converter = $property.variables.newVariable("Converter"))
+            if (logger.isLoggable(FINE)) 
+            {
+                logger.log(FINE, "Processing ID String $property.name");
+            }
+            String id = null;
+            #if ($property.jsonPath)
+                JSONValue jsonValue = JsonPath.select(jsonObject, "$property.pathOrName");
+            #else
+                JSONValue jsonValue = jsonObject.get("$property.pathOrName");
+            #end
+            if (jsonValue != null)
+            {
+			    if (jsonValue.isNull() == null) 
+			    {
+			        JSONString jsonString = jsonValue.isString();
+			        if (jsonString != null)
+			        {
+			            id = jsonString.stringValue();
+			            #if ($property.converter)
+			                #createConverter()
+			                if (id != null)
+			                {
+			                    id = ${converter}.convert(id);
+			                }
+			            #end
+			        }
+			    }
+		    }
+		    if (id != null)
+		    {
+                this.idMap.put(id, model);
+		    }
+		    return model;
+            // TODO Implement IDs in nested arrays / collections
+        #else
+            return newModel();
+        #end
+    }
+
+
     protected $modelParameterizedType readProperties(JSONObject jsonObject, $modelParameterizedType model) 
     {
         if (jsonObject != null) 
@@ -94,6 +140,16 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
 				    }
 			    }
             #end
+        }
+        return model;
+    }
+
+
+    protected $modelParameterizedType readIdRefs(JSONObject jsonObject, $modelParameterizedType model)
+    {
+        if (jsonObject != null)
+        {
+            // TODO Implement IDREFs
         }
         return model;
     }
