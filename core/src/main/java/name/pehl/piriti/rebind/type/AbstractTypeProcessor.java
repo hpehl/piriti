@@ -1,5 +1,9 @@
 package name.pehl.piriti.rebind.type;
 
+import static name.pehl.piriti.rebind.property.ReferenceType.ID;
+import static name.pehl.piriti.rebind.property.ReferenceType.PROPERTY;
+import static name.pehl.piriti.rebind.property.ReferenceType.REFERENCE;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -7,7 +11,9 @@ import name.pehl.piriti.rebind.Logger;
 import name.pehl.piriti.rebind.property.InvalidPropertyException;
 import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.rebind.property.PropertyContextCreator;
+import name.pehl.piriti.rebind.property.PropertyContextValidator;
 import name.pehl.piriti.rebind.property.PropertySource;
+import name.pehl.piriti.rebind.property.ReferenceType;
 
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -20,13 +26,15 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
 {
     private TypeProcessor next;
     private Set<? extends JClassType> skipTypes;
-    private PropertyContextCreator propertyContextCreator;
+    private final PropertyContextCreator propertyContextCreator;
+    private final PropertyContextValidator propertyContextValidator;
 
 
     public AbstractTypeProcessor()
     {
-        skipTypes = new HashSet<JClassType>();
-        propertyContextCreator = new PropertyContextCreator();
+        this.skipTypes = new HashSet<JClassType>();
+        this.propertyContextCreator = new PropertyContextCreator();
+        this.propertyContextValidator = new PropertyContextValidator();
     }
 
 
@@ -79,61 +87,6 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
             throws UnableToCompleteException;
 
 
-    protected void addProperty(TypeContext typeContext, PropertySource propertySource)
-    {
-        try
-        {
-            PropertyContext propertyContext = propertyContextCreator.createPropertyContext(typeContext, propertySource);
-            Logger.get().debug("Adding property %s to %s", propertyContext, typeContext);
-            typeContext.addProperty(propertyContext);
-        }
-        catch (InvalidPropertyException e)
-        {
-            invalidProperty(typeContext, propertySource, e);
-        }
-
-    }
-
-
-    protected void setId(TypeContext typeContext, PropertySource propertySource)
-    {
-        try
-        {
-            PropertyContext propertyContext = propertyContextCreator.createPropertyContext(typeContext, propertySource);
-            Logger.get().debug("Setting id %s for %s", propertyContext, typeContext);
-            typeContext.setId(propertyContext);
-        }
-        catch (InvalidPropertyException e)
-        {
-            invalidProperty(typeContext, propertySource, e);
-        }
-
-    }
-
-
-    protected void addReference(TypeContext typeContext, PropertySource propertySource)
-    {
-        try
-        {
-            PropertyContext propertyContext = propertyContextCreator.createPropertyContext(typeContext, propertySource);
-            Logger.get().debug("Adding reference %s to %s", propertyContext, typeContext);
-            typeContext.addReference(propertyContext);
-        }
-        catch (InvalidPropertyException e)
-        {
-            invalidProperty(typeContext, propertySource, e);
-        }
-    }
-
-
-    private void invalidProperty(TypeContext typeContext, PropertySource propertySource, InvalidPropertyException e)
-    {
-        Logger.get().warn("Property %s %s in %s is invalid: %s",
-                propertySource.getType().getParameterizedQualifiedSourceName(), propertySource.getName(),
-                typeContext.getType().getQualifiedSourceName(), e.getMessage());
-    }
-
-
     protected boolean skipType(JClassType type)
     {
         if (type == null)
@@ -152,5 +105,70 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
             }
         }
         return false;
+    }
+
+
+    protected void addProperty(TypeContext typeContext, PropertySource propertySource)
+    {
+        try
+        {
+            PropertyContext propertyContext = createPropertyContext(typeContext, propertySource, PROPERTY);
+            Logger.get().debug("Adding property %s to %s", propertyContext, typeContext);
+            typeContext.addProperty(propertyContext);
+        }
+        catch (InvalidPropertyException e)
+        {
+            invalidProperty(typeContext, propertySource, e);
+        }
+
+    }
+
+
+    protected void setId(TypeContext typeContext, PropertySource propertySource)
+    {
+        try
+        {
+            PropertyContext propertyContext = createPropertyContext(typeContext, propertySource, ID);
+            Logger.get().debug("Setting id %s for %s", propertyContext, typeContext);
+            typeContext.setId(propertyContext);
+        }
+        catch (InvalidPropertyException e)
+        {
+            invalidProperty(typeContext, propertySource, e);
+        }
+
+    }
+
+
+    protected void addReference(TypeContext typeContext, PropertySource propertySource)
+    {
+        try
+        {
+            PropertyContext propertyContext = createPropertyContext(typeContext, propertySource, REFERENCE);
+            Logger.get().debug("Adding reference %s to %s", propertyContext, typeContext);
+            typeContext.addReference(propertyContext);
+        }
+        catch (InvalidPropertyException e)
+        {
+            invalidProperty(typeContext, propertySource, e);
+        }
+    }
+
+
+    private PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource,
+            ReferenceType referenceType) throws InvalidPropertyException
+    {
+        PropertyContext propertyContext = propertyContextCreator.createPropertyContext(typeContext, propertySource,
+                referenceType);
+        propertyContextValidator.validate(typeContext, propertyContext);
+        return propertyContext;
+    }
+
+
+    private void invalidProperty(TypeContext typeContext, PropertySource propertySource, InvalidPropertyException e)
+    {
+        Logger.get().warn("Property %s %s in %s is invalid: %s",
+                propertySource.getType().getParameterizedQualifiedSourceName(), propertySource.getName(),
+                typeContext.getType().getQualifiedSourceName(), e.getMessage());
     }
 }

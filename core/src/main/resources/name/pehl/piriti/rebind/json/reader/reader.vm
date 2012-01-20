@@ -53,38 +53,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
         $modelParameterizedType model = newModel();
         #if ($typeContext.id)
             #set($property = $typeContext.id)
-            #set($value = $property.variables.value)
-            #set($converter = $property.variables.newVariable("Converter"))
-            if (logger.isLoggable(FINE)) 
-            {
-                logger.log(FINE, "Processing ID String $property.name");
-            }
-            #if ($property.jsonPath)
-                JSONValue jsonValue = JsonPath.select(jsonObject, "$property.pathOrName");
-            #else
-                JSONValue jsonValue = jsonObject.get("$property.pathOrName");
-            #end
-            String $value = null;
-            if (jsonValue != null && jsonValue.isNull() == null) 
-            {
-                JSONString jsonString = jsonValue.isString();
-                if (jsonString != null)
-                {
-                    $value = jsonString.stringValue();
-                    #if ($property.converter)
-                        #createConverter()
-		                if ($value != null)
-		                {
-		                    $value = ${converter}.convert(id);
-		                }
-                    #end
-                }
-            }            
-            #assignValue()
-            if ($value != null)
-            {
-                this.idMap.put($value, model);
-            }
+            #parse($property.templates.main)
         #end
         
         ## Process IDs in arays and collections
@@ -107,7 +76,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
 					        if (currentJsonValue != null && currentJsonValue.isNull() == null) 
 					        {
 					            @SuppressWarnings("unused") $elementType currentValue = null;
-                                #parse($property.elementTypeTemplate)
+                                #parse($property.templates.elementType)
 				            }
 			            }
                     }
@@ -129,7 +98,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
                 #set($jsonValue = $property.variables.newVariable("JsonValue"))
 				#set($converter = $property.variables.newVariable("Converter"))
 				
-                // parsing template $property.template
+                // parsing template $property.templates.main
 				if (logger.isLoggable(FINE)) 
 				{
 				    logger.log(FINE, "Processing $parameterizedValueType $property.name");
@@ -143,7 +112,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
 			    if ($jsonValue != null)
                 {
                     ## Here happens the actual reading / conversion from $jsonValue to $value
-                    #parse($property.template)
+                    #parse($property.templates.main)
                     #assignValue()
 			    }
             #end

@@ -47,7 +47,7 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 7 $
  */
-public class DefaultConverter
+public class DefaultConverterLookup
 {
     private final TypeOracle typeOracle;
     private final Map<JClassType, String> registry;
@@ -58,7 +58,7 @@ public class DefaultConverter
      * converters using the {@link TypeOracle} from
      * {@link GeneratorContextHolder}.
      */
-    public DefaultConverter()
+    public DefaultConverterLookup()
     {
         typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
         registry = new HashMap<JClassType, String>();

@@ -12,7 +12,7 @@ if (!${elements}.isEmpty())
     for (Element currentElement : $elements)
     {
         $elementType currentValue = null;
-        #parse($property.elementTypeTemplate)
+        #parse($property.templates.elementType)
         if (currentValue != null) 
         {
             ${value}.add(currentValue);

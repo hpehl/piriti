@@ -111,22 +111,24 @@ public class PropertyContext
      */
     private final Map<PropertyAccess, String> access;
 
+    /**
+     * Whether this property is used as an ID as a normal property or as a
+     * reference to an ID.
+     */
+    private final ReferenceType referenceType;
+
     private final Variables variables;
 
     /**
      * Template for code generation
      */
-    private String template;
-
-    /**
-     * Template for the element type
-     */
-    private String elementTypeTemplate;
+    private Templates templates;
 
 
     // ----------------------------------------------------------- constructors
 
-    public PropertyContext(PropertySource propertySource, Map<PropertyAccess, String> access)
+    public PropertyContext(PropertySource propertySource, Map<PropertyAccess, String> access,
+            ReferenceType referenceType)
     {
         this.order = propertySource.getOrder();
 
@@ -180,8 +182,9 @@ public class PropertyContext
         }
         this.native_ = propertySource.isNative();
 
-        // access
+        // access and reference
         this.access = access;
+        this.referenceType = referenceType;
 
         // variables
         this.variables = new Variables();
@@ -388,6 +391,12 @@ public class PropertyContext
     }
 
 
+    public Map<PropertyAccess, String> getAccess()
+    {
+        return access;
+    }
+
+
     public boolean isAccessibleField()
     {
         return access.containsKey(FIELD);
@@ -426,33 +435,27 @@ public class PropertyContext
     }
 
 
+    public ReferenceType getReferenceType()
+    {
+        return referenceType;
+    }
+
+
     public Variables getVariables()
     {
         return variables;
     }
 
 
-    public String getTemplate()
+    public Templates getTemplates()
     {
-        return template;
+        return templates;
     }
 
 
-    void setTemplate(String template)
+    void setTemplates(Templates templates)
     {
-        this.template = template;
-    }
-
-
-    public String getElementTypeTemplate()
-    {
-        return elementTypeTemplate;
-    }
-
-
-    void setElementTypeTemplate(String elementTypeTemplate)
-    {
-        this.elementTypeTemplate = elementTypeTemplate;
+        this.templates = templates;
     }
 
     // ---------------------------------------------------------- inner classes

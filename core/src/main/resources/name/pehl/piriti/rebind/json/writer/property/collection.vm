@@ -13,7 +13,7 @@ if ($value != null)
         $elementType currentValue = iter.next();
         if (currentValue != null)
         {
-            #parse($property.elementTypeTemplate)
+            #parse($property.templates.elementType)
         }
         else
         {

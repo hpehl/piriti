@@ -20,7 +20,7 @@ if (jsonArray != null)
         if (currentJsonValue != null && currentJsonValue.isNull() == null) 
         {
             $boxedElementType currentValue = null;
-            #parse($property.elementTypeTemplate)
+            #parse($property.templates.elementType)
             if (currentValue != null) 
             {
                 ${asList}.add(currentValue);

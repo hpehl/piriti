@@ -1,0 +1,32 @@
+#set($value = $property.variables.value)
+#set($converter = $property.variables.newVariable("Converter"))
+if (logger.isLoggable(FINE)) 
+{
+    logger.log(FINE, "Processing ID String $property.name");
+}
+#if ($property.jsonPath)
+    JSONValue jsonValue = JsonPath.select(jsonObject, "$property.pathOrName");
+#else
+    JSONValue jsonValue = jsonObject.get("$property.pathOrName");
+#end
+String $value = null;
+if (jsonValue != null && jsonValue.isNull() == null) 
+{
+    JSONString jsonString = jsonValue.isString();
+    if (jsonString != null)
+    {
+        $value = jsonString.stringValue();
+        #if ($property.converter)
+            #createConverter()
+            if ($value != null)
+            {
+                $value = ${converter}.convert(id);
+            }
+        #end
+    }
+}            
+#assignValue()
+if ($value != null)
+{
+    this.idMap.put($value, model);
+}

@@ -1,6 +1,8 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.*;
+import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
+import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,6 @@ import name.pehl.piriti.rebind.type.TypeUtils;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.JConstructor;
 import com.google.gwt.core.ext.typeinfo.JField;
@@ -34,8 +35,8 @@ public class PropertyContextCreator
     // -------------------------------------------------------- private members
 
     private final TypeOracle typeOracle;
-    private final TemplateFinder templateFinder;
-    private final DefaultConverter defaultConverter;
+    private final DefaultConverterLookup defaultConverterLookup;
+    private final PropertyTemplatesLookup propertyTemplatesLookup;
 
 
     // ----------------------------------------------------------- constructors
@@ -43,50 +44,36 @@ public class PropertyContextCreator
     public PropertyContextCreator()
     {
         this.typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
-        this.templateFinder = new TemplateFinder();
-        this.defaultConverter = new DefaultConverter();
+        this.defaultConverterLookup = new DefaultConverterLookup();
+        this.propertyTemplatesLookup = new PropertyTemplatesLookup();
     }
 
 
     // --------------------------------------------------------- public methods
 
-    public PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource)
-            throws InvalidPropertyException
+    public PropertyContext createPropertyContext(TypeContext typeContext, PropertySource propertySource,
+            ReferenceType referenceType) throws InvalidPropertyException
     {
-        // validation
-        validatePropertyType(typeContext, propertySource);
+        // gather all necessary information
         Map<PropertyAccess, String> access = calculateAccess(typeContext, propertySource);
-        validatePropertyAccess(typeContext, propertySource, access);
-
         String converter = getCustomConverter(typeContext, propertySource);
         if (converter == null)
         {
-            converter = defaultConverter.get(propertySource.getType());
-            validateMandatoryConverters(typeContext, propertySource, converter);
+            converter = defaultConverterLookup.get(propertySource.getType());
         }
-
         String instanceCreator = getType(typeContext, propertySource, propertySource.getInstanceCreator(),
                 NoopInstanceCreator.class);
         String getter = getType(typeContext, propertySource, propertySource.getGetter(), NoopPropertyGetter.class);
         String setter = getType(typeContext, propertySource, propertySource.getSetter(), NoopPropertySetter.class);
+        Templates templates = propertyTemplatesLookup.get(typeContext, propertySource.getType(), referenceType);
 
         // creation
-        PropertyContext propertyContext = new PropertyContext(propertySource, access);
+        PropertyContext propertyContext = new PropertyContext(propertySource, access, referenceType);
         propertyContext.setConverter(converter);
         propertyContext.setInstanceCreator(instanceCreator);
         propertyContext.setGetter(getter);
         propertyContext.setSetter(setter);
-
-        // templates
-        String path = templateFinder.getPath(typeContext);
-        String template = path + templateFinder.getTemplate(propertyContext.getType());
-        propertyContext.setTemplate(template);
-        if (propertyContext.getElementType() != null)
-        {
-            String elementTypeTemplate = path + "elementtype/"
-                    + templateFinder.getTemplate(propertyContext.getElementType());
-            propertyContext.setElementTypeTemplate(elementTypeTemplate);
-        }
+        propertyContext.setTemplates(templates);
         return propertyContext;
     }
 
@@ -143,86 +130,6 @@ public class PropertyContextCreator
     }
 
 
-    private void validatePropertyType(TypeContext typeContext, PropertySource propertySource)
-            throws InvalidPropertyException
-    {
-        JType propertyType = propertySource.getType();
-        JArrayType arrayType = propertyType.isArray();
-        if (arrayType != null)
-        {
-            JType elementType = arrayType.getComponentType();
-            if (elementType.isArray() != null)
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "Multi-dimensional arrays are not supported");
-            }
-            if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "Arrays of collections / maps are not supported");
-            }
-        }
-
-        if (TypeUtils.isCollection(propertyType))
-        {
-            JType elementType = TypeUtils.getTypeVariable(propertyType);
-            if (elementType == null)
-            {
-                throw new InvalidPropertyException(typeContext, propertySource, "No type parameter found");
-            }
-            if (elementType.isArray() != null)
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "Collections of arrays are not supported");
-            }
-            if (TypeUtils.isCollection(elementType) || TypeUtils.isMap(elementType))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "Collections of collections / maps are not supported");
-            }
-        }
-
-        if (TypeUtils.isMap(propertyType))
-        {
-            throw new InvalidPropertyException(typeContext, propertySource, "Maps are not supported");
-        }
-    }
-
-
-    private void validatePropertyAccess(TypeContext typeContext, PropertySource propertySource,
-            Map<PropertyAccess, String> access) throws InvalidPropertyException
-    {
-        if (typeContext.isReader())
-        {
-            if (!(access.containsKey(FIELD) || access.containsKey(GETTER)))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or getter");
-            }
-        }
-        else if (typeContext.isWriter())
-        {
-            if (!(access.containsKey(FIELD) || access.containsKey(SETTER)))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource, "No accessible field or setter");
-            }
-            if (typeContext.isJson()
-                    && StringUtils.containsAny(propertySource.getPath(), PropertyContext.JSON_PATH_SYMBOLS))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "JSONPath expressions are not supported for writing");
-
-            }
-            if (typeContext.isXml()
-                    && StringUtils.containsAny(propertySource.getPath(), PropertyContext.XML_PATH_SYMBOLS))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource,
-                        "XPath expressions which are not supported for writing");
-
-            }
-        }
-    }
-
-
     private String getCustomConverter(TypeContext typeContext, PropertySource propertySource)
             throws InvalidPropertyException
     {
@@ -239,15 +146,15 @@ public class PropertyContextCreator
             converterType = typeOracle.findType(converterClass.getName());
             if (converterType == null)
             {
-                throw new InvalidPropertyException(typeContext, propertySource, "Converter " + converterClass.getName()
-                        + " cannot be found");
+                throw new InvalidPropertyException(typeContext, propertySource.getType(), propertySource.getName(),
+                        "Converter " + converterClass.getName() + " cannot be found");
             }
             if (StringUtils.isEmpty(format))
             {
                 if (!TypeUtils.isDefaultInstantiable(converterType))
                 {
-                    throw new InvalidPropertyException(typeContext, propertySource, "Converter "
-                            + converterClass.getName() + " has no default constructor");
+                    throw new InvalidPropertyException(typeContext, propertySource.getType(), propertySource.getName(),
+                            "Converter " + converterClass.getName() + " has no default constructor");
                 }
             }
             else
@@ -256,9 +163,9 @@ public class PropertyContextCreator
                 JConstructor constructor = converterType.findConstructor(new JType[] {stringType});
                 if (constructor == null)
                 {
-                    throw new InvalidPropertyException(typeContext, propertySource, "Converter "
-                            + converterClass.getName() + " has no constructor which accepts the format \"" + format
-                            + "\"");
+                    throw new InvalidPropertyException(typeContext, propertySource.getType(), propertySource.getName(),
+                            "Converter " + converterClass.getName() + " has no constructor which accepts the format \""
+                                    + format + "\"");
                 }
             }
         }
@@ -267,22 +174,6 @@ public class PropertyContextCreator
             return converterType.getQualifiedSourceName();
         }
         return null;
-    }
-
-
-    private void validateMandatoryConverters(TypeContext typeContext, PropertySource propertySource, String converter)
-            throws InvalidPropertyException
-    {
-        if (converter == null)
-        {
-            JType type = propertySource.getType();
-            if (TypeUtils.isBoolean(type) || TypeUtils.isCharacter(type) || TypeUtils.isDate(type)
-                    || TypeUtils.isNumeric(type) || Object.class.getName().equals(type.getQualifiedSourceName()))
-            {
-                throw new InvalidPropertyException(typeContext, propertySource, "No converter for "
-                        + type.getQualifiedSourceName() + " specified");
-            }
-        }
     }
 
 
@@ -295,12 +186,13 @@ public class PropertyContextCreator
             type = typeOracle.findType(clazz.getName());
             if (type == null)
             {
-                throw new InvalidPropertyException(typeContext, propertySource, clazz.getName() + " cannot be found");
+                throw new InvalidPropertyException(typeContext, propertySource.getType(), propertySource.getName(),
+                        clazz.getName() + " cannot be found");
             }
             if (!TypeUtils.isDefaultInstantiable(type))
             {
-                throw new InvalidPropertyException(typeContext, propertySource, clazz.getName()
-                        + " has no default constructor");
+                throw new InvalidPropertyException(typeContext, propertySource.getType(), propertySource.getName(),
+                        clazz.getName() + " has no default constructor");
             }
         }
         if (type != null)

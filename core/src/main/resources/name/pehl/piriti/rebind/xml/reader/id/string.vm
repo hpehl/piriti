@@ -1,0 +1,19 @@
+#set($value = $property.variables.value)
+#set($converter = $property.variables.newVariable("Converter"))
+if (logger.isLoggable(FINE)) 
+{
+    logger.log(FINE, "Processing ID String $property.name");
+}
+String $value = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
+#if ($property.converter)
+    #createConverter()
+    if ($value != null)
+    {
+        $value = ${converter}.convert(id);
+    }
+#end
+#assignValue()
+if ($value != null)
+{
+    this.idMap.put($value, model);
+}

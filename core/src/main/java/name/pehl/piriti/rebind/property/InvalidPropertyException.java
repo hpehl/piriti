@@ -2,6 +2,8 @@ package name.pehl.piriti.rebind.property;
 
 import name.pehl.piriti.rebind.type.TypeContext;
 
+import com.google.gwt.core.ext.typeinfo.JType;
+
 /**
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
@@ -9,10 +11,9 @@ import name.pehl.piriti.rebind.type.TypeContext;
 @SuppressWarnings("serial")
 public class InvalidPropertyException extends Exception
 {
-    public InvalidPropertyException(TypeContext typeContext, PropertySource propertySource, String message)
+    public InvalidPropertyException(TypeContext typeContext, JType type, String name, String message)
     {
-        super(String.format("Invalid property %s %s in %s: %s", propertySource.getType()
-                .getParameterizedQualifiedSourceName(), propertySource.getName(), typeContext.getType()
-                .getParameterizedQualifiedSourceName(), message));
+        super(String.format("Invalid property %s %s in %s: %s", type.getParameterizedQualifiedSourceName(), name,
+                typeContext.getType().getParameterizedQualifiedSourceName(), message));
     }
 }

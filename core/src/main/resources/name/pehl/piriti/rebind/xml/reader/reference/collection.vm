@@ -1,0 +1,20 @@
+#set($elementType = $property.elementType.qualifiedSourceName)
+#newConcreteTypes()
+XmlReader<$elementType> $reader = xmlRegistry.getReader(${elementType}.class);
+if ($reader != null)
+{
+    String[] references = element.selectValues("$property.pathOrName", $property.whitespaceHandling);
+    if (references != null && references.length != 0)
+    {
+        #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
+        $value = new $collectionImplementation<$elementType>();
+        for (String reference : references)
+        {
+            $elementType currentValue = ${reader}.idRef(reference);
+            if (currentValue != null)
+            {
+                ${value}.add(currentValue);
+            }
+        }
+    }
+}

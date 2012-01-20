@@ -15,7 +15,7 @@ if (jsonArray != null)
         if (currentJsonValue != null && currentJsonValue.isNull() == null) 
         {
             $elementType currentValue = null;
-            #parse($property.elementTypeTemplate)
+            #parse($property.templates.elementType)
             if (currentValue != null) 
             {
                 ${value}.add(currentValue);

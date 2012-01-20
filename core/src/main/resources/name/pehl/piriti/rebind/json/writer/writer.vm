@@ -44,7 +44,7 @@ public class $implName extends AbstractJsonWriter<$modelParameterizedType> imple
 				#set($valueAsString = $property.variables.valueAsString)
 				#set($converter = $property.variables.newVariable("Converter"))
 				
-                // parsing template $property.template
+                // parsing template $property.templates.main
                 if (logger.isLoggable(FINE)) 
                 {
                     logger.log(FINE, "Processing $parameterizedValueType $property.name");
@@ -67,7 +67,7 @@ public class $implName extends AbstractJsonWriter<$modelParameterizedType> imple
 			    #end
 				out.append(JsonUtils.escapeValue("$property.pathOrName")).append(":");
                 ## Here happens the actual conversion / writing from $value into the StringBuilder
-                #parse($property.template)
+                #parse($property.templates.main)
 	            #if ($foreach.hasNext) 
 	               out.append(","); 
                 #end
