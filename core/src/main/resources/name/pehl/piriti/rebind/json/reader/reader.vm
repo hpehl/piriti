@@ -50,40 +50,8 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
 
     protected $modelParameterizedType readId(JSONObject jsonObject)
     {
-        $modelParameterizedType model = newModel();
-        #if ($typeContext.id)
-            #set($property = $typeContext.id)
-            #parse($property.templates.main)
-        #end
-        
-        ## Process IDs in arays and collections
-        #foreach ($property in $typeContext.properties)
-            #if ($property.type.isArray() || $TypeUtils.isCollection($property.type))
-                #if ($TypeUtils.canContainId($property.elementType) && !$property.converter)
-	                #set($jsonArray = $property.variables.newVariable("JsonArray"))
-	                #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
-                    if (logger.isLoggable(FINE)) 
-                    {
-                        logger.log(FINE, "Processing nested IDs in $property.type.parameterizedQualifiedSourceName $property.name");
-                    }
-                    #newConcreteTypes()
-					JSONArray $jsonArray = ${jsonValue}.isArray();
-					if ($jsonArray != null)
-					{
-					    for (int i = 0; i < size; i++)
-					    {
-					        JSONValue currentJsonValue = jsonArray.get(i);
-					        if (currentJsonValue != null && currentJsonValue.isNull() == null) 
-					        {
-					            @SuppressWarnings("unused") $elementType currentValue = null;
-                                #parse($property.templates.elementType)
-				            }
-			            }
-                    }
-                #end
-            #end
-        #end
-        return model;
+        // IDs in JSON are nor supported!
+        return newModel();
     }
 
 
@@ -123,10 +91,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
 
     protected $modelParameterizedType readIdRefs(JSONObject jsonObject, $modelParameterizedType model)
     {
-        if (jsonObject != null)
-        {
-            // TODO Implement IDREFs
-        }
+        // References in JSON are nor supported!
         return model;
     }
 }

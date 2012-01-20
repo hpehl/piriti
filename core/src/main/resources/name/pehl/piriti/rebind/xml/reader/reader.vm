@@ -45,10 +45,12 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
 
     protected $modelParameterizedType readId(Element element)
     {
-        $modelParameterizedType model = newModel();
         #if ($typeContext.id)
+            $modelParameterizedType model = null;
             #set($property = $typeContext.id)
             #parse($property.templates.main)
+        #else
+            $modelParameterizedType model = newModel();
         #end
         
         ## Process IDs in arays and collections
@@ -124,6 +126,9 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
 	            #end        
 	        }
         #end
+        
+        ## Should we read references in arrays and collections? 
+        ## Seems to work without it... 
         return model;
     }
 }

@@ -2,7 +2,6 @@ package name.pehl.piriti.client.references.id;
 
 import name.pehl.piriti.commons.client.Id;
 import name.pehl.piriti.commons.client.IdRef;
-import name.pehl.piriti.commons.client.Path;
 import name.pehl.piriti.xml.client.XmlReader;
 
 import com.google.gwt.core.client.GWT;
@@ -22,9 +21,9 @@ public class Department
 
     // ------------------------------------------------------------------- data
 
-    @Id @Path("@id") String id;
+    @Id String id;
     String name;
-    @IdRef @Path("employees/@members") Employee[] employees;
+    @IdRef("employees/member/@ref") Employee[] employees;
 
 
     // --------------------------------------------------------- public methods

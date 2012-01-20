@@ -20,4 +20,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface Id
 {
+    /**
+     * A path to select the id
+     * 
+     * @return
+     */
+    String value() default "@id";
 }

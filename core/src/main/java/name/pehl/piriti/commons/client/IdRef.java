@@ -20,4 +20,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface IdRef
 {
+    /**
+     * A path to select the reference(s)
+     * 
+     * @return
+     */
+    String value();
 }

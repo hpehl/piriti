@@ -204,7 +204,15 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         public String getPath()
         {
             String path = null;
-            if (field.isAnnotationPresent(Path.class))
+            if (field.isAnnotationPresent(Id.class))
+            {
+                path = field.getAnnotation(Id.class).value();
+            }
+            else if (field.isAnnotationPresent(IdRef.class))
+            {
+                path = field.getAnnotation(IdRef.class).value();
+            }
+            else if (field.isAnnotationPresent(Path.class))
             {
                 path = field.getAnnotation(Path.class).value();
             }
