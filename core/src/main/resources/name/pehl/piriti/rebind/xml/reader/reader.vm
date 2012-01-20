@@ -72,12 +72,12 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
         ## Process IDs in arays and collections
         #foreach ($property in $typeContext.properties)
             #if ($property.type.isArray() || $TypeUtils.isCollection($property.type))
-                #set($elements = $property.variables.newVariable("Elements"))
-                #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
-                #if ($property.elementTypeTemplate.endsWith("any.vm") && !$property.converter)
+                #if ($TypeUtils.canContainId($property.elementType) && !$property.converter)
+	                #set($elements = $property.variables.newVariable("Elements"))
+	                #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
 	                if (logger.isLoggable(FINE)) 
 	                {
-	                    logger.log(FINE, "Process IDs in $property.type.parameterizedQualifiedSourceName $property.name");
+	                    logger.log(FINE, "Processing nested IDs in $property.type.parameterizedQualifiedSourceName $property.name");
 	                }
                     #newConcreteTypes()
                     List<Element> $elements = filterElements(element.selectNodes("$property.pathOrName"));
@@ -127,24 +127,81 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
 	        if (element != null)
 	        {
 		        #foreach ($property in $typeContext.references)
-	                #set($valueType = $property.type.qualifiedSourceName)
                     #set($reader = $property.variables.newVariable("Reader"))
-                    #set($references = $property.variables.newVariable("References"))
                     if (logger.isLoggable(FINE)) 
                     {
-                        logger.log(FINE, "Process references in $property.type.parameterizedQualifiedSourceName $property.name");
+                        logger.log(FINE, "Processing references in $property.type.parameterizedQualifiedSourceName $property.name");
                     }
-                    #newConcreteTypes()
-                    XmlReader<$parameterizedValueType> $reader = xmlRegistry.getReader(${valueType}.class);
-                    if ($reader != null)
-                    {
-                        $parameterizedValueType $value = null;
-	                    String[] $references = element.selectValues("$property.pathOrName", $property.whitespaceHandling);
-		                if (${references}.length == 1)
-		                {
-		                    $references = ${references}[0].split(" ");
-		                }
+                    $parameterizedValueType $value = null;
+		            #if ($property.type.isArray() || $TypeUtils.isCollection($property.type))
+		                #if ($TypeUtils.canContainId($property.elementType) && !$property.converter)
+		                    #set($elementType = $property.elementType.qualifiedSourceName)
+	                        #newConcreteTypes()
+	                        XmlReader<$elementType> $reader = xmlRegistry.getReader(${elementType}.class);
+	                        if ($reader != null)
+	                        {
+	                            #set($references = $property.variables.newVariable("References"))
+	                            String[] $references = element.selectValues("$property.pathOrName", $property.whitespaceHandling);
+	                            if ($references != null && ${references}.length != 0)
+	                            {
+                                    #if ($property.type.isArray())
+                                        $value = new ${elementType}[${references}.size()];
+		                                for (String reference : $references)
+		                                {
+		                                    $elementType currentValue = ${reader}.idRef(reference);
+		                                    if (currentValue != null)
+		                                    {
+		                                        #if ($property.type.isArray())
+		                                            $value = new ${elementType}[${references}.size()];
+		                                        #elseif ($TypeUtils.isCollection($property.type))
+		                                            #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
+		                                            $value = new $collectionImplementation<$elementType>();
+		                                        #end
+		                                    }
+		                                }
+                                    #elseif ($TypeUtils.isCollection($property.type))
+                                        #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
+                                        $value = new $collectionImplementation<$elementType>();
+                                    #end
+	                            }
+	                        }
+	                        
+	                        
+                        // TODO Handle references in arrays / collections
+                        // value4 = new java.util.ArrayList<name.pehl.piriti.client.references.id.Employee>();
+                        // for (String reference : value4References)
+                        // {
+                        //     name.pehl.piriti.client.references.id.Employee referenceInstance = value4Reader
+                        //             .idRef(reference);
+                        //     if (referenceInstance != null)
+                        //     {
+                        //         value4.add(referenceInstance);
+                        //     }
+                        // }
+                    #else
+    	                #set($valueType = $property.type.qualifiedSourceName)
+    	                #set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+	                    #newConcreteTypes()
+	                    XmlReader<$parameterizedValueType> $reader = xmlRegistry.getReader(${valueType}.class);
+	                    if ($reader != null)
+	                    {
+	                        String reference = element.selectValues("$property.pathOrName", $property.whitespaceHandling);
+	                        if (reference != null)
+	                        {
+                                $value = ${reader}.idRef(reference);
+                                #assignValue()
+	                        }
+                        }
+                    #end
+
+
+
+		        
 			            #if ($property.type.isArray() || $TypeUtils.isCollection($property.type))
+                            for (String reference : $references)
+                            {
+                                
+                            }
                             // TODO Handle references in arrays / collections
 		                    // value4 = new java.util.ArrayList<name.pehl.piriti.client.references.id.Employee>();
 		                    // for (String reference : value4References)

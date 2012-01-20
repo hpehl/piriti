@@ -337,6 +337,17 @@ public final class TypeUtils
     }
 
 
+    public static boolean canContainId(JType type)
+    {
+        if (type != null)
+        {
+            return !(isBoolean(type) || isNumeric(type) || isCharacter(type) || isString(type) || type.isEnum() != null
+                    || isDate(type) || type.isArray() != null || isCollection(type) || isJavaType(type) || isGwtType(type));
+        }
+        return false;
+    }
+
+
     public static String collectionImplementationFor(String classname)
     {
         String impl = interfaceToImplementation.get(classname);

@@ -50,47 +50,71 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
 
     protected $modelParameterizedType readId(JSONObject jsonObject)
     {
+        $modelParameterizedType model = newModel();
         #if ($typeContext.id)
-            $modelParameterizedType model = newModel();
             #set($property = $typeContext.id)
+            #set($value = $property.variables.value)
             #set($converter = $property.variables.newVariable("Converter"))
             if (logger.isLoggable(FINE)) 
             {
                 logger.log(FINE, "Processing ID String $property.name");
             }
-            String id = null;
             #if ($property.jsonPath)
                 JSONValue jsonValue = JsonPath.select(jsonObject, "$property.pathOrName");
             #else
                 JSONValue jsonValue = jsonObject.get("$property.pathOrName");
             #end
-            if (jsonValue != null)
+            String $value = null;
+            if (jsonValue != null && jsonValue.isNull() == null) 
             {
-			    if (jsonValue.isNull() == null) 
-			    {
-			        JSONString jsonString = jsonValue.isString();
-			        if (jsonString != null)
-			        {
-			            id = jsonString.stringValue();
-			            #if ($property.converter)
-			                #createConverter()
-			                if (id != null)
-			                {
-			                    id = ${converter}.convert(id);
-			                }
-			            #end
-			        }
-			    }
-		    }
-		    if (id != null)
-		    {
-                this.idMap.put(id, model);
-		    }
-		    return model;
-            // TODO Implement IDs in nested arrays / collections
-        #else
-            return newModel();
+                JSONString jsonString = jsonValue.isString();
+                if (jsonString != null)
+                {
+                    $value = jsonString.stringValue();
+                    #if ($property.converter)
+                        #createConverter()
+		                if ($value != null)
+		                {
+		                    $value = ${converter}.convert(id);
+		                }
+                    #end
+                }
+            }            
+            #assignValue()
+            if ($value != null)
+            {
+                this.idMap.put($value, model);
+            }
         #end
+        
+        ## Process IDs in arays and collections
+        #foreach ($property in $typeContext.properties)
+            #if ($property.type.isArray() || $TypeUtils.isCollection($property.type))
+                #if ($TypeUtils.canContainId($property.elementType) && !$property.converter)
+	                #set($jsonArray = $property.variables.newVariable("JsonArray"))
+	                #set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+                    if (logger.isLoggable(FINE)) 
+                    {
+                        logger.log(FINE, "Processing nested IDs in $property.type.parameterizedQualifiedSourceName $property.name");
+                    }
+                    #newConcreteTypes()
+					JSONArray $jsonArray = ${jsonValue}.isArray();
+					if ($jsonArray != null)
+					{
+					    for (int i = 0; i < size; i++)
+					    {
+					        JSONValue currentJsonValue = jsonArray.get(i);
+					        if (currentJsonValue != null && currentJsonValue.isNull() == null) 
+					        {
+					            @SuppressWarnings("unused") $elementType currentValue = null;
+                                #parse($property.elementTypeTemplate)
+				            }
+			            }
+                    }
+                #end
+            #end
+        #end
+        return model;
     }
 
 
@@ -120,24 +144,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
                 {
                     ## Here happens the actual reading / conversion from $jsonValue to $value
                     #parse($property.template)
-				    if ($value != null) 
-				    {
-					    #if ($property.setter)
-					        $property.setter setter = GWT.create(${property.setter}.class);
-					        setter.set(model, $value);
-					    #else
-					        #if ($property.accessibleField) 
-					            model.$property.name = $value;
-					        #elseif ($property.callableSetter)
-					            model.${property.callableSetterName}($value);
-					        #else
-					            if (logger.isLoggable(SEVERE)) 
-					            {
-					                logger.log(SEVERE, "No accessible field or setter found for property $property.name in ${modelType}.");
-					            }
-					        #end
-					    #end
-				    }
+                    #assignValue()
 			    }
             #end
         }

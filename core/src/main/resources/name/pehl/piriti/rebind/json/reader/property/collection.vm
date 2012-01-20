@@ -1,4 +1,4 @@
-#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($elementType = $property.elementType.qualifiedSourceName)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
 #newConcreteTypes()
 JSONArray jsonArray = ${jsonValue}.isArray();

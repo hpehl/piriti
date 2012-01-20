@@ -1,5 +1,5 @@
 #set($elements = $property.variables.newVariable("Elements"))
-#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($elementType = $property.elementType.qualifiedSourceName)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
 #newConcreteTypes()
 List<Element> $elements = filterElements(element.selectNodes("$property.pathOrName"));

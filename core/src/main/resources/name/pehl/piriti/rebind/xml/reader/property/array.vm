@@ -1,6 +1,6 @@
 #set($asList = $property.variables.newVariable("AsList"))
 #set($elements = $property.variables.newVariable("Elements"))
-#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($elementType = $property.elementType.qualifiedSourceName)
 #if ($property.elementType.isPrimitive())
     #set($boxedElementType = $property.elementType.qualifiedBoxedSourceName)
 #else
