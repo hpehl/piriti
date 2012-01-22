@@ -29,7 +29,10 @@ public class PropertyTemplatesLookup
             {
                 elementType = TypeUtils.getTypeVariable(type);
             }
-            elementTypeTemplate = getTemplate(elementType, referenceType);
+            if (elementType != null)
+            {
+                elementTypeTemplate = getTemplate(elementType, referenceType);
+            }
         }
 
         if (template != null)
@@ -46,7 +49,7 @@ public class PropertyTemplatesLookup
     }
 
 
-    public String getPath(TypeContext typeContext, ReferenceType referenceType)
+    private String getPath(TypeContext typeContext, ReferenceType referenceType)
     {
         StringBuilder path = new StringBuilder("name/pehl/piriti/rebind/");
         String jsonxml = typeContext.isJson() ? "json" : "xml";
@@ -56,7 +59,7 @@ public class PropertyTemplatesLookup
     }
 
 
-    public String getTemplate(JType type, ReferenceType referenceType)
+    private String getTemplate(JType type, ReferenceType referenceType)
     {
         String template = null;
         switch (referenceType)

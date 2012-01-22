@@ -47,7 +47,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping[] refMappings = mappingsAnno.references();
             for (Mapping refMapping : refMappings)
             {
-                addProperty(typeContext, new AnnotationPropertySource(typeContext, refMapping));
+                addReference(typeContext, new AnnotationPropertySource(typeContext, refMapping));
             }
             Logger.get().debug("Reference mappings done");
         }
