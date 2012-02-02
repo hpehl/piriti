@@ -28,12 +28,12 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
     
     // ------------------------------------------------------------ new methods
     
-    protected $modelParameterizedType newModel()
+    protected $modelParameterizedType newModel(Element element)
     {
         $modelParameterizedType model = null;
         #if ($typeContext.instanceCreator)
             $typeContext.instanceCreator.qualifiedSourceName instanceCreator = GWT.create(${typeContext.instanceCreator.qualifiedSourceName}.class);
-            model = instanceCreator.newInstance(jsonObject);
+            model = instanceCreator.newInstance(element);
         #else
             model = GWT.create(${modelType}.class); 
         #end
@@ -50,7 +50,7 @@ public class $implName extends AbstractXmlReader<$modelParameterizedType> implem
             #set($property = $typeContext.id)
             #parse($property.templates.main)
         #else
-            $modelParameterizedType model = newModel();
+            $modelParameterizedType model = newModel(element);
         #end
         
         ## Process IDs in arays and collections

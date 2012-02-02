@@ -34,7 +34,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
     
     // ------------------------------------------------------------ new methods
     
-    protected $modelParameterizedType newModel()
+    protected $modelParameterizedType newModel(JSONObject jsonObject)
     {
         $modelParameterizedType model = null;
         #if ($typeContext.instanceCreator)
@@ -51,7 +51,7 @@ public class $implName extends AbstractJsonReader<$modelParameterizedType> imple
     protected $modelParameterizedType readId(JSONObject jsonObject)
     {
         // IDs in JSON are nor supported!
-        return newModel();
+        return newModel(jsonObject);
     }
 
 

@@ -17,7 +17,7 @@ public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implement
 {
     // --------------------------------------------------------- new... methods
 
-    protected abstract T newModel();
+    protected abstract T newModel(C context);
 
 
     // --------------------------------------------------------- event handlers

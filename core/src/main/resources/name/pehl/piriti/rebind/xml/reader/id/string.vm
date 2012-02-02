@@ -19,7 +19,7 @@ if ($value != null)
     if (model == null)
     {
         // First time this id is read!
-        model = newModel();
+        model = newModel(element);
         #if ($property.setter)
             $property.setter setter = GWT.create(${property.setter}.class);
             setter.set(model, $value);
