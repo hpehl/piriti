@@ -41,7 +41,7 @@ import com.google.gwt.json.client.JSONObject;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface JsonReader<T> extends Reader<T>, HasModelReadHandler<T>
+public interface JsonReader<T> extends Reader<T>, HasModelReadHandler<T, JSONObject>
 {
     // -------------------------------------------------------------- read list
 

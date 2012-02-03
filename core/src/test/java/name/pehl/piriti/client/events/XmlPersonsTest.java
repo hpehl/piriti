@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.events;
 
+import name.pehl.totoe.xml.client.Element;
+
 /**
  * @author $Author: harald.pehl $
  * @version $Revision: 133 $
@@ -10,7 +12,7 @@ public class XmlPersonsTest extends AbstractPersonsTest
 
     public void testRead()
     {
-        CountHandler handler = new CountHandler();
+        CountHandler<Element> handler = new CountHandler<Element>();
         Person.XML_READER.addModelReadHandler(handler);
 
         String xml = PersonResources.INSTANCE.personsXml().getText();
@@ -23,7 +25,7 @@ public class XmlPersonsTest extends AbstractPersonsTest
 
     public void _testWrite()
     {
-        CountHandler handler = new CountHandler();
+        CountHandler<Element> handler = new CountHandler<Element>();
         Person.XML_WRITER.addModelWriteHandler(handler);
 
         Person.XML_WRITER.toXml(persons());

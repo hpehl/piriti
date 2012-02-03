@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind.type;
 
-import static name.pehl.piriti.rebind.property.ReferenceType.ID;
-import static name.pehl.piriti.rebind.property.ReferenceType.PROPERTY;
-import static name.pehl.piriti.rebind.property.ReferenceType.REFERENCE;
+import static name.pehl.piriti.rebind.property.ReferenceType.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -118,9 +116,11 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         }
         catch (InvalidPropertyException e)
         {
+            // if this property was already added to the TypeContext by another
+            // TypeProcessor, we have to remove it!
+            typeContext.removeProperty(propertySource.getName());
             invalidProperty(typeContext, propertySource, e);
         }
-
     }
 
 
@@ -134,6 +134,9 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         }
         catch (InvalidPropertyException e)
         {
+            // if the id was already set to the TypeContext by another
+            // TypeProcessor, we have to unset it!
+            typeContext.setId(null);
             invalidProperty(typeContext, propertySource, e);
         }
 
@@ -150,6 +153,9 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         }
         catch (InvalidPropertyException e)
         {
+            // if this reference was already added to the TypeContext by another
+            // TypeProcessor, we have to remove it!
+            typeContext.removeReference(propertySource.getName());
             invalidProperty(typeContext, propertySource, e);
         }
     }
@@ -167,8 +173,6 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
 
     private void invalidProperty(TypeContext typeContext, PropertySource propertySource, InvalidPropertyException e)
     {
-        Logger.get().warn("Property %s %s in %s is invalid: %s",
-                propertySource.getType().getParameterizedQualifiedSourceName(), propertySource.getName(),
-                typeContext.getType().getQualifiedSourceName(), e.getMessage());
+        Logger.get().warn(e.getMessage());
     }
 }

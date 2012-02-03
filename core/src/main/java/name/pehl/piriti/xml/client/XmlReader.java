@@ -40,7 +40,7 @@ import name.pehl.totoe.xml.client.XmlParseException;
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 46 $
  */
-public interface XmlReader<T> extends Reader<T>, HasModelReadHandler<T>
+public interface XmlReader<T> extends Reader<T>, HasModelReadHandler<T, Element>
 {
     // -------------------------------------------------------------- read list
 

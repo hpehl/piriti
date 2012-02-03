@@ -18,10 +18,6 @@ public interface TypeProcessor
     /**
      * Processes the context and adds information about properties, references
      * or an id.
-     * <p>
-     * TODO All PropertyContext instances must be complete for rendering after
-     * this method returns. Nested contexts must be created, all template paths
-     * must be set!
      * 
      * @param context
      */

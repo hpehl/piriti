@@ -5,9 +5,7 @@ package ${typeContext.rwType.package.name};
 
 import static java.util.logging.Level.*;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import name.pehl.piriti.commons.client.ModelWriteEvent;
 import name.pehl.piriti.json.client.AbstractJsonWriter;
@@ -74,7 +72,7 @@ public class $implName extends AbstractJsonWriter<$modelParameterizedType> imple
             #end
             out.append("}");
             json = out.toString();
-            ModelWriteEvent.fire(this, model);
+            ModelWriteEvent.fire(this, model, json);
         }
         return json;
     }

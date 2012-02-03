@@ -201,7 +201,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
                 T model = ich.getInstance();
                 readProperties(ich.getContext(), model);
                 readIdRefs(ich.getContext(), model);
-                ModelReadEvent.fire(this, model);
+                ModelReadEvent.fire(this, model, ich.getContext());
             }
         }
         return models;
@@ -251,7 +251,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
         T model = readId(jsonObject);
         readProperties(jsonObject, model);
         readIdRefs(jsonObject, model);
-        ModelReadEvent.fire(this, model);
+        ModelReadEvent.fire(this, model, jsonObject);
         return model;
     }
 

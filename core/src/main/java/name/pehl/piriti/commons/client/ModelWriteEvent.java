@@ -22,18 +22,20 @@ public class ModelWriteEvent<T> extends GwtEvent<ModelWriteHandler<T>>
      * Fires a {@link ModelWriteEvent} on all registered handlers. If no such
      * handlers exist, this method will do nothing.
      * 
-     * @param <T>
-     *            the model type
      * @param source
      *            the source of the handlers
      * @param model
      *            the model
+     * @param representation
+     *            the string representation
+     * @param <T>
+     *            the model type
      */
-    public static <T> void fire(HasModelWriteHandler<T> source, T model)
+    public static <T> void fire(HasModelWriteHandler<T> source, T model, String representation)
     {
         if (TYPE != null)
         {
-            ModelWriteEvent<T> event = new ModelWriteEvent<T>(model);
+            ModelWriteEvent<T> event = new ModelWriteEvent<T>(model, representation);
             source.fireEvent(event);
         }
     }
@@ -54,6 +56,7 @@ public class ModelWriteEvent<T> extends GwtEvent<ModelWriteHandler<T>>
     }
 
     private final T model;
+    private final String representation;
 
 
     /**
@@ -61,10 +64,13 @@ public class ModelWriteEvent<T> extends GwtEvent<ModelWriteHandler<T>>
      * 
      * @param model
      *            the model
+     * @param representation
+     *            the string representation of the model
      */
-    protected ModelWriteEvent(T model)
+    protected ModelWriteEvent(T model, String representation)
     {
         this.model = model;
+        this.representation = representation;
     }
 
 
@@ -77,13 +83,24 @@ public class ModelWriteEvent<T> extends GwtEvent<ModelWriteHandler<T>>
 
 
     /**
-     * Gets the model.
+     * Returns the model.
      * 
      * @return the model
      */
     public T getModel()
     {
         return model;
+    }
+
+
+    /**
+     * Returns the string representation of the model.
+     * 
+     * @return the string representation
+     */
+    public String getRepresentation()
+    {
+        return representation;
     }
 
 

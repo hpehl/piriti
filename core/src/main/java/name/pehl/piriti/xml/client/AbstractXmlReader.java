@@ -124,7 +124,7 @@ public abstract class AbstractXmlReader<T> extends AbstractReader<T, Element> im
                 T model = ich.getInstance();
                 readProperties(ich.getContext(), model);
                 readIdRefs(ich.getContext(), model);
-                ModelReadEvent.fire(this, model);
+                ModelReadEvent.fire(this, model, ich.getContext());
             }
         }
         return models;
@@ -161,7 +161,7 @@ public abstract class AbstractXmlReader<T> extends AbstractReader<T, Element> im
         T model = readId(element);
         readProperties(element, model);
         readIdRefs(element, model);
-        ModelReadEvent.fire(this, model);
+        ModelReadEvent.fire(this, model, element);
         return model;
     }
 

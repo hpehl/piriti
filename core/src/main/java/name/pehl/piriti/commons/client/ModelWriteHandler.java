@@ -5,10 +5,10 @@ import com.google.gwt.event.shared.EventHandler;
 /**
  * Handler for {@link ModelWriteEvent} events.
  * 
- * @author $LastChangedBy:$
- * @version $LastChangedRevision:$
  * @param <T>
  *            the model type
+ * @author $LastChangedBy:$
+ * @version $LastChangedRevision:$
  */
 public interface ModelWriteHandler<T> extends EventHandler
 {

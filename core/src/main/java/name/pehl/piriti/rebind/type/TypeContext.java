@@ -156,18 +156,32 @@ public class TypeContext
     }
 
 
+    public PropertyContext removeProperty(String property)
+    {
+        if (property != null)
+        {
+            return properties.remove(property);
+        }
+        return null;
+    }
+
+
     public void addReference(PropertyContext propertyContext)
     {
         references.put(propertyContext.getName(), propertyContext);
 
         // Prevent duplicate processing
-        removeProperty(propertyContext);
+        removeProperty(propertyContext.getName());
     }
 
 
-    private PropertyContext removeProperty(PropertyContext propertyContext)
+    public PropertyContext removeReference(String property)
     {
-        return properties.remove(propertyContext.getName());
+        if (property != null)
+        {
+            return references.remove(property);
+        }
+        return null;
     }
 
 
@@ -260,8 +274,11 @@ public class TypeContext
     {
         this.id = propertyContext;
 
-        // Prevent duplicate processing
-        removeProperty(propertyContext);
+        if (propertyContext != null)
+        {
+            // Prevent duplicate processing
+            removeProperty(propertyContext.getName());
+        }
     }
 
 

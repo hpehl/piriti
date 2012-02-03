@@ -3,74 +3,77 @@
 
 package ${typeContext.rwType.package.name};
 
-import java.util.List;
-import java.util.logging.Logger;
+import static java.util.logging.Level.*;
 
 import name.pehl.piriti.commons.client.ModelWriteEvent;
-import name.pehl.piriti.commons.client.ModelWriteHandler;
+import name.pehl.piriti.xml.client.AbstractXmlWriter;
+import name.pehl.piriti.xml.client.XmlBuilder;
 
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.core.client.GWT;
 
-public class $implName implements $typeContext.rwType.qualifiedSourceName 
+public class $implName extends AbstractXmlWriter<$modelParameterizedType> implements $typeContext.rwType.qualifiedSourceName 
 {
-    // --------------------------------------------------------- private fields
-    
-    private static Logger logger = Logger.getLogger("$typeContext.rwType.qualifiedSourceName");
-    private final HandlerManager handlerManager;
-
-
     // ----------------------------------------------------------- constructors
 
     public $implName() 
     {
-        this.handlerManager = new HandlerManager(this);
+        this.xmlRegistry.register(${modelType}.class, this);
     }
     
     
-    // --------------------------------------------------------- event handling
-    
-    public HandlerRegistration addModelWriteHandler(ModelWriteHandler<$modelParameterizedType> handler) 
-    {
-        return handlerManager.addHandler(ModelWriteEvent.getType(), handler);
-    }
-
-    public void fireEvent(GwtEvent<?> event) 
-    {
-        handlerManager.fireEvent(event);
-    }
-
-
     // ---------------------------------------------------------- write methods
-
-    public String toXml(List<$modelParameterizedType> models)
-    {
-        return null;
-    }
-
-    public String toXml(List<$modelParameterizedType> models, String rootElement)
-    {
-        return null;
-    }
-
-    public String toXml(List<$modelParameterizedType> models, String rootElement, String nestedRootElement)
-    {
-        return null;
-    }
-
-    public String toXml($modelParameterizedType model)
-    {
-        return null;
-    }
-
-    public String toXml($modelParameterizedType model, String rootElement)
-    {
-        return null;
-    }
 
     public String toPlainXml($modelParameterizedType model)
     {
-        return null;
+        String xml = null;
+        if (model != null) 
+        {
+            XmlBuilder out = new XmlBuilder();
+            #foreach ($property in $typeContext.properties)
+                #set($valueType = $property.type.qualifiedSourceName)
+                #set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+                #set($value = $property.variables.value)
+                #set($valueAsString = $property.variables.valueAsString)
+                #set($converter = $property.variables.newVariable("Converter"))
+                
+                // parsing template $property.templates.main
+                if (logger.isLoggable(FINE)) 
+                {
+                    logger.log(FINE, "Processing $parameterizedValueType $property.name");
+                }
+                $parameterizedValueType $value = null;
+                #if ($property.getter)
+                    $property.getter getter = GWT.create(${property.getter}.class);
+                    $value = getter.get(model);
+                #else
+                    #if ($property.accessibleField) 
+                        $value = model.$property.name;
+                    #elseif ($property.callableGetter) 
+                        $value = model.${property.callableGetterName}(); 
+                    #else
+                        if (logger.isLoggable(SEVERE)) 
+                        {
+                            logger.log(SEVERE, "No accessible field or getter found for property $property.name in ${modelType}.");
+                        }
+                    #end
+                #end
+                out.start("$property.pathOrName");
+                ## Here happens the actual conversion / writing from $value into the StringBuilder
+                ##parse($property.templates.main)
+                out.end();
+            #end
+            xml = out.toString();
+            ModelWriteEvent.fire(this, model, xml);
+        }
+        return xml;
+    }
+    
+    
+    // --------------------------------------------------------- helper methods
+
+    protected String modelName()
+    {
+        String name = "$typeContext.type.simpleSourceName";
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
     }
 }

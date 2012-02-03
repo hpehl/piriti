@@ -13,7 +13,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implements Reader<T>, HasModelReadHandler<T>
+public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implements Reader<T>, HasModelReadHandler<T, C>
 {
     // --------------------------------------------------------- new... methods
 
@@ -23,7 +23,7 @@ public abstract class AbstractReader<T, C> extends ReaderWriterBase<T> implement
     // --------------------------------------------------------- event handlers
 
     @Override
-    public HandlerRegistration addModelReadHandler(ModelReadHandler<T> handler)
+    public HandlerRegistration addModelReadHandler(ModelReadHandler<T, C> handler)
     {
         return handlerManager.addHandler(ModelReadEvent.getType(), handler);
     }

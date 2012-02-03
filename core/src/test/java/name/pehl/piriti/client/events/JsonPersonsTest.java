@@ -1,5 +1,7 @@
 package name.pehl.piriti.client.events;
 
+import com.google.gwt.json.client.JSONObject;
+
 /**
  * @author $Author: harald.pehl $
  * @version $Revision: 131 $
@@ -10,7 +12,7 @@ public class JsonPersonsTest extends AbstractPersonsTest
 
     public void testRead()
     {
-        CountHandler handler = new CountHandler();
+        CountHandler<JSONObject> handler = new CountHandler<JSONObject>();
         Person.JSON_READER.addModelReadHandler(handler);
 
         String json = PersonResources.INSTANCE.personsJson().getText();
@@ -23,7 +25,7 @@ public class JsonPersonsTest extends AbstractPersonsTest
 
     public void testWrite()
     {
-        CountHandler handler = new CountHandler();
+        CountHandler<JSONObject> handler = new CountHandler<JSONObject>();
         Person.JSON_WRITER.addModelWriteHandler(handler);
 
         Person.JSON_WRITER.toJson(persons(), "persons");

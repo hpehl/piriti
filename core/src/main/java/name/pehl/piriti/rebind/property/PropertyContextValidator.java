@@ -1,8 +1,6 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 import static name.pehl.piriti.rebind.property.ReferenceType.ID;
 import static name.pehl.piriti.rebind.property.ReferenceType.REFERENCE;
 
@@ -100,7 +98,7 @@ public class PropertyContextValidator
                     && StringUtils.containsAny(propertyContext.getPath(), PropertyContext.XML_PATH_SYMBOLS))
             {
                 throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "XPath expressions which are not supported for writing");
+                        "XPath expressions are not supported for writing");
 
             }
         }

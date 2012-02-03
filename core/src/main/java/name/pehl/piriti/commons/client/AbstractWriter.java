@@ -6,6 +6,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 /**
  * Abstract reader used as base class for JSON and XML readers.
  * 
+ * @param <T>
+ *            The type
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
