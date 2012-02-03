@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dates>
+	<nullDate/>
+	<iso8601Date>1973-09-02T11:22:33.444-02:00</iso8601Date>
+	<formatedDate>02.09.1973 11:22:33</formatedDate>
+	<sqlDate>1973-09-02</sqlDate>
+	<sqlTime>11:22:33</sqlTime>
+	<sqlTimestamp>1973-09-02 11:22:33</sqlTimestamp>
+</dates>
