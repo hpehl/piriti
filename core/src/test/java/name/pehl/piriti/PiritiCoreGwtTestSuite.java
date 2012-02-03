@@ -26,6 +26,7 @@ import name.pehl.piriti.client.types.JsonArraysTest;
 import name.pehl.piriti.client.types.JsonBooleansTest;
 import name.pehl.piriti.client.types.JsonDatesTest;
 import name.pehl.piriti.client.types.JsonFatGlobalItemTest;
+import name.pehl.piriti.client.types.JsonNullsTest;
 import name.pehl.piriti.client.types.XmlAnythingTest;
 import name.pehl.piriti.client.types.XmlBooleansTest;
 import name.pehl.piriti.client.types.XmlFatGlobalItemTest;
@@ -54,6 +55,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonDatesTest.class);
         suite.addTestSuite(JsonFatGlobalItemTest.class);
         suite.addTestSuite(JsonLibraryTest.class);
+        suite.addTestSuite(JsonNullsTest.class);
         suite.addTestSuite(JsonPersonsTest.class);
         suite.addTestSuite(JsonResponseTest.class);
         suite.addTestSuite(JsonShopTest.class);
