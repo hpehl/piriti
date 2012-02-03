@@ -12,6 +12,10 @@ if ($value != null)
 	    {
 	        out.append(${writer}.toJson($value));
 	    }
+		else
+		{
+		    out.append("null");
+		}
     #end
 }
 else

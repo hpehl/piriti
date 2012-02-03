@@ -9,6 +9,6 @@
     }
     else
     {
-        elementWritten = false;
+        out.append("null");
     }
 #end

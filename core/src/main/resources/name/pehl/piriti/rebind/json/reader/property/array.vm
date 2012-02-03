@@ -17,13 +17,20 @@ if (jsonArray != null)
     for (int i = 0; i < size; i++)
     {
         JSONValue currentJsonValue = jsonArray.get(i);
-        if (currentJsonValue != null && currentJsonValue.isNull() == null) 
+        if (currentJsonValue != null) 
         {
-            $boxedElementType currentValue = null;
-            #parse($property.templates.elementType)
-            if (currentValue != null) 
+            if (currentJsonValue.isNull() == null)
             {
-                ${asList}.add(currentValue);
+	            $boxedElementType currentValue = null;
+	            #parse($property.templates.elementType)
+	            if (currentValue != null) 
+	            {
+	                ${asList}.add(currentValue);
+	            }
+            }
+            else
+            {
+                ${asList}.add(null);
             }
         }
     }

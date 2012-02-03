@@ -17,8 +17,8 @@ public interface DatesResources extends ClientBundle
     public TextResource datesJson();
 
 
-    @Source("emptyDates.json")
-    public TextResource emptyDatesJson();
+    @Source("datesCompact.json")
+    public TextResource datesCompactJson();
 
 
     @Source("dates.xml")

@@ -22,6 +22,6 @@ public class JsonDatesTest extends AbstractDatesTest
     {
         Dates empty = new Dates();
         String json = Dates.JSON_WRITER.toJson(empty);
-        assertEquals(DatesResources.INSTANCE.emptyDatesJson().getText(), json);
+        assertEquals(DatesResources.INSTANCE.datesCompactJson().getText(), json);
     }
 }

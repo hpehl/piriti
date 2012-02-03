@@ -22,6 +22,7 @@ import name.pehl.piriti.client.references.JsonBookTest;
 import name.pehl.piriti.client.references.XmlBookTest;
 import name.pehl.piriti.client.references.id.XmlCompanyTest;
 import name.pehl.piriti.client.types.JsonAnythingTest;
+import name.pehl.piriti.client.types.JsonArraysTest;
 import name.pehl.piriti.client.types.JsonBooleansTest;
 import name.pehl.piriti.client.types.JsonDatesTest;
 import name.pehl.piriti.client.types.JsonFatGlobalItemTest;
@@ -46,6 +47,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonAmoebaWriterTest.class);
         suite.addTestSuite(JsonAnimalTest.class);
         suite.addTestSuite(JsonAnythingTest.class);
+        suite.addTestSuite(JsonArraysTest.class);
         suite.addTestSuite(JsonBackAndForthTest.class);
         suite.addTestSuite(JsonBookTest.class);
         suite.addTestSuite(JsonBooleansTest.class);
