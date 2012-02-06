@@ -1,6 +1,8 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.*;
+import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
+import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
 import static name.pehl.piriti.rebind.property.ReferenceType.ID;
 import static name.pehl.piriti.rebind.property.ReferenceType.REFERENCE;
 
@@ -8,8 +10,6 @@ import java.util.Map;
 
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
-
-import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JType;
@@ -87,19 +87,16 @@ public class PropertyContextValidator
     {
         if (typeContext.isWriter())
         {
-            if (typeContext.isJson()
-                    && StringUtils.containsAny(propertyContext.getPath(), PropertyContext.JSON_PATH_SYMBOLS))
+            if (typeContext.isJson() && propertyContext.isJsonPath())
             {
                 throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "JSONPath expressions are not supported for writing");
+                        "The JSONPath " + propertyContext.getPath() + " is not supported for writing");
 
             }
-            if (typeContext.isXml()
-                    && StringUtils.containsAny(propertyContext.getPath(), PropertyContext.XML_PATH_SYMBOLS))
+            else if (typeContext.isXml() && propertyContext.isXpath())
             {
                 throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "XPath expressions are not supported for writing");
-
+                        "The XPath " + propertyContext.getPath() + " expressions are not supported for writing");
             }
         }
     }

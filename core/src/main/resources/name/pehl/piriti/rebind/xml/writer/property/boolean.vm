@@ -1,0 +1,6 @@
+if ($value != null)
+{
+    #createConverter()
+    String $valueAsString = ${converter}.serialize($value);
+    out.append($valueAsString);
+}

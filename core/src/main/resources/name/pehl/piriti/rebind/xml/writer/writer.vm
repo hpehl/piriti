@@ -8,6 +8,7 @@ import static java.util.logging.Level.*;
 import name.pehl.piriti.commons.client.ModelWriteEvent;
 import name.pehl.piriti.xml.client.AbstractXmlWriter;
 import name.pehl.piriti.xml.client.XmlBuilder;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -59,7 +60,7 @@ public class $implName extends AbstractXmlWriter<$modelParameterizedType> implem
                 #end
                 out.start("$property.pathOrName");
                 ## Here happens the actual conversion / writing from $value into the StringBuilder
-                ##parse($property.templates.main)
+                #parse($property.templates.main)
                 out.end();
             #end
             xml = out.toString();

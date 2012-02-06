@@ -1,0 +1,16 @@
+#set($writer = $property.variables.newVariable("Writer"))
+#newConcreteTypes()
+if ($value != null)
+{
+    #if ($property.converter)
+        #createConverter()
+        String $valueAsString = ${converter}.serialize($value);
+        out.append($valueAsString);
+    #else
+	    XmlWriter<$parameterizedValueType> $writer = xmlRegistry.getWriter(${valueType}.class);
+	    if ($writer != null)
+	    {
+	        out.append(${writer}.toPlainXml($value));
+	    }
+    #end
+}

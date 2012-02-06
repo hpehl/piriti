@@ -30,13 +30,15 @@ public class Book
     
     // ---------------------------------------------------- xml reader / writer
 
-    @Mappings({@Mapping(value = "reviews", path = "reviews/review"),
+    @Mappings({@Mapping(value = "isbn", path = "@isbn"), 
+        @Mapping(value = "reviews", path = "reviews/review"),
         @Mapping(value = "related", path = "related/book"),
         @Mapping(value = "extraInfoOfLastRelatedBook", path = "//related/book[3]/extraInfo/text()")})    
     public interface BookXmlReader extends XmlReader<Book> {}
     public static final BookXmlReader XML_READER = GWT.create(BookXmlReader.class);
 
-    @Mappings({@Mapping(value = "reviews", path = "reviews/review"),
+    @Mappings({@Mapping(value = "isbn", path = "@isbn"), 
+        @Mapping(value = "reviews", path = "reviews/review"),
         @Mapping(value = "related", path = "related/book"),
         @Mapping(value = "extraInfoOfLastRelatedBook", path = "//related/book[3]/extraInfo/text()")})    
     public interface BookXmlWriter extends XmlWriter<Book> {}

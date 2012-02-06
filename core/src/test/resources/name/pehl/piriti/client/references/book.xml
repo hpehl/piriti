@@ -3,16 +3,14 @@
     Please make sure that there are no line line breaks
     in the elements. Otherwise the asserts will fail!
  -->
-<book>
-    <isbn>978-0345417954</isbn>
+<book isbn="978-0345417954">
     <pages>432</pages>
     <title>The Hotel New Hampshire</title>
     <author>
         <firstname>John</firstname>
         <surname>Irving</surname>
         <bestseller>
-            <book>
-                <isbn>978-0345417954</isbn>
+            <book isbn="978-0345417954">
                 <pages>432</pages>
                 <title>The Hotel New Hampshire</title>
                 <reviews>
@@ -29,16 +27,14 @@
         <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
     </reviews>
     <related>
-        <book>
-            <isbn>978-0345417954</isbn>
+        <book isbn="978-0345417954">
             <pages>432</pages>
             <title>The Hotel New Hampshire</title>
             <author>
                 <firstname>John</firstname>
                 <surname>Irving</surname>
                 <bestseller>
-                    <book>
-                        <isbn>978-0345417954</isbn>
+                    <book isbn="978-0345417954">
                         <pages>432</pages>
                         <title>The Hotel New Hampshire</title>
                         <reviews>
@@ -55,16 +51,14 @@
                 <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
             </reviews>
         </book>
-        <book>
-            <isbn>978-0345417954</isbn>
+        <book isbn="978-0345417954">
             <pages>432</pages>
             <title>The Hotel New Hampshire</title>
             <author>
                 <firstname>John</firstname>
                 <surname>Irving</surname>
                 <bestseller>
-                    <book>
-                        <isbn>978-0345417954</isbn>
+                    <book isbn="978-0345417954">
                         <pages>432</pages>
                         <title>The Hotel New Hampshire</title>
                         <reviews>
@@ -81,8 +75,7 @@
                 <review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review>
             </reviews>
         </book>
-        <book>
-            <isbn>978-0345417954</isbn>
+        <book isbn="978-0345417954">
             <pages>432</pages>
             <title>The Hotel New Hampshire</title>
             <extraInfo>dki82</extraInfo>
@@ -90,8 +83,7 @@
                 <firstname>John</firstname>
                 <surname>Irving</surname>
                 <bestseller>
-                    <book>
-                        <isbn>978-0345417954</isbn>
+                    <book isbn="978-0345417954">
                         <pages>432</pages>
                         <title>The Hotel New Hampshire</title>
                         <reviews>

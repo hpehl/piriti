@@ -35,6 +35,7 @@ public class XmlBuilder
 
     public XmlBuilder append(String value)
     {
+        // TODO: Implement XML escaping for <, >, &
         out.append(value);
         return this;
     }
