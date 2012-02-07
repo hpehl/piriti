@@ -58,10 +58,8 @@ public class $implName extends AbstractXmlWriter<$modelParameterizedType> implem
                         }
                     #end
                 #end
-                out.start("$property.pathOrName");
                 ## Here happens the actual conversion / writing from $value into the StringBuilder
                 #parse($property.templates.main)
-                out.end();
             #end
             xml = out.toString();
             ModelWriteEvent.fire(this, model, xml);

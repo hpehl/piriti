@@ -1,5 +1,7 @@
 package name.pehl.piriti.xml.client;
 
+import java.util.Stack;
+
 /**
  * Helper class for serializing XML.
  * 
@@ -9,12 +11,13 @@ package name.pehl.piriti.xml.client;
 public class XmlBuilder
 {
     private final StringBuilder out;
-    private String currentElement;
+    private Stack<String> elements;
 
 
     public XmlBuilder()
     {
-        out = new StringBuilder();
+        this.out = new StringBuilder();
+        this.elements = new Stack<String>();
     }
 
 
@@ -27,8 +30,15 @@ public class XmlBuilder
 
     public XmlBuilder start(String element)
     {
-        this.currentElement = element;
-        out.append("<").append(currentElement).append(">");
+        elements.push(element);
+        out.append("<").append(element).append(">");
+        return this;
+    }
+
+
+    public XmlBuilder emptyElement(String element)
+    {
+        out.append("<").append(element).append("/>");
         return this;
     }
 
@@ -43,7 +53,8 @@ public class XmlBuilder
 
     public XmlBuilder end()
     {
-        out.append("</").append(currentElement).append(">");
+        String element = elements.pop();
+        out.append("</").append(element).append(">");
         return this;
     }
 
