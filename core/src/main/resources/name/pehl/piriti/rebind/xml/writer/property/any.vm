@@ -5,7 +5,7 @@ if ($value != null)
     #if ($property.converter)
         #createConverter()
         String $valueAsString = ${converter}.serialize($value);
-        out.start("$property.name").append($valueAsString).end();
+        out.start("$property.pathOrName").append($valueAsString).end();
     #else
 	    XmlWriter<$parameterizedValueType> $writer = xmlRegistry.getWriter(${valueType}.class);
 	    if ($writer != null)
@@ -15,11 +15,11 @@ if ($value != null)
 	    }
 	    else
 	    {
-	       out.emptyElement("$property.name");
+	       out.emptyElement("$property.pathOrName");
 	    }
     #end
 }
 else
 {
-   out.emptyElement("$property.name");
+   out.emptyElement("$property.pathOrName");
 }

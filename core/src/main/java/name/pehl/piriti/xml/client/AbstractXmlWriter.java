@@ -14,6 +14,10 @@ import name.pehl.piriti.commons.client.AbstractWriter;
  */
 public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements XmlWriter<T>
 {
+    // -------------------------------------------------------------- constants
+
+    static final String PROLOG = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
     // ----------------------------------------------------------------- fields
 
     protected final XmlRegistry xmlRegistry;
@@ -50,8 +54,7 @@ public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements 
         String xml = null;
         if (models != null && rootElement != null && nestedRootElement != null)
         {
-            XmlBuilder out = new XmlBuilder();
-            out.prolog("1.0", "UTF-8").start(rootElement);
+            StringBuilder out = new StringBuilder(PROLOG).append("<").append(rootElement).append(">");
             for (T model : models)
             {
                 String modelXml = toXml(model, nestedRootElement);
@@ -60,7 +63,7 @@ public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements 
                     out.append(modelXml);
                 }
             }
-            out.end();
+            out.append("</").append(rootElement).append(">");
             xml = out.toString();
         }
         return xml;
@@ -82,12 +85,17 @@ public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements 
         String xml = null;
         if (model != null && rootElement != null)
         {
-            XmlBuilder out = new XmlBuilder();
-            out.prolog("1.0", "UTF-8").start(rootElement).append(toPlainXml(model)).end();
-            xml = out.toString();
+            XmlBuilder xmlBuilder = new XmlBuilder(rootElement);
+            appendModel(xmlBuilder, model);
+            xml = xmlBuilder.toString();
         }
-        return xml;
+        return PROLOG + xml;
     }
+
+
+    // ------------------------------------------------------- abstract methods
+
+    protected abstract String appendModel(XmlBuilder xmlBuilder, T model);
 
 
     // --------------------------------------------------------- helper methods

@@ -35,7 +35,7 @@ public class PropertyContext
     private static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(',
             ')',};
 
-    private static final char[] XML_PATH_SYMBOLS = new char[] {'.', '[', ']',};
+    private static final char[] XPATH_SYMBOLS = new char[] {'.', '[', ']', '@', '(', ')',};
 
     // -------------------------------------------------------- private members
 
@@ -312,22 +312,16 @@ public class PropertyContext
 
 
     /**
-     * Return <code>true</code> if the path contains {@link #XML_PATH_SYMBOLS},
+     * Return <code>true</code> if the path contains {@link #PATH_SYMBOLS},
      * <code>false</code> otherwise.
      * 
      * @param path
-     * @return <code>true</code> if the path contains {@link #XML_PATH_SYMBOLS}
-     *         , <code>false</code> otherwise.
+     * @return <code>true</code> if the path contains {@link #PATH_SYMBOLS} ,
+     *         <code>false</code> otherwise.
      */
     public boolean isXpath()
     {
-        boolean xpath = false;
-        if (path != null)
-        {
-            xpath = (path.contains("/") && path.contains("@")) || (StringUtils.countMatches("/", path) > 1)
-                    || (StringUtils.containsAny(path, XML_PATH_SYMBOLS));
-        }
-        return xpath;
+        return StringUtils.containsAny(path, XPATH_SYMBOLS);
     }
 
 
