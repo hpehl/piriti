@@ -7,11 +7,6 @@ import org.junit.Test;
 
 public class XmlBuilderTest
 {
-    // ------------------------------------------------------------------ setup
-
-    private final static String BOOK_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><book><isbn>978-0345417954</isbn><pages>432</pages><title>The Hotel New Hampshire</title><author><firstname>John</firstname><surname>Irving</surname><reviews><review>A hectic gaudy saga with the verve of a Marx Brothers movie.</review><review>Rejoice! John Irving has written another book according to your world. You must read this book.</review><review>Spellbinding, intensely human, a high-wire act of dazzling virtuosity.</review></reviews></author></book>";
-
-
     // ----------------------------------------------------------- invalid root
 
     @Test
@@ -38,61 +33,44 @@ public class XmlBuilderTest
     }
 
 
-    // --------------------------------------------- simple element / attribute
-
-    @Test
-    public void simpleElement()
-    {
-        XmlBuilder cut = new XmlBuilder("book").append("@isbn", "978-0345417954");
-        assertEquals("<book isbn=\"978-0345417954\"/>", cut.toString());
-    }
-
+    // ---------------------------------------------------- attribute / element
 
     @Test
     public void simpleAttribute()
     {
-        XmlBuilder cut = new XmlBuilder("book").append("isbn", "978-0345417954");
-        assertEquals("<book><isbn>978-0345417954</isbn></book>", cut.toString());
-    }
-
-
-    // ------------------------------------------- nested elements / attributes
-
-    @Test
-    public void nestedElements()
-    {
-        XmlBuilder cut = new XmlBuilder("book").append("@isbn", "978-0345417954");
-        assertEquals("<book isbn=\"978-0345417954\"/>", cut.toString());
+        XmlBuilder cut = new XmlBuilder("a").append("@b", "0815");
+        assertEquals("<a b=\"0815\"/>", cut.toString());
     }
 
 
     @Test
-    public void nestedEmptyElements()
+    public void simpleElement()
     {
-        XmlBuilder cut = new XmlBuilder("book").append("isbn", "978-0345417954");
-        assertEquals("<book><isbn>978-0345417954</isbn></book>", cut.toString());
+        XmlBuilder cut = new XmlBuilder("a").append("b", "0815");
+        assertEquals("<a><b>0815</b></a>", cut.toString());
     }
 
 
-    // ------------------------------------------------------------------- book
+    // ---------------------------------------------------------------- mixed
 
     @Test
     @Ignore
-    public void book()
+    public void mixed()
     {
         //@formatter:off
-        XmlBuilder book = new XmlBuilder("book")
-            .append("@isbn", "978-0345417954")
-            .append("pages", "432")
-            .append("title", "The Hotel New Hampshire");
-            XmlBuilder author = new XmlBuilder("author")
+        XmlBuilder book = new XmlBuilder("mixed")
+            .append("@att1", "val1")
+            .append("a/b/c", "123")
+            .append("x/y/z/@att2", "val2")
+            .append("empty")
+            .append(new XmlBuilder("author")
                 .append("firstname", "John")
-                .append("surname", "Irving");
-                XmlBuilder reviews = new XmlBuilder("reviews")
+                .append("surname", "Irving")
+                .append(new XmlBuilder("reviews")
                     .append("review", "A hectic gaudy saga with the verve of a Marx Brothers movie.")
                     .append("review", "Rejoice! John Irving has written another book according to your world. You must read this book.")
-                    .append("review", "Spellbinding, intensely human, a high-wire act of dazzling virtuosity.");
+                    .append("review", "Spellbinding, intensely human, a high-wire act of dazzling virtuosity.")));
         //@formatter:on
-        assertEquals(BOOK_XML, book.toString());
+        assertEquals("", book.toString());
     }
 }

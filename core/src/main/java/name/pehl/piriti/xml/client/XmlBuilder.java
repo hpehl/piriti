@@ -2,7 +2,6 @@ package name.pehl.piriti.xml.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,64 +15,121 @@ import java.util.Map.Entry;
 public class XmlBuilder
 {
     private final Element root;
+    private final Element currentElement;
 
 
-    public XmlBuilder(String root)
+    public XmlBuilder(String path)
     {
-        if (root != null && root.trim().length() != 0)
-        {
-            this.root = new Element(root);
-        }
-        else
-        {
-            this.root = null;
-        }
-    }
-
-
-    public XmlBuilder append(String path, String value)
-    {
-        if (path != null && path.length() != 0 && value != null && value.length() != 0)
+        if (path != null && path.trim().length() != 0)
         {
             String[] parts = path.split("/");
             if (parts.length == 1)
             {
-                // the easy part: just an attribute / element
-                if (isAttribute(parts[0]))
-                {
-                    // attribute
-                    root.attributes.put(parts[0].substring(1), value);
-                }
-                else
-                {
-                    // element
-                    root.children.add(new Element(parts[0]));
-                    root.content = value;
-                }
+                // the easy part: just one attribute / element
+                this.root = new Element(parts[0]);
+                this.currentElement = root;
             }
             else if (parts.length > 1)
             {
-                // an xpath in one of the following forms
-                // a/b/c/.../x/y/@z
-                // a/b/c/.../x/y/z
+                // an xpath in the following form a/b/c/.../x/y/z
                 Element element = new Element(parts[0]);
-                for (int i = 1; i < parts.length - 1; i++)
+                this.root = element;
+                for (int i = 1; i < parts.length; i++)
                 {
                     Element child = new Element(parts[i]);
                     element.children.add(child);
                     element = child;
                 }
-                if (isAttribute(parts[parts.length - 1]))
+                this.currentElement = element;
+            }
+            else
+            {
+                this.root = null;
+                this.currentElement = null;
+            }
+        }
+        else
+        {
+            this.root = null;
+            this.currentElement = null;
+        }
+    }
+
+
+    public XmlBuilder append(XmlBuilder xmlBuilder)
+    {
+        if (currentElement != null)
+        {
+            currentElement.children.add(xmlBuilder.root);
+        }
+        return this;
+    }
+
+
+    public XmlBuilder append(String path, XmlBuilder xmlBuilder)
+    {
+        if (currentElement != null)
+        {
+            currentElement.children.add(xmlBuilder.root);
+        }
+        return this;
+    }
+
+
+    public XmlBuilder append(String path)
+    {
+        return this;
+    }
+
+
+    public XmlBuilder append(String path, String value)
+    {
+        if (currentElement != null)
+        {
+            if (path != null && path.length() != 0 && value != null && value.length() != 0)
+            {
+                String[] parts = path.split("/");
+                if (parts.length == 1)
                 {
-                    // a/b/c/.../x/y/@z
-                    element.attributes.put(parts[parts.length - 1].substring(1), value);
+                    // the easy part: just one attribute / element
+                    if (isAttribute(parts[0]))
+                    {
+                        // attribute
+                        currentElement.attributes.put(parts[0].substring(1), value);
+                    }
+                    else
+                    {
+                        // element
+                        Element element = new Element(parts[0]);
+                        element.content = value;
+                        currentElement.children.add(element);
+                    }
                 }
-                else
+                else if (parts.length > 1)
                 {
+                    // an xpath in one of the following forms
+                    // a/b/c/.../x/y/@z
                     // a/b/c/.../x/y/z
-                    Element last = new Element(parts[parts.length - 1]);
-                    last.content = value;
-                    element.children.add(last);
+                    Element element = new Element(parts[0]);
+                    currentElement.children.add(element);
+                    for (int i = 1; i < parts.length - 1; i++)
+                    {
+                        Element child = new Element(parts[i]);
+                        element.children.add(child);
+                        element = child;
+                    }
+                    if (isAttribute(parts[parts.length - 1]))
+                    {
+                        // a/b/c/.../x/y/@z
+                        element.attributes.put(parts[parts.length - 1].substring(1), value);
+                    }
+                    else
+                    {
+                        // a/b/c/.../x/y/z
+                        Element last = new Element(parts[parts.length - 1]);
+                        last.content = value;
+                        element.children.add(last);
+                    }
                 }
             }
         }
@@ -107,14 +163,9 @@ public class XmlBuilder
         builder.append("<").append(element.name);
         if (!element.attributes.isEmpty())
         {
-            for (Iterator<Entry<String, String>> iter = element.attributes.entrySet().iterator(); iter.hasNext();)
+            for (Entry<String, String> entry : element.attributes.entrySet())
             {
-                Entry<String, String> entry = iter.next();
-                builder.append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
-                if (iter.hasNext())
-                {
-                    builder.append(" ");
-                }
+                builder.append(" ").append(entry.getKey()).append("=\"").append(entry.getValue()).append("\"");
             }
         }
         if (!element.children.isEmpty())
