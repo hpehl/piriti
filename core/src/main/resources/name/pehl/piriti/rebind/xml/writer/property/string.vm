@@ -4,5 +4,9 @@ if ($value != null)
         #createConverter()
         $value = ${converter}.serialize($value);
 	#end
-	out.append($value);
+    xmlBuilder.append("$property.pathOrName", $value);
+}
+else
+{
+    xmlBuilder.append("$property.pathOrName");
 }

@@ -9,6 +9,7 @@ import name.pehl.piriti.commons.client.ModelWriteEvent;
 import name.pehl.piriti.xml.client.AbstractXmlWriter;
 import name.pehl.piriti.xml.client.XmlBuilder;
 import name.pehl.piriti.xml.client.XmlWriter;
+import name.pehl.piriti.xml.client.XPath;
 
 import com.google.gwt.core.client.GWT;
 
@@ -24,12 +25,10 @@ public class $implName extends AbstractXmlWriter<$modelParameterizedType> implem
     
     // ---------------------------------------------------------- write methods
 
-    public String toPlainXml($modelParameterizedType model)
+    public void appendModel(XmlBuilder xmlBuilder, $modelParameterizedType model)
     {
-        String xml = null;
         if (model != null) 
         {
-            XmlBuilder out = new XmlBuilder();
             #foreach ($property in $typeContext.properties)
                 #set($valueType = $property.type.qualifiedSourceName)
                 #set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
@@ -58,13 +57,10 @@ public class $implName extends AbstractXmlWriter<$modelParameterizedType> implem
                         }
                     #end
                 #end
-                ## Here happens the actual conversion / writing from $value into the StringBuilder
+                ## Here happens the actual conversion and appending $value to XmlBuilder
                 #parse($property.templates.main)
             #end
-            xml = out.toString();
-            ModelWriteEvent.fire(this, model, xml);
         }
-        return xml;
     }
     
     

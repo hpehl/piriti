@@ -1,51 +1,37 @@
 package name.pehl.piriti.xml.client;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import name.pehl.piriti.xml.client.XPath.Element;
 
 /**
  * @author $LastChangedBy:$
  * @version $LastChangedRevision:$
  */
-public class XPath implements Iterable<Element>
+public class XPath implements Iterable<String>
 {
-    private final List<Element> elements;
-    private final List<Element> allButLastElement;
-    private final List<Element> allButLastElementReversed;
+    private final List<String> elements;
 
 
     public XPath(String path)
     {
-        elements = new ArrayList<XPath.Element>();
-        allButLastElement = new ArrayList<XPath.Element>();
-        allButLastElementReversed = new ArrayList<XPath.Element>();
-        if (path != null && path.trim().length() != 0)
+        elements = new ArrayList<String>();
+        if (isNotEmpty(path))
         {
             String[] parts = path.split("/");
-            if (parts.length > 1)
-            {
-            }
-
             for (String part : parts)
             {
-                Element element = new Element(part);
-                elements.add(element);
-                allButLastElement.add(element);
-                allButLastElementReversed.add(element);
+                if (isNotEmpty(part))
+                {
+                    elements.add(part);
+                }
             }
-            allButLastElement.remove(allButLastElement.size() - 1);
-            allButLastElementReversed.remove(allButLastElementReversed.size() - 1);
-            Collections.reverse(allButLastElementReversed);
         }
     }
 
 
     @Override
-    public Iterator<Element> iterator()
+    public Iterator<String> iterator()
     {
         return elements.iterator();
     }
@@ -63,89 +49,70 @@ public class XPath implements Iterable<Element>
     }
 
 
-    public Iterator<Element> allButLastElementIterator()
+    public String first()
     {
-        if (elements.isEmpty())
+        if (!elements.isEmpty())
         {
-            return elements.iterator();
+            return elements.get(0);
         }
-        return allButLastElement.iterator();
+        return null;
     }
 
 
-    public Iterator<Element> allButLastElementReversedIterator()
-    {
-        if (elements.isEmpty())
-        {
-            return elements.iterator();
-        }
-        return allButLastElementReversed.iterator();
-    }
-
-
-    public Element lastElement()
+    public String allButLast()
     {
         if (elements.isEmpty())
         {
             return null;
         }
-        return elements.get(elements.size() - 1);
+        else if (elements.size() == 1)
+        {
+            return elements.get(0);
+        }
+        List<String> sublist = elements.subList(0, elements.size() - 1);
+        StringBuilder builder = new StringBuilder();
+        for (Iterator<String> iter = sublist.iterator(); iter.hasNext();)
+        {
+            String element = iter.next();
+            builder.append(element);
+            if (iter.hasNext())
+            {
+                builder.append("/");
+            }
+        }
+        return builder.toString();
+    }
+
+
+    public String last()
+    {
+        if (!elements.isEmpty())
+        {
+            return elements.get(elements.size() - 1);
+        }
+        return null;
     }
 
 
     @Override
     public String toString()
     {
-        return "Element[" + elements + "]";
+        StringBuilder builder = new StringBuilder();
+        for (Iterator<String> iter = elements.iterator(); iter.hasNext();)
+        {
+            String element = iter.next();
+            builder.append(element);
+            if (iter.hasNext())
+            {
+                builder.append("/");
+            }
+        }
+        return builder.toString();
     }
 
-    public static class Element
+
+    private boolean isNotEmpty(String string)
     {
-        private final String name;
-        private final String attribute;
-
-
-        Element(String name)
-        {
-            this(name, null);
-        }
-
-
-        Element(String name, String attribute)
-        {
-            this.name = name;
-            this.attribute = attribute;
-        }
-
-
-        public String getName()
-        {
-            return name;
-        }
-
-
-        public String getAttribute()
-        {
-            return attribute;
-        }
-
-
-        public boolean hasAttribute()
-        {
-            return attribute != null;
-        }
-
-
-        @Override
-        public String toString()
-        {
-            StringBuilder builder = new StringBuilder().append("[").append(name);
-            if (hasAttribute())
-            {
-                builder.append(", @").append(attribute);
-            }
-            builder.append("]");
-            return builder.toString();
-        }
+        return string != null && string.trim().length() != 0;
     }
 }

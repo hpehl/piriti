@@ -11,6 +11,8 @@ import java.util.Map;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JType;
 
@@ -87,16 +89,48 @@ public class PropertyContextValidator
     {
         if (typeContext.isWriter())
         {
-            if (typeContext.isJson() && propertyContext.isJsonPath())
+            String path = propertyContext.getPath();
+            if (path != null)
             {
-                throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "The JSONPath " + propertyContext.getPath() + " is not supported for writing");
+                JType type = propertyContext.getType();
+                if (typeContext.isJson() && propertyContext.isJsonPath())
+                {
+                    throw new InvalidPropertyException(typeContext, type, propertyContext.getName(), "The JSONPath "
+                            + path + " is not supported for writing");
 
-            }
-            else if (typeContext.isXml() && propertyContext.isXpath())
-            {
-                throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "The XPath " + propertyContext.getPath() + " expressions are not supported for writing");
+                }
+                else if (typeContext.isXml() && propertyContext.isXpath())
+                {
+                    // supported XPath expressions for XmlWriters are
+                    // a/b/c/.../x/y/z or
+                    // a/b/c/.../x/y/@z or just @z
+                    // The attribute must be the last part of the XPath
+                    // expression and cannot be used for collections
+                    if (StringUtils.containsAny(path, new char[] {'.', '[', ']', '(', ')',}))
+                    {
+                        throw new InvalidPropertyException(typeContext, type, propertyContext.getName(), "The XPath "
+                                + path + " is not supported for writing");
+                    }
+                    if (path.contains("@"))
+                    {
+                        if (type.isArray() != null || TypeUtils.isCollection(type))
+                        {
+                            throw new InvalidPropertyException(typeContext, type, propertyContext.getName(),
+                                    "The XPath " + path + " is not supported when writing arrays/collections");
+                        }
+                        String[] parts = path.split("@");
+                        if (parts.length != 2)
+                        {
+                            throw new InvalidPropertyException(typeContext, type, propertyContext.getName(),
+                                    "The XPath " + path + " is not supported for writing");
+                        }
+                        if (parts[1].contains("/"))
+                        {
+                            throw new InvalidPropertyException(typeContext, type, propertyContext.getName(),
+                                    "The XPath " + path + " is not supported for writing");
+                        }
+                    }
+                }
             }
         }
     }

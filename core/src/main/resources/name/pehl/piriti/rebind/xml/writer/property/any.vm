@@ -5,21 +5,22 @@ if ($value != null)
     #if ($property.converter)
         #createConverter()
         String $valueAsString = ${converter}.serialize($value);
-        out.start("$property.pathOrName").append($valueAsString).end();
+        xmlBuilder.append("$property.pathOrName", $valueAsString);
     #else
 	    XmlWriter<$parameterizedValueType> $writer = xmlRegistry.getWriter(${valueType}.class);
 	    if ($writer != null)
-	    {
-	        out.append(${writer}.toPlainXml($value));
-            out.start("$property.name").append($valueAsString).end();
+        {
+            XmlBuilder nestedXmlBuilder = new XmlBuilder("$property.pathOrName");
+            ((AbstractXmlWriter<$parameterizedValueType>)$writer).appendModel(nestedXmlBuilder, $value);
+            xmlBuilder.append(nestedXmlBuilder);
 	    }
 	    else
 	    {
-	       out.emptyElement("$property.pathOrName");
+	       xmlBuilder.append("$property.pathOrName");
 	    }
     #end
 }
 else
 {
-   out.emptyElement("$property.pathOrName");
+   xmlBuilder.append("$property.pathOrName");
 }

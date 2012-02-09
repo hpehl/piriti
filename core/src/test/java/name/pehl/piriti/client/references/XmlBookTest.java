@@ -27,7 +27,6 @@ public class XmlBookTest extends AbstractBookTest
         String xmlIn = BookResources.INSTANCE.bookXml().getText();
         Book book = Book.XML_READER.read(xmlIn);
         String xmlOut = Book.XML_WRITER.toXml(book);
-        System.out.println("\n\n" + xmlOut + "\n");
         Document document = new XmlParser().parse(xmlOut);
         assertNotNull(document);
         // TODO More asserts

@@ -3,6 +3,7 @@ package name.pehl.piriti.xml.client;
 import java.util.List;
 
 import name.pehl.piriti.commons.client.AbstractWriter;
+import name.pehl.piriti.commons.client.ModelWriteEvent;
 
 /**
  * Base class for generated XmlWriters. Contains common code and methods.
@@ -87,15 +88,16 @@ public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements 
         {
             XmlBuilder xmlBuilder = new XmlBuilder(rootElement);
             appendModel(xmlBuilder, model);
-            xml = xmlBuilder.toString();
+            xml = PROLOG + xmlBuilder.toString();
         }
-        return PROLOG + xml;
+        ModelWriteEvent.fire(this, model, xml);
+        return xml;
     }
 
 
     // ------------------------------------------------------- abstract methods
 
-    protected abstract String appendModel(XmlBuilder xmlBuilder, T model);
+    public abstract void appendModel(XmlBuilder xmlBuilder, T model);
 
 
     // --------------------------------------------------------- helper methods

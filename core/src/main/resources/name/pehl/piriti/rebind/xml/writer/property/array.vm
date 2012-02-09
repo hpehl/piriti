@@ -1,1 +1,41 @@
-out.append("<!-- Arrays are not yet supported -->\n");
+#set($index = $property.variables.newVariable("Index"))
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#if ($property.elementType.isPrimitive())
+    #set($boxedElementType = $property.elementType.qualifiedBoxedSourceName)
+#else
+    #set($boxedElementType = $elementType)
+#end
+#newConcreteTypes()
+if ($value != null)
+{
+    #if ($property.converter)
+        #createConverter()
+    #end
+    #if ($property.pathOrName.contains("/"))
+        XPath xpath = new XPath("$property.pathOrName");
+        XmlBuilder collectionXmlBuilder = new XmlBuilder(xpath.allButLast());
+        String nestedPath = xpath.last();
+    #else
+        XmlBuilder collectionXmlBuilder = xmlBuilder;
+        String nestedPath = "$property.pathOrName";
+    #end
+    for (int index = 0; index < ${value}.length; index++)
+    {
+        $boxedElementType currentValue = ${value}[index];
+        if (currentValue != null)
+        {
+            #parse($property.templates.elementType)
+        }
+        else
+        {
+            collectionXmlBuilder.append(nestedPath);
+        }
+    }
+    #if ($property.pathOrName.contains("/"))
+        xmlBuilder.append(collectionXmlBuilder);
+    #end
+}
+else
+{
+    xmlBuilder.append("$property.pathOrName");
+}

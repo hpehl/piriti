@@ -2,5 +2,9 @@ if ($value != null)
 {
     #createConverter()
     String $valueAsString = ${converter}.serialize($value);
-    out.append($valueAsString);
+    xmlBuilder.append("$property.pathOrName", $valueAsString);
+}
+else
+{
+    xmlBuilder.append("$property.pathOrName");
 }

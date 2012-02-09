@@ -35,7 +35,7 @@ public class PropertyContext
     private static final char[] JSON_PATH_SYMBOLS = new char[] {'$', '@', '.', '[', ']', '*', '#', ',', ':', '?', '(',
             ')',};
 
-    private static final char[] XPATH_SYMBOLS = new char[] {'.', '[', ']', '@', '(', ')',};
+    private static final char[] XPATH_SYMBOLS = new char[] {'.', '[', ']', '@', '(', ')', '/',};
 
     // -------------------------------------------------------- private members
 

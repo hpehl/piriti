@@ -6,5 +6,9 @@ if ($value != null)
     #else
         String $valueAsString = String.valueOf($value);
     #end
-    out.append($valueAsString);
+    xmlBuilder.append("$property.pathOrName", $valueAsString);
+}
+else
+{
+    xmlBuilder.append("$property.pathOrName");
 }
