@@ -6,7 +6,7 @@ import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.json.client.JSONString;
 import com.google.gwt.json.client.JSONValue;
 
-public class MediumCreator extends JsonInstanceCreator<Medium>
+public class JsonMediumCreator extends JsonInstanceCreator<Medium>
 {
     @Override
     public Medium newInstance(JSONValue context)

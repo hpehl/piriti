@@ -17,7 +17,7 @@ import name.pehl.piriti.commons.client.HasModelWriteHandler;
  * pubilc RunnableMessageContext
  * {
  *     interface Writer extends XmlWriter&lt;RunnableMessageContext&gt; {}
- *     public static final Writer XML_WRITER = GWT.create(Writer.class);
+ *     public static final Writer JSON_WRITER = GWT.create(Writer.class);
  *     
  *     // The properties of this POJO
  * }

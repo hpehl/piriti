@@ -14,7 +14,7 @@ public class JsonLibraryTest extends AbstractLibraryTest
     public void testRead()
     {
         String json = LibraryResources.INSTANCE.libraryJson().getText();
-        Library library = Library.READER.read(json);
+        Library library = Library.JSON_READER.read(json);
         assertLibrary(library);
     }
 
@@ -25,8 +25,8 @@ public class JsonLibraryTest extends AbstractLibraryTest
     {
         // Roundtrip
         String jsonIn = LibraryResources.INSTANCE.libraryJson().getText();
-        Library library = Library.READER.read(jsonIn);
-        String jsonOut = Library.WRITER.toJson(library);
+        Library library = Library.JSON_READER.read(jsonIn);
+        String jsonOut = Library.JSON_WRITER.toJson(library);
         JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
         assertNotNull(jsonObject);
         // TODO More asserts

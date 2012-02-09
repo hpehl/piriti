@@ -16,4 +16,8 @@ public interface LibraryResources extends ClientBundle
 
     @Source("library.json")
     TextResource libraryJson();
+
+
+    @Source("library.xml")
+    TextResource libraryXml();
 }

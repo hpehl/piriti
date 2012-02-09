@@ -2,6 +2,8 @@ package name.pehl.piriti.client.polymorph;
 
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -13,11 +15,17 @@ import com.google.gwt.core.client.GWT;
 //@formatter:off
 public class Book extends Medium
 {
-    public interface BookReader extends JsonReader<Book> {}
-    public static final BookReader READER = GWT.create(BookReader.class);
+    public interface JsonBookReader extends JsonReader<Book> {}
+    public static final JsonBookReader JSON_READER = GWT.create(JsonBookReader.class);
 
-    public interface BookWriter extends JsonWriter<Book> {}
-    public static final BookWriter WRITER = GWT.create(BookWriter.class);
+    public interface JsonBookWriter extends JsonWriter<Book> {}
+    public static final JsonBookWriter JSON_WRITER = GWT.create(JsonBookWriter.class);
+
+    public interface XmlBookReader extends XmlReader<Book> {}
+    public static final XmlBookReader XML_READER = GWT.create(XmlBookReader.class);
+
+    public interface XmlBookWriter extends XmlWriter<Book> {}
+    public static final XmlBookWriter XML_WRITER = GWT.create(XmlBookWriter.class);
 
     int pages;
 }

@@ -2,9 +2,12 @@ package name.pehl.piriti.client.polymorph;
 
 import java.util.List;
 
-import name.pehl.piriti.commons.client.CreateWith;
+import name.pehl.piriti.commons.client.Mapping;
+import name.pehl.piriti.commons.client.Mappings;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import com.google.gwt.core.client.GWT;
 
@@ -16,15 +19,24 @@ import com.google.gwt.core.client.GWT;
 //@formatter:off
 public class Library
 {
-    public interface LibraryReader extends JsonReader<Library> {}
-    public static final LibraryReader READER = GWT.create(LibraryReader.class);
+    @Mappings({@Mapping(value = "mediumsArray", createWith = JsonMediumCreator.class), 
+        @Mapping(value = "mediumsList", createWith = JsonMediumCreator.class)})    
+    public interface JsonLibraryReader extends JsonReader<Library> {}
+    public static final JsonLibraryReader JSON_READER = GWT.create(JsonLibraryReader.class);
     
-    public interface LibraryWriter extends JsonWriter<Library> {}
-    public static final LibraryWriter WRITER = GWT.create(LibraryWriter.class);
+    public interface JsonLibraryWriter extends JsonWriter<Library> {}
+    public static final JsonLibraryWriter JSON_WRITER = GWT.create(JsonLibraryWriter.class);
 
-    @CreateWith(MediumCreator.class)
+    @Mappings({@Mapping(value = "mediumsArray", path = "mediumsArray/medium", createWith = XmlMediumCreator.class), 
+        @Mapping(value = "mediumsList", path = "mediumsList/medium", createWith = XmlMediumCreator.class)})    
+    public interface XmlLibraryReader extends XmlReader<Library> {}
+    public static final XmlLibraryReader XML_READER = GWT.create(XmlLibraryReader.class);
+    
+    @Mappings({@Mapping(value = "mediumsArray", path = "mediumsArray/medium"), 
+        @Mapping(value = "mediumsList", path = "mediumsList/medium")})    
+    public interface XmlLibraryWriter extends XmlWriter<Library> {}
+    public static final XmlLibraryWriter XML_WRITER = GWT.create(XmlLibraryWriter.class);
+
     Medium[] mediumsArray;
-
-    @CreateWith(MediumCreator.class)
     List<Medium> mediumsList;
 }
