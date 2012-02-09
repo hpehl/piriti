@@ -5,7 +5,6 @@ package ${typeContext.rwType.package.name};
 
 import static java.util.logging.Level.*;
 
-import name.pehl.piriti.commons.client.ModelWriteEvent;
 import name.pehl.piriti.xml.client.AbstractXmlWriter;
 import name.pehl.piriti.xml.client.XmlBuilder;
 import name.pehl.piriti.xml.client.XmlWriter;
