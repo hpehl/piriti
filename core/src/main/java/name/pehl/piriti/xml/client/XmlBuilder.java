@@ -20,33 +20,10 @@ public class XmlBuilder
 
     public XmlBuilder(String path)
     {
-        if (path != null && path.trim().length() != 0)
+        if (isNotEmpty(path))
         {
-            String[] parts = path.split("/");
-            if (parts.length == 1)
-            {
-                // the easy part: just one attribute / element
-                this.root = new Element(parts[0]);
-                this.currentElement = root;
-            }
-            else if (parts.length > 1)
-            {
-                // an xpath in the following form a/b/c/.../x/y/z
-                Element element = new Element(parts[0]);
-                this.root = element;
-                for (int i = 1; i < parts.length; i++)
-                {
-                    Element child = new Element(parts[i]);
-                    element.children.add(child);
-                    element = child;
-                }
-                this.currentElement = element;
-            }
-            else
-            {
-                this.root = null;
-                this.currentElement = null;
-            }
+            this.root = fromPath(path);
+            this.currentElement = this.root.eldestDescendant();
         }
         else
         {
@@ -70,7 +47,16 @@ public class XmlBuilder
     {
         if (currentElement != null)
         {
-            currentElement.children.add(xmlBuilder.root);
+            if (isNotEmpty(path))
+            {
+                Element first = fromPath(path);
+                if (first != null)
+                {
+                    Element last = first.eldestDescendant();
+                    last.children.add(xmlBuilder.root);
+                    currentElement.children.add(first);
+                }
+            }
         }
         return this;
     }
@@ -78,7 +64,7 @@ public class XmlBuilder
 
     public XmlBuilder append(String path)
     {
-        return this;
+        return append(path, (String) null);
     }
 
 
@@ -86,49 +72,50 @@ public class XmlBuilder
     {
         if (currentElement != null)
         {
-            if (path != null && path.length() != 0 && value != null && value.length() != 0)
+            if (isNotEmpty(path))
             {
-                String[] parts = path.split("/");
-                if (parts.length == 1)
+                if (path.contains("@"))
                 {
-                    // the easy part: just one attribute / element
-                    if (isAttribute(parts[0]))
+                    // attribute
+                    if (path.contains("/"))
                     {
-                        // attribute
-                        currentElement.attributes.put(parts[0].substring(1), value);
+                        // an xpath in the following form: a/b/c/.../x/y/@z
+                        String[] parts = path.split("/@");
+                        if (parts.length == 2)
+                        {
+                            Element first = fromPath(parts[0]);
+                            if (first != null)
+                            {
+                                Element last = first.eldestDescendant();
+                                if (isNotEmpty(parts[1]) && isNotEmpty(value))
+                                {
+                                    last.attributes.put(parts[1], value);
+                                    currentElement.children.add(first);
+                                }
+                            }
+                        }
                     }
                     else
                     {
-                        // element
-                        Element element = new Element(parts[0]);
-                        element.content = value;
-                        currentElement.children.add(element);
+                        // the easy part: just one attribute
+                        if (isAttribute(path) && isNotEmpty(value))
+                        {
+                            currentElement.attributes.put(path.substring(1), value);
+                        }
                     }
                 }
-                else if (parts.length > 1)
+                else
                 {
-                    // an xpath in one of the following forms
-                    // a/b/c/.../x/y/@z
-                    // a/b/c/.../x/y/z
-                    Element element = new Element(parts[0]);
-                    currentElement.children.add(element);
-                    for (int i = 1; i < parts.length - 1; i++)
+                    // (nested) element(s)
+                    Element first = fromPath(path);
+                    if (first != null)
                     {
-                        Element child = new Element(parts[i]);
-                        element.children.add(child);
-                        element = child;
-                    }
-                    if (isAttribute(parts[parts.length - 1]))
-                    {
-                        // a/b/c/.../x/y/@z
-                        element.attributes.put(parts[parts.length - 1].substring(1), value);
-                    }
-                    else
-                    {
-                        // a/b/c/.../x/y/z
-                        Element last = new Element(parts[parts.length - 1]);
-                        last.content = value;
-                        element.children.add(last);
+                        Element last = first.eldestDescendant();
+                        if (isNotEmpty(value))
+                        {
+                            last.content = value;
+                        }
+                        currentElement.children.add(first);
                     }
                 }
             }
@@ -137,9 +124,69 @@ public class XmlBuilder
     }
 
 
+    private boolean isNotEmpty(String string)
+    {
+        return string != null && string.trim().length() != 0;
+    }
+
+
     private boolean isAttribute(String path)
     {
-        return path.startsWith("@") && path.length() > 1;
+        return isNotEmpty(path) && path.startsWith("@") && path.length() > 1;
+    }
+
+
+    /**
+     * Converts XPaths expressions in the form of {@code a/b/c/.../x/y/z} to an
+     * element with children, grand children, ...
+     * 
+     * @param path
+     *            An XPath expression in the form of {@code a/b/c/.../x/y/z}
+     * @return the eldest descendant element of the XPath expression with
+     *         children, grand children, ...
+     */
+    private Element fromPath(String path)
+    {
+        Element result = null;
+        String[] parts = filterEmpty(path.split("/"));
+        if (parts.length == 1)
+        {
+            // the easy part: just one attribute / element
+            result = new Element(parts[0]);
+        }
+        else if (parts.length > 1)
+        {
+            // an xpath in the following form a/b/c/.../x/y/z
+            Element current = new Element(parts[0]);
+            result = current;
+            for (int i = 1; i < parts.length; i++)
+            {
+                if (isNotEmpty(path))
+                {
+                    Element child = new Element(parts[i]);
+                    current.children.add(child);
+                    current = child;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    private String[] filterEmpty(String[] strings)
+    {
+        List<String> result = new ArrayList<String>();
+        if (strings != null && strings.length != 0)
+        {
+            for (String string : strings)
+            {
+                if (isNotEmpty(string))
+                {
+                    result.add(string);
+                }
+            }
+        }
+        return result.toArray(new String[] {});
     }
 
 
@@ -200,6 +247,17 @@ public class XmlBuilder
             this.name = name;
             this.attributes = new HashMap<String, String>();
             this.children = new ArrayList<XmlBuilder.Element>();
+        }
+
+
+        Element eldestDescendant()
+        {
+            Element result = this;
+            if (!children.isEmpty())
+            {
+                result = children.get(0).eldestDescendant();
+            }
+            return result;
         }
 
 
