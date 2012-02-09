@@ -52,22 +52,22 @@ public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements 
     @Override
     public String toXml(List<T> models, String rootElement, String nestedRootElement)
     {
-        String xml = null;
         if (models != null && rootElement != null && nestedRootElement != null)
         {
-            StringBuilder out = new StringBuilder(PROLOG).append("<").append(rootElement).append(">");
+            XmlBuilder xmlBuilder = new XmlBuilder(rootElement);
             for (T model : models)
             {
-                String modelXml = toXml(model, nestedRootElement);
-                if (modelXml != null)
+                if (model != null)
                 {
-                    out.append(modelXml);
+                    XmlBuilder nestedXmlBuilder = new XmlBuilder(nestedRootElement);
+                    appendModel(nestedXmlBuilder, model);
+                    ModelWriteEvent.fire(this, model, nestedXmlBuilder.toString());
+                    xmlBuilder.append(nestedXmlBuilder);
                 }
             }
-            out.append("</").append(rootElement).append(">");
-            xml = out.toString();
+            return PROLOG + xmlBuilder.toString();
         }
-        return xml;
+        return null;
     }
 
 
@@ -83,15 +83,15 @@ public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements 
     @Override
     public String toXml(T model, String rootElement)
     {
-        String xml = null;
         if (model != null && rootElement != null)
         {
             XmlBuilder xmlBuilder = new XmlBuilder(rootElement);
             appendModel(xmlBuilder, model);
-            xml = PROLOG + xmlBuilder.toString();
+            String xml = xmlBuilder.toString();
+            ModelWriteEvent.fire(this, model, xml);
+            return PROLOG + xml;
         }
-        ModelWriteEvent.fire(this, model, xml);
-        return xml;
+        return null;
     }
 
 
