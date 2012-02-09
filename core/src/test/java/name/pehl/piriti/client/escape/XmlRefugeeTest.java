@@ -1,9 +1,8 @@
 package name.pehl.piriti.client.escape;
 
 import name.pehl.piriti.client.AbstractPiritiTest;
-
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONParser;
+import name.pehl.totoe.xml.client.Document;
+import name.pehl.totoe.xml.client.XmlParser;
 
 /**
  * JsonWriter tests (special characters, escaping, ...)
@@ -11,19 +10,19 @@ import com.google.gwt.json.client.JSONParser;
  * @author $Author: harald.pehl $
  * @version $Revision: 1095 $
  */
-public class JsonRefugeeTest extends AbstractPiritiTest
+public class XmlRefugeeTest extends AbstractPiritiTest
 {
     // -------------------------------------------------------------- constants
 
-    static final String DATA = "A \"quoted\" string with \u00fbnicode, control characters like \n\t\r and a slash: \"\\\"";
+    static final String DATA = "A string with <xml/> markup like \" & '";
 
 
     // ------------------------------------------------------------- read tests
 
     public void testRead()
     {
-        String json = RefugeeResources.INSTANCE.refugeeJson().getText();
-        Refugee refugee = Refugee.JSON_READER.read(json);
+        String xml = RefugeeResources.INSTANCE.refugeeXml().getText();
+        Refugee refugee = Refugee.XML_READER.read(xml);
         assertRefugee(refugee);
     }
 
@@ -40,11 +39,11 @@ public class JsonRefugeeTest extends AbstractPiritiTest
     public void testWrite()
     {
         // Roundtrip
-        String jsonIn = RefugeeResources.INSTANCE.refugeeJson().getText();
-        Refugee refugee = Refugee.JSON_READER.read(jsonIn);
-        String jsonOut = Refugee.JSON_WRITER.toJson(refugee);
-        JSONObject jsonObject = JSONParser.parseStrict(jsonOut).isObject();
-        assertNotNull(jsonObject);
+        String xmlIn = RefugeeResources.INSTANCE.refugeeXml().getText();
+        Refugee refugee = Refugee.XML_READER.read(xmlIn);
+        String xmlOut = Refugee.XML_WRITER.toXml(refugee);
+        Document document = new XmlParser().parse(xmlOut);
+        assertNotNull(document);
         // TODO More asserts
     }
 }

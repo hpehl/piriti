@@ -4,6 +4,6 @@
     in the elements. Otherwise the asserts will fail!
  -->
 <refugee>
-  <data>NYI</data>
-  <converterData>NYI</converterData>
+  <data>A string with &lt;xml/&gt; markup like &quot; &amp; &apos;</data>
+  <converterData>A string with &lt;xml/&gt; markup like &quot; &amp; &apos;</converterData>
 </refugee>

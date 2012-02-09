@@ -9,6 +9,7 @@ import name.pehl.piriti.client.constraints.XmlAmoebaWriterTest;
 import name.pehl.piriti.client.converter.JsonBackAndForthTest;
 import name.pehl.piriti.client.converter.XmlBackAndForthTest;
 import name.pehl.piriti.client.escape.JsonRefugeeTest;
+import name.pehl.piriti.client.escape.XmlRefugeeTest;
 import name.pehl.piriti.client.events.JsonPersonsTest;
 import name.pehl.piriti.client.events.XmlPersonsTest;
 import name.pehl.piriti.client.external.JsonShopTest;
@@ -72,6 +73,7 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(XmlFatGlobalItemTest.class);
         suite.addTestSuite(XmlLotteryTicketTest.class);
         suite.addTestSuite(XmlPersonsTest.class);
+        suite.addTestSuite(XmlRefugeeTest.class);
         suite.addTestSuite(XmlResponseTest.class);
         suite.addTestSuite(XmlShopTest.class);
 

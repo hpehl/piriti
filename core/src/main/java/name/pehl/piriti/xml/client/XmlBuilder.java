@@ -89,7 +89,7 @@ public class XmlBuilder
                                 Element last = first.eldestDescendant();
                                 if (isNotEmpty(parts[1]) && isNotEmpty(value))
                                 {
-                                    last.attributes.put(parts[1], value);
+                                    last.attributes.put(parts[1], encode(value));
                                     currentElement.children.add(first);
                                 }
                             }
@@ -100,7 +100,7 @@ public class XmlBuilder
                         // the easy part: just one attribute
                         if (isAttribute(path) && isNotEmpty(value))
                         {
-                            currentElement.attributes.put(path.substring(1), value);
+                            currentElement.attributes.put(path.substring(1), encode(value));
                         }
                     }
                 }
@@ -113,7 +113,7 @@ public class XmlBuilder
                         Element last = first.eldestDescendant();
                         if (isNotEmpty(value))
                         {
-                            last.content = value;
+                            last.content = encode(value);
                         }
                         currentElement.children.add(first);
                     }
@@ -232,6 +232,47 @@ public class XmlBuilder
         {
             builder.append("/>");
         }
+    }
+
+
+    private String encode(String data)
+    {
+        if (data != null)
+        {
+            if (data.contains("<") || data.contains(">") || data.contains("&") || data.contains("\"")
+                    || data.contains("'"))
+            {
+                StringBuilder encoded = new StringBuilder();
+                for (int i = 0; i < data.length(); i++)
+                {
+                    char c = data.charAt(i);
+                    switch (c)
+                    {
+                        case '<':
+                            encoded.append("&lt;");
+                            break;
+                        case '>':
+                            encoded.append("&gt;");
+                            break;
+                        case '&':
+                            encoded.append("&amp;");
+                            break;
+                        case '"':
+                            encoded.append("&quot;");
+                            break;
+                        case '\'':
+                            encoded.append("&apos;");
+                            break;
+                        default:
+                            encoded.append(c);
+                            break;
+                    }
+                }
+                return encoded.toString();
+            }
+            return data;
+        }
+        return null;
     }
 
     public class Element

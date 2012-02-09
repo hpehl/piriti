@@ -10,10 +10,6 @@ import com.google.gwt.resources.client.TextResource;
  */
 public interface RefugeeResources extends ClientBundle
 {
-    // -------------------------------------------------------------- constants
-
-    String JSON_STRING = "A \"quoted\" string with \u00fbnicode, control characters like \n\t\r and a slash: \"\\\"";
-
     // ------------------------------------------------------- deferred binding
 
     RefugeeResources INSTANCE = GWT.create(RefugeeResources.class);
