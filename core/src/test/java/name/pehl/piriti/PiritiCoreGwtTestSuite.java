@@ -31,8 +31,11 @@ import name.pehl.piriti.client.types.JsonDatesTest;
 import name.pehl.piriti.client.types.JsonFatGlobalItemTest;
 import name.pehl.piriti.client.types.JsonNullsTest;
 import name.pehl.piriti.client.types.XmlAnythingTest;
+import name.pehl.piriti.client.types.XmlArraysTest;
 import name.pehl.piriti.client.types.XmlBooleansTest;
+import name.pehl.piriti.client.types.XmlDatesTest;
 import name.pehl.piriti.client.types.XmlFatGlobalItemTest;
+import name.pehl.piriti.client.types.XmlNullsTest;
 
 import com.google.gwt.junit.tools.GWTTestSuite;
 
@@ -67,12 +70,15 @@ public class PiritiCoreGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(XmlAmoebaWriterTest.class);
         suite.addTestSuite(XmlAnimalTest.class);
         suite.addTestSuite(XmlAnythingTest.class);
+        suite.addTestSuite(XmlArraysTest.class);
         suite.addTestSuite(XmlBackAndForthTest.class);
         suite.addTestSuite(XmlBookTest.class);
         suite.addTestSuite(XmlBooleansTest.class);
         suite.addTestSuite(XmlCompanyTest.class);
+        suite.addTestSuite(XmlDatesTest.class);
         suite.addTestSuite(XmlFatGlobalItemTest.class);
         suite.addTestSuite(XmlLibraryTest.class);
+        suite.addTestSuite(XmlNullsTest.class);
         suite.addTestSuite(XmlLotteryTicketTest.class);
         suite.addTestSuite(XmlPersonsTest.class);
         suite.addTestSuite(XmlRefugeeTest.class);

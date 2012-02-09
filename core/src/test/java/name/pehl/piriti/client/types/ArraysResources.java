@@ -23,4 +23,8 @@ public interface ArraysResources extends ClientBundle
 
     @Source("arrays.xml")
     public TextResource arraysXml();
+
+
+    @Source("arraysCompact.xml")
+    public TextResource arraysCompactXml();
 }

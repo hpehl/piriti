@@ -25,6 +25,25 @@ public abstract class AbstractPiritiTest extends GWTTestCase
     }
 
 
+    protected void assertArrayEquals(String[] expected, String[] actual)
+    {
+        assertNotNull(actual);
+        assertNotNull(expected);
+        assertEquals(expected.length, actual.length);
+        for (int i = 0; i < expected.length; i++)
+        {
+            if (expected[i] == null)
+            {
+                assertNull(actual[i]);
+            }
+            else
+            {
+                assertEquals(expected[i], actual[i]);
+            }
+        }
+    }
+
+
     /**
      * Dates are not compared with <code>equals()</code>. To prevent daylight
      * saving probblems only the the day, month and year is compared.

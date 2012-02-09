@@ -6,17 +6,17 @@ import name.pehl.piriti.client.AbstractPiritiTest;
  * @author $Author: harald.pehl $
  * @version $Revision: 1454 $
  */
-public class JsonArraysTest extends AbstractPiritiTest
+public class XmlArraysTest extends AbstractPiritiTest
 {
     // ------------------------------------------------------------- read tests
 
     public void testRead()
     {
-        String json = ArraysResources.INSTANCE.arraysJson().getText();
-        Arrays arrays = Arrays.JSON_READER.read(json);
+        String xml = ArraysResources.INSTANCE.arraysXml().getText();
+        Arrays arrays = Arrays.XML_READER.read(xml);
         assertNotNull(arrays);
         assertArrayEquals(new String[] {"a", "b", "c"}, arrays.strings);
-        assertArrayEquals(new String[] {null, "a", "", "null", null, "", null, "b", "c", null}, arrays.mixed);
+        assertArrayEquals(new String[] {"a", "null", "b", "c"}, arrays.mixed);
     }
 
 
@@ -27,7 +27,7 @@ public class JsonArraysTest extends AbstractPiritiTest
         Arrays arrays = new Arrays();
         arrays.strings = new String[] {"a", "b", "c"};
         arrays.mixed = new String[] {null, "a", "", "null", null, "", null, "b", "c", null};
-        String json = Arrays.JSON_WRITER.toJson(arrays);
-        assertEquals(ArraysResources.INSTANCE.arraysCompactJson().getText(), json);
+        String xml = Arrays.XML_WRITER.toXml(arrays);
+        assertEquals(ArraysResources.INSTANCE.arraysCompactXml().getText(), xml);
     }
 }
