@@ -23,7 +23,7 @@ public class XmlPersonsTest extends AbstractPersonsTest
 
     // ------------------------------------------------------------ write tests
 
-    public void _testWrite()
+    public void testWrite()
     {
         CountHandler<Element> handler = new CountHandler<Element>();
         Person.XML_WRITER.addModelWriteHandler(handler);
