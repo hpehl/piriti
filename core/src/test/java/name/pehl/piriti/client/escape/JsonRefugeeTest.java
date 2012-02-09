@@ -9,7 +9,7 @@ import com.google.gwt.json.client.JSONParser;
  * @author $Author: harald.pehl $
  * @version $Revision: 1095 $
  */
-public class RefugeeJsonTest extends AbstractRefugeeTest
+public class JsonRefugeeTest extends AbstractRefugeeTest
 {
     // ------------------------------------------------------------- read tests
 
