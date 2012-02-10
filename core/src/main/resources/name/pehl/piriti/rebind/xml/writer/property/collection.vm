@@ -6,7 +6,7 @@ if ($value != null)
     #if ($property.converter)
         #createConverter()
     #end
-    #if ($property.pathOrName.contains("/"))
+    #if ($property.xpath)
         XPath xpath = new XPath("$property.pathOrName");
         XmlBuilder collectionXmlBuilder = new XmlBuilder(xpath.allButLast());
         String nestedPath = xpath.last();
@@ -25,7 +25,7 @@ if ($value != null)
             collectionXmlBuilder.append(nestedPath);
         }
     }
-    #if ($property.pathOrName.contains("/"))
+    #if ($property.xpath)
         xmlBuilder.append(collectionXmlBuilder);
     #end
 }
