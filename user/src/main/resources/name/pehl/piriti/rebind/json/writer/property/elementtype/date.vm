@@ -1,0 +1,2 @@
+String currentValueAsString = ${converter}.serialize(currentValue);
+out.append(JsonUtils.escapeValue(currentValueAsString));

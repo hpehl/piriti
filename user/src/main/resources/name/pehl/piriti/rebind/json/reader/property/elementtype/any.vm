@@ -1,0 +1,18 @@
+#if ($property.converter)
+    currentValue = readValue(currentJsonValue, $converter);
+#else
+	## extra treatment for polymorphic references inside an array or collection
+	#if ($property.instanceCreator)
+	    // There is an InstanceCreator configured for $property.name. Use it to get the actual type for the JsonReader
+	    JsonReader<$elementType> currentReader = null;
+	    $property.instanceCreator instanceCreator = GWT.create(${property.instanceCreator}.class);
+	    $elementType tmp = instanceCreator.newInstance(currentJsonValue);
+	    if (tmp != null)
+	    {
+	        currentReader = (JsonReader<$elementType>)jsonRegistry.getReader(tmp.getClass());
+	    }
+	#else
+	    JsonReader<$elementType> currentReader = jsonRegistry.getReader(${elementType}.class);
+	#end
+	currentValue = readObject(currentJsonValue, currentReader);
+#end

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Please make sure that there are no line line breaks
+    in the elements. Otherwise the asserts will fail!
+ -->
+<persons>
+  <person>
+    <firstname>Jack</firstname>
+    <surname>Shepard</surname>
+  </person>
+  <person>
+    <firstname>Kate</firstname>
+    <surname>Austen</surname>
+  </person>
+  <person>
+    <firstname>John</firstname>
+    <surname>Locke</surname>
+  </person>
+</persons>

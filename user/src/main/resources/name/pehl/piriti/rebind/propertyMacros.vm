@@ -1,0 +1,63 @@
+#macro(newConcreteTypes)
+	#foreach ($concreteType in $property.concreteTypes)
+	    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
+	    new ${concreteType.parameterizedQualifiedSourceName}();
+	#end
+#end
+
+
+## Macro to create the converter
+#macro(createConverter)
+    #if ($property.format) 
+        $property.converter $converter = new ${property.converter}("$property.format");
+    #else
+        $property.converter $converter = GWT.create(${property.converter}.class);
+    #end
+#end
+
+
+## Tries to parse the enum with Enum.valueOf(String)
+#macro(valueOfEnum $pString $pValue $pType)
+    boolean error = true;
+    String[] stringValues = new String[]{$pString, ${pString}.toUpperCase(), ${pString}.toLowerCase()};
+    for (String s : stringValues)
+    {
+        try 
+        {
+            $pValue = ${pType}.valueOf(s);
+            error = false;
+            break;
+        }
+        catch (IllegalArgumentException e) {} 
+    }
+    if (error)
+    {
+        if (logger.isLoggable(SEVERE)) 
+        {
+            logger.log(SEVERE, "Cannot convert any of " + stringValues + " to enum using ${pType}.valueOf(String).");
+        }
+    }
+#end
+
+
+## Assigns the value to the model property
+#macro(assignValue)
+	if ($value != null)
+	{
+	    #if ($property.setter)
+	        $property.setter setter = GWT.create(${property.setter}.class);
+	        setter.set(model, $value);
+	    #else
+	        #if ($property.accessibleField) 
+	            model.$property.name = $value;
+	        #elseif ($property.callableSetter)
+	            model.${property.callableSetterName}($value);
+	        #else
+	            if (logger.isLoggable(SEVERE)) 
+	            {
+	                logger.log(SEVERE, "No accessible field or setter found for property $property.name in ${modelType}.");
+	            }
+	        #end
+	    #end
+	}
+#end

@@ -1,0 +1,8 @@
+{
+  "stringA": "hello",
+  "stringB": null, 
+  "integerA": 23,
+  "integerB": null, 
+  "doubleA": 4.2,
+  "doubleB": null
+}

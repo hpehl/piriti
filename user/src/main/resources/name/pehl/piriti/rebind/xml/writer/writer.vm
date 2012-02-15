@@ -1,0 +1,73 @@
+#set($modelType = $typeContext.type.qualifiedSourceName)
+#set($modelParameterizedType = $typeContext.type.parameterizedQualifiedSourceName)
+
+package ${typeContext.rwType.package.name};
+
+import static java.util.logging.Level.*;
+
+import name.pehl.piriti.xml.client.AbstractXmlWriter;
+import name.pehl.piriti.xml.client.XmlBuilder;
+import name.pehl.piriti.xml.client.XmlWriter;
+import name.pehl.piriti.xml.client.XPath;
+
+import com.google.gwt.core.client.GWT;
+
+public class $implName extends AbstractXmlWriter<$modelParameterizedType> implements $typeContext.rwType.qualifiedSourceName 
+{
+    // ----------------------------------------------------------- constructors
+
+    public $implName() 
+    {
+        this.xmlRegistry.register(${modelType}.class, this);
+    }
+    
+    
+    // ---------------------------------------------------------- write methods
+
+    public void appendModel(XmlBuilder xmlBuilder, $modelParameterizedType model)
+    {
+        if (model != null) 
+        {
+            #foreach ($property in $typeContext.properties)
+                #set($valueType = $property.type.qualifiedSourceName)
+                #set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
+                #set($value = $property.variables.value)
+                #set($valueAsString = $property.variables.valueAsString)
+                #set($converter = $property.variables.newVariable("Converter"))
+                
+                // parsing template $property.templates.main
+                if (logger.isLoggable(FINE)) 
+                {
+                    logger.log(FINE, "Processing $parameterizedValueType $property.name");
+                }
+                $parameterizedValueType $value = null;
+                #if ($property.getter)
+                    $property.getter getter = GWT.create(${property.getter}.class);
+                    $value = getter.get(model);
+                #else
+                    #if ($property.accessibleField) 
+                        $value = model.$property.name;
+                    #elseif ($property.callableGetter) 
+                        $value = model.${property.callableGetterName}(); 
+                    #else
+                        if (logger.isLoggable(SEVERE)) 
+                        {
+                            logger.log(SEVERE, "No accessible field or getter found for property $property.name in ${modelType}.");
+                        }
+                    #end
+                #end
+                ## Here happens the actual conversion and appending $value to XmlBuilder
+                #parse($property.templates.main)
+            #end
+        }
+    }
+    
+    
+    // --------------------------------------------------------- helper methods
+
+    protected String modelName()
+    {
+        String name = "$typeContext.type.simpleSourceName";
+        return name.substring(0, 1).toLowerCase() + name.substring(1);
+    }
+}

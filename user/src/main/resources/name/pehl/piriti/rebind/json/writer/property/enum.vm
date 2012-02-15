@@ -1,0 +1,14 @@
+if ($value != null)
+{
+    #if ($property.converter)
+        #createConverter()
+        String $valueAsString = ${converter}.serialize($value);
+    #else
+        String $valueAsString = String.valueOf($value);
+    #end
+    out.append(JsonUtils.escapeValue($valueAsString));
+}
+else
+{
+    out.append("null");
+}

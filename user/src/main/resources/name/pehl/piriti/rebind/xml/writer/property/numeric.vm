@@ -1,0 +1,10 @@
+if ($value != null)
+{
+    #createConverter()
+    String $valueAsString = ${converter}.serialize($value);
+    xmlBuilder.append("$property.pathOrName", $valueAsString);
+}
+else
+{
+    xmlBuilder.append("$property.pathOrName");
+}

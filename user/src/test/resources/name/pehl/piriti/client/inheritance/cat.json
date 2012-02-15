@@ -1,0 +1,7 @@
+{
+  "name": "Snowball",
+  "legs": 4,
+  "intelligence": 0.4,
+  "gender": "female",
+  "color": "dark grey"
+}

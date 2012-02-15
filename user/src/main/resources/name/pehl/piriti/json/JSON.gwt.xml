@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN" "http://google-web-toolkit.googlecode.com/svn/trunk/distro-source/core/src/gwt-module.dtd">
+<module>
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 138 $ -->
+    <inherits name="com.google.gwt.inject.Inject" />
+    <inherits name="com.google.gwt.json.JSON" />
+    <inherits name="com.google.gwt.user.User" />
+    <inherits name="name.pehl.piriti.commons.Commons" />
+    <inherits name="name.pehl.piriti.converter.Converter" />
+    <inherits name="name.pehl.piriti.property.Property" />
+    <inherits name="name.pehl.totoe.json.JSON" />
+
+    <!-- Generator for JsonReader -->
+    <generate-with class="name.pehl.piriti.rebind.json.JsonReaderGenerator">
+        <when-type-assignable class="name.pehl.piriti.json.client.JsonReader" />
+    </generate-with>
+
+    <!-- Generator for JsonWriter -->
+    <generate-with class="name.pehl.piriti.rebind.json.JsonWriterGenerator">
+        <when-type-assignable class="name.pehl.piriti.json.client.JsonWriter" />
+    </generate-with>
+</module>

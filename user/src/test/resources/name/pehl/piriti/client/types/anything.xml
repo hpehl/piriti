@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<anything>
+    <thing>one thing</thing>
+    <things>
+        <thing>one thing</thing>
+        <thing>another thing</thing>
+    </things>
+</anything>

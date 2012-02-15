@@ -1,0 +1,25 @@
+#if ($property.converter)
+    String currentValueAsString = currentElement.getText($property.whitespaceHandling);
+    if (currentValueAsString != null)
+    {
+        currentValue = ${converter}.convert(currentValueAsString);
+    }
+#else
+    ## extra treatment for polymorphic references inside an array or collection
+    #if ($property.instanceCreator)
+        // There is an InstanceCreator configured for $property.name. Use it to get the actual type for the XmlReader
+        XmlReader<$elementType> currentReader = null;
+        $property.instanceCreator instanceCreator = GWT.create(${property.instanceCreator}.class);
+        $elementType tmp = instanceCreator.newInstance(currentElement);
+        if (tmp != null)
+        {
+            currentReader = (XmlReader<$elementType>)xmlRegistry.getReader(tmp.getClass());
+        }
+    #else
+        XmlReader<$elementType> currentReader = xmlRegistry.getReader(${elementType}.class);
+    #end
+	if (currentReader != null)
+	{
+	    currentValue = currentReader.read(currentElement);
+	}
+#end

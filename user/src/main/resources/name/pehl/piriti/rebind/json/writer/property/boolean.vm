@@ -1,0 +1,17 @@
+if ($value != null)
+{
+    #createConverter()
+    String $valueAsString = ${converter}.serialize($value);
+    if (isBoolean($valueAsString))
+    {
+        out.append($valueAsString);
+    }
+    else
+    {
+        out.append(JsonUtils.escapeValue($valueAsString));
+    }
+}
+else
+{
+    out.append("null");
+}
