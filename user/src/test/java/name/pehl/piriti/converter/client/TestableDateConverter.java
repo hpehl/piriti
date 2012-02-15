@@ -7,13 +7,19 @@ class TestableDateConverter extends DateConverter
 
     public TestableDateConverter()
     {
-        super();
+        this(new TestableDateTimeFormat());
     }
 
 
     public TestableDateConverter(String format)
     {
         super(format);
+    }
+
+
+    public TestableDateConverter(DateTimeFormat dateTimeFormat)
+    {
+        super(dateTimeFormat);
     }
 
 
