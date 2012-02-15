@@ -1,20 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 1418 $ -->
 
 
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>piriti-parent</artifactId>
-        <version>0.7-SNAPSHOT</version>
+        <version>0.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-restlet</artifactId>
     <name>Piriti Restlet</name>
     <scm>
-        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/restlet</connection>
-        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/restlet</developerConnection>
-        <url>http://piriti.googlecode.com/svn/trunk/restlet</url>
+        <connection>scm:svn:http://piriti.googlecode.com/svn/tags/piriti-parent-0.7/restlet</connection>
+        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/tags/piriti-parent-0.7/restlet</developerConnection>
+        <url>http://piriti.googlecode.com/svn/tags/piriti-parent-0.7/restlet</url>
     </scm>
 
 
