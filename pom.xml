@@ -1,77 +1,201 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <!-- $LastChangedBy$LastChangedRevision: 1418 $ -->
 
 
-    <!-- The super pom contains most of the configuration -->
     <parent>
-        <groupId>name.pehl</groupId>
-        <artifactId>superpom</artifactId>
-        <version>18</version>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
     </parent>
 
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>name.pehl.piriti</groupId>
+    <groupId>name.pehl</groupId>
     <artifactId>piriti-parent</artifactId>
     <version>0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
-    <description>Annotation based JSON and XML mapper for GWT</description>
+    <description>JSON and XML Mapper for GWT</description>
     <url>http://code.google.com/p/piriti/</url>
-
-
+    <organization>
+        <name>Harald Pehl</name>
+        <url>http://harald.pehl.name</url>
+    </organization>
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>harald.pehl</id>
+            <name>Harald Pehl</name>
+            <email>harald.pehl@googlemail.com</email>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
     <scm>
-        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk</developerConnection>
-        <tag>HEAD</tag>
-        <url>http://piriti.googlecode.com/svn/trunk</url>
+        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/</connection>
+        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/</developerConnection>
+        <url>http://piriti.googlecode.com/svn/trunk/</url>
     </scm>
-    <distributionManagement>
-        <repository>
-            <id>piriti-repo</id>
-            <name>Piriti Repository</name>
-            <url>svn:https://piriti.googlecode.com/svn/repository</url>
-        </repository>
-        <site>
-            <id>piriti-site</id>
-            <name>Piriti Site</name>
-            <url>svn:https://piriti.googlecode.com/svn/site</url>
-        </site>
-    </distributionManagement>
     <repositories>
         <repository>
-            <id>pehl-parent</id>
-            <url>http://pehl-parent.googlecode.com/svn/repository</url>
+            <id>restlet</id>
+            <url>http://maven.restlet.org</url>
         </repository>
-    </repositories>
-    
+    </repositories>     
+
     
     <properties>
-        <commons.lang.version>2.6</commons.lang.version>
-        <commons.collections.version>3.2.1</commons.collections.version>
-        <oro.version>2.0.8</oro.version>
-        <velocity.version>1.7</velocity.version>
-    </properties>
-
-
-    <properties>
-        <velocity.version>1.7</velocity.version>
         <commons.collections.version>3.2.1</commons.collections.version>
         <commons.lang.version>2.6</commons.lang.version>
+        <gae.version>1.6.2.1</gae.version>
+        <gin.version>1.5.0</gin.version>
+        <guice.version>3.0</guice.version>
+        <gwt.version>2.4.0</gwt.version>
+        <gwt.plugin.version>2.4.0</gwt.plugin.version>
+        <junit.version>4.10</junit.version>
+        <logback.version>1.0.0</logback.version>
+        <mockito.version>1.9.0</mockito.version>
         <oro.version>2.0.8</oro.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <restlet.version>2.1-RC2</restlet.version>
+        <slf4j.version>1.6.4</slf4j.version>
+        <totoe.version>0.3</totoe.version>
+        <velocity.version>1.7</velocity.version>
     </properties>
 
     
     <modules>
-        <module>core</module>
+        <module>dev</module>
         <module>playground</module>
         <module>restlet</module>
+        <module>user</module>
     </modules>
     
     
     <dependencyManagement>
         <dependencies>
+            <!-- Totoe -->
+            <dependency>
+                <groupId>name.pehl</groupId>
+                <artifactId>totoe</artifactId>
+                <version>${totoe.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Piriti -->
+            <dependency>
+                <groupId>name.pehl</groupId>
+                <artifactId>piriti-dev</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>name.pehl</groupId>
+                <artifactId>piriti-dev</artifactId>
+                <version>${project.version}</version>
+                <classifier>tests</classifier>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>name.pehl</groupId>
+                <artifactId>piriti-user</artifactId>
+                <version>${project.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- GWT -->
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-user</artifactId>
+                <version>${gwt.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt</groupId>
+                <artifactId>gwt-dev</artifactId>
+                <version>${gwt.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- javax -->
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>1.0.0.GA</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <version>1.0.0.GA</version>
+                <classifier>sources</classifier>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- DI -->
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject.extensions</groupId>
+                <artifactId>guice-servlet</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.inject.extensions</groupId>
+                <artifactId>guice-assistedinject</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.gwt.inject</groupId>
+                <artifactId>gin</artifactId>
+                <version>${gin.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>1</version>
+            </dependency>
+            <dependency>
+                <groupId>aopalliance</groupId>
+                <artifactId>aopalliance</artifactId>
+                <version>1.0</version>
+            </dependency>
+            
+            <!-- Restlet -->
+            <dependency>
+                <groupId>org.restlet.gwt</groupId>
+                <artifactId>org.restlet</artifactId>
+                <version>${restlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.restlet.gwt</groupId>
+                <artifactId>org.restlet.ext.json</artifactId>
+                <version>${restlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.restlet.gwt</groupId>
+                <artifactId>org.restlet.ext.xml</artifactId>
+                <version>${restlet.version}</version>
+                <scope>provided</scope>
+            </dependency> 
+
+            <!-- Velocity -->
             <dependency>
                 <groupId>oro</groupId>
                 <artifactId>oro</artifactId>
@@ -91,6 +215,20 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity</artifactId>
                 <version>${velocity.version}</version>
+            </dependency>
+
+            <!-- Test -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-all</artifactId>
+                <version>${mockito.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -139,6 +277,14 @@
             <groupId>com.google.gwt.inject</groupId>
             <artifactId>gin</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+        </dependency>
     </dependencies>
 
 
@@ -161,6 +307,62 @@
         </testResources>
 
 
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>2.3.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <version>2.7</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-eclipse-plugin</artifactId>
+                    <version>2.9</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>1.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>2.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.2.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.5</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>2.1.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.12</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>gwt-maven-plugin</artifactId>
+                    <version>${gwt.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement> 
+
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -179,7 +381,6 @@
                     <excludes>
                         <exclude>com.google.gwt:gwt-user</exclude>
                         <exclude>com.google.gwt:gwt-dev</exclude>
-                        <exclude>com.google.gwt:gwt-servlet</exclude> 
                     </excludes>
                 </configuration>
             </plugin>

@@ -4,15 +4,20 @@
 
 
     <parent>
-        <groupId>name.pehl.piriti</groupId>
+        <groupId>name.pehl</groupId>
         <artifactId>piriti-parent</artifactId>
         <version>0.7-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>piriti-core</artifactId>
-    <name>Piriti Core</name>
+    <artifactId>piriti-dev</artifactId>
+    <name>Piriti Development</name>
+    <scm>
+        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/dev/</connection>
+        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/dev/</developerConnection>
+        <url>http://piriti.googlecode.com/svn/trunk/dev/</url>
+    </scm>
 
-
+    
     <dependencies>
         <dependency>
             <groupId>commons-collections</groupId>

@@ -1,7 +1,0 @@
-currentValue = currentElement.getText($property.whitespaceHandling);
-#if ($property.converter)
-	if (currentValue != null)
-	{
-	    currentValue = ${converter}.convert(currentValue);
-	}
-#end

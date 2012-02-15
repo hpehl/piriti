@@ -1,6 +1,0 @@
-{
-  "name": "Fruit Fly",
-  "legs": 6,
-  "intelligence": 0.001,
-  "flies": true
-}

@@ -1,6 +1,0 @@
-#if ($property.converter)
-    String currentValueAsString = ${converter}.serialize(currentValue);
-#else
-    String currentValueAsString = String.valueOf(currentValue);
-#end
-out.append(JsonUtils.escapeValue(currentValueAsString));

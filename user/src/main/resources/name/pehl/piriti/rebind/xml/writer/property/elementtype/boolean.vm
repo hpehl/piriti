@@ -1,2 +1,0 @@
-String currentValueAsString = ${converter}.serialize(currentValue);
-collectionXmlBuilder.append(nestedPath, currentValueAsString);

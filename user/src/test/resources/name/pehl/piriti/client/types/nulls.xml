@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<nulls>
-    <stringA>hello</stringA>
-    <stringB/>
-    <integerA>23</integerA>
-    <integerB/>
-    <doubleA>4.2</doubleA>
-    <doubleB/>
-</nulls>

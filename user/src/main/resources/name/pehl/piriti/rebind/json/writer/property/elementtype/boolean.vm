@@ -1,9 +1,0 @@
-String currentValueAsString = ${converter}.serialize(currentValue);
-if (isBoolean(currentValueAsString))
-{
-    out.append(currentValueAsString);
-}
-else
-{
-    out.append(JsonUtils.escapeValue(currentValueAsString));
-}

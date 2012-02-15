@@ -1,6 +1,0 @@
-String $valueAsString = element.selectValue("$property.pathOrName", $property.whitespaceHandling);
-if ($valueAsString != null)
-{
-    #createConverter()
-    $value = ${converter}.convert($valueAsString);
-}    

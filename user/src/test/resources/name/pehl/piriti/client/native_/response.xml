@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<response>
-    <version>1.0</version>
-    <recode>200</recode>
-    <result>
-        <foo>bar</foo>
-    </result>
-</response>
