@@ -5,14 +5,14 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>piriti-parent</artifactId>
-        <version>0.7</version>
+        <version>0.8-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-user</artifactId>
     <name>Piriti User</name>
     <scm>
-        <connection>scm:svn:http://piriti.googlecode.com/svn/tags/piriti-0.7/user</connection>
-        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/tags/piriti-0.7/user</developerConnection>
-        <url>http://piriti.googlecode.com/svn/tags/piriti-0.7/user</url>
+        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/user/</connection>
+        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/user/</developerConnection>
+        <url>http://piriti.googlecode.com/svn/trunk/user/</url>
     </scm>
 </project>
