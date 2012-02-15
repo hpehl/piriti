@@ -20,6 +20,10 @@
     
     <dependencies>
         <dependency>
+            <groupId>name.pehl</groupId>
+            <artifactId>piriti-user</artifactId>
+        </dependency>
+        <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
         </dependency>
