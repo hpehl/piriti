@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <!-- $LastChangedBy: harald.pehl $LastChangedRevision: 1418 $ -->
+
+
+    <parent>
+        <groupId>name.pehl.piriti</groupId>
+        <artifactId>piriti-parent</artifactId>
+        <version>0.7-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>piriti-core</artifactId>
+    <name>Piriti Core</name>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>oro</groupId>
+            <artifactId>oro</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>name/pehl/piriti/PiritiCoreGwtTestSuite*.java</exclude>
+                        <exclude>name/pehl/piriti/client/**/*Test.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>(******** development mode ********)</id>
+                        <configuration>
+                            <htmlunit>FF3,IE7</htmlunit>
+                            <mode>htmlunit</mode>
+                            <productionMode>false</productionMode>
+                            <testTimeOut>300</testTimeOut>
+                            <module>name.pehl.piriti.PiritiTest</module>
+                            <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>(******** production mode ********)</id>
+                        <configuration>
+                            <htmlunit>FF3,IE7</htmlunit>
+                            <mode>htmlunit</mode>
+                            <productionMode>true</productionMode>
+                            <testTimeOut>300</testTimeOut>
+                            <module>name.pehl.piriti.PiritiTest</module>
+                            <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
+                        </configuration>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
