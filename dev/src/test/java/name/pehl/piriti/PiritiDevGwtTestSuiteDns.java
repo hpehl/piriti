@@ -11,7 +11,7 @@ import com.google.gwt.junit.tools.GWTTestSuite;
  * @version $Date$ $Revision: 597
  *          $
  */
-public class PiritiCoreGwtTestSuiteDns extends GWTTestSuite
+public class PiritiDevGwtTestSuiteDns extends GWTTestSuite
 {
     public static Test suite()
     {

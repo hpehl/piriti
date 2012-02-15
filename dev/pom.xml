@@ -60,7 +60,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>name/pehl/piriti/PiritiCoreGwtTestSuite*.java</exclude>
+                        <exclude>name/pehl/piriti/PiritiDevGwtTestSuite*.java</exclude>
                         <exclude>name/pehl/piriti/client/**/*Test.java</exclude>
                     </excludes>
                 </configuration>
@@ -77,7 +77,7 @@
                             <productionMode>false</productionMode>
                             <testTimeOut>300</testTimeOut>
                             <module>name.pehl.piriti.PiritiTest</module>
-                            <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
+                            <includes>name/pehl/piriti/PiritiDevGwtTestSuite.java</includes>
                         </configuration>
                         <goals>
                             <goal>test</goal>
@@ -91,7 +91,7 @@
                             <productionMode>true</productionMode>
                             <testTimeOut>300</testTimeOut>
                             <module>name.pehl.piriti.PiritiTest</module>
-                            <includes>name/pehl/piriti/PiritiCoreGwtTestSuite.java</includes>
+                            <includes>name/pehl/piriti/PiritiDevGwtTestSuite.java</includes>
                         </configuration>
                         <goals>
                             <goal>test</goal>

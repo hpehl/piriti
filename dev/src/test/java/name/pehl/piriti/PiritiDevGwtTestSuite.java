@@ -44,7 +44,7 @@ import com.google.gwt.junit.tools.GWTTestSuite;
  * @version $Date$ $Revision: 597
  *          $
  */
-public class PiritiCoreGwtTestSuite extends GWTTestSuite
+public class PiritiDevGwtTestSuite extends GWTTestSuite
 {
     public static Test suite()
     {
