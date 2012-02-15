@@ -76,6 +76,7 @@
     
     <modules>
         <module>dev</module>
+        <module>playground</module>
         <module>restlet</module>
         <module>user</module>
     </modules>
