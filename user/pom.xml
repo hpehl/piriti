@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-user</artifactId>
     <name>Piriti User</name>
+    <url>http://code.google.com/p/piriti/</url>
     <scm>
         <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/user/</connection>
         <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/user/</developerConnection>
