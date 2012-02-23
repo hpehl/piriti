@@ -12,7 +12,6 @@ import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.MapUpTo;
 import name.pehl.piriti.json.client.JsonReader;
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.xml.client.XmlReader;
 import name.pehl.piriti.xml.client.XmlWriter;
@@ -54,10 +53,8 @@ public class TypeContext
      * @param rwType
      *            The type of the reader or writer interface
      */
-    public TypeContext(JClassType type, JClassType rwType)
+    public TypeContext(TypeOracle typeOracle, JClassType type, JClassType rwType)
     {
-        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
-
         this.type = type;
         this.rwType = rwType;
 

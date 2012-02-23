@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import name.pehl.piriti.converter.client.BooleanConverter;
 import name.pehl.piriti.converter.client.ByteConverter;
 import name.pehl.piriti.converter.client.CharacterConverter;
@@ -19,7 +21,6 @@ import name.pehl.piriti.converter.client.ShortConverter;
 import name.pehl.piriti.converter.client.SqlDateConverter;
 import name.pehl.piriti.converter.client.TimeConverter;
 import name.pehl.piriti.converter.client.TimestampConverter;
-import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.type.TypeUtils;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -58,9 +59,10 @@ public class DefaultConverterLookup
      * converters using the {@link TypeOracle} from
      * {@link GeneratorContextHolder}.
      */
-    public DefaultConverterLookup()
+    @Inject
+    public DefaultConverterLookup(TypeOracle typeOracle)
     {
-        typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
+        this.typeOracle = typeOracle;
         registry = new HashMap<JClassType, String>();
         registry.put(typeOracle.findType(Boolean.class.getName()), BooleanConverter.class.getName());
         registry.put(typeOracle.findType(Byte.class.getName()), ByteConverter.class.getName());

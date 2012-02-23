@@ -1,18 +1,17 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import name.pehl.piriti.commons.client.NoopInstanceCreator;
 import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.converter.client.NoopConverter;
 import name.pehl.piriti.property.client.NoopPropertyGetter;
 import name.pehl.piriti.property.client.NoopPropertySetter;
-import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.Modifier;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
@@ -41,11 +40,13 @@ public class PropertyContextCreator
 
     // ----------------------------------------------------------- constructors
 
-    public PropertyContextCreator()
+    @Inject
+    public PropertyContextCreator(TypeOracle typeOracle, PropertyTemplatesLookup propertyTemplatesLookup,
+            DefaultConverterLookup defaultConverterLookup)
     {
-        this.typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
-        this.defaultConverterLookup = new DefaultConverterLookup();
-        this.propertyTemplatesLookup = new PropertyTemplatesLookup();
+        this.typeOracle = typeOracle;
+        this.propertyTemplatesLookup = propertyTemplatesLookup;
+        this.defaultConverterLookup = defaultConverterLookup;
     }
 
 
@@ -68,7 +69,7 @@ public class PropertyContextCreator
         Templates templates = propertyTemplatesLookup.get(typeContext, propertySource.getType(), referenceType);
 
         // creation
-        PropertyContext propertyContext = new PropertyContext(propertySource, access, referenceType);
+        PropertyContext propertyContext = new PropertyContext(typeOracle, propertySource, access, referenceType);
         propertyContext.setConverter(converter);
         propertyContext.setInstanceCreator(instanceCreator);
         propertyContext.setGetter(getter);
@@ -136,7 +137,6 @@ public class PropertyContextCreator
         JClassType converterType = null;
         String format = propertySource.getFormat();
         Class<? extends Converter<?>> converterClass = propertySource.getConverter();
-        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
 
         if (converterClass != null && converterClass != NoopConverter.class)
         {

@@ -24,15 +24,18 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
 {
     private TypeProcessor next;
     private Set<? extends JClassType> skipTypes;
-    private final PropertyContextCreator propertyContextCreator;
-    private final PropertyContextValidator propertyContextValidator;
+    protected final PropertyContextCreator propertyContextCreator;
+    protected final PropertyContextValidator propertyContextValidator;
+    protected final Logger logger;
 
 
-    public AbstractTypeProcessor()
+    public AbstractTypeProcessor(PropertyContextCreator propertyContextCreator,
+            PropertyContextValidator propertyContextValidator, Logger logger)
     {
         this.skipTypes = new HashSet<JClassType>();
-        this.propertyContextCreator = new PropertyContextCreator();
-        this.propertyContextValidator = new PropertyContextValidator();
+        this.propertyContextCreator = propertyContextCreator;
+        this.propertyContextValidator = propertyContextValidator;
+        this.logger = logger;
     }
 
 
@@ -65,7 +68,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
     public final void process(TypeContext typeContext) throws UnableToCompleteException
     {
         // log
-        Logger.get().debug("Entering TypeProcessor %s - processing %s", getClass().getSimpleName(), typeContext);
+        logger.debug("Entering TypeProcessor %s - processing %s", getClass().getSimpleName(), typeContext);
 
         // prepare
         skipTypes = typeContext.getStopAt().getFlattenedSupertypeHierarchy();
@@ -111,7 +114,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         try
         {
             PropertyContext propertyContext = createPropertyContext(typeContext, propertySource, PROPERTY);
-            Logger.get().debug("Adding property %s to %s", propertyContext, typeContext);
+            logger.debug("Adding property %s to %s", propertyContext, typeContext);
             typeContext.addProperty(propertyContext);
         }
         catch (InvalidPropertyException e)
@@ -129,7 +132,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         try
         {
             PropertyContext propertyContext = createPropertyContext(typeContext, propertySource, ID);
-            Logger.get().debug("Setting id %s for %s", propertyContext, typeContext);
+            logger.debug("Setting id %s for %s", propertyContext, typeContext);
             typeContext.setId(propertyContext);
         }
         catch (InvalidPropertyException e)
@@ -148,7 +151,7 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
         try
         {
             PropertyContext propertyContext = createPropertyContext(typeContext, propertySource, REFERENCE);
-            Logger.get().debug("Adding reference %s to %s", propertyContext, typeContext);
+            logger.debug("Adding reference %s to %s", propertyContext, typeContext);
             typeContext.addReference(propertyContext);
         }
         catch (InvalidPropertyException e)
@@ -173,6 +176,6 @@ public abstract class AbstractTypeProcessor implements TypeProcessor
 
     private void invalidProperty(TypeContext typeContext, PropertySource propertySource, InvalidPropertyException e)
     {
-        Logger.get().warn(e.getMessage());
+        logger.warn(e.getMessage());
     }
 }

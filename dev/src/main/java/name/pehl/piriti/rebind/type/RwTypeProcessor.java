@@ -2,6 +2,8 @@ package name.pehl.piriti.rebind.type;
 
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import name.pehl.piriti.commons.client.InstanceCreator;
 import name.pehl.piriti.commons.client.Mapping;
 import name.pehl.piriti.commons.client.Mappings;
@@ -9,6 +11,8 @@ import name.pehl.piriti.converter.client.Converter;
 import name.pehl.piriti.property.client.PropertyGetter;
 import name.pehl.piriti.property.client.PropertySetter;
 import name.pehl.piriti.rebind.Logger;
+import name.pehl.piriti.rebind.property.PropertyContextCreator;
+import name.pehl.piriti.rebind.property.PropertyContextValidator;
 import name.pehl.piriti.rebind.property.PropertySource;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
@@ -19,6 +23,14 @@ import com.google.gwt.core.ext.typeinfo.JType;
 
 public class RwTypeProcessor extends AbstractTypeProcessor
 {
+    @Inject
+    public RwTypeProcessor(PropertyContextCreator propertyContextCreator,
+            PropertyContextValidator propertyContextValidator, Logger logger)
+    {
+        super(propertyContextCreator, propertyContextValidator, logger);
+    }
+
+
     @Override
     protected void doProcess(TypeContext typeContext, Set<? extends JClassType> skipTypes)
             throws UnableToCompleteException
@@ -26,30 +38,30 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         JClassType rwType = typeContext.getRwType();
         if (rwType.isAnnotationPresent(Mappings.class))
         {
-            Logger.get().debug("Collect normal mappings...");
+            logger.debug("Collect normal mappings...");
             Mappings mappingsAnno = rwType.getAnnotation(Mappings.class);
             Mapping[] mappings = mappingsAnno.value();
             for (Mapping mapping : mappings)
             {
                 addProperty(typeContext, new AnnotationPropertySource(typeContext, mapping));
             }
-            Logger.get().debug("Normal mappings done");
+            logger.debug("Normal mappings done");
 
-            Logger.get().debug("Looking for id...");
+            logger.debug("Looking for id...");
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
                 setId(typeContext, new AnnotationPropertySource(typeContext, idMapping));
             }
-            Logger.get().debug("Id done");
+            logger.debug("Id done");
 
-            Logger.get().debug("Collect reference mappings...");
+            logger.debug("Collect reference mappings...");
             Mapping[] refMappings = mappingsAnno.references();
             for (Mapping refMapping : refMappings)
             {
                 addReference(typeContext, new AnnotationPropertySource(typeContext, refMapping));
             }
-            Logger.get().debug("Reference mappings done");
+            logger.debug("Reference mappings done");
         }
     }
 

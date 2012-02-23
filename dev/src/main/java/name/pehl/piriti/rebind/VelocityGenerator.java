@@ -1,12 +1,7 @@
 package name.pehl.piriti.rebind;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Properties;
 
-import name.pehl.piriti.rebind.type.PojoTypeProcessor;
-import name.pehl.piriti.rebind.type.RwTypeProcessor;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeProcessor;
 import name.pehl.piriti.rebind.type.TypeUtils;
@@ -20,6 +15,8 @@ import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Abstract Generator which delegates to a {@link VelocityCreator}. The
@@ -30,10 +27,6 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
  */
 public abstract class VelocityGenerator extends Generator
 {
-    // -------------------------------------------------------------- constants
-
-    private static final String VELOCITY_PROPERTIES = "name/pehl/piriti/rebind/velocity.properties";
-
     // -------------------------------------------------------- private members
 
     private JClassType rwType;
@@ -43,23 +36,23 @@ public abstract class VelocityGenerator extends Generator
     // --------------------------------------------------------- public methods
 
     @Override
-    public String generate(TreeLogger treeLogger, GeneratorContext context, String rwInterface)
+    public String generate(TreeLogger treeLogger, GeneratorContext generatorContext, String rwInterface)
             throws UnableToCompleteException
     {
-        Logger.get().setup(treeLogger);
-        GeneratorContextHolder.get().setup(context);
-        validateTypes(treeLogger, context, rwInterface);
+        TypeOracle typeOracle = generatorContext.getTypeOracle();
+        assert typeOracle != null;
+        validateTypes(new Logger(treeLogger), typeOracle, rwInterface);
 
         String implName = rwType.getName().replace('.', '_') + "Impl";
         String packageName = rwType.getPackage().getName();
-        PrintWriter printWriter = GeneratorContextHolder.get().getContext()
-                .tryCreate(Logger.get().getTreeLogger(), rwType.getPackage().getName(), implName);
+        PrintWriter printWriter = generatorContext.tryCreate(treeLogger, rwType.getPackage().getName(), implName);
         if (printWriter != null)
         {
+            Injector injector = Guice.createInjector(new RebindModule(treeLogger, generatorContext));
+
             // collect properties, id and references
-            TypeProcessor typeProcessor = new PojoTypeProcessor();
-            typeProcessor.setNext(new RwTypeProcessor());
-            TypeContext typeContext = new TypeContext(type, rwType);
+            TypeProcessor typeProcessor = injector.getInstance(TypeProcessor.class);
+            TypeContext typeContext = new TypeContext(typeOracle, type, rwType);
             typeProcessor.process(typeContext);
 
             // setup velocity context
@@ -70,9 +63,9 @@ public abstract class VelocityGenerator extends Generator
             populateVelocityContext(velocityContext);
 
             // merge template
-            VelocityEngine velocityEngine = createVelocityEngine();
+            VelocityEngine velocityEngine = injector.getInstance(VelocityEngine.class);
             velocityEngine.mergeTemplate(getTemplateName(), "UTF-8", velocityContext, printWriter);
-            GeneratorContextHolder.get().getContext().commit(Logger.get().getTreeLogger(), printWriter);
+            generatorContext.commit(treeLogger, printWriter);
         }
         return packageName + "." + implName;
     }
@@ -98,33 +91,30 @@ public abstract class VelocityGenerator extends Generator
 
     // --------------------------------------------------------- helper methods
 
-    private void validateTypes(TreeLogger treeLogger, GeneratorContext context, String rwInterface)
+    private void validateTypes(Logger logger, TypeOracle typeOracle, String rwInterface)
             throws UnableToCompleteException
     {
-        TypeOracle typeOracle = context.getTypeOracle();
-        assert (typeOracle != null);
-
         // interfaceType is the reader / writer interface from Piriti, thus
         // either JsonReader<T>, JsonWriter<T>, XmlReader<T> or XmlWriter<T>.
         // rwInterface is the user defined interface which extends interfaceType
         JClassType interfaceType = typeOracle.findType(getInterfaceName());
         if (interfaceType == null)
         {
-            Logger.get().die("Unable to find metadata for type " + getInterfaceName());
+            logger.die("Unable to find metadata for type " + getInterfaceName());
         }
         rwType = typeOracle.findType(rwInterface);
         if (rwType == null)
         {
-            Logger.get().die("Unable to find metadata for type " + rwInterface);
+            logger.die("Unable to find metadata for type " + rwInterface);
         }
 
         // Check for possible misuse: GWT.create(XmlReader.class)
         if (interfaceType == rwType)
         {
-            Logger.get()
-                    .die("You must use a subtype of %1$s in GWT.create(). E.g.,\n"
+            logger.die(
+                    "You must use a subtype of %1$s in GWT.create(). E.g.,\n"
                             + "  interface ModelReader extends %1$s<Model> {}\n  ModelReader reader = GWT.create(ModelReader.class);",
-                            interfaceType.getSimpleSourceName());
+                    interfaceType.getSimpleSourceName());
         }
 
         // Check for right interface: interface FooReader extends
@@ -132,7 +122,7 @@ public abstract class VelocityGenerator extends Generator
         JClassType[] implementedInterfaces = rwType.getImplementedInterfaces();
         if (implementedInterfaces.length == 0)
         {
-            Logger.get().die("No implemented interfaces for %s", rwType.getSimpleSourceName());
+            logger.die("No implemented interfaces for %s", rwType.getSimpleSourceName());
         }
 
         // Check type parameter(s)
@@ -143,7 +133,7 @@ public abstract class VelocityGenerator extends Generator
                 JClassType[] typeArgs = t.isParameterized().getTypeArgs();
                 if (typeArgs.length != 1)
                 {
-                    Logger.get().die("One type parameter is required for %s", t.getName());
+                    logger.die("One type parameter is required for %s", t.getName());
                 }
                 type = typeArgs[0];
                 break;
@@ -151,37 +141,12 @@ public abstract class VelocityGenerator extends Generator
         }
         if (type == null)
         {
-            Logger.get().die("No type parameter found in %s", (Object[]) implementedInterfaces);
+            logger.die("No type parameter found in %s", (Object[]) implementedInterfaces);
         }
         if (type.isParameterized() != null)
         {
-            Logger.get().die("Type parameters for the model are not supported!");
+            logger.die("Type parameters for the model are not supported!");
         }
-    }
-
-
-    /**
-     * Creates the Velocity engine with the properties from
-     * {@value #VELOCITY_PROPERTIES}
-     * 
-     * @return the intialized Velocity engine.
-     * @throws UnableToCompleteException
-     */
-    private VelocityEngine createVelocityEngine() throws UnableToCompleteException
-    {
-        VelocityEngine engine = null;
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(VELOCITY_PROPERTIES);
-        Properties properties = new Properties();
-        try
-        {
-            properties.load(inputStream);
-            engine = new VelocityEngine(properties);
-        }
-        catch (IOException e)
-        {
-            Logger.get().die("Cannot load velocity properties from " + VELOCITY_PROPERTIES);
-        }
-        return engine;
     }
 
 

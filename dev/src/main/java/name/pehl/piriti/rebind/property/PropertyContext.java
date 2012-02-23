@@ -1,15 +1,12 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import name.pehl.piriti.rebind.GeneratorContextHolder;
 import name.pehl.piriti.rebind.type.TypeUtils;
 import name.pehl.totoe.commons.client.WhitespaceHandling;
 
@@ -127,13 +124,12 @@ public class PropertyContext
 
     // ----------------------------------------------------------- constructors
 
-    public PropertyContext(PropertySource propertySource, Map<PropertyAccess, String> access,
+    public PropertyContext(TypeOracle typeOracle, PropertySource propertySource, Map<PropertyAccess, String> access,
             ReferenceType referenceType)
     {
         this.order = propertySource.getOrder();
 
         // types
-        TypeOracle typeOracle = GeneratorContextHolder.get().getContext().getTypeOracle();
         JPrimitiveType primitiveType = propertySource.getType().isPrimitive();
         if (primitiveType != null)
         {

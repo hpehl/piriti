@@ -1,31 +1,18 @@
 package name.pehl.piriti.rebind;
 
+import javax.inject.Inject;
+
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.UnableToCompleteException;
 
 public final class Logger
 {
-    private static final Logger INSTANCE = new Logger();
-    private TreeLogger treeLogger;
+    private final TreeLogger treeLogger;
 
 
-    /**
-     * Private constructor to ensure that the class acts as a true utility class
-     * i.e. it isn't instantiable and extensible.
-     */
-    private Logger()
-    {
-    }
-
-
-    public static Logger get()
-    {
-        return INSTANCE;
-    }
-
-
-    public void setup(TreeLogger treeLogger)
+    @Inject
+    public Logger(TreeLogger treeLogger)
     {
         this.treeLogger = treeLogger;
     }
@@ -82,11 +69,5 @@ public final class Logger
         {
             System.out.println(message);
         }
-    }
-
-
-    public TreeLogger getTreeLogger()
-    {
-        return treeLogger;
     }
 }
