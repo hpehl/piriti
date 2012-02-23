@@ -1,11 +1,7 @@
 package name.pehl.piriti.rebind.xml;
 
-import name.pehl.piriti.rebind.VelocityCreator;
 import name.pehl.piriti.rebind.VelocityGenerator;
 import name.pehl.piriti.xml.client.XmlWriter;
-
-import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
  * GWT Generator which creates a {@link XmlWriterCreator}.
@@ -16,8 +12,15 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 public class XmlWriterGenerator extends VelocityGenerator
 {
     @Override
-    protected VelocityCreator createCreator(JClassType interfaceType, String implName) throws UnableToCompleteException
+    protected String getInterfaceName()
     {
-        return new XmlWriterCreator(interfaceType, implName, XmlWriter.class.getCanonicalName());
+        return XmlWriter.class.getCanonicalName();
+    }
+
+
+    @Override
+    protected String getTemplateName()
+    {
+        return "name/pehl/piriti/rebind/xml/writer/writer.vm";
     }
 }

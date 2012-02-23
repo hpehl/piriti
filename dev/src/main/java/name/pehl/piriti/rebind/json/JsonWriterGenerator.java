@@ -1,11 +1,7 @@
 package name.pehl.piriti.rebind.json;
 
 import name.pehl.piriti.json.client.JsonWriter;
-import name.pehl.piriti.rebind.VelocityCreator;
 import name.pehl.piriti.rebind.VelocityGenerator;
-
-import com.google.gwt.core.ext.UnableToCompleteException;
-import com.google.gwt.core.ext.typeinfo.JClassType;
 
 /**
  * GWT Generator which creates a {@link JsonWriterCreator}.
@@ -16,8 +12,15 @@ import com.google.gwt.core.ext.typeinfo.JClassType;
 public class JsonWriterGenerator extends VelocityGenerator
 {
     @Override
-    protected VelocityCreator createCreator(JClassType interfaceType, String implName) throws UnableToCompleteException
+    protected String getInterfaceName()
     {
-        return new JsonWriterCreator(interfaceType, implName, JsonWriter.class.getCanonicalName());
+        return JsonWriter.class.getCanonicalName();
+    }
+
+
+    @Override
+    protected String getTemplateName()
+    {
+        return "name/pehl/piriti/rebind/json/writer/writer.vm";
     }
 }
