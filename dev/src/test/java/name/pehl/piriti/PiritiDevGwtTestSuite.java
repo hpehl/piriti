@@ -28,12 +28,14 @@ import name.pehl.piriti.client.types.JsonAnythingTest;
 import name.pehl.piriti.client.types.JsonArraysTest;
 import name.pehl.piriti.client.types.JsonBooleansTest;
 import name.pehl.piriti.client.types.JsonDatesTest;
+import name.pehl.piriti.client.types.JsonEnumsTest;
 import name.pehl.piriti.client.types.JsonFatGlobalItemTest;
 import name.pehl.piriti.client.types.JsonNullsTest;
 import name.pehl.piriti.client.types.XmlAnythingTest;
 import name.pehl.piriti.client.types.XmlArraysTest;
 import name.pehl.piriti.client.types.XmlBooleansTest;
 import name.pehl.piriti.client.types.XmlDatesTest;
+import name.pehl.piriti.client.types.XmlEnumsTest;
 import name.pehl.piriti.client.types.XmlFatGlobalItemTest;
 import name.pehl.piriti.client.types.XmlNullsTest;
 
@@ -59,6 +61,7 @@ public class PiritiDevGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(JsonBookTest.class);
         suite.addTestSuite(JsonBooleansTest.class);
         suite.addTestSuite(JsonDatesTest.class);
+        suite.addTestSuite(JsonEnumsTest.class);
         suite.addTestSuite(JsonFatGlobalItemTest.class);
         suite.addTestSuite(JsonLibraryTest.class);
         suite.addTestSuite(JsonNullsTest.class);
@@ -76,6 +79,7 @@ public class PiritiDevGwtTestSuite extends GWTTestSuite
         suite.addTestSuite(XmlBooleansTest.class);
         suite.addTestSuite(XmlCompanyTest.class);
         suite.addTestSuite(XmlDatesTest.class);
+        suite.addTestSuite(XmlEnumsTest.class);
         suite.addTestSuite(XmlFatGlobalItemTest.class);
         suite.addTestSuite(XmlLibraryTest.class);
         suite.addTestSuite(XmlNullsTest.class);

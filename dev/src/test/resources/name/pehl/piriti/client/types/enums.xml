@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<enums>
+    <favorite>green</favorite>
+    <white>
+        <color>red</color>
+        <color>green</color>
+        <color>blue</color>
+    </white>
+    <threeTimesRed>
+        <color>red</color>
+        <color>red</color>
+        <color>red</color>
+    </threeTimesRed>
+</enums>

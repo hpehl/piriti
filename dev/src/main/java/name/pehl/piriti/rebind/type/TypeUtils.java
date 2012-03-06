@@ -411,8 +411,8 @@ public final class TypeUtils
                 }
                 else
                 {
-                    if (!(TypeUtils.isJavaType(classOrInterface) || TypeUtils.isGwtType(classOrInterface))
-                            && TypeUtils.isDefaultInstantiable(classOrInterface))
+                    if (!TypeUtils.isJavaType(classOrInterface) && !TypeUtils.isGwtType(classOrInterface)
+                            && type.isEnum() == null && TypeUtils.isDefaultInstantiable(classOrInterface))
                     {
                         concreteTypes.add(classOrInterface);
                     }

@@ -1,0 +1,5 @@
+{
+  "favorite": "green",
+  "white": ["red", "green", "blue"],
+  "threeTimesRed": ["red", "red", "red"]
+}
