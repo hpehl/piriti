@@ -28,12 +28,15 @@
             <url>http://maven.restlet.org/</url>
         </repository>
     </repositories>
+    <!-- Currently disabled due to http://jira.codehaus.org/browse/MPIR-240 -->
+    <!--
     <distributionManagement>
         <site>
             <id>s3.site</id>
             <url>s3://pehl.mvnsite/piriti/${project.version}</url>
         </site>
     </distributionManagement>
+    -->
 
     
     <properties>
@@ -356,8 +359,7 @@ encoding/<project>=${project.build.sourceEncoding}
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-project-info-reports-plugin</artifactId>
                             <reports>
-                            	<!-- Currently disabled due to http://jira.codehaus.org/browse/MPIR-240 -->
-                            	<!-- <report>dependencies</report> -->
+                            	<report>dependencies</report>
                                 <report>index</report>
                                 <report>license</report>
                                 <report>project-team</report>
