@@ -12,15 +12,15 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>name.pehl</groupId>
     <artifactId>piriti-parent</artifactId>
-    <version>0.8-SNAPSHOT</version>
+    <version>0.8</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
     <description>JSON and XML Mapper for GWT</description>
     <url>http://code.google.com/p/piriti/</url>
     <scm>
-        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://piriti.googlecode.com/svn/trunk/</url>
+        <connection>scm:svn:http://piriti.googlecode.com/svn/tags/piriti-0.8</connection>
+        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/tags/piriti-0.8</developerConnection>
+        <url>http://piriti.googlecode.com/svn/tags/piriti-0.8</url>
     </scm>
     <repositories>
         <repository>
