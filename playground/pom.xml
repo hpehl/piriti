@@ -5,16 +5,16 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>piriti-parent</artifactId>
-        <version>0.8</version>
+        <version>0.8-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-playground</artifactId>
     <name>Piriti Playground</name>
     <url>http://code.google.com/p/piriti/</url>
     <scm>
-        <connection>scm:svn:http://piriti.googlecode.com/svn/tags/piriti-0.8/playground</connection>
-        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/tags/piriti-0.8/playground</developerConnection>
-        <url>http://piriti.googlecode.com/svn/tags/piriti-0.8/playground</url>
+        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/playground/</connection>
+        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/playground/</developerConnection>
+        <url>http://piriti.googlecode.com/svn/trunk/playground/</url>
     </scm>
 
 
