@@ -347,6 +347,8 @@ encoding/<project>=${project.build.sourceEncoding}
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
+            <!-- Currently disabled due to http://jira.codehaus.org/browse/MPIR-240 -->
+            <!--
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
@@ -356,8 +358,7 @@ encoding/<project>=${project.build.sourceEncoding}
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-project-info-reports-plugin</artifactId>
                             <reports>
-                            	<!-- Currently disabled due to http://jira.codehaus.org/browse/MPIR-240 -->
-                                <!-- <report>dependencies</report> -->
+                                <report>dependencies</report>
                                 <report>index</report>
                                 <report>license</report>
                                 <report>project-team</report>
@@ -389,6 +390,7 @@ encoding/<project>=${project.build.sourceEncoding}
                     </reportPlugins>
                 </configuration>
             </plugin>
+            -->
         </plugins>
         
         
