@@ -356,7 +356,8 @@ encoding/<project>=${project.build.sourceEncoding}
                             <groupId>org.apache.maven.plugins</groupId>
                             <artifactId>maven-project-info-reports-plugin</artifactId>
                             <reports>
-                                <report>dependencies</report>
+                            	<!-- Currently disabled due to http://jira.codehaus.org/browse/MPIR-240 -->
+                                <!-- <report>dependencies</report> -->
                                 <report>index</report>
                                 <report>license</report>
                                 <report>project-team</report>
