@@ -12,7 +12,7 @@ public class RegistryTest extends AbstractPlaygroundTest
 {
     public void testRegistry()
     {
-        String xml = RegistryResources.INSTANCE.registryJson().getText();
+        String xml = RegistryResources.INSTANCE.registryXml().getText();
         Registry registry = Registry.XML.read(xml);
         assertNotNull(registry);
         assertNotNull(registry.fields);

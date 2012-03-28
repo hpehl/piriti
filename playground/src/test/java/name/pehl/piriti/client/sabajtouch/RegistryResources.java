@@ -15,5 +15,5 @@ public interface RegistryResources extends ClientBundle
 
 
     @Source("registry.xml")
-    public TextResource registryJson();
+    public TextResource registryXml();
 }
