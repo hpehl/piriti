@@ -1,11 +1,5 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
-import static name.pehl.piriti.rebind.property.ReferenceType.ID;
-import static name.pehl.piriti.rebind.property.ReferenceType.REFERENCE;
-
 import java.util.Map;
 
 import name.pehl.piriti.rebind.type.TypeContext;
@@ -15,6 +9,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JType;
+
+import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
+import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
+import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import static name.pehl.piriti.rebind.property.ReferenceType.ID;
+import static name.pehl.piriti.rebind.property.ReferenceType.REFERENCE;
 
 public class PropertyContextValidator
 {
@@ -142,18 +142,18 @@ public class PropertyContextValidator
         Map<PropertyAccess, String> access = propertyContext.getAccess();
         if (typeContext.isReader())
         {
-            if (!(access.containsKey(FIELD) || access.containsKey(GETTER)))
+            if (!(access.containsKey(FIELD) || access.containsKey(SETTER)) && propertyContext.getSetter() == null)
             {
                 throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "No accessible field or getter");
+                        "No accessible field or setter and no custom setter specified");
             }
         }
         else if (typeContext.isWriter())
         {
-            if (!(access.containsKey(FIELD) || access.containsKey(SETTER)))
+            if (!(access.containsKey(FIELD) || access.containsKey(GETTER)) && propertyContext.getGetter() == null)
             {
                 throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "No accessible field or setter");
+                        "No accessible field or getter and no custom getter specified");
             }
         }
     }
