@@ -33,6 +33,7 @@ public class $implName extends AbstractXmlWriter<$modelParameterizedType> implem
                 #set($parameterizedValueType = $property.type.parameterizedQualifiedSourceName)
                 #set($value = $property.variables.value)
                 #set($valueAsString = $property.variables.valueAsString)
+                #set($getter = $property.variables.newVariable("Getter"))
                 #set($converter = $property.variables.newVariable("Converter"))
                 
                 // parsing template $property.templates.main
@@ -42,8 +43,8 @@ public class $implName extends AbstractXmlWriter<$modelParameterizedType> implem
                 }
                 $parameterizedValueType $value = null;
                 #if ($property.getter)
-                    $property.getter getter = GWT.create(${property.getter}.class);
-                    $value = getter.get(model);
+                    $property.getter $getter = GWT.create(${property.getter}.class);
+                    $value = ${getter}.get(model);
                 #else
                     #if ($property.accessibleField) 
                         $value = model.$property.name;

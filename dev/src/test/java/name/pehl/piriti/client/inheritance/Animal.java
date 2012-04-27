@@ -9,7 +9,6 @@ import name.pehl.piriti.property.client.Setter;
  * @version $Date$ $Revision:
  *          1478 $
  */
-// @formatter:off
 public abstract class Animal
 {
     @Order(3) @Getter(NameGetter.class) @Setter(NameSetter.class) String name;
