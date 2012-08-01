@@ -11,7 +11,6 @@
     <inherits name="name.pehl.totoe.xml.XML" />
     
     <source path="client" />
-    <super-source path="jre" />
 
     <!-- Generator for XmlReader -->
     <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderGenerator">

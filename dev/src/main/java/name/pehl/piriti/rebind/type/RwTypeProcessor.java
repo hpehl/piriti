@@ -43,7 +43,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping[] mappings = mappingsAnno.value();
             for (Mapping mapping : mappings)
             {
-                addProperty(typeContext, new AnnotationPropertySource(typeContext, mapping));
+                addProperty(typeContext, new AnnotationPropertySource(typeContext, mapping, logger));
             }
             logger.debug("Normal mappings done");
 
@@ -51,7 +51,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping idMapping = mappingsAnno.id();
             if (!idMapping.value().equals(Mappings.NO_ID))
             {
-                setId(typeContext, new AnnotationPropertySource(typeContext, idMapping));
+                setId(typeContext, new AnnotationPropertySource(typeContext, idMapping, logger));
             }
             logger.debug("Id done");
 
@@ -59,7 +59,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
             Mapping[] refMappings = mappingsAnno.references();
             for (Mapping refMapping : refMappings)
             {
-                addReference(typeContext, new AnnotationPropertySource(typeContext, refMapping));
+                addReference(typeContext, new AnnotationPropertySource(typeContext, refMapping, logger));
             }
             logger.debug("Reference mappings done");
         }
@@ -69,12 +69,19 @@ public class RwTypeProcessor extends AbstractTypeProcessor
     {
         final Mapping mapping;
         final JField field;
+        final Logger logger;
 
 
-        AnnotationPropertySource(TypeContext typeContext, Mapping mapping)
+        AnnotationPropertySource(TypeContext typeContext, Mapping mapping, Logger logger)
+                throws UnableToCompleteException
         {
             this.mapping = mapping;
             this.field = TypeUtils.findField(typeContext.getType(), mapping.value());
+            this.logger = logger;
+            if (this.field == null)
+            {
+                logger.die("Cannot find field %s in type %s", mapping.value(), typeContext.getType());
+            }
         }
 
 

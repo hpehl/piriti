@@ -7,4 +7,5 @@
     <source path="client">
         <exclude name="**/*Test.java" />
     </source>
+    <super-source path="jre" />
 </module>
