@@ -42,11 +42,11 @@
     <properties>
         <commons.collections.version>3.2.1</commons.collections.version>
         <commons.lang.version>2.6</commons.lang.version>
-        <gae.version>1.6.2.1</gae.version>
+        <gae.version>1.7.0</gae.version>
         <gin.version>1.5.0</gin.version>
         <guice.version>3.0</guice.version>
-        <gwt.version>2.4.0</gwt.version>
-        <gwt.plugin.version>2.4.0</gwt.plugin.version>
+        <gwt.version>2.5.0-rc1</gwt.version>
+        <gwt.plugin.version>2.5.0-rc1</gwt.plugin.version>
         <junit.version>4.10</junit.version>
         <logback.version>1.0.0</logback.version>
         <mockito.version>1.9.0</mockito.version>
