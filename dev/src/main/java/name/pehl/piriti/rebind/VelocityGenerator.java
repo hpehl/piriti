@@ -101,6 +101,7 @@ public abstract class VelocityGenerator extends Generator
         if (interfaceType == null)
         {
             logger.die("Unable to find metadata for type " + getInterfaceName());
+            return; // to satisfy the null pointer checks of the IDE
         }
         rwType = typeOracle.findType(rwInterface);
         if (rwType == null)

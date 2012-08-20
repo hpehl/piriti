@@ -5,7 +5,7 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>superpom</artifactId>
-        <version>19</version>
+        <version>20</version>
     </parent>
 
 
@@ -28,15 +28,12 @@
             <url>http://maven.restlet.org/</url>
         </repository>
     </repositories>
-    <!-- Currently disabled due to http://jira.codehaus.org/browse/MPIR-240 -->
-    <!--
     <distributionManagement>
         <site>
             <id>s3.site</id>
             <url>s3://pehl.mvnsite/piriti/${project.version}</url>
         </site>
     </distributionManagement>
-    -->
 
     
     <properties>
@@ -47,14 +44,11 @@
         <guice.version>3.0</guice.version>
         <gwt.version>2.5.0-rc1</gwt.version>
         <gwt.plugin.version>2.5.0-rc1</gwt.plugin.version>
-        <junit.version>4.10</junit.version>
         <logback.version>1.0.0</logback.version>
-        <mockito.version>1.9.0</mockito.version>
         <oro.version>2.0.8</oro.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <restlet.version>2.1-RC2</restlet.version>
         <slf4j.version>1.6.4</slf4j.version>
-        <totoe.version>0.4</totoe.version>
+        <totoe.version>0.5-SNAPSHOT</totoe.version>
         <velocity.version>1.7</velocity.version>
     </properties>
 
@@ -201,20 +195,6 @@
                 <artifactId>velocity</artifactId>
                 <version>${velocity.version}</version>
             </dependency>
-
-            <!-- Test -->
-            <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>${mockito.version}</version>
-                <scope>test</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     
@@ -262,36 +242,10 @@
             <groupId>com.google.gwt.inject</groupId>
             <artifactId>gin</artifactId>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-        </dependency>
     </dependencies>
 
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/java</directory>
-            </testResource>
-            <testResource>
-                <directory>src/test/resources</directory>
-            </testResource>
-        </testResources>
-
-
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -304,52 +258,6 @@
 
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                    <useProjectReferences>true</useProjectReferences>
-                    <classpathContainers>
-                        <classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
-                        <classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
-                    </classpathContainers>
-                    <additionalBuildcommands>
-                        <buildcommand>com.google.gwt.eclipse.core.gwtProjectValidator</buildcommand>
-                    </additionalBuildcommands>
-                    <additionalProjectnatures>
-                        <projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
-                    </additionalProjectnatures>
-                    <additionalConfig>
-                        <file>
-                           <name>.settings/org.eclipse.core.resources.prefs</name>
-                           <content><![CDATA[
-eclipse.preferences.version=1
-encoding/<project>=${project.build.sourceEncoding}
-                           ]]></content>
-                       </file>
-                    </additionalConfig>
-                    <excludes>
-                        <exclude>com.google.gwt:gwt-user</exclude>
-                        <exclude>com.google.gwt:gwt-dev</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
