@@ -76,12 +76,12 @@
                     <execution>
                         <id>(******** development mode ********)</id>
                         <configuration>
-                            <htmlunit>FF3,IE7</htmlunit>
-                            <mode>htmlunit</mode>
-                            <productionMode>false</productionMode>
-                            <testTimeOut>300</testTimeOut>
                             <module>name.pehl.piriti.PiritiTest</module>
                             <includes>name/pehl/piriti/PiritiDevGwtTestSuite.java</includes>
+                            <mode>htmlunit</mode>
+                            <htmlunit>FF3,IE7,IE8</htmlunit>
+                            <productionMode>false</productionMode>
+                            <testTimeOut>300</testTimeOut>
                         </configuration>
                         <goals>
                             <goal>test</goal>
@@ -90,12 +90,12 @@
                     <execution>
                         <id>(******** production mode ********)</id>
                         <configuration>
-                            <htmlunit>FF3,IE7</htmlunit>
-                            <mode>htmlunit</mode>
-                            <productionMode>true</productionMode>
-                            <testTimeOut>300</testTimeOut>
                             <module>name.pehl.piriti.PiritiTest</module>
                             <includes>name/pehl/piriti/PiritiDevGwtTestSuite.java</includes>
+                            <mode>htmlunit</mode>
+                            <htmlunit>FF3,IE7,IE8</htmlunit>
+                            <productionMode>true</productionMode>
+                            <testTimeOut>300</testTimeOut>
                         </configuration>
                         <goals>
                             <goal>test</goal>
