@@ -16,4 +16,21 @@
         <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/user/</developerConnection>
         <url>http://piriti.googlecode.com/svn/trunk/user/</url>
     </scm>
+    
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>resources</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
