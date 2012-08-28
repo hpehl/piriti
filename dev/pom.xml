@@ -79,7 +79,7 @@
                             <module>name.pehl.piriti.PiritiTest</module>
                             <includes>name/pehl/piriti/PiritiDevGwtTestSuite.java</includes>
                             <mode>htmlunit</mode>
-                            <htmlunit>FF3,IE7,IE8</htmlunit>
+                            <htmlunit>FF3,IE7</htmlunit>
                             <productionMode>false</productionMode>
                             <testTimeOut>300</testTimeOut>
                         </configuration>
@@ -93,7 +93,7 @@
                             <module>name.pehl.piriti.PiritiTest</module>
                             <includes>name/pehl/piriti/PiritiDevGwtTestSuite.java</includes>
                             <mode>htmlunit</mode>
-                            <htmlunit>FF3,IE7,IE8</htmlunit>
+                            <htmlunit>FF3,IE7</htmlunit>
                             <productionMode>true</productionMode>
                             <testTimeOut>300</testTimeOut>
                         </configuration>
