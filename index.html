@@ -31,32 +31,67 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Welcome to GitHub Pages.</h3>
+        <h1>What the heck is piriti</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p>Piriti (<a href="http://www.maoridictionary.co.nz/index.cfm?dictionaryKeywords=bridge">Maori for "bridge"</a>) is a JSON and XML mapper for GWT based on reasonable defaults, a handful of annotations and deferred binding. The following code snippets show the basic ideas behind Piriti. </p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<h2>XML Mapping</h2>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<p>In case you have the following XML document</p>
 
-<h3>Designer Templates</h3>
+<div class="highlight"><pre><span class="nt">&lt;vub</span> <span class="na">readonly=</span><span class="s">"true"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;name&gt;</span>Foo<span class="nt">&lt;/name&gt;</span>
+    <span class="nt">&lt;createdAt&gt;</span>08.01.2010<span class="nt">&lt;/createdAt&gt;</span>
+    <span class="nt">&lt;count&gt;</span>20<span class="nt">&lt;/count&gt;</span>
+<span class="nt">&lt;/vub&gt;</span>
+</pre></div>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>and the model class</p>
 
-<h3>Rather Drive Stick?</h3>
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VirtualUserBundle</span>
+<span class="o">{</span>
+    <span class="kd">interface</span> <span class="nc">VubReader</span> <span class="kd">extends</span> <span class="n">XmlReader</span><span class="o">&lt;</span><span class="n">VirtualUserBundle</span><span class="o">&gt;</span> <span class="o">{}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">VubReader</span> <span class="n">XML</span> <span class="o">=</span> <span class="n">GWT</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">VubReader</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+    <span class="kt">int</span> <span class="n">count</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="nd">@Path</span><span class="o">(</span><span class="s">"@readonly"</span><span class="o">)</span> <span class="kt">boolean</span> <span class="n">readonly</span><span class="o">;</span> 
+    <span class="nd">@Format</span><span class="o">(</span><span class="s">"dd.MM.yyyy"</span><span class="o">)</span> <span class="n">Date</span> <span class="n">createdAt</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
 
-<h3>Authors and Contributors</h3>
+<p>you can turn the XML into an instance of VirtualUserBundle by calling</p>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<div class="highlight"><pre><span class="n">Document</span> <span class="n">document</span> <span class="o">=</span> <span class="k">new</span> <span class="n">XmlParser</span><span class="o">().</span><span class="na">parse</span><span class="o">(</span><span class="n">xmlAsString</span><span class="o">);</span> 
+<span class="n">VirtualUserBundle</span> <span class="n">vub</span> <span class="o">=</span> <span class="n">VirtualUserBundle</span><span class="o">.</span><span class="na">XML</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">document</span><span class="o">);</span>
+</pre></div>
 
-<h3>Support or Contact</h3>
+<h2>JSON Mapping</h2>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<p>JSON mapping works very similar. In case you have the following JSON data </p>
+
+<div class="highlight"><pre><span class="p">{</span> <span class="nt">"readonly"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"Foo"</span><span class="p">,</span> <span class="nt">"createdAt"</span><span class="p">:</span> <span class="s2">"08.01.2010"</span><span class="p">,</span> <span class="nt">"count"</span><span class="p">:</span> <span class="mi">20</span> <span class="p">}</span>
+</pre></div>
+
+<p>and the model class</p>
+
+<div class="highlight"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">VirtualUserBundle</span>
+<span class="o">{</span>
+    <span class="kd">interface</span> <span class="nc">VubReader</span> <span class="kd">extends</span> <span class="n">JsonReader</span><span class="o">&lt;</span><span class="n">VirtualUserBundle</span><span class="o">&gt;</span> <span class="o">{}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">VubReader</span> <span class="n">JSON</span> <span class="o">=</span> <span class="n">GWT</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">VubReader</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+
+    <span class="kt">int</span> <span class="n">count</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">name</span><span class="o">;</span>
+    <span class="kt">boolean</span> <span class="n">readonly</span><span class="o">;</span> 
+    <span class="nd">@Format</span><span class="o">(</span><span class="s">"dd.MM.yyyy"</span><span class="o">)</span> <span class="n">Date</span> <span class="n">createdAt</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></div>
+
+<p>you can map the JSON data to an instance of !VirtualUserBundle by calling</p>
+
+<div class="highlight"><pre><span class="n">String</span> <span class="n">jsonString</span> <span class="o">=</span> <span class="o">...</span> <span class="c1">// the above JSON data</span>
+<span class="n">VirtualUserBundle</span> <span class="n">vub</span> <span class="o">=</span> <span class="n">VirtualUserBundle</span><span class="o">.</span><span class="na">JSON</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">jsonString</span><span class="o">);</span>
+</pre></div>
       </section>
     </div>
 
