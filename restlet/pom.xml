@@ -10,12 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-restlet</artifactId>
     <name>Piriti Restlet</name>
-    <url>http://code.google.com/p/piriti/</url>
-    <scm>
-        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/restlet</connection>
-        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/restlet</developerConnection>
-        <url>http://piriti.googlecode.com/svn/trunk/restlet</url>
-    </scm>
 
 
     <dependencies>

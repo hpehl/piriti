@@ -5,7 +5,7 @@
     <parent>
         <groupId>name.pehl</groupId>
         <artifactId>superpom</artifactId>
-        <version>20</version>
+        <version>21</version>
     </parent>
 
 
@@ -16,11 +16,11 @@
     <packaging>pom</packaging>
     <name>Piriti</name>
     <description>JSON and XML Mapper for GWT</description>
-    <url>http://code.google.com/p/piriti/</url>
+    <url>http://hpehl.github.com/piriti/</url>
     <scm>
-        <connection>scm:svn:http://piriti.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://piriti.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://piriti.googlecode.com/svn/trunk/</url>
+        <connection>scm:git:git@github.com:hpehl/piriti.git</connection>
+        <developerConnection>scm:git:git@github.com:hpehl/piriti.git</developerConnection>
+        <url>git@github.com:hpehl/piriti.git</url>
     </scm>
     <repositories>
         <repository>
@@ -39,15 +39,14 @@
     <properties>
         <commons.collections.version>3.2.1</commons.collections.version>
         <commons.lang.version>2.6</commons.lang.version>
-        <gae.version>1.7.0</gae.version>
-        <gin.version>1.5.0</gin.version>
+        <gae.version>1.7.3</gae.version>
+        <gin.version>2.0.0</gin.version>
         <guice.version>3.0</guice.version>
-        <gwt.version>2.5.0-rc1</gwt.version>
-        <gwt.plugin.version>2.5.0-rc1</gwt.plugin.version>
-        <logback.version>1.0.0</logback.version>
+        <gwt.version>2.5.0</gwt.version>
+        <gwt.plugin.version>2.5.0-rc2</gwt.plugin.version>
         <oro.version>2.0.8</oro.version>
         <restlet.version>2.1-RC2</restlet.version>
-        <slf4j.version>1.6.4</slf4j.version>
+        <slf4j.version>1.7.2</slf4j.version>
         <totoe.version>0.5-SNAPSHOT</totoe.version>
         <velocity.version>1.7</velocity.version>
     </properties>

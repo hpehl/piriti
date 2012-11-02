@@ -1,3 +1,4 @@
+target
 wiki
 *.class
 
@@ -5,3 +6,4 @@ wiki
 *.jar
 *.war
 *.ear
+*.iml
