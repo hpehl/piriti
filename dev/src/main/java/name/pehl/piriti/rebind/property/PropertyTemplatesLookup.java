@@ -1,10 +1,10 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.ReferenceType.PROPERTY;
+import com.google.gwt.core.ext.typeinfo.JType;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
 
-import com.google.gwt.core.ext.typeinfo.JType;
+import static name.pehl.piriti.rebind.property.ReferenceType.PROPERTY;
 
 /**
  * @author $LastChangedBy:$
@@ -99,6 +99,10 @@ public class PropertyTemplatesLookup
                 else if (TypeUtils.isCollection(type))
                 {
                     template = "collection.vm";
+                }
+                else if (TypeUtils.isMap(type))
+                {
+                    template = "map.vm";
                 }
                 else
                 {

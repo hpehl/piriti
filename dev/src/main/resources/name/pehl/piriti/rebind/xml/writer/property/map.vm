@@ -1,0 +1,39 @@
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
+#newConcreteTypes()
+if ($value != null)
+{
+    #if ($property.converter)
+        #createConverter()
+    #end
+    #if ($property.xpath)
+        XPath xpath = new XPath("$property.pathOrName");
+        XmlBuilder collectionXmlBuilder = new XmlBuilder(xpath.allButLast());
+        String nestedPath = xpath.last();
+    #else
+        XmlBuilder collectionXmlBuilder = xmlBuilder;
+        String nestedPath = "$property.pathOrName";
+    #end
+    System.out.println($value);
+/*
+    for ($elementType currentValue : $value)
+    {
+        if (currentValue != null)
+        {
+            #parse($property.templates.elementType)
+        }
+        else
+        {
+            collectionXmlBuilder.append(nestedPath);
+        }
+    }
+*/
+    #if ($property.xpath)
+        xmlBuilder.append(collectionXmlBuilder);
+    #end
+}
+else
+{
+    xmlBuilder.append("$property.pathOrName");
+}
+xmlBuilder.append("test");

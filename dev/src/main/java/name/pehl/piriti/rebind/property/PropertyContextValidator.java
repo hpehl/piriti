@@ -1,18 +1,14 @@
 package name.pehl.piriti.rebind.property;
 
-import java.util.Map;
-
-import name.pehl.piriti.rebind.type.TypeContext;
-import name.pehl.piriti.rebind.type.TypeUtils;
-
-import org.apache.commons.lang.StringUtils;
-
 import com.google.gwt.core.ext.typeinfo.JArrayType;
 import com.google.gwt.core.ext.typeinfo.JType;
+import name.pehl.piriti.rebind.type.TypeContext;
+import name.pehl.piriti.rebind.type.TypeUtils;
+import org.apache.commons.lang.StringUtils;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.FIELD;
-import static name.pehl.piriti.rebind.property.PropertyAccess.GETTER;
-import static name.pehl.piriti.rebind.property.PropertyAccess.SETTER;
+import java.util.Map;
+
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 import static name.pehl.piriti.rebind.property.ReferenceType.ID;
 import static name.pehl.piriti.rebind.property.ReferenceType.REFERENCE;
 
@@ -67,11 +63,11 @@ public class PropertyContextValidator
             }
         }
 
-        if (TypeUtils.isMap(propertyType))
-        {
-            throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                    "Maps are not supported");
-        }
+//        if (TypeUtils.isMap(propertyType))
+//        {
+//            throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
+//                    "Maps are not supported");
+//        }
 
         // TODO Take ReferenceType into account!
         if (propertyContext.getReferenceType() == ID)

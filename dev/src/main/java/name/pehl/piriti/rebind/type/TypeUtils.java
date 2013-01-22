@@ -1,33 +1,14 @@
 package name.pehl.piriti.rebind.type;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
+import com.google.gwt.core.ext.typeinfo.*;
 import name.pehl.piriti.rebind.Modifier;
 
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JField;
-import com.google.gwt.core.ext.typeinfo.JMethod;
-import com.google.gwt.core.ext.typeinfo.JParameterizedType;
-import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
-import com.google.gwt.core.ext.typeinfo.JType;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
- * Utility methods for {@linkplain JType}s.
+ * Utility methods for {@linkplain com.google.gwt.core.ext.typeinfo.JType}s.
  * 
  * @author $Author: harald.pehl $
  * @version $Date: 2010-01-14 17:11:02 +0100 (Do, 14. Jan 2010) $ $Revision: 54
@@ -42,6 +23,7 @@ public final class TypeUtils
         interfaceToImplementation.put(List.class.getName(), ArrayList.class.getName());
         interfaceToImplementation.put(Set.class.getName(), HashSet.class.getName());
         interfaceToImplementation.put(SortedSet.class.getName(), TreeSet.class.getName());
+        interfaceToImplementation.put(Map.class.getName(), HashMap.class.getName());
     }
 
 
