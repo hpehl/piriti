@@ -47,7 +47,7 @@
         <oro.version>2.0.8</oro.version>
         <restlet.version>2.1-RC2</restlet.version>
         <slf4j.version>1.7.2</slf4j.version>
-        <totoe.version>0.5-SNAPSHOT</totoe.version>
+        <totoe.version>0.4</totoe.version>
         <velocity.version>1.7</velocity.version>
     </properties>
 
