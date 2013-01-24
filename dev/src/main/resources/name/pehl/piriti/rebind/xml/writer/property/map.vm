@@ -1,4 +1,5 @@
-#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
+#set($elementType = $property.type.typeArgs[0].lazyQualifiedName)
+#set($valueType = $property.type.typeArgs[1].lazyQualifiedName)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
 #newConcreteTypes()
 if ($value != null)
@@ -14,20 +15,21 @@ if ($value != null)
         XmlBuilder collectionXmlBuilder = xmlBuilder;
         String nestedPath = "$property.pathOrName";
     #end
-    System.out.println($value);
-/*
-    for ($elementType currentValue : $value)
+    for ($elementType currentValue : $value .keySet())
     {
         if (currentValue != null)
         {
+            #set($ttt = $property.templates.elementType)
+            System.out.println("$ttt");
             #parse($property.templates.elementType)
+            //xmlBuilder.append(currentValue);
+            //xmlBuilder.append($value .get(currentValue));
         }
         else
         {
             collectionXmlBuilder.append(nestedPath);
         }
     }
-*/
     #if ($property.xpath)
         xmlBuilder.append(collectionXmlBuilder);
     #end

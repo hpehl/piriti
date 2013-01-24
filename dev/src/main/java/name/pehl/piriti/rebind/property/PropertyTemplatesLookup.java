@@ -18,16 +18,20 @@ public class PropertyTemplatesLookup
         String path = getPath(typeContext, referenceType);
         String template = getTemplate(type, referenceType);
         String elementTypeTemplate = null;
-        if (referenceType == PROPERTY && (type.isArray() != null || TypeUtils.isCollection(type)))
+        if (referenceType == PROPERTY && (type.isArray() != null || TypeUtils.isCollection(type) || TypeUtils.isMap(type)))
         {
             JType elementType = null;
             if (type.isArray() != null)
             {
                 elementType = type.isArray().getComponentType();
             }
-            else
+            else if (TypeUtils.isCollection(type))
             {
                 elementType = TypeUtils.getTypeVariable(type);
+            }
+            else
+            {
+                elementType = elementType;
             }
             if (elementType != null)
             {

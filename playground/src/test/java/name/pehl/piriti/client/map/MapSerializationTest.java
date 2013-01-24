@@ -11,7 +11,14 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     public void testXmlMap() {
         Map<String, String> map = new HashMap<String, String>();
         map.put("key1", "value1");
+        map.put("key2", "value2");
         String xml = ObjectWithMap.XML.toXml(new ObjectWithMap(map));
+        System.out.println(xml);
+    }
+
+    @Test
+    public void testXmlList() {
+        String xml = ObjectWithList.XML.toXml(new ObjectWithList());
         System.out.println(xml);
     }
 }

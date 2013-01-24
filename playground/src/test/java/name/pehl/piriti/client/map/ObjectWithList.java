@@ -7,7 +7,7 @@ import name.pehl.piriti.xml.client.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjectWithList<K> {
+public class ObjectWithList{
     interface ObjectWithMapWriter extends XmlWriter<ObjectWithList> {
     }
 
