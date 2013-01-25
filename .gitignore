@@ -1,7 +1,10 @@
+.idea
+war
+gwt-unit*
 target
 wiki
 *.class
-
+*.log
 # Package Files #
 *.jar
 *.war

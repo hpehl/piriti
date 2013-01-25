@@ -1,41 +1,52 @@
-#set($elementType = $property.type.typeArgs[0].lazyQualifiedName)
-#set($valueType = $property.type.typeArgs[1].lazyQualifiedName)
+#set($keyType = $property.type.typeArgs.get(0).getQualifiedSourceName())
+#set($valueType = $property.type.typeArgs.get(1).getQualifiedSourceName())
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
 #newConcreteTypes()
 if ($value != null)
 {
     #if ($property.converter)
         #createConverter()
+        #set($keyConverter = $converter)
+    #end
+    #if ($property.valueConverter)
+        #set($valueConverter = $property.variables.newVariable("Converter"))
+        $property.valueConverter $valueConverter = GWT.create(${property.valueConverter}.class);
+    #else
+        #set($valueConverter = false)
     #end
     #if ($property.xpath)
         XPath xpath = new XPath("$property.pathOrName");
         XmlBuilder collectionXmlBuilder = new XmlBuilder(xpath.allButLast());
         String nestedPath = xpath.last();
     #else
-        XmlBuilder collectionXmlBuilder = xmlBuilder;
         String nestedPath = "$property.pathOrName";
+        XmlBuilder collectionXmlBuilder = new XmlBuilder(nestedPath);
     #end
-    for ($elementType currentValue : $value .keySet())
+    for ($keyType key : ${value}.keySet())
     {
-        if (currentValue != null)
-        {
-            #set($ttt = $property.templates.elementType)
-            System.out.println("$ttt");
-            #parse($property.templates.elementType)
-            //xmlBuilder.append(currentValue);
-            //xmlBuilder.append($value .get(currentValue));
-        }
-        else
-        {
-            collectionXmlBuilder.append(nestedPath);
-        }
+            XmlBuilder tmpBuilder = collectionXmlBuilder;
+            collectionXmlBuilder = new XmlBuilder("entry");
+            {
+                XmlBuilder keyXmlBuilder = new XmlBuilder("key");
+                nestedPath = "key";
+                $keyType currentValue = key;
+                #set($elementType = $keyType)
+                #set($converter = $keyConverter)
+                #parse($property.templates.elementType)
+            }
+            {
+                nestedPath = "value";
+                $valueType currentValue = ${value}.get(key);
+                #set($elementType = $valueType)
+                #set($converter = $valueConverter)
+                #parse($property.templates.valueType)
+            }
+            tmpBuilder.append(collectionXmlBuilder);
+            collectionXmlBuilder = tmpBuilder;
     }
-    #if ($property.xpath)
-        xmlBuilder.append(collectionXmlBuilder);
-    #end
+    xmlBuilder.append(collectionXmlBuilder);
 }
 else
 {
     xmlBuilder.append("$property.pathOrName");
 }
-xmlBuilder.append("test");

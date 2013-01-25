@@ -436,7 +436,12 @@ public final class TypeUtils
         JField field = null;
         if (type != null && property != null && property.length() != 0)
         {
-            field = type.getField(property);
+            field = type.findField(property);
+            if (field == null && type.getEnclosingType() != null)
+            {
+                field = type.getEnclosingType().findField(property);
+            }
+
             if (field != null)
             {
                 boolean accessible = true;

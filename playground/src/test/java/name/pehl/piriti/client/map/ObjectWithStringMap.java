@@ -5,18 +5,18 @@ import name.pehl.piriti.xml.client.XmlWriter;
 
 import java.util.Map;
 
-public class ObjectWithMap {
-    interface ObjectWithMapWriter extends XmlWriter<ObjectWithMap> {
+public class ObjectWithStringMap {
+    interface ObjectWithStringMapWriter extends XmlWriter<ObjectWithStringMap> {
     }
 
-    public static final ObjectWithMapWriter XML = GWT.create(ObjectWithMapWriter.class);
+    public static final ObjectWithStringMapWriter XML = GWT.create(ObjectWithStringMapWriter.class);
 
     private Map<String, String> map;
 
-    ObjectWithMap() {
+    ObjectWithStringMap() {
     }
 
-    public ObjectWithMap(Map<String, String> map) {
+    public ObjectWithStringMap(Map<String, String> map) {
         this.map = map;
     }
 

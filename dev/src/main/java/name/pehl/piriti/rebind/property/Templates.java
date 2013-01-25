@@ -50,4 +50,8 @@ public class Templates
     {
         return elementType;
     }
+
+    public String getValueType() {
+        return valueType;
+    }
 }

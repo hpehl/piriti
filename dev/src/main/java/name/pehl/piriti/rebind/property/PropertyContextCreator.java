@@ -57,20 +57,31 @@ public class PropertyContextCreator
     {
         // gather all necessary information
         Map<PropertyAccess, String> access = calculateAccess(typeContext, propertySource);
-        String converter = getCustomConverter(typeContext, propertySource);
-        if (converter == null)
-        {
-            converter = defaultConverterLookup.get(propertySource.getType());
-        }
+        String keyConverter = getCustomConverter(typeContext, propertySource);
         String instanceCreator = getType(typeContext, propertySource, propertySource.getInstanceCreator(),
                 NoopInstanceCreator.class);
         String getter = getType(typeContext, propertySource, propertySource.getGetter(), NoopPropertyGetter.class);
         String setter = getType(typeContext, propertySource, propertySource.getSetter(), NoopPropertySetter.class);
         Templates templates = propertyTemplatesLookup.get(typeContext, propertySource.getType(), referenceType);
 
+        if (keyConverter == null)
+        {
+            keyConverter = defaultConverterLookup.get(propertySource.getType());
+        }
+
         // creation
-        PropertyContext propertyContext = new PropertyContext(typeOracle, propertySource, access, referenceType);
-        propertyContext.setConverter(converter);
+        PropertyContext propertyContext;
+        if (TypeUtils.isMap(propertySource.getType())) {
+            MapPropertyContext mapPropertyContext = new MapPropertyContext(typeOracle, propertySource, access, referenceType);
+            String valueConverter = defaultConverterLookup.get(mapPropertyContext.getValueType());
+            mapPropertyContext.setValueConverter(valueConverter);
+            propertyContext = mapPropertyContext;
+        }
+        else
+        {
+            propertyContext = new PropertyContext(typeOracle, propertySource, access, referenceType);
+        }
+        propertyContext.setConverter(keyConverter);
         propertyContext.setInstanceCreator(instanceCreator);
         propertyContext.setGetter(getter);
         propertyContext.setSetter(setter);

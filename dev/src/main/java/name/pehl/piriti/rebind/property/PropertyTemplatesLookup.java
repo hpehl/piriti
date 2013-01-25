@@ -1,5 +1,6 @@
 package name.pehl.piriti.rebind.property;
 
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.JType;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeUtils;
@@ -18,9 +19,11 @@ public class PropertyTemplatesLookup
         String path = getPath(typeContext, referenceType);
         String template = getTemplate(type, referenceType);
         String elementTypeTemplate = null;
+        String valueTypeTemplate = null;
         if (referenceType == PROPERTY && (type.isArray() != null || TypeUtils.isCollection(type) || TypeUtils.isMap(type)))
         {
             JType elementType = null;
+            JType valueType = null;
             if (type.isArray() != null)
             {
                 elementType = type.isArray().getComponentType();
@@ -31,11 +34,17 @@ public class PropertyTemplatesLookup
             }
             else
             {
-                elementType = elementType;
+                elementType = ((JParameterizedType) type).getTypeArgs()[0];
+                valueType = ((JParameterizedType) type).getTypeArgs()[1];
             }
             if (elementType != null)
             {
                 elementTypeTemplate = getTemplate(elementType, referenceType);
+            }
+
+            if (valueType != null)
+            {
+                valueTypeTemplate = getTemplate(valueType, referenceType);
             }
         }
 
@@ -43,11 +52,16 @@ public class PropertyTemplatesLookup
         {
             String fullQualifiedTemplatePath = path + "/" + template;
             String fullQualifiedElementTypeTemplatePath = null;
+            String fullQualifiedValueTypeTemplatePath = null;
             if (elementTypeTemplate != null)
             {
                 fullQualifiedElementTypeTemplatePath = path + "/elementtype/" + elementTypeTemplate;
             }
-            templates = new Templates(fullQualifiedTemplatePath, fullQualifiedElementTypeTemplatePath);
+            if (valueTypeTemplate != null)
+            {
+                fullQualifiedValueTypeTemplatePath = path + "/elementtype/" + valueTypeTemplate;
+            }
+            templates = new Templates(fullQualifiedTemplatePath, fullQualifiedElementTypeTemplatePath, fullQualifiedValueTypeTemplatePath);
         }
         return templates;
     }
