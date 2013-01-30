@@ -102,10 +102,10 @@ public abstract class AbstractXmlWriter<T> extends AbstractWriter<T> implements 
 
     // --------------------------------------------------------- helper methods
 
-    public abstract String modelName();
+    protected abstract String modelName();
 
 
-    public String modelsName()
+    protected String modelsName()
     {
         return modelName() + "s";
     }
