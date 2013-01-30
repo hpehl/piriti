@@ -26,10 +26,6 @@
         {
             $elementType currentValue = null;
             Element currentElement = (Element)mapElement.selectNode("key");
-            if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
-            {
-                currentElement = (Element)currentElement.getFirstChild();
-            }
             if (currentElement != null && currentElement.hasChildren())
             {
 #set($converter = $keyConverter)
@@ -40,11 +36,7 @@
         {
             $valueType currentValue = null;
             Element currentElement = (Element)mapElement.selectNode("value");
-            if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
-            {
-                currentElement = (Element)currentElement.getFirstChild();
-            }
-            if (currentElement != null)
+            if (currentElement != null && currentElement.hasChildren())
             {
 #set($converter = $valueConverter)
 #parse($property.templates.valueType)

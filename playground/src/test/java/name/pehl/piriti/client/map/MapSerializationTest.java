@@ -193,9 +193,9 @@ public class MapSerializationTest extends AbstractPlaygroundTest
         values.add(object2);
         values.add(object3);
 
-        String xml = ObjectWithList.XML_WRITER.toXml(new ObjectWithList(values));
-        ObjectWithList result = ObjectWithList.XML_READER.read(xml);
-        String resultXml = ObjectWithList.XML_WRITER.toXml(result);
+        String xml = ObjectWithStringList.XML_WRITER.toXml(new ObjectWithStringList(values));
+        ObjectWithStringList result = ObjectWithStringList.XML_READER.read(xml);
+        String resultXml = ObjectWithStringList.XML_WRITER.toXml(result);
 
         assertTrue(result.getList().contains(object1));
         assertTrue(result.getList().contains(object2));
@@ -215,9 +215,55 @@ public class MapSerializationTest extends AbstractPlaygroundTest
         values.add(object2);
         values.add(object3);
 
-        String json = ObjectWithList.JSON_WRITER.toJson(new ObjectWithList(values));
-        ObjectWithList result = ObjectWithList.JSON_READER.read(json);
-        String resultJson = ObjectWithList.JSON_WRITER.toJson(result);
+        String json = ObjectWithStringList.JSON_WRITER.toJson(new ObjectWithStringList(values));
+        ObjectWithStringList result = ObjectWithStringList.JSON_READER.read(json);
+        String resultJson = ObjectWithStringList.JSON_WRITER.toJson(result);
+
+        assertTrue(result.getList().contains(object1));
+        assertTrue(result.getList().contains(object2));
+        assertTrue(result.getList().contains(object3));
+        assertEquals(json, resultJson);
+    }
+
+    @Test
+    public void testXmlPojoList()
+    {
+        PojoObject object1 = makePojo(1);
+        PojoObject object2 = makePojo(2);
+        PojoObject object3 = makePojo(3);
+
+        List<PojoObject> values = new ArrayList<PojoObject>();
+        values.add(object1);
+        values.add(object2);
+        values.add(object3);
+
+        String xml = ObjectWithPojoList.XML_WRITER.toXml(new ObjectWithPojoList(values));
+        System.out.println(xml);
+        ObjectWithPojoList result = ObjectWithPojoList.XML_READER.read(xml);
+        String resultXml = ObjectWithPojoList.XML_WRITER.toXml(result);
+        System.out.println(resultXml);
+
+        assertTrue(result.getList().contains(object1));
+        assertTrue(result.getList().contains(object2));
+        assertTrue(result.getList().contains(object3));
+        assertEquals(xml, resultXml);
+    }
+
+    @Test
+    public void testJsonPojoList()
+    {
+        PojoObject object1 = makePojo(1);
+        PojoObject object2 = makePojo(2);
+        PojoObject object3 = makePojo(3);
+
+        List<PojoObject> values = new ArrayList<PojoObject>();
+        values.add(object1);
+        values.add(object2);
+        values.add(object3);
+
+        String json = ObjectWithPojoList.JSON_WRITER.toJson(new ObjectWithPojoList(values));
+        ObjectWithPojoList result = ObjectWithPojoList.JSON_READER.read(json);
+        String resultJson = ObjectWithPojoList.JSON_WRITER.toJson(result);
 
         assertTrue(result.getList().contains(object1));
         assertTrue(result.getList().contains(object2));

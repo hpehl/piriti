@@ -8,9 +8,7 @@
         if (currentWriter != null)
         {
             XmlBuilder nestedXmlBuilder = new XmlBuilder(nestedPath);
-            XmlBuilder objectXmlBuilder = new XmlBuilder(((AbstractXmlWriter)currentWriter).modelName());
-            ((AbstractXmlWriter<$elementType>)currentWriter).appendModel(objectXmlBuilder, currentValue);
-            nestedXmlBuilder.append(objectXmlBuilder);
+            ((AbstractXmlWriter<$elementType>)currentWriter).appendModel(nestedXmlBuilder, currentValue);
             collectionXmlBuilder.append(nestedXmlBuilder);
         }
         else
