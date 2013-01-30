@@ -63,12 +63,6 @@ public class PropertyContextValidator
             }
         }
 
-//        if (TypeUtils.isMap(propertyType))
-//        {
-//            throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-//                    "Maps are not supported");
-//        }
-
         // TODO Take ReferenceType into account!
         if (propertyContext.getReferenceType() == ID)
         {

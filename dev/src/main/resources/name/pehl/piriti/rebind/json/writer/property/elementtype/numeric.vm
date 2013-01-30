@@ -1,7 +1,7 @@
 String currentValueAsString = ${converter}.serialize(currentValue);
 if (isNumber(currentValueAsString))
 {
-    out.append("\"" + currentValueAsString + "\"");
+    out.append(currentValueAsString);
 }
 else
 {
