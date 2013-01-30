@@ -1,4 +1,4 @@
-#if ($property.converter)
+#if ($property.converter && $converter)
     currentValue = readValue(currentJsonValue, $converter);
 #else
 	## extra treatment for polymorphic references inside an array or collection

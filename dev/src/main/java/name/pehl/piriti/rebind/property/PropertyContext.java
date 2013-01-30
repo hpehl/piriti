@@ -1,22 +1,16 @@
 package name.pehl.piriti.rebind.property;
 
-import static name.pehl.piriti.rebind.property.PropertyAccess.*;
+import com.google.gwt.core.ext.typeinfo.*;
+import name.pehl.piriti.rebind.type.TypeUtils;
+import name.pehl.totoe.commons.client.WhitespaceHandling;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import name.pehl.piriti.rebind.type.TypeUtils;
-import name.pehl.totoe.commons.client.WhitespaceHandling;
-
-import org.apache.commons.lang.StringUtils;
-
-import com.google.gwt.core.ext.typeinfo.JArrayType;
-import com.google.gwt.core.ext.typeinfo.JClassType;
-import com.google.gwt.core.ext.typeinfo.JPrimitiveType;
-import com.google.gwt.core.ext.typeinfo.JType;
-import com.google.gwt.core.ext.typeinfo.TypeOracle;
+import static name.pehl.piriti.rebind.property.PropertyAccess.*;
 
 /**
  * Class which contains information needed to generate code for the evaluation,
@@ -150,6 +144,10 @@ public class PropertyContext
         {
             this.elementType = TypeUtils.getTypeVariable(this.type);
             TypeUtils.collectConcreteTypes(concreteTypes, this.elementType);
+        }
+        else if (TypeUtils.isMap(this.type)) {
+            this.elementType = TypeUtils.getTypeVariable(this.type);
+            TypeUtils.collectConcreteTypes(concreteTypes, this.type);
         }
         else
         {

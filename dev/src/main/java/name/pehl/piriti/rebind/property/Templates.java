@@ -14,6 +14,11 @@ public class Templates
      */
     private final String elementType;
 
+    /**
+     * Template for the value type
+     */
+    private final String valueType;
+
 
     public Templates(String main)
     {
@@ -23,9 +28,15 @@ public class Templates
 
     public Templates(String main, String elementType)
     {
+        this(main, elementType, null);
+    }
+
+    public Templates(String main, String elementType, String valueType)
+    {
         super();
         this.main = main;
         this.elementType = elementType;
+        this.valueType = valueType;
     }
 
 
@@ -38,5 +49,9 @@ public class Templates
     public String getElementType()
     {
         return elementType;
+    }
+
+    public String getValueType() {
+        return valueType;
     }
 }
