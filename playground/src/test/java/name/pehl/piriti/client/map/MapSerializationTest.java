@@ -6,9 +6,11 @@ import org.junit.Test;
 
 import java.util.*;
 
-public class MapSerializationTest extends AbstractPlaygroundTest {
+public class MapSerializationTest extends AbstractPlaygroundTest
+{
     @Test
-    public void testXmlMapString() {
+    public void testXmlMapString()
+    {
         Map<String, String> map = new HashMap<String, String>();
         String key1 = "key1";
         String value1 = "value1";
@@ -29,7 +31,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testJsonMapString() {
+    public void testJsonMapString()
+    {
         Map<String, String> map = new HashMap<String, String>();
         String key1 = "key1";
         String value1 = "value1";
@@ -50,7 +53,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testXmlMapInteger() {
+    public void testXmlMapInteger()
+    {
         Integer key1 = 1;
         String value1 = "value1";
         Integer key2 = 2;
@@ -70,7 +74,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testXmlMapEnum() {
+    public void testXmlMapEnum()
+    {
         EnumObject key1 = EnumObject.VALUE1;
         String value1 = "value1";
         EnumObject key2 = EnumObject.VALUE2;
@@ -90,7 +95,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testJsonMapEnum() {
+    public void testJsonMapEnum()
+    {
         EnumObject key1 = EnumObject.VALUE1;
         String value1 = "value1";
         EnumObject key2 = EnumObject.VALUE2;
@@ -110,7 +116,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testJsonMapInteger() {
+    public void testJsonMapInteger()
+    {
         Integer key1 = 1;
         String value1 = "value1";
         Integer key2 = 2;
@@ -130,7 +137,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testXmlPojoMap() {
+    public void testXmlPojoMap()
+    {
         Map<PojoObject, PojoObject> map = new HashMap<PojoObject, PojoObject>();
         PojoObject key1 = makePojo(1);
         PojoObject value1 = makePojo(1);
@@ -151,7 +159,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testJsonPojoMap() {
+    public void testJsonPojoMap()
+    {
         Map<PojoObject, PojoObject> map = new HashMap<PojoObject, PojoObject>();
         PojoObject key1 = makePojo(1);
         PojoObject value1 = makePojo(1);
@@ -173,7 +182,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testXmlStringList() {
+    public void testXmlStringList()
+    {
         String object1 = "value1";
         String object2 = "value2";
         String object3 = "value3";
@@ -194,7 +204,8 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
     }
 
     @Test
-    public void testJsonStringList() {
+    public void testJsonStringList()
+    {
         String object1 = "value1";
         String object2 = "value2";
         String object3 = "value3";
@@ -214,13 +225,15 @@ public class MapSerializationTest extends AbstractPlaygroundTest {
         assertEquals(json, resultJson);
     }
 
-    private PojoObject makePojo(int id) {
+    private PojoObject makePojo(int id)
+    {
         return new PojoObject(Arrays.asList(Random.nextInt(), Random.nextInt(), Random.nextInt()),
                 String.valueOf(id), Random.nextBoolean());
     }
 
     private <K, V> void assertBackAndForth(K key1, V value1, K key2, V value2, K key3, V value3, ObjectWithMap<K,
-            V> result) {
+            V> result)
+    {
         assertTrue(result.getMap().containsKey(key1));
         assertTrue(result.getMap().containsKey(key2));
         assertTrue(result.getMap().containsKey(key3));

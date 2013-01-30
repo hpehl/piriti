@@ -8,14 +8,22 @@ import name.pehl.piriti.xml.client.XmlWriter;
 
 import java.util.List;
 
-public class PojoObject {
-    interface PojoObjectWriter extends XmlWriter<PojoObject> {
+public class PojoObject
+{
+    interface PojoObjectWriter extends XmlWriter<PojoObject>
+    {
     }
-    interface PojoObjectReader extends XmlReader<PojoObject> {
+
+    interface PojoObjectReader extends XmlReader<PojoObject>
+    {
     }
-    interface PojoObjectJsonWriter extends JsonWriter<PojoObject> {
+
+    interface PojoObjectJsonWriter extends JsonWriter<PojoObject>
+    {
     }
-    interface PojoObjectJsonReader extends JsonReader<PojoObject> {
+
+    interface PojoObjectJsonReader extends JsonReader<PojoObject>
+    {
     }
 
     public static final PojoObjectWriter WRITER = GWT.create(PojoObjectWriter.class);
@@ -31,54 +39,67 @@ public class PojoObject {
     {
     }
 
-    public PojoObject(List<Integer> integerList, String name, boolean admin) {
+    public PojoObject(List<Integer> integerList, String name, boolean admin)
+    {
         this.integerList = integerList;
         this.name = name;
         this.admin = admin;
     }
 
-    public List<Integer> getIntegerList() {
+    public List<Integer> getIntegerList()
+    {
         return integerList;
     }
 
-    public void setIntegerList(List<Integer> integerList) {
+    public void setIntegerList(List<Integer> integerList)
+    {
         this.integerList = integerList;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public boolean isAdmin() {
+    public boolean isAdmin()
+    {
         return admin;
     }
 
-    public void setAdmin(boolean admin) {
+    public void setAdmin(boolean admin)
+    {
         this.admin = admin;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || getClass() != o.getClass())
+        {
             return false;
         }
 
         PojoObject that = (PojoObject) o;
 
-        if (admin != that.admin) {
+        if (admin != that.admin)
+        {
             return false;
         }
-        if (integerList != null ? !integerList.equals(that.integerList) : that.integerList != null) {
+        if (integerList != null ? !integerList.equals(that.integerList) : that.integerList != null)
+        {
             return false;
         }
-        if (name != null ? !name.equals(that.name) : that.name != null) {
+        if (name != null ? !name.equals(that.name) : that.name != null)
+        {
             return false;
         }
 
@@ -86,7 +107,8 @@ public class PojoObject {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int result = integerList != null ? integerList.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (admin ? 1 : 0);

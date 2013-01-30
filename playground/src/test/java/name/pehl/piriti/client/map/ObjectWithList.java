@@ -9,17 +9,22 @@ import name.pehl.piriti.xml.client.XmlWriter;
 
 import java.util.List;
 
-public class ObjectWithList {
-    interface ObjectWithListWriter extends XmlWriter<ObjectWithList> {
+public class ObjectWithList
+{
+    interface ObjectWithListWriter extends XmlWriter<ObjectWithList>
+    {
     }
 
-    interface ObjectWithListReader extends XmlReader<ObjectWithList> {
+    interface ObjectWithListReader extends XmlReader<ObjectWithList>
+    {
     }
 
-    interface ObjectWithListJsonWriter extends JsonWriter<ObjectWithList> {
+    interface ObjectWithListJsonWriter extends JsonWriter<ObjectWithList>
+    {
     }
 
-    interface ObjectWithListJsonReader extends JsonReader<ObjectWithList> {
+    interface ObjectWithListJsonReader extends JsonReader<ObjectWithList>
+    {
     }
 
     public static final ObjectWithListWriter XML_WRITER = GWT.create(ObjectWithListWriter.class);
@@ -30,18 +35,22 @@ public class ObjectWithList {
     @Path("elements")
     private List<String> list;
 
-    ObjectWithList() {
+    ObjectWithList()
+    {
     }
 
-    public ObjectWithList(List<String> list) {
+    public ObjectWithList(List<String> list)
+    {
         this.list = list;
     }
 
-    public List<String> getList() {
+    public List<String> getList()
+    {
         return list;
     }
 
-    public void setList(List<String> list) {
+    public void setList(List<String> list)
+    {
         this.list = list;
     }
 }

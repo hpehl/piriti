@@ -9,17 +9,22 @@ import name.pehl.piriti.xml.client.XmlWriter;
 import java.util.Map;
 
 
-public class ObjectWithIntegerMap implements ObjectWithMap<Integer, String> {
-    interface ObjectWithIntegerMapXmlWriter extends XmlWriter<ObjectWithIntegerMap> {
+public class ObjectWithIntegerMap implements ObjectWithMap<Integer, String>
+{
+    interface ObjectWithIntegerMapXmlWriter extends XmlWriter<ObjectWithIntegerMap>
+    {
     }
 
-    interface ObjectWithIntegerMapXmlReader extends XmlReader<ObjectWithIntegerMap> {
+    interface ObjectWithIntegerMapXmlReader extends XmlReader<ObjectWithIntegerMap>
+    {
     }
 
-    interface ObjectWithIntegerMapJsonWriter extends JsonWriter<ObjectWithIntegerMap> {
+    interface ObjectWithIntegerMapJsonWriter extends JsonWriter<ObjectWithIntegerMap>
+    {
     }
 
-    interface ObjectWithIntegerMapJsonReader extends JsonReader<ObjectWithIntegerMap> {
+    interface ObjectWithIntegerMapJsonReader extends JsonReader<ObjectWithIntegerMap>
+    {
     }
 
     public static final ObjectWithIntegerMapXmlWriter XML_WRITER = GWT.create(ObjectWithIntegerMapXmlWriter.class);
@@ -29,18 +34,22 @@ public class ObjectWithIntegerMap implements ObjectWithMap<Integer, String> {
 
     private Map<Integer, String> map;
 
-    ObjectWithIntegerMap() {
+    ObjectWithIntegerMap()
+    {
     }
 
-    public ObjectWithIntegerMap(Map<Integer, String> map) {
+    public ObjectWithIntegerMap(Map<Integer, String> map)
+    {
         this.map = map;
     }
 
-    public Map<Integer, String> getMap() {
+    public Map<Integer, String> getMap()
+    {
         return map;
     }
 
-    public void setMap(Map<Integer, String> map) {
+    public void setMap(Map<Integer, String> map)
+    {
         this.map = map;
     }
 }

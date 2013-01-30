@@ -9,17 +9,22 @@ import name.pehl.piriti.xml.client.XmlWriter;
 import java.util.Map;
 
 
-public class ObjectWithEnumMap implements ObjectWithMap<EnumObject, String> {
-    interface ObjectWithEnumMapXmlWriter extends XmlWriter<ObjectWithEnumMap> {
+public class ObjectWithEnumMap implements ObjectWithMap<EnumObject, String>
+{
+    interface ObjectWithEnumMapXmlWriter extends XmlWriter<ObjectWithEnumMap>
+    {
     }
 
-    interface ObjectWithEnumMapXmlReader extends XmlReader<ObjectWithEnumMap> {
+    interface ObjectWithEnumMapXmlReader extends XmlReader<ObjectWithEnumMap>
+    {
     }
 
-    interface ObjectWithEnumMapJsonWriter extends JsonWriter<ObjectWithEnumMap> {
+    interface ObjectWithEnumMapJsonWriter extends JsonWriter<ObjectWithEnumMap>
+    {
     }
 
-    interface ObjectWithEnumMapJsonReader extends JsonReader<ObjectWithEnumMap> {
+    interface ObjectWithEnumMapJsonReader extends JsonReader<ObjectWithEnumMap>
+    {
     }
 
     public static final ObjectWithEnumMapXmlWriter XML_WRITER = GWT.create(ObjectWithEnumMapXmlWriter.class);
@@ -29,18 +34,22 @@ public class ObjectWithEnumMap implements ObjectWithMap<EnumObject, String> {
 
     private Map<EnumObject, String> map;
 
-    ObjectWithEnumMap() {
+    ObjectWithEnumMap()
+    {
     }
 
-    public ObjectWithEnumMap(Map<EnumObject, String> map) {
+    public ObjectWithEnumMap(Map<EnumObject, String> map)
+    {
         this.map = map;
     }
 
-    public Map<EnumObject, String> getMap() {
+    public Map<EnumObject, String> getMap()
+    {
         return map;
     }
 
-    public void setMap(Map<EnumObject, String> map) {
+    public void setMap(Map<EnumObject, String> map)
+    {
         this.map = map;
     }
 }

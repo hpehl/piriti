@@ -9,17 +9,18 @@ import java.util.Map;
 
 /**
  * Class which contains information needed to generate code for the evaluation,
- * conversion and assignment of one property.
+ * conversion and assignment of one property for a map.
  *
- * @author $LastChangedBy: harald.pehl $
- * @version $LastChangedRevision: 140 $
+ * @author $LastChangedBy: maxime.meriouma $
  */
-public class MapPropertyContext extends PropertyContext {
+public class MapPropertyContext extends PropertyContext
+{
     private String valueConverter;
     private JType valueType;
 
-    public MapPropertyContext(TypeOracle typeOracle, PropertySource propertySource, Map<PropertyAccess, String> access,
-                              ReferenceType referenceType) {
+    public MapPropertyContext(TypeOracle typeOracle, PropertySource propertySource, Map<PropertyAccess,
+            String> access, ReferenceType referenceType)
+    {
         super(typeOracle, propertySource, access, referenceType);
 
         assert TypeUtils.isMap(getType());
@@ -27,19 +28,23 @@ public class MapPropertyContext extends PropertyContext {
         valueType = ((JParameterizedType) getType()).getTypeArgs()[1];
     }
 
-    public String getValueConverter() {
+    public String getValueConverter()
+    {
         return valueConverter;
     }
 
-    public void setValueConverter(String valueConverter) {
+    public void setValueConverter(String valueConverter)
+    {
         this.valueConverter = valueConverter;
     }
 
-    public JType getValueType() {
+    public JType getValueType()
+    {
         return valueType;
     }
 
-    public void setValueType(JType valueType) {
+    public void setValueType(JType valueType)
+    {
         this.valueType = valueType;
     }
 }

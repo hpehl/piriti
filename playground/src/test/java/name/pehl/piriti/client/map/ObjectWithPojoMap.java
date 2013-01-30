@@ -8,18 +8,22 @@ import name.pehl.piriti.xml.client.XmlWriter;
 
 import java.util.Map;
 
-
-public class ObjectWithPojoMap implements ObjectWithMap<PojoObject, PojoObject> {
-    interface ObjectWithPojoMapWriter extends XmlWriter<ObjectWithPojoMap> {
+public class ObjectWithPojoMap implements ObjectWithMap<PojoObject, PojoObject>
+{
+    interface ObjectWithPojoMapWriter extends XmlWriter<ObjectWithPojoMap>
+    {
     }
 
-    interface ObjectWithPojoMapReader extends XmlReader<ObjectWithPojoMap> {
+    interface ObjectWithPojoMapReader extends XmlReader<ObjectWithPojoMap>
+    {
     }
 
-    interface ObjectWithPojoMapJsonWriter extends JsonWriter<ObjectWithPojoMap> {
+    interface ObjectWithPojoMapJsonWriter extends JsonWriter<ObjectWithPojoMap>
+    {
     }
 
-    interface ObjectWithPojoMapJsonReader extends JsonReader<ObjectWithPojoMap> {
+    interface ObjectWithPojoMapJsonReader extends JsonReader<ObjectWithPojoMap>
+    {
     }
 
     public static final ObjectWithPojoMapWriter XML_WRITER = GWT.create(ObjectWithPojoMapWriter.class);
@@ -29,18 +33,22 @@ public class ObjectWithPojoMap implements ObjectWithMap<PojoObject, PojoObject> 
 
     private Map<PojoObject, PojoObject> map;
 
-    ObjectWithPojoMap() {
+    ObjectWithPojoMap()
+    {
     }
 
-    public ObjectWithPojoMap(Map<PojoObject, PojoObject> map) {
+    public ObjectWithPojoMap(Map<PojoObject, PojoObject> map)
+    {
         this.map = map;
     }
 
-    public Map<PojoObject, PojoObject> getMap() {
+    public Map<PojoObject, PojoObject> getMap()
+    {
         return map;
     }
 
-    public void setMap(Map<PojoObject, PojoObject> map) {
+    public void setMap(Map<PojoObject, PojoObject> map)
+    {
         this.map = map;
     }
 }
