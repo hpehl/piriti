@@ -1,4 +1,4 @@
-#if ($property.converter)
+#if ($property.converter && $converter)
     String currentValueAsString = ${converter}.serialize(currentValue);
     collectionXmlBuilder.append(nestedPath, currentValueAsString);
 #else

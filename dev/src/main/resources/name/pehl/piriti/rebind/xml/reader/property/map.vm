@@ -7,30 +7,49 @@
 Node $nodeValue = element.selectNode("$property.pathOrName");
 List<Element> $elements = filterElements(${nodeValue}.selectNodes("entry"));
 $value = new $collectionImplementation<$elementType, $valueType>();
+
 #if ($property.converter)
     #createConverter()
+    #set($keyConverter = $converter)
 #end
+#if ($property.valueConverter)
+    #set($valueConverter = $property.variables.newVariable("Converter"))
+    $property.valueConverter $valueConverter = GWT.create(${property.valueConverter}.class);
+#else
+    #set($valueConverter = false)
+#end
+
 for (Element mapElement : $elements)
 {
     $elementType key = null;
     $valueType value = null;
     {
         $elementType currentValue = null;
-        Element currentElement = (Element)((Element)mapElement.selectNode("key")).getFirstChild();
-        System.out.print("Key : ");
-        System.out.println(currentElement);
-        #parse($property.templates.elementType)
+        Element currentElement = (Element)mapElement.selectNode("key");
+        if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
+        {
+            currentElement = (Element)currentElement.getFirstChild();
+        }
+        if (currentElement != null && currentElement.hasChildren())
+        {
+            #set($converter = $keyConverter)
+            #parse($property.templates.elementType)
+        }
         key = currentValue;
     }
     {
         $valueType currentValue = null;
-        Element currentElement = (Element)((Element)mapElement.selectNode("value")).getFirstChild();
-        System.out.print("Value : ");
-        System.out.println(currentElement);
-        #parse($property.templates.valueType)
+        Element currentElement = (Element)mapElement.selectNode("value");
+        if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
+        {
+            currentElement = (Element)currentElement.getFirstChild();
+        }
+        if (currentElement != null)
+        {
+            #set($converter = $valueConverter)
+            #parse($property.templates.valueType)
+        }
         value = currentValue;
     }
-    System.out.println(PojoObject.WRITER.toXml(key));
-    System.out.println(PojoObject.WRITER.toXml(value));
     ${value}.put(key, value);
 }

@@ -35,5 +35,6 @@ public class PlaygroundTestSuite extends GWTTestSuite
 
     @Override
     public void run(TestResult result) {
+        suite().run(result);
     }
 }
