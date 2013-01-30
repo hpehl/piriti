@@ -2,68 +2,69 @@
 #set($valueType = $property.type.typeArgs.get(1).getQualifiedSourceName())
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
 #newConcreteTypes()
-if ($value != null)
-{
+    if ($value != null)
+    {
 #if ($property.converter)
-        #createConverter()
-        #set($keyConverter = $converter)
+#createConverter()
+#set($keyConverter = $converter)
 #end
 #if ($property.valueConverter)
-            #set($valueConverter = $property.variables.newVariable("Converter"))
-            $property.valueConverter $valueConverter = GWT.create(${property.valueConverter}.class);
+#set($valueConverter = $property.variables.newVariable("Converter"))
+        $property.valueConverter $valueConverter = GWT.create(${property.valueConverter}.class);
 #else
-            #set($valueConverter = false)
+#set($valueConverter = false)
 #end
-    out.append("{");
-    for (Iterator<$keyType> iter = ${value}.keySet().iterator(); iter.hasNext(); )
-    {
-        $keyType key = null;
-        boolean elementWritten = true;
+
+        out.append("{");
+        for (Iterator<$keyType> iter = ${value}.keySet().iterator(); iter.hasNext(); )
         {
-            $keyType currentValue = iter.next();
-            key = currentValue;
-            if (currentValue == null)
+            $keyType key = null;
+            boolean elementWritten = true;
             {
-                out.append("\"null\"");
-            }
-            else
-            {
-                StringBuilder tmp = out;
-                out = new StringBuilder();
+                $keyType currentValue = iter.next();
+                key = currentValue;
+                if (currentValue == null)
+                {
+                    out.append("\"null\"");
+                }
+                else
+                {
+                    StringBuilder tmp = out;
+                    out = new StringBuilder();
 #set($elementType = $keyType)
 #set($converter = $keyConverter)
 #parse($property.templates.elementType)
-                tmp.append("\"" + out.toString().replace("\"", "\\\"") + "\"");
-                out = tmp;
-            }
+                    tmp.append("\"" + out.toString().replace("\"", "\\\"") + "\"");
+                    out = tmp;
+                }
 
-            out.append(":");
-        }
-        {
-            $valueType currentValue = ${value}.get(key);
+                out.append(":");
+            }
+            {
+                $valueType currentValue = ${value}.get(key);
 #set($elementType = $valueType)
 #set($converter = $valueConverter)
-            if (currentValue == null)
-                out.append("\"");
-            if (currentValue != null)
-            {
+                if (currentValue == null)
+                    out.append("\"");
+                if (currentValue != null)
+                {
 #parse($property.templates.valueType)
+                }
+                else
+                {
+                    out.append("null");
+                }
+                if (currentValue == null)
+                    out.append("\"");
             }
-            else
+            if (iter.hasNext() && elementWritten)
             {
-                out.append("null");
+                out.append(",");
             }
-            if (currentValue == null)
-                out.append("\"");
         }
-        if (iter.hasNext() && elementWritten)
-        {
-            out.append(",");
-        }
+        out.append("}");
     }
-    out.append("}");
-}
-else
-{
-    out.append("null");
-}
+    else
+    {
+        out.append("null");
+    }

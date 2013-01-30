@@ -4,52 +4,52 @@
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($property.type.qualifiedSourceName))
 #newConcreteTypes()
 #set($nodeValue = $property.variables.newVariable("NodeValue"))
-Node $nodeValue = element.selectNode("$property.pathOrName");
-List<Element> $elements = filterElements(${nodeValue}.selectNodes("entry"));
-$value = new $collectionImplementation<$elementType, $valueType>();
+    Node $nodeValue = element.selectNode("$property.pathOrName");
+    List<Element> $elements = filterElements(${nodeValue}.selectNodes("entry"));
+    $value = new $collectionImplementation<$elementType, $valueType>();
 
 #if ($property.converter)
-    #createConverter()
-    #set($keyConverter = $converter)
+#createConverter()
+#set($keyConverter = $converter)
 #end
 #if ($property.valueConverter)
-    #set($valueConverter = $property.variables.newVariable("Converter"))
+#set($valueConverter = $property.variables.newVariable("Converter"))
     $property.valueConverter $valueConverter = GWT.create(${property.valueConverter}.class);
 #else
-    #set($valueConverter = false)
+#set($valueConverter = false)
 #end
 
-for (Element mapElement : $elements)
-{
-    $elementType key = null;
-    $valueType value = null;
+    for (Element mapElement : $elements)
     {
-        $elementType currentValue = null;
-        Element currentElement = (Element)mapElement.selectNode("key");
-        if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
+        $elementType key = null;
+        $valueType value = null;
         {
-            currentElement = (Element)currentElement.getFirstChild();
+            $elementType currentValue = null;
+            Element currentElement = (Element)mapElement.selectNode("key");
+            if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
+            {
+                currentElement = (Element)currentElement.getFirstChild();
+            }
+            if (currentElement != null && currentElement.hasChildren())
+            {
+#set($converter = $keyConverter)
+#parse($property.templates.elementType)
+            }
+            key = currentValue;
         }
-        if (currentElement != null && currentElement.hasChildren())
         {
-            #set($converter = $keyConverter)
-            #parse($property.templates.elementType)
+            $valueType currentValue = null;
+            Element currentElement = (Element)mapElement.selectNode("value");
+            if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
+            {
+                currentElement = (Element)currentElement.getFirstChild();
+            }
+            if (currentElement != null)
+            {
+#set($converter = $valueConverter)
+#parse($property.templates.valueType)
+            }
+            value = currentValue;
         }
-        key = currentValue;
+        ${value}.put(key, value);
     }
-    {
-        $valueType currentValue = null;
-        Element currentElement = (Element)mapElement.selectNode("value");
-        if (currentElement != null && currentElement.hasChildren() && currentElement.getFirstChild() instanceof Element)
-        {
-            currentElement = (Element)currentElement.getFirstChild();
-        }
-        if (currentElement != null)
-        {
-            #set($converter = $valueConverter)
-            #parse($property.templates.valueType)
-        }
-        value = currentValue;
-    }
-    ${value}.put(key, value);
-}

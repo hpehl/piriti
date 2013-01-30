@@ -3,45 +3,46 @@
 #set($valueType = $property.valueType.qualifiedSourceName)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($property.type.qualifiedSourceName))
 #newConcreteTypes()
-JSONObject jsonObjectValue = ${jsonValue}.isObject();
-if (jsonObjectValue != null)
-{
-    $value = new $collectionImplementation<$elementType, $valueType>();
-    #if ($property.converter)
-        #createConverter()
-        #set($keyConverter = $converter)
-    #end
-    #if ($property.valueConverter)
-        #set($valueConverter = $property.variables.newVariable("Converter"))
-        $property.valueConverter $valueConverter = GWT.create(${property.valueConverter}.class);
-    #else
-        #set($valueConverter = false)
-    #end
-    for (String objectKey : jsonObjectValue.keySet())
+    JSONObject jsonObjectValue = ${jsonValue}.isObject();
+    if (jsonObjectValue != null)
     {
-        $elementType key = null;
-        $valueType value = null;
+        $value = new $collectionImplementation<$elementType, $valueType>();
+#if ($property.converter)
+#createConverter()
+#set($keyConverter = $converter)
+#end
+#if ($property.valueConverter)
+#set($valueConverter = $property.variables.newVariable("Converter"))
+        $property.valueConverter $valueConverter = GWT.create(${property.valueConverter}.class);
+#else
+#set($valueConverter = false)
+#end
+
+        for (String objectKey : jsonObjectValue.keySet())
         {
-            if (!objectKey.equals("null"))
+            $elementType key = null;
+            $valueType value = null;
             {
-                objectKey.replace("\\\"", "\"");
-                JSONValue currentJsonValue = JSONParser.parseStrict(objectKey.replace("\\\"", "\""));
-                $elementType currentValue = null;
-                #set($converter = $keyConverter)
-                #parse($property.templates.elementType)
-                key = currentValue;
+                if (!objectKey.equals("null"))
+                {
+                    objectKey.replace("\\\"", "\"");
+                    JSONValue currentJsonValue = JSONParser.parseStrict(objectKey.replace("\\\"", "\""));
+                    $elementType currentValue = null;
+#set($converter = $keyConverter)
+#parse($property.templates.elementType)
+                    key = currentValue;
+                }
             }
-        }
-        {
-            JSONValue currentJsonValue = jsonObjectValue.get(objectKey);
-            if (currentJsonValue != null && currentJsonValue.isNull() == null)
             {
-                $valueType currentValue = null;
-                #set($converter = $valueConverter)
-                #parse($property.templates.valueType)
-                value = currentValue;
+                JSONValue currentJsonValue = jsonObjectValue.get(objectKey);
+                if (currentJsonValue != null && currentJsonValue.isNull() == null)
+                {
+                    $valueType currentValue = null;
+#set($converter = $valueConverter)
+#parse($property.templates.valueType)
+                    value = currentValue;
+                }
             }
+            ${value}.put(key, value);
         }
-        ${value}.put(key, value);
     }
-}
