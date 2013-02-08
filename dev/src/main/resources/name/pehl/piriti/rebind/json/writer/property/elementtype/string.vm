@@ -1,4 +1,4 @@
-#if ($property.converter)
+#if ($property.converter && $converter)
     currentValue = ${converter}.serialize(currentValue);
 #end
 out.append(JsonUtils.escapeValue(currentValue));

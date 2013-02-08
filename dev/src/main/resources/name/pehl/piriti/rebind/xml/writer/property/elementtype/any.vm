@@ -1,16 +1,23 @@
-#if ($property.converter)
+#if ($property.converter && $converter)
     String currentValueAsString = ${converter}.serialize(currentValue);
     collectionXmlBuilder.append(nestedPath, currentValueAsString);
 #else
-    XmlWriter<$elementType> currentWriter = (XmlWriter<$elementType>)xmlRegistry.getWriter(currentValue.getClass());
-    if (currentWriter != null)
+    if (currentValue != null)
     {
-        XmlBuilder nestedXmlBuilder = new XmlBuilder(nestedPath);
-        ((AbstractXmlWriter<$elementType>)currentWriter).appendModel(nestedXmlBuilder, currentValue);
-        collectionXmlBuilder.append(nestedXmlBuilder);
+        XmlWriter<$elementType> currentWriter = (XmlWriter<$elementType>)xmlRegistry.getWriter(currentValue.getClass());
+        if (currentWriter != null)
+        {
+            XmlBuilder nestedXmlBuilder = new XmlBuilder(nestedPath);
+            ((AbstractXmlWriter<$elementType>)currentWriter).appendModel(nestedXmlBuilder, currentValue);
+            collectionXmlBuilder.append(nestedXmlBuilder);
+        }
+        else
+        {
+           collectionXmlBuilder.append(nestedPath);
+        }
     }
     else
     {
-       collectionXmlBuilder.append(nestedPath);
+        collectionXmlBuilder.append(nestedPath);
     }
 #end

@@ -1,6 +1,7 @@
 package name.pehl.piriti;
 
 import junit.framework.Test;
+import junit.framework.TestResult;
 import junit.framework.TestSuite;
 import name.pehl.piriti.client.arcbees.BlogItemTest;
 import name.pehl.piriti.client.campaign.CampaignTest;
@@ -30,5 +31,10 @@ public class PlaygroundTestSuite extends GWTTestSuite
         suite.addTestSuite(TicketgooseTest.class);
 
         return suite;
+    }
+
+    @Override
+    public void run(TestResult result) {
+        suite().run(result);
     }
 }

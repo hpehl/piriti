@@ -1,4 +1,4 @@
-#if ($property.converter)
+#if ($property.converter && $converter)
     String currentValueAsString = currentElement.getText($property.whitespaceHandling);
     if (currentValueAsString != null)
     {

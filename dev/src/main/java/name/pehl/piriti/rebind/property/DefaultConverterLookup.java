@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import name.pehl.piriti.converter.client.BooleanConverter;
 import name.pehl.piriti.converter.client.ByteConverter;
 import name.pehl.piriti.converter.client.CharacterConverter;
@@ -103,6 +104,14 @@ public class DefaultConverterLookup
             else if (TypeUtils.isCollection(type))
             {
                 JClassType typeVariable = TypeUtils.getTypeVariable(type);
+                if (typeVariable != null)
+                {
+                    converter = registry.get(typeVariable.isClass());
+                }
+            }
+            else if (TypeUtils.isMap(type))
+            {
+                JClassType typeVariable = ((JParameterizedType) type).getTypeArgs()[0];
                 if (typeVariable != null)
                 {
                     converter = registry.get(typeVariable.isClass());
