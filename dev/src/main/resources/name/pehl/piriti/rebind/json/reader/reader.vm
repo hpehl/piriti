@@ -1,3 +1,4 @@
+#* @vtlvariable name="typeContext" type="name.pehl.piriti.rebind.type.TypeContext" *#
 #set($modelType = $typeContext.type.qualifiedSourceName)
 #set($modelParameterizedType = $typeContext.type.parameterizedQualifiedSourceName)
 
