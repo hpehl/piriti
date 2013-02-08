@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
     <inherits name="com.google.gwt.user.User" />
+    <inherits name="name.pehl.totoe.commons.Commons" />
+    <inherits name="name.pehl.piriti.converter.Converter" />
+    <inherits name="name.pehl.piriti.property.Property" />
 
     <source path="client">
         <exclude name="**/*Test.java" />
