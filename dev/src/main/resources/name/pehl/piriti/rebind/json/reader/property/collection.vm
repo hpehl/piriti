@@ -1,4 +1,4 @@
-#set($elementType = $property.elementType.qualifiedSourceName)
+#set($elementType = $property.elementType.parameterizedQualifiedSourceName)
 #set($collectionImplementation = $TypeUtils.collectionImplementationFor($valueType))
 #newConcreteTypes()
 JSONArray jsonArray = ${jsonValue}.isArray();
@@ -15,8 +15,18 @@ if (jsonArray != null)
         if (currentJsonValue != null && currentJsonValue.isNull() == null) 
         {
             $elementType currentValue = null;
+#if ($paramTypes)
+#set($reader = $property.variables.newVariable("Reader"))
+            JsonReader<$elementType> $reader = jsonRegistry.getReader(${property.elementType.qualifiedSourceName}.class, typeClasses);
+            if ($reader != null)
+            {
+                currentValue = readObject(currentJsonValue, $reader);
+            }
+#else
             #parse($property.templates.elementType)
-            if (currentValue != null) 
+#end
+
+            if (currentValue != null)
             {
                 ${value}.add(currentValue);
             }
