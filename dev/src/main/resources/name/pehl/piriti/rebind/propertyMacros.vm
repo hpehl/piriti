@@ -4,7 +4,6 @@
 #set($createRequired = $property.variables.newVariable("CreateRequired"))
     boolean $createRequired;
 	#foreach ($concreteType in $concreteTypes)
-	    // if there are any reader / writer definitions in $concreteType, this ensures they are registered
 #if ($typeContext.isXml())
     #if ($typeContext.isReader())
         $createRequired = xmlRegistry.getReader(${concreteType}.class) == null;
