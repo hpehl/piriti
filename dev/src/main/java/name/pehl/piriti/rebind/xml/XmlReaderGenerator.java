@@ -5,7 +5,7 @@ import name.pehl.piriti.xml.client.XmlReader;
 
 /**
  * GWT Generator which creates a {@link xmlReaderCreator}.
- * 
+ *
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 140 $
  */

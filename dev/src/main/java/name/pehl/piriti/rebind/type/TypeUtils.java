@@ -1,7 +1,15 @@
 package name.pehl.piriti.rebind.type;
 
+import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.*;
+
+import name.pehl.piriti.json.client.JsonReader;
+import name.pehl.piriti.json.client.JsonRegistry;
+import name.pehl.piriti.json.client.JsonWriter;
 import name.pehl.piriti.rebind.Modifier;
+import name.pehl.piriti.xml.client.XmlReader;
+import name.pehl.piriti.xml.client.XmlRegistry;
+import name.pehl.piriti.xml.client.XmlWriter;
 
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -508,6 +516,28 @@ public final class TypeUtils
     {
         String methodName = "set" + property.substring(0, 1).toUpperCase() + property.substring(1);
         return findMethod(type, JPrimitiveType.VOID, methodName, new JType[] {parameter}, modifiers);
+    }
+
+
+    public static String getReaderOrWriterImplQualifiedName(TypeOracle typeOracle, JClassType paramType,
+            String readerOrWriterInterfaceName)
+    {
+        JGenericType type = typeOracle.findType(readerOrWriterInterfaceName).isGenericType();
+        JClassType parameterizedType = typeOracle.getParameterizedType(type, new JClassType[]{paramType});
+
+        JClassType implType = null;
+        for (JClassType t : typeOracle.getTypes()) {
+            if (t.isAssignableTo(parameterizedType)) {
+                implType = t;
+                break;
+            }
+        }
+
+        if (implType != null) {
+            return implType.getQualifiedSourceName();
+        }
+
+        return null;
     }
 
 

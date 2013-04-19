@@ -1,7 +1,14 @@
 package name.pehl.piriti.rebind;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeProcessor;
 import name.pehl.piriti.rebind.type.TypeUtils;
@@ -14,6 +21,7 @@ import com.google.gwt.core.ext.GeneratorContext;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.UnableToCompleteException;
 import com.google.gwt.core.ext.typeinfo.JClassType;
+import com.google.gwt.core.ext.typeinfo.JParameterizedType;
 import com.google.gwt.core.ext.typeinfo.TypeOracle;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -21,7 +29,7 @@ import com.google.inject.Injector;
 /**
  * Abstract Generator which delegates to a {@link VelocityCreator}. The
  * {@link VelocityCreator} is responsible for generating the code.
- * 
+ *
  * @author $LastChangedBy: harald.pehl $
  * @version $LastChangedRevision: 745 $
  */
@@ -53,6 +61,7 @@ public abstract class VelocityGenerator extends Generator
             // collect properties, id and references
             TypeProcessor typeProcessor = injector.getInstance(TypeProcessor.class);
             TypeContext typeContext = new TypeContext(typeOracle, type, rwType);
+            List<JClassType> paramTypes = computeTypeChain(type);
             typeProcessor.process(typeContext);
 
             // setup velocity context
@@ -60,7 +69,9 @@ public abstract class VelocityGenerator extends Generator
             velocityContext.put("TypeUtils", TypeUtils.class);
             velocityContext.put("typeContext", typeContext);
             velocityContext.put("implName", implName);
-            populateVelocityContext(velocityContext);
+            velocityContext.put("paramTypes", paramTypes);
+            velocityContext.put("concreteTypesMap", getConcreteTypes(typeOracle, typeContext));
+            populateVelocityContext(velocityContext, typeOracle);
 
             // merge template
             VelocityEngine velocityEngine = injector.getInstance(VelocityEngine.class);
@@ -68,6 +79,49 @@ public abstract class VelocityGenerator extends Generator
             generatorContext.commit(treeLogger, printWriter);
         }
         return packageName + "." + implName;
+    }
+
+    private Map<String, Set<String>> getConcreteTypes(TypeOracle typeOracle, TypeContext typeContext)
+    {
+        Map<String, Set<String>> propertiesConcreteTypes = new HashMap<String, Set<String>>();
+        for (PropertyContext property : typeContext.getProperties())
+        {
+            Set<String> concreteTypes = new HashSet<String>();
+            for (JClassType type : property.getConcreteTypes())
+            {
+                String concreteType = TypeUtils.getReaderOrWriterImplQualifiedName(typeOracle, type,
+                        getInterfaceName());
+                if (concreteType != null)
+                {
+                    concreteTypes.add(concreteType);
+                }
+            }
+            propertiesConcreteTypes.put(property.getPathOrName(), concreteTypes);
+        }
+
+        return propertiesConcreteTypes;
+    }
+
+    private List<JClassType> computeTypeChain(JClassType type) {
+        List<JClassType> typesChain = null;
+        JParameterizedType parameterizedType = type.isParameterized();
+        if (parameterizedType != null) {
+            typesChain = new ArrayList<JClassType>();
+            assert parameterizedType.getTypeArgs().length == 1;
+            computeTypeChain(parameterizedType.getTypeArgs()[0], typesChain);
+        }
+
+        return typesChain;
+    }
+
+    private void computeTypeChain(JClassType jClassType, List<JClassType> typesChain) {
+        typesChain.add(jClassType);
+
+        JParameterizedType parameterizedType = jClassType.isParameterized();
+        if (parameterizedType != null) {
+            assert parameterizedType.getTypeArgs().length == 1;
+            computeTypeChain(parameterizedType.getTypeArgs()[0], typesChain);
+        }
     }
 
 
@@ -81,10 +135,11 @@ public abstract class VelocityGenerator extends Generator
      * relevant model
      * <li>The name of the implementation class which should be generated
      * </ul>
-     * 
+     *
      * @param velocityContext
+     * @param typeOracle
      */
-    protected void populateVelocityContext(VelocityContext velocityContext)
+    protected void populateVelocityContext(VelocityContext velocityContext, TypeOracle typeOracle)
     {
     }
 
@@ -126,9 +181,27 @@ public abstract class VelocityGenerator extends Generator
             logger.die("No implemented interfaces for %s", rwType.getSimpleSourceName());
         }
 
-        // Check type parameter(s)
+        type = findImplementedType(logger, interfaceType, implementedInterfaces);
+
+        if (type == null)
+        {
+            logger.die("No type parameter found in %s", (Object[]) implementedInterfaces);
+        }
+    }
+
+    private JClassType findImplementedType(Logger logger, JClassType interfaceType, JClassType[] implementedInterfaces)
+            throws UnableToCompleteException
+    {
+        JClassType type = null;
         for (JClassType t : implementedInterfaces)
         {
+            if (t.getImplementedInterfaces().length > 0)
+            {
+                type = findImplementedType(logger, interfaceType, t.getImplementedInterfaces());
+                if (type != null)
+                    break;
+            }
+
             if (t.getQualifiedSourceName().equals(interfaceType.getQualifiedSourceName()))
             {
                 JClassType[] typeArgs = t.isParameterized().getTypeArgs();
@@ -140,14 +213,8 @@ public abstract class VelocityGenerator extends Generator
                 break;
             }
         }
-        if (type == null)
-        {
-            logger.die("No type parameter found in %s", (Object[]) implementedInterfaces);
-        }
-        if (type.isParameterized() != null)
-        {
-            logger.die("Type parameters for the model are not supported!");
-        }
+
+        return type;
     }
 
 
@@ -157,7 +224,7 @@ public abstract class VelocityGenerator extends Generator
      * Must return Piritis interface name this generator should generate an
      * implementation for. Thus either {@code JsonReader<T>},
      * {@code JsonWriter<T>}, {@code XmlReader<T>} or {@code XmlWriter<T>}
-     * 
+     *
      * @return the interface this generator should generate an implementation
      *         for.
      */
@@ -166,7 +233,7 @@ public abstract class VelocityGenerator extends Generator
 
     /**
      * Returns the velocity template which should be merged.
-     * 
+     *
      * @return the velocity template which should be merged.
      */
     protected abstract String getTemplateName();

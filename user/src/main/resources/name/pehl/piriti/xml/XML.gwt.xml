@@ -19,4 +19,9 @@
     <generate-with class="name.pehl.piriti.rebind.xml.XmlWriterGenerator">
         <when-type-assignable class="name.pehl.piriti.xml.client.XmlWriter" />
     </generate-with>
+
+    !-- Generator for XmlReaderWriter -->
+    <generate-with class="name.pehl.piriti.rebind.xml.XmlReaderWriterGenerator">
+        <when-type-assignable class="name.pehl.piriti.xml.client.XmlReaderWriter" />
+    </generate-with>
 </module>

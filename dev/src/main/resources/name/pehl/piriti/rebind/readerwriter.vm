@@ -1,0 +1,28 @@
+#set($parameterizedType = $typeContext.type.parameterizedQualifiedSourceName)
+package ${typeContext.rwType.package.name};
+
+import ${readerType.qualifiedSourceName};
+import ${writerType.qualifiedSourceName};
+
+import com.google.gwt.core.client.GWT;
+
+public class $implName implements $typeContext.rwType.qualifiedSourceName
+{
+    public interface ${implName}${readerType.name} extends ${readerType.name}<${parameterizedType}> {}
+    public interface ${implName}${writerType.name} extends ${writerType.name}<${parameterizedType}> {}
+
+    private static final ${implName}${readerType.name} READER = GWT.create(${implName}${readerType.name}.class);
+    private static final ${implName}${writerType.name} WRITER = GWT.create(${implName}${writerType.name}.class);
+
+    @Override
+    public ${implName}${readerType.name} get${format}Reader()
+    {
+        return READER;
+    }
+
+    @Override
+    public ${implName}${writerType.name} get${format}Writer()
+    {
+        return WRITER;
+    }
+}
