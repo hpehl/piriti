@@ -65,7 +65,7 @@ public abstract class VelocityGenerator extends Generator
             velocityContext.put("typeContext", typeContext);
             velocityContext.put("implName", implName);
             velocityContext.put("paramTypes", paramTypes);
-            populateVelocityContext(velocityContext);
+            populateVelocityContext(velocityContext, typeOracle);
 
             // merge template
             VelocityEngine velocityEngine = injector.getInstance(VelocityEngine.class);
@@ -110,8 +110,9 @@ public abstract class VelocityGenerator extends Generator
      * </ul>
      *
      * @param velocityContext
+     * @param typeOracle
      */
-    protected void populateVelocityContext(VelocityContext velocityContext)
+    protected void populateVelocityContext(VelocityContext velocityContext, TypeOracle typeOracle)
     {
     }
 

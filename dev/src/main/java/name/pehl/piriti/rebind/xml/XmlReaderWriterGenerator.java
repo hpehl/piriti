@@ -8,7 +8,7 @@ import name.pehl.piriti.xml.client.XmlWriter;
 public class XmlReaderWriterGenerator extends AbstractReaderWriterGenerator
 {
     @Override
-    protected String getInterfaceClassName()
+    protected String getInterfaceName()
     {
         return XmlReaderWriter.class.getName();
     }

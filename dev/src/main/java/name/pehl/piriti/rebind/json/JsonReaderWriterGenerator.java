@@ -8,7 +8,7 @@ import name.pehl.piriti.rebind.AbstractReaderWriterGenerator;
 public class JsonReaderWriterGenerator extends AbstractReaderWriterGenerator
 {
     @Override
-    protected String getInterfaceClassName()
+    protected String getInterfaceName()
     {
         return JsonReaderWriter.class.getName();
     }
