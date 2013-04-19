@@ -36,7 +36,6 @@ public class Node<K, V> implements Iterable<Node<K, V>> {
         this.childrens = childrens;
     }
 
-
     public Node<K, V> findDirectChildNode(K data) {
         for (Node<K, V> child : childrens) {
             if (data.equals(child.key)) {
