@@ -5,7 +5,9 @@ package ${typeContext.rwType.package.name};
 
 import static java.util.logging.Level.*;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import name.pehl.piriti.commons.client.ModelWriteEvent;
 import name.pehl.piriti.json.client.AbstractJsonWriter;
@@ -17,11 +19,21 @@ import com.google.gwt.core.client.JsonUtils;
 
 public class $implName extends AbstractJsonWriter<$modelParameterizedType> implements $typeContext.rwType.qualifiedSourceName 
 {
+#if ($paramTypes)
+    private final List<Class<?>> typeClasses = new ArrayList<Class<?>>();
+#end
     // ----------------------------------------------------------- constructors
 
     public $implName() 
     {
+#if ($paramTypes)
+#foreach($paramType in $paramTypes)
+        typeClasses.add(${paramType.qualifiedSourceName}.class);
+#end
+        this.jsonRegistry.register(${modelType}.class, typeClasses, this);
+#else
         this.jsonRegistry.register(${modelType}.class, this);
+#end
     }
     
     

@@ -26,11 +26,21 @@ import com.google.gwt.json.client.JSONParser;
 
 public class $implName extends AbstractJsonReader<$modelParameterizedType> implements $typeContext.rwType.qualifiedSourceName 
 {
+#if ($paramTypes)
+    private final List<Class<?>> typeClasses = new ArrayList<Class<?>>();
+#end
     // ----------------------------------------------------------- constructors
 
     public $implName() 
     {
+#if ($paramTypes)
+#foreach($paramType in $paramTypes)
+        typeClasses.add(${paramType.qualifiedSourceName}.class);
+#end
+        this.jsonRegistry.register(${modelType}.class, typeClasses, this);
+#else
         this.jsonRegistry.register(${modelType}.class, this);
+#end
     }
     
     

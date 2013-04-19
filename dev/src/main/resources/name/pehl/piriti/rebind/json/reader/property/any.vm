@@ -22,7 +22,11 @@
         $value = readValue($jsonValue, $converter);
     #else
 		#newConcreteTypes()
+#if ($paramTypes)
+        JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class, typeClasses);
+#else
         JsonReader<$parameterizedValueType> $reader = jsonRegistry.getReader(${valueType}.class);
+#end
         if ($reader != null)
         {
             $value = readObject($jsonValue, $reader);

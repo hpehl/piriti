@@ -1,8 +1,27 @@
 #macro(newConcreteTypes)
-	#foreach ($concreteType in $property.concreteTypes)
-	    // if there are any reader / writer definitions in $concreteType.parameterizedQualifiedSourceName, this ensures they are registered
-	    new ${concreteType.parameterizedQualifiedSourceName}();
+#set($concreteTypes = $concreteTypesMap.get($property.getPathOrName()))
+#if ($concreteTypes)
+#set($createRequired = $property.variables.newVariable("CreateRequired"))
+    boolean $createRequired;
+	#foreach ($concreteType in $concreteTypes)
+#if ($typeContext.isXml())
+    #if ($typeContext.isReader())
+        $createRequired = xmlRegistry.getReader(${concreteType}.class) == null;
+    #else
+        $createRequired = xmlRegistry.getWriter(${concreteType}.class) == null;
+    #end
+#else
+    #if ($typeContext.isReader())
+        $createRequired = jsonRegistry.getReader(${concreteType}.class) == null;
+    #else
+        $createRequired = jsonRegistry.getWriter(${concreteType}.class) == null;
+    #end
+#end
+        if ($createRequired) {
+            GWT.create(${concreteType}.class);
+        }
 	#end
+#end
 #end
 
 

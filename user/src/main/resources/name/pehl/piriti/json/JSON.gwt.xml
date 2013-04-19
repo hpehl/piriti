@@ -17,4 +17,9 @@
     <generate-with class="name.pehl.piriti.rebind.json.JsonWriterGenerator">
         <when-type-assignable class="name.pehl.piriti.json.client.JsonWriter" />
     </generate-with>
+
+    <!-- Generator for JsonReaderWriter -->
+    <generate-with class="name.pehl.piriti.rebind.json.JsonReaderWriterGenerator">
+        <when-type-assignable class="name.pehl.piriti.json.client.JsonReaderWriter" />
+    </generate-with>
 </module>
