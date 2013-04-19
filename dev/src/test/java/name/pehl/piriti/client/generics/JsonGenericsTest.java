@@ -4,44 +4,40 @@ import java.util.ArrayList;
 import java.util.List;
 
 import name.pehl.piriti.client.AbstractPiritiTest;
+import name.pehl.piriti.json.client.JsonReaderWriter;
 
 import com.google.gwt.core.client.GWT;
 
 public class JsonGenericsTest extends AbstractPiritiTest
 {
-    interface GetResultsIntNumberWrapperJsonWriter extends GetResults.GetResultsJsonWriter<NumberWrapper<Integer>>
+    interface GetResultsIntNumberWrapperJsonReaderWriter extends JsonReaderWriter<GetResults<NumberWrapper<Integer>>>
     {
     }
 
-    interface GetResultsIntNumberWrapperJsonReader extends GetResults.GetResultsJsonReader<NumberWrapper<Integer>>
+    interface GetResultsIntegerJsonReaderWriter extends JsonReaderWriter<GetResults<Integer>>
     {
     }
 
-    interface IntegerNumberWrapperJsonWriter extends NumberWrapper.NumberWrapperJsonWriter<Integer>
+    interface IntegerNumberWrapperJsonReaderWriter extends JsonReaderWriter<NumberWrapper<Integer>>
     {
     }
 
-    interface IntegerNumberWrapperJsonReader extends NumberWrapper.NumberWrapperJsonReader<Integer>
-    {
-    }
-
-    private IntegerNumberWrapperJsonWriter INT_NUM_JSON_WRITER;
-    private IntegerNumberWrapperJsonReader INT_NUM_JSON_READER;
-    private GetResultsIntNumberWrapperJsonWriter GET_RESULTS_INT_NUMBER_WRAPPER_JSON_WRITER;
-    private GetResultsIntNumberWrapperJsonReader GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER;
+    private IntegerNumberWrapperJsonReaderWriter INT_NUM_JSON_READER_WRITER;
+    private GetResultsIntNumberWrapperJsonReaderWriter GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER;
+    private GetResultsIntegerJsonReaderWriter GET_RESULTS_INTEGER_READER_WRITER;
 
     @Override
     protected void gwtSetUp() throws Exception
     {
         super.gwtSetUp();
 
-        INT_NUM_JSON_WRITER = GWT.create(IntegerNumberWrapperJsonWriter.class);
-        INT_NUM_JSON_READER = GWT.create(IntegerNumberWrapperJsonReader.class);
-        GET_RESULTS_INT_NUMBER_WRAPPER_JSON_WRITER = GWT.create(GetResultsIntNumberWrapperJsonWriter.class);
-        GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER = GWT.create(GetResultsIntNumberWrapperJsonReader.class);
+        INT_NUM_JSON_READER_WRITER = GWT.create(IntegerNumberWrapperJsonReaderWriter.class);
+        GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER =
+                GWT.create(GetResultsIntNumberWrapperJsonReaderWriter.class);
+        GET_RESULTS_INTEGER_READER_WRITER = GWT.create(GetResultsIntegerJsonReaderWriter.class);
     }
 
-    public void testJsonPojoList()
+    public void testJsonGetResultsNumberWrapperInteger()
     {
         NumberWrapper<Integer> object1 = makeNumberWrapper(1);
         NumberWrapper<Integer> object2 = makeNumberWrapper(2);
@@ -52,13 +48,36 @@ public class JsonGenericsTest extends AbstractPiritiTest
         values.add(object2);
         values.add(object3);
 
-        String json = GET_RESULTS_INT_NUMBER_WRAPPER_JSON_WRITER.toJson(new GetResults<NumberWrapper<Integer>>(values));
-        GetResults<NumberWrapper<Integer>> result = GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER.read(json);
-        String resultJson = GET_RESULTS_INT_NUMBER_WRAPPER_JSON_WRITER.toJson(result);
+        String json = GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER
+                .getJsonWriter()
+                .toJson(new GetResults<NumberWrapper<Integer>>(values));
+        GetResults<NumberWrapper<Integer>> result = GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER
+                .getJsonReader()
+                .read(json);
+        String resultJson = GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER
+                .getJsonWriter()
+                .toJson(result);
 
         assertTrue(result.getResults().contains(object1));
         assertTrue(result.getResults().contains(object2));
         assertTrue(result.getResults().contains(object3));
+        assertEquals(json, resultJson);
+    }
+
+    public void testJsonGetResultsInteger()
+    {
+        List<Integer> values = new ArrayList<Integer>();
+        values.add(1);
+        values.add(2);
+        values.add(3);
+
+        String json = GET_RESULTS_INTEGER_READER_WRITER.getJsonWriter().toJson(new GetResults<Integer>(values));
+        GetResults<Integer> result = GET_RESULTS_INTEGER_READER_WRITER.getJsonReader().read(json);
+        String resultJson = GET_RESULTS_INTEGER_READER_WRITER.getJsonWriter().toJson(result);
+
+        assertTrue(result.getResults().contains(1));
+        assertTrue(result.getResults().contains(2));
+        assertTrue(result.getResults().contains(3));
         assertEquals(json, resultJson);
     }
 

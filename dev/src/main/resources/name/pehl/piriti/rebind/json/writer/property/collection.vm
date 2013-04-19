@@ -13,7 +13,7 @@ if ($value != null)
         $elementType currentValue = iter.next();
         if (currentValue != null)
         {
-#if ($paramTypes)
+#if ($paramTypes && !$property.converter)
 #set($writer = $property.variables.newVariable("Writer"))
         JsonWriter<$elementType> $writer = jsonRegistry.getWriter(${property.elementType.qualifiedSourceName}.class, typeClasses);
         out.append(${writer}.toJson(currentValue));

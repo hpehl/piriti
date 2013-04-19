@@ -15,7 +15,7 @@ if (jsonArray != null)
         if (currentJsonValue != null && currentJsonValue.isNull() == null) 
         {
             $elementType currentValue = null;
-#if ($paramTypes)
+#if ($paramTypes && !$property.converter)
 #set($reader = $property.variables.newVariable("Reader"))
             JsonReader<$elementType> $reader = jsonRegistry.getReader(${property.elementType.qualifiedSourceName}.class, typeClasses);
             if ($reader != null)
