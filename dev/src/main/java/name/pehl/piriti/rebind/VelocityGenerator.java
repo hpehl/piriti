@@ -2,8 +2,13 @@ package name.pehl.piriti.rebind;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import name.pehl.piriti.rebind.property.PropertyContext;
 import name.pehl.piriti.rebind.type.TypeContext;
 import name.pehl.piriti.rebind.type.TypeProcessor;
 import name.pehl.piriti.rebind.type.TypeUtils;
@@ -63,9 +68,11 @@ public abstract class VelocityGenerator extends Generator
             VelocityContext velocityContext = new VelocityContext();
             velocityContext.put("TypeUtils", TypeUtils.class);
             velocityContext.put("typeContext", typeContext);
+            velocityContext.put("typeOracle", typeOracle);
             velocityContext.put("implName", implName);
             velocityContext.put("paramTypes", paramTypes);
-            populateVelocityContext(velocityContext, typeOracle);
+            velocityContext.put("concreteTypesMap", getConcreteTypes(typeOracle, typeContext));
+            populateVelocityContext(velocityContext, typeContext, typeOracle);
 
             // merge template
             VelocityEngine velocityEngine = injector.getInstance(VelocityEngine.class);
@@ -73,6 +80,27 @@ public abstract class VelocityGenerator extends Generator
             generatorContext.commit(treeLogger, printWriter);
         }
         return packageName + "." + implName;
+    }
+
+    private Map<String, Set<String>> getConcreteTypes(TypeOracle typeOracle, TypeContext typeContext)
+    {
+        Map<String, Set<String>> propertiesConcreteTypes = new HashMap<String, Set<String>>();
+        for (PropertyContext property : typeContext.getProperties())
+        {
+            Set<String> concreteTypes = new HashSet<String>();
+            for (JClassType type : property.getConcreteTypes())
+            {
+                String concreteType = TypeUtils.getReaderOrWriterImplQualifiedName(typeOracle, type,
+                        getInterfaceName());
+                if (concreteType != null)
+                {
+                    concreteTypes.add(concreteType);
+                }
+            }
+            propertiesConcreteTypes.put(property.getPathOrName(), concreteTypes);
+        }
+
+        return propertiesConcreteTypes;
     }
 
     private List<JClassType> computeTypeChain(JClassType type) {
@@ -110,9 +138,10 @@ public abstract class VelocityGenerator extends Generator
      * </ul>
      *
      * @param velocityContext
+     * @param typeContext
      * @param typeOracle
      */
-    protected void populateVelocityContext(VelocityContext velocityContext, TypeOracle typeOracle)
+    protected void populateVelocityContext(VelocityContext velocityContext, TypeContext typeContext, TypeOracle typeOracle)
     {
     }
 

@@ -1,5 +1,7 @@
 package name.pehl.piriti.rebind;
 
+import name.pehl.piriti.rebind.type.TypeContext;
+
 import org.apache.velocity.VelocityContext;
 
 import com.google.gwt.core.ext.typeinfo.JClassType;
@@ -8,8 +10,10 @@ import com.google.gwt.core.ext.typeinfo.TypeOracle;
 public abstract class AbstractReaderWriterGenerator extends VelocityGenerator
 {
     @Override
-    protected void populateVelocityContext(VelocityContext velocityContext, TypeOracle typeOracle)
+    protected void populateVelocityContext(VelocityContext velocityContext, TypeContext typeContext, TypeOracle typeOracle)
     {
+        super.populateVelocityContext(velocityContext, typeContext, typeOracle);
+
         velocityContext.put("readerType", getReaderType(typeOracle));
         velocityContext.put("writerType", getWriterType(typeOracle));
         velocityContext.put("format", getFormat());

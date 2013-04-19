@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A Node to create a tree structure. A node an either be a root (no parent), a node or a leaf
+ * A Node to create a tree structure. A node can either be a root (no parent), a node or a leaf
  *
  * @param <K> Key type
  * @param <V> Value type
