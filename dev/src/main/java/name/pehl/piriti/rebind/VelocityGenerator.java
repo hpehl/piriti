@@ -160,10 +160,6 @@ public abstract class VelocityGenerator extends Generator
         {
             logger.die("No type parameter found in %s", (Object[]) implementedInterfaces);
         }
-//        if (type.isParameterized() != null)
-//        {
-//            logger.die("Type parameters for the model are not supported!");
-//        }
     }
 
     private JClassType findImplementedType(Logger logger, JClassType interfaceType, JClassType[] implementedInterfaces)
