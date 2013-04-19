@@ -68,11 +68,10 @@ public abstract class VelocityGenerator extends Generator
             VelocityContext velocityContext = new VelocityContext();
             velocityContext.put("TypeUtils", TypeUtils.class);
             velocityContext.put("typeContext", typeContext);
-            velocityContext.put("typeOracle", typeOracle);
             velocityContext.put("implName", implName);
             velocityContext.put("paramTypes", paramTypes);
             velocityContext.put("concreteTypesMap", getConcreteTypes(typeOracle, typeContext));
-            populateVelocityContext(velocityContext, typeContext, typeOracle);
+            populateVelocityContext(velocityContext, typeOracle);
 
             // merge template
             VelocityEngine velocityEngine = injector.getInstance(VelocityEngine.class);
@@ -138,10 +137,9 @@ public abstract class VelocityGenerator extends Generator
      * </ul>
      *
      * @param velocityContext
-     * @param typeContext
      * @param typeOracle
      */
-    protected void populateVelocityContext(VelocityContext velocityContext, TypeContext typeContext, TypeOracle typeOracle)
+    protected void populateVelocityContext(VelocityContext velocityContext, TypeOracle typeOracle)
     {
     }
 
