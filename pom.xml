@@ -21,12 +21,6 @@
         <developerConnection>scm:git:git@github.com:hpehl/piriti.git</developerConnection>
         <url>git@github.com:hpehl/piriti.git</url>
     </scm>
-    <repositories>
-        <repository>
-            <id>restlet</id>
-            <url>http://maven.restlet.org/</url>
-        </repository>
-    </repositories>
     <distributionManagement>
         <site>
             <id>s3.site</id>
@@ -44,7 +38,6 @@
         <gwt.version>2.5.1</gwt.version>
         <gwt.plugin.version>2.5.1</gwt.plugin.version>
         <oro.version>2.0.8</oro.version>
-        <restlet.version>2.1-RC2</restlet.version>
         <slf4j.version>1.7.2</slf4j.version>
         <totoe.version>0.5</totoe.version>
         <velocity.version>1.7</velocity.version>
@@ -54,7 +47,6 @@
     <modules>
         <module>dev</module>
         <module>playground</module>
-        <module>restlet</module>
         <module>user</module>
     </modules>
     
@@ -152,26 +144,6 @@
                 <version>1.0</version>
             </dependency>
             
-            <!-- Restlet -->
-            <dependency>
-                <groupId>org.restlet.gwt</groupId>
-                <artifactId>org.restlet</artifactId>
-                <version>${restlet.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.restlet.gwt</groupId>
-                <artifactId>org.restlet.ext.json</artifactId>
-                <version>${restlet.version}</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.restlet.gwt</groupId>
-                <artifactId>org.restlet.ext.xml</artifactId>
-                <version>${restlet.version}</version>
-                <scope>provided</scope>
-            </dependency> 
-
             <!-- Velocity -->
             <dependency>
                 <groupId>oro</groupId>
