@@ -11,7 +11,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>piriti-parent</artifactId>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.9</version>
     <packaging>pom</packaging>
     <name>Piriti</name>
     <description>JSON and XML Mapper for GWT</description>
@@ -20,7 +20,8 @@
         <connection>scm:git:git@github.com:hpehl/piriti.git</connection>
         <developerConnection>scm:git:git@github.com:hpehl/piriti.git</developerConnection>
         <url>git@github.com:hpehl/piriti.git</url>
-    </scm>
+      <tag>piriti-parent-0.9</tag>
+  </scm>
     <repositories>
         <repository>
             <id>restlet</id>
