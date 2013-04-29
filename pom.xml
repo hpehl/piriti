@@ -38,6 +38,7 @@
         <guice.version>3.0</guice.version>
         <gwt.version>2.5.1</gwt.version>
         <gwt.plugin.version>2.5.1</gwt.plugin.version>
+        <jdk.version>1.6</jdk.version>
         <oro.version>2.0.8</oro.version>
         <slf4j.version>1.7.2</slf4j.version>
         <totoe.version>0.5</totoe.version>
@@ -228,8 +229,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
                 </configuration>
             </plugin> 
             <plugin>
