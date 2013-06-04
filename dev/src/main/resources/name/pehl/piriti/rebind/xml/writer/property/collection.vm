@@ -18,6 +18,10 @@ if ($value != null)
     {
         if (currentValue != null)
         {
+            #if (!$property.xpath)
+        		String nestedElementName = currentValue.getClass().getName();
+        		nestedPath = nestedElementName.substring(nestedElementName.lastIndexOf(".")+1).toLowerCase();
+        	#end
             #parse($property.templates.elementType)
         }
         else
