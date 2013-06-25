@@ -40,6 +40,7 @@ public class JsonGenericsTest extends AbstractPiritiTest
 
         GWT.create(IntegerSomeGenericJsonReaderWriter.class);
         GWT.create(IntegerNumberWrapperSomeGenericJsonReaderWriter.class);
+        GWT.create(IntegerNumberWrapperJsonReaderWriter.class);
         GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER =
                 GWT.create(GetResultsIntNumberWrapperJsonReaderWriter.class);
         GET_RESULTS_INTEGER_READER_WRITER = GWT.create(GetResultsIntegerJsonReaderWriter.class);

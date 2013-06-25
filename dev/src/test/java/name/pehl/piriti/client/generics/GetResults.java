@@ -3,7 +3,8 @@ package name.pehl.piriti.client.generics;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetResults<T> {
+public class GetResults<T>
+{
     List<T> results;
     SomeGeneric<T> generic;
     List<String> someList;
