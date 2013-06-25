@@ -22,7 +22,14 @@ public class JsonGenericsTest extends AbstractPiritiTest
     {
     }
 
-    private IntegerNumberWrapperJsonReaderWriter INT_NUM_JSON_READER_WRITER;
+    interface IntegerNumberWrapperSomeGenericJsonReaderWriter extends JsonReaderWriter<SomeGeneric<NumberWrapper<Integer>>>
+    {
+    }
+
+    interface IntegerSomeGenericJsonReaderWriter extends JsonReaderWriter<SomeGeneric<Integer>>
+    {
+    }
+
     private GetResultsIntNumberWrapperJsonReaderWriter GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER;
     private GetResultsIntegerJsonReaderWriter GET_RESULTS_INTEGER_READER_WRITER;
 
@@ -31,7 +38,9 @@ public class JsonGenericsTest extends AbstractPiritiTest
     {
         super.gwtSetUp();
 
-        INT_NUM_JSON_READER_WRITER = GWT.create(IntegerNumberWrapperJsonReaderWriter.class);
+        GWT.create(IntegerSomeGenericJsonReaderWriter.class);
+        GWT.create(IntegerNumberWrapperSomeGenericJsonReaderWriter.class);
+        GWT.create(IntegerNumberWrapperJsonReaderWriter.class);
         GET_RESULTS_INT_NUMBER_WRAPPER_JSON_READER_WRITER =
                 GWT.create(GetResultsIntNumberWrapperJsonReaderWriter.class);
         GET_RESULTS_INTEGER_READER_WRITER = GWT.create(GetResultsIntegerJsonReaderWriter.class);
