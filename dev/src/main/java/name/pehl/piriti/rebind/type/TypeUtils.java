@@ -527,7 +527,7 @@ public final class TypeUtils
 
         JClassType implType = null;
         for (JClassType t : typeOracle.getTypes()) {
-            if (t.isAssignableTo(parameterizedType) && t != type) {
+            if (t != type && t.isAssignableTo(parameterizedType)) {
                 implType = t;
                 break;
             }
