@@ -5,6 +5,7 @@ import java.util.List;
 public class GetResults<T>
 {
     List<T> results;
+    SomeGeneric<T> generic;
 
     GetResults()
     {
@@ -13,6 +14,7 @@ public class GetResults<T>
     public GetResults(List<T> results)
     {
         this.results = results;
+        this.generic = new SomeGeneric<T>(results.get(0));
     }
 
     public List<T> getResults()
