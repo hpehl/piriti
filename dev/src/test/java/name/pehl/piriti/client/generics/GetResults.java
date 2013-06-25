@@ -9,36 +9,44 @@ public class GetResults<T>
     SomeGeneric<T> generic;
     List<String> someList;
 
-    GetResults() {
+    GetResults()
+    {
     }
 
-    public GetResults(List<T> results) {
+    public GetResults(List<T> results)
+    {
         this.results = results;
         this.generic = new SomeGeneric<T>(results.get(0));
         someList = new ArrayList<String>();
     }
 
-    public List<T> getResults() {
+    public List<T> getResults()
+    {
         return results;
     }
 
-    public List<String> getSomeList() {
+    public List<String> getSomeList()
+    {
         return someList;
     }
 
-    public SomeGeneric<T> getGeneric() {
+    public SomeGeneric<T> getGeneric()
+    {
         return generic;
     }
 
-    public void setResults(List<T> results) {
+    public void setResults(List<T> results)
+    {
         this.results = results;
     }
 
-    public void setGeneric(SomeGeneric<T> generic) {
+    public void setGeneric(SomeGeneric<T> generic)
+    {
         this.generic = generic;
     }
 
-    public void setSomeList(List<String> someList) {
+    public void setSomeList(List<String> someList)
+    {
         this.someList = someList;
     }
 }

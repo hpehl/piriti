@@ -1,19 +1,25 @@
 package name.pehl.piriti.client.generics;
 
-public class SomeGeneric<T> {
+public class SomeGeneric<T>
+{
     private T value;
 
-    SomeGeneric(){}
+    SomeGeneric()
+    {
+    }
 
-    public SomeGeneric(T value) {
+    public SomeGeneric(T value)
+    {
         this.value = value;
     }
 
-    public T getValue() {
+    public T getValue()
+    {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(T value)
+    {
         this.value = value;
     }
 }
