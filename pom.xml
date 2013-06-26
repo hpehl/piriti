@@ -21,7 +21,7 @@
         <developerConnection>scm:git:git@github.com:hpehl/piriti.git</developerConnection>
         <url>git@github.com:hpehl/piriti.git</url>
       <tag>HEAD</tag>
-  </scm>
+    </scm>
     <distributionManagement>
         <site>
             <id>s3.site</id>
@@ -29,7 +29,25 @@
         </site>
     </distributionManagement>
 
-    
+
+    <developers>
+        <developer>
+            <name>Harald Pehl</name>
+            <id>hpehl</id>
+            <email>harald.pehl@gmail.com</email>
+            <timezone>+1</timezone>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Maxime Meriouma-Caron</name>
+        </contributor>
+        <contributor>
+            <name>lathil</name>
+        </contributor>
+    </contributors>        
+
+
     <properties>
         <commons.collections.version>3.2.1</commons.collections.version>
         <commons.lang.version>2.6</commons.lang.version>
