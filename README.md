@@ -56,7 +56,7 @@ public class VirtualUserBundle
     @Format("dd.MM.yyyy") Date createdAt;
 }
 ```
-you can map the JSON data to an instance of !VirtualUserBundle by calling
+you can map the JSON data to an instance of VirtualUserBundle by calling
 
 ```java
 String jsonString = ... // the above JSON data
