@@ -6,6 +6,7 @@ import junit.framework.TestSuite;
 import name.pehl.piriti.client.arcbees.BlogItemTest;
 import name.pehl.piriti.client.campaign.CampaignTest;
 import name.pehl.piriti.client.createwith.SaveFileResultTest;
+import name.pehl.piriti.client.option.OptionTest;
 import name.pehl.piriti.client.sabajtouch.RegistryTest;
 import name.pehl.piriti.client.simplejsonpath.SimpleJsonPathTest;
 import name.pehl.piriti.client.ticketgoose.TicketgooseTest;
@@ -17,14 +18,14 @@ import com.google.gwt.junit.tools.GWTTestSuite;
  * @version $Date$ $Revision: 597
  *          $
  */
-public class PlaygroundTestSuite extends GWTTestSuite
-{
-    public static Test suite()
-    {
+public class PlaygroundTestSuite extends GWTTestSuite {
+
+    public static Test suite() {
         TestSuite suite = new TestSuite("GWT tests for piriti-playground");
 
         suite.addTestSuite(BlogItemTest.class);
         suite.addTestSuite(CampaignTest.class);
+        suite.addTestSuite(OptionTest.class);
         suite.addTestSuite(RegistryTest.class);
         suite.addTestSuite(SaveFileResultTest.class);
         suite.addTestSuite(SimpleJsonPathTest.class);
