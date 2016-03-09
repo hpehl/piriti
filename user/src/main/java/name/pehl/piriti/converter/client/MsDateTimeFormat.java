@@ -28,8 +28,8 @@ public class MsDateTimeFormat extends DateTimeFormat
     public static final String PATTERN = "MsDateTimeFormat()";
 
     // Pre and post string where formatting dates, pretty simple
-    public static final String prefix = "/Date(";
-    public static final String postfix = ")/";
+    public static final String PREFIX = "/Date(";
+    public static final String POSTFIX = ")/";
 
     // Private JS object to store regexok
     private static JavaScriptObject regexp;
@@ -45,7 +45,7 @@ public class MsDateTimeFormat extends DateTimeFormat
     @Override
     public String format(Date date)
     {
-        return prefix + date.getTime() + postfix;
+        return PREFIX + date.getTime() + POSTFIX;
     }
 
 
@@ -67,7 +67,7 @@ public class MsDateTimeFormat extends DateTimeFormat
     public Date parse(String text) throws IllegalArgumentException
     {
         // Test if match expressiom, convert !
-        return matches(text) ? new Date(Long.parseLong(text.substring(prefix.length(), text.lastIndexOf(')')))) : null;
+        return matches(text) ? new Date(Long.parseLong(text.substring(PREFIX.length(), text.lastIndexOf(')')))) : null;
     }
 
 

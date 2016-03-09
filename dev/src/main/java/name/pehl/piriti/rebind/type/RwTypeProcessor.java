@@ -137,7 +137,7 @@ public class RwTypeProcessor extends AbstractTypeProcessor
         @Override
         public boolean isNative()
         {
-            return mapping.native_();
+            return mapping.isNative();
         }
 
 

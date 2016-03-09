@@ -82,7 +82,7 @@ public interface Element extends Node {
      * Removes an attribute by name. If a default value for the removed 
      * attribute is defined in the DTD, a new attribute immediately appears 
      * with the default value as well as the corresponding namespace URI, 
-     * local name, and prefix when applicable. The implementation may handle 
+     * local name, and prefix when applicable. The implementation may handle
      * default values from other schemas similarly but applications should 
      * use <code>Document.normalizeDocument()</code> to guarantee this 
      * information is up-to-date.
@@ -135,7 +135,7 @@ public interface Element extends Node {
      * Removes the specified attribute node. If a default value for the 
      * removed <code>Attr</code> node is defined in the DTD, a new node 
      * immediately appears with the default value as well as the 
-     * corresponding namespace URI, local name, and prefix when applicable. 
+     * corresponding namespace URI, local name, and prefix when applicable.
      * The implementation may handle default values from other schemas 
      * similarly but applications should use 
      * <code>Document.normalizeDocument()</code> to guarantee this 
@@ -182,8 +182,8 @@ public interface Element extends Node {
 
     /**
      * Adds a new attribute. If an attribute with the same local name and 
-     * namespace URI is already present on the element, its prefix is 
-     * changed to be the prefix part of the <code>qualifiedName</code>, and 
+     * namespace URI is already present on the element, its prefix is
+     * changed to be the prefix part of the <code>qualifiedName</code>, and
      * its value is changed to be the <code>value</code> parameter. This 
      * value is a simple string; it is not parsed as it is being set. So any 
      * markup (such as syntax to be recognized as an entity reference) is 
@@ -211,11 +211,11 @@ public interface Element extends Node {
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
      *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is 
      *   malformed per the Namespaces in XML specification, if the 
-     *   <code>qualifiedName</code> has a prefix and the 
+     *   <code>qualifiedName</code> has a prefix and the
      *   <code>namespaceURI</code> is <code>null</code>, if the 
-     *   <code>qualifiedName</code> has a prefix that is "xml" and the 
+     *   <code>qualifiedName</code> has a prefix that is "xml" and the
      *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
-     *   http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or its prefix is "xmlns" and the 
+     *   http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or its prefix is "xmlns" and the
      *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is "xmlns".
      *   <br>NOT_SUPPORTED_ERR: May be raised if the implementation does not 
      *   support the feature <code>"XML"</code> and the language exposed 
@@ -231,7 +231,7 @@ public interface Element extends Node {
      * Removes an attribute by local name and namespace URI. If a default 
      * value for the removed attribute is defined in the DTD, a new 
      * attribute immediately appears with the default value as well as the 
-     * corresponding namespace URI, local name, and prefix when applicable. 
+     * corresponding namespace URI, local name, and prefix when applicable.
      * The implementation may handle default values from other schemas 
      * similarly but applications should use 
      * <code>Document.normalizeDocument()</code> to guarantee this 
