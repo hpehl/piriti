@@ -271,8 +271,7 @@ public class PojoTypeProcessor extends AbstractTypeProcessor
         @Override
         public boolean isNative()
         {
-            boolean nativ = field.isAnnotationPresent(Native.class);
-            return nativ;
+            return field.isAnnotationPresent(Native.class);
         }
 
 

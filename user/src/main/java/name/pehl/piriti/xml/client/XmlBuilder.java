@@ -45,17 +45,14 @@ public class XmlBuilder
 
     public XmlBuilder append(String path, XmlBuilder xmlBuilder)
     {
-        if (currentElement != null)
+        if (currentElement != null && isNotEmpty(path))
         {
-            if (isNotEmpty(path))
+            Element first = fromPath(path);
+            if (first != null)
             {
-                Element first = fromPath(path);
-                if (first != null)
-                {
-                    Element last = first.eldestDescendant();
-                    last.children.add(xmlBuilder.root);
-                    currentElement.children.add(first);
-                }
+                Element last = first.eldestDescendant();
+                last.children.add(xmlBuilder.root);
+                currentElement.children.add(first);
             }
         }
         return this;
@@ -70,53 +67,50 @@ public class XmlBuilder
 
     public XmlBuilder append(String path, String value)
     {
-        if (currentElement != null)
+        if (currentElement != null && isNotEmpty(path))
         {
-            if (isNotEmpty(path))
+            if (path.contains("@"))
             {
-                if (path.contains("@"))
+                // attribute
+                if (path.contains("/"))
                 {
-                    // attribute
-                    if (path.contains("/"))
+                    // an xpath in the following form: a/b/c/.../x/y/@z
+                    String[] parts = path.split("/@");
+                    if (parts.length == 2)
                     {
-                        // an xpath in the following form: a/b/c/.../x/y/@z
-                        String[] parts = path.split("/@");
-                        if (parts.length == 2)
+                        Element first = fromPath(parts[0]);
+                        if (first != null)
                         {
-                            Element first = fromPath(parts[0]);
-                            if (first != null)
+                            Element last = first.eldestDescendant();
+                            if (isNotEmpty(parts[1]) && isNotEmpty(value))
                             {
-                                Element last = first.eldestDescendant();
-                                if (isNotEmpty(parts[1]) && isNotEmpty(value))
-                                {
-                                    last.attributes.put(parts[1], encode(value));
-                                    currentElement.children.add(first);
-                                }
+                                last.attributes.put(parts[1], encode(value));
+                                currentElement.children.add(first);
                             }
-                        }
-                    }
-                    else
-                    {
-                        // the easy part: just one attribute
-                        if (isAttribute(path) && isNotEmpty(value))
-                        {
-                            currentElement.attributes.put(path.substring(1), encode(value));
                         }
                     }
                 }
                 else
                 {
-                    // (nested) element(s)
-                    Element first = fromPath(path);
-                    if (first != null)
+                    // the easy part: just one attribute
+                    if (isAttribute(path) && isNotEmpty(value))
                     {
-                        Element last = first.eldestDescendant();
-                        if (isNotEmpty(value))
-                        {
-                            last.content = encode(value);
-                        }
-                        currentElement.children.add(first);
+                        currentElement.attributes.put(path.substring(1), encode(value));
                     }
+                }
+            }
+            else
+            {
+                // (nested) element(s)
+                Element first = fromPath(path);
+                if (first != null)
+                {
+                    Element last = first.eldestDescendant();
+                    if (isNotEmpty(value))
+                    {
+                        last.content = encode(value);
+                    }
+                    currentElement.children.add(first);
                 }
             }
         }

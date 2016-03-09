@@ -257,24 +257,21 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
     protected <V> V readValue(JSONValue jsonValue, Converter<V> converter)
     {
         V result = null;
-        if (jsonValue != null && converter != null)
+        if ((jsonValue != null && converter != null) && jsonValue.isNull() == null)
         {
-            if (jsonValue.isNull() == null)
+            String stringValue;
+            JSONString jsonString = jsonValue.isString();
+            if (jsonString != null)
             {
-                String stringValue;
-                JSONString jsonString = jsonValue.isString();
-                if (jsonString != null)
-                {
-                    stringValue = jsonString.stringValue();
-                }
-                else
-                {
-                    stringValue = jsonValue.toString();
-                }
-                if (stringValue != null)
-                {
-                    result = converter.convert(stringValue);
-                }
+                stringValue = jsonString.stringValue();
+            }
+            else
+            {
+                stringValue = jsonValue.toString();
+            }
+            if (stringValue != null)
+            {
+                result = converter.convert(stringValue);
             }
         }
         return result;
