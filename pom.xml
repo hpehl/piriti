@@ -49,7 +49,7 @@
 
 
     <properties>
-        <commons.collections.version>3.2.1</commons.collections.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
         <commons.lang.version>2.6</commons.lang.version>
         <gae.version>1.7.3</gae.version>
         <gin.version>2.0.0</gin.version>
