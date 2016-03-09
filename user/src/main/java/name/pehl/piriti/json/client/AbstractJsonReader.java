@@ -63,7 +63,6 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
                         JSONArray jsonArray = jsonValue.isArray();
                         if (jsonArray != null)
                         {
-                            models = new ArrayList<T>();
                             models = readList(jsonArray);
                         }
                     }
@@ -95,7 +94,6 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
                         JSONArray jsonArray = jsonValue.isArray();
                         if (jsonArray != null)
                         {
-                            models = new ArrayList<T>();
                             models = readList(jsonArray);
                         }
                     }
@@ -126,7 +124,6 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
                     JSONArray jsonArray = jsonValue.isArray();
                     if (jsonArray != null)
                     {
-                        models = new ArrayList<T>();
                         models = readList(jsonArray);
                     }
                 }
@@ -148,7 +145,6 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
                 JSONArray jsonArray = jsonValue.isArray();
                 if (jsonArray != null)
                 {
-                    models = new ArrayList<T>();
                     models = readList(jsonArray);
                 }
             }
@@ -161,7 +157,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
     public List<T> readList(JSONArray jsonArray)
     {
         List<T> models = null;
-        List<InstanceContextHolder<T, JSONObject>> instanceContextHolders = null;
+        List<InstanceContextHolder<T, JSONObject>> instanceContextHolders;
 
         if (jsonArray != null)
         {
@@ -265,7 +261,7 @@ public abstract class AbstractJsonReader<T> extends AbstractReader<T, JSONObject
         {
             if (jsonValue.isNull() == null)
             {
-                String stringValue = null;
+                String stringValue;
                 JSONString jsonString = jsonValue.isString();
                 if (jsonString != null)
                 {
