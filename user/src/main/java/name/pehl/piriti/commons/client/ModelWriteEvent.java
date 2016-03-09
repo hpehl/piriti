@@ -16,6 +16,23 @@ public class ModelWriteEvent<T> extends GwtEvent<ModelWriteHandler<T>>
      * Handler type.
      */
     private static Type<ModelWriteHandler<?>> TYPE;
+    private final T model;
+    private final String representation;
+
+
+    /**
+     * Creates a new event.
+     *
+     * @param model
+     *            the model
+     * @param representation
+     *            the string representation of the model
+     */
+    protected ModelWriteEvent(T model, String representation)
+    {
+        this.model = model;
+        this.representation = representation;
+    }
 
 
     /**
@@ -55,23 +72,6 @@ public class ModelWriteEvent<T> extends GwtEvent<ModelWriteHandler<T>>
         return TYPE;
     }
 
-    private final T model;
-    private final String representation;
-
-
-    /**
-     * Creates a new event.
-     * 
-     * @param model
-     *            the model
-     * @param representation
-     *            the string representation of the model
-     */
-    protected ModelWriteEvent(T model, String representation)
-    {
-        this.model = model;
-        this.representation = representation;
-    }
 
 
     @Override

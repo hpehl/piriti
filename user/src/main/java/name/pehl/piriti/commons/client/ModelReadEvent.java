@@ -18,6 +18,23 @@ public class ModelReadEvent<T, C> extends GwtEvent<ModelReadHandler<T, C>>
      * Handler type.
      */
     private static Type<ModelReadHandler<?, ?>> TYPE;
+    private final T model;
+    private final C context;
+
+
+    /**
+     * Creates a new event.
+     *
+     * @param model
+     *            the model
+     * @param context
+     *            the context i.e the JSONObject or XML element
+     */
+    protected ModelReadEvent(T model, C context)
+    {
+        this.model = model;
+        this.context = context;
+    }
 
 
     /**
@@ -55,24 +72,6 @@ public class ModelReadEvent<T, C> extends GwtEvent<ModelReadHandler<T, C>>
             TYPE = new Type<ModelReadHandler<?, ?>>();
         }
         return TYPE;
-    }
-
-    private final T model;
-    private final C context;
-
-
-    /**
-     * Creates a new event.
-     * 
-     * @param model
-     *            the model
-     * @param context
-     *            the context i.e the JSONObject or XML element
-     */
-    protected ModelReadEvent(T model, C context)
-    {
-        this.model = model;
-        this.context = context;
     }
 
 
