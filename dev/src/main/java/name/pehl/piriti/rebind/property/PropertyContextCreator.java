@@ -106,7 +106,7 @@ public class PropertyContextCreator
                 access.put(FIELD, field.getName());
             }
 
-            JMethod getter = null;
+            JMethod getter;
             if (samePackage)
             {
                 getter = TypeUtils.findGetter(typeContext.getType(), propertySource.getName(),
@@ -122,7 +122,7 @@ public class PropertyContextCreator
                 access.put(GETTER, getter.getName());
             }
 
-            JMethod setter = null;
+            JMethod setter;
             if (samePackage)
             {
                 setter = TypeUtils.findSetter(typeContext.getType(), propertySource.getName(),

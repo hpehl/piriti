@@ -22,7 +22,7 @@ public class PropertyTemplatesLookup
         String valueTypeTemplate = null;
         if (referenceType == PROPERTY && (type.isArray() != null || TypeUtils.isCollection(type) || TypeUtils.isMap(type)))
         {
-            JType elementType = null;
+            JType elementType;
             JType valueType = null;
             if (type.isArray() != null)
             {

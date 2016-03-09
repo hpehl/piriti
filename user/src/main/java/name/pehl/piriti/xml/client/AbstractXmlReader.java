@@ -94,7 +94,7 @@ public abstract class AbstractXmlReader<T> extends AbstractReader<T, Element> im
     protected List<T> internalReadList(List<Element> elements)
     {
         List<T> models = null;
-        List<InstanceContextHolder<T, Element>> instanceContextHolders = null;
+        List<InstanceContextHolder<T, Element>> instanceContextHolders;
 
         if (!elements.isEmpty())
         {
