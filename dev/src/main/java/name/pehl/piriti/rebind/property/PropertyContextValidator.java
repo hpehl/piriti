@@ -138,13 +138,10 @@ public class PropertyContextValidator
                         "No accessible field or setter and no custom setter specified");
             }
         }
-        else if (typeContext.isWriter())
+        else if (typeContext.isWriter() && (!(access.containsKey(FIELD) || access.containsKey(GETTER)) && propertyContext.getGetter() == null))
         {
-            if (!(access.containsKey(FIELD) || access.containsKey(GETTER)) && propertyContext.getGetter() == null)
-            {
-                throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
-                        "No accessible field or getter and no custom getter specified");
-            }
+            throw new InvalidPropertyException(typeContext, propertyContext.getType(), propertyContext.getName(),
+                    "No accessible field or getter and no custom getter specified");
         }
     }
 
