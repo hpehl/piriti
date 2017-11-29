@@ -25,7 +25,7 @@ package org.w3c.dom;
  * entity an <code>Entity</code> exists, and the subtree of the 
  * <code>EntityReference</code> node is a copy of the <code>Entity</code> 
  * node subtree. However, the latter may not be true when an entity contains 
- * an unbound namespace prefix. In such a case, because the namespace prefix 
+ * an unbound namespace prefix. In such a case, because the namespace prefix
  * resolution depends on where the entity reference is, the descendants of 
  * the <code>EntityReference</code> node may be bound to different namespace 
  * URIs. When an <code>EntityReference</code> node represents a reference to 

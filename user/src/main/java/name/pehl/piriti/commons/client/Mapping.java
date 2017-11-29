@@ -105,5 +105,5 @@ public @interface Mapping
      * 
      * @return
      */
-    boolean native_() default false;
+    boolean isNative() default false;
 }

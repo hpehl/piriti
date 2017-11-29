@@ -84,11 +84,11 @@ public interface DOMImplementation {
      *   INVALID_CHARACTER_ERR: Raised if the specified qualified name is not 
      *   an XML name according to [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>].
      *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is 
-     *   malformed, if the <code>qualifiedName</code> has a prefix and the 
+     *   malformed, if the <code>qualifiedName</code> has a prefix and the
      *   <code>namespaceURI</code> is <code>null</code>, or if the 
      *   <code>qualifiedName</code> is <code>null</code> and the 
      *   <code>namespaceURI</code> is different from <code>null</code>, or 
-     *   if the <code>qualifiedName</code> has a prefix that is "xml" and 
+     *   if the <code>qualifiedName</code> has a prefix that is "xml" and
      *   the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
      *   http://www.w3.org/XML/1998/namespace</a>" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
      *   , or if the DOM implementation does not support the 

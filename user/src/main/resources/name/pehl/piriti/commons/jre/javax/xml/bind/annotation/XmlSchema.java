@@ -97,7 +97,7 @@ import static java.lang.annotation.RetentionPolicy.*;
  *    // Package level annotation
  *    &#64;javax.xml.bind.annotation.XmlSchema (
  *      xmlns = { 
- *        &#64;javax.xml.bind.annotation.XmlNs(prefix = "po", 
+ *        &#64;javax.xml.bind.annotation.XmlNs(prefix = "po",
  *                   namespaceURI="http://www.example.com/myPO1"),
  *
  *        &#64;javax.xml.bind.annotation.XmlNs(prefix="xs",

@@ -76,7 +76,7 @@ public interface Document extends Node {
      *   implementation.
      * @return A new <code>Element</code> object with the 
      *   <code>nodeName</code> attribute set to <code>tagName</code>, and 
-     *   <code>localName</code>, <code>prefix</code>, and 
+     *   <code>localName</code>, <code>prefix</code>, and
      *   <code>namespaceURI</code> set to <code>null</code>.
      * @exception DOMException
      *   INVALID_CHARACTER_ERR: Raised if the specified name is not an XML 
@@ -148,7 +148,7 @@ public interface Document extends Node {
      * @param name The name of the attribute.
      * @return A new <code>Attr</code> object with the <code>nodeName</code> 
      *   attribute set to <code>name</code>, and <code>localName</code>, 
-     *   <code>prefix</code>, and <code>namespaceURI</code> set to 
+     *   <code>prefix</code>, and <code>namespaceURI</code> set to
      *   <code>null</code>. The value of the attribute is the empty string.
      * @exception DOMException
      *   INVALID_CHARACTER_ERR: Raised if the specified name is not an XML 
@@ -164,7 +164,7 @@ public interface Document extends Node {
      * <code>EntityReference</code> node is made the same as that of the 
      * corresponding <code>Entity</code> node.
      * <p ><b>Note:</b> If any descendant of the <code>Entity</code> node has 
-     * an unbound namespace prefix, the corresponding descendant of the 
+     * an unbound namespace prefix, the corresponding descendant of the
      * created <code>EntityReference</code> node is also unbound; (its 
      * <code>namespaceURI</code> is <code>null</code>). The DOM Level 2 and 
      * 3 do not support any mechanism to resolve namespace prefixes in this 
@@ -207,7 +207,7 @@ public interface Document extends Node {
      * <br>For all nodes, importing a node creates a node object owned by the 
      * importing document, with attribute values identical to the source 
      * node's <code>nodeName</code> and <code>nodeType</code>, plus the 
-     * attributes related to namespaces (<code>prefix</code>, 
+     * attributes related to namespaces (<code>prefix</code>,
      * <code>localName</code>, and <code>namespaceURI</code>). As in the 
      * <code>cloneNode</code> operation, the source node is not altered. 
      * User data associated to the imported node is not carried over. 
@@ -341,7 +341,7 @@ public interface Document extends Node {
      * </tr>
      * <tr>
      * <td valign='top' rowspan='1' colspan='1'><code>Node.prefix</code></td>
-     * <td valign='top' rowspan='1' colspan='1'>prefix, extracted 
+     * <td valign='top' rowspan='1' colspan='1'>prefix, extracted
      *   from <code>qualifiedName</code>, or <code>null</code> if there is 
      *   no prefix</td>
      * </tr>
@@ -363,11 +363,11 @@ public interface Document extends Node {
      *   attribute.
      *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a 
      *   malformed qualified name, if the <code>qualifiedName</code> has a 
-     *   prefix and the <code>namespaceURI</code> is <code>null</code>, or 
-     *   if the <code>qualifiedName</code> has a prefix that is "xml" and 
+     *   prefix and the <code>namespaceURI</code> is <code>null</code>, or
+     *   if the <code>qualifiedName</code> has a prefix that is "xml" and
      *   the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
      *   http://www.w3.org/XML/1998/namespace</a>" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
-     *   , or if the <code>qualifiedName</code> or its prefix is "xmlns" and 
+     *   , or if the <code>qualifiedName</code> or its prefix is "xmlns" and
      *   the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is "xmlns".
      *   <br>NOT_SUPPORTED_ERR: Always thrown if the current document does not 
      *   support the <code>"XML"</code> feature, since namespaces were 
@@ -406,7 +406,7 @@ public interface Document extends Node {
      * <tr>
      * <td valign='top' rowspan='1' colspan='1'>
      *   <code>Node.prefix</code></td>
-     * <td valign='top' rowspan='1' colspan='1'>prefix, extracted from 
+     * <td valign='top' rowspan='1' colspan='1'>prefix, extracted from
      *   <code>qualifiedName</code>, or <code>null</code> if there is no 
      *   prefix</td>
      * </tr>
@@ -433,10 +433,10 @@ public interface Document extends Node {
      *   attribute.
      *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a 
      *   malformed qualified name, if the <code>qualifiedName</code> has a 
-     *   prefix and the <code>namespaceURI</code> is <code>null</code>, if 
-     *   the <code>qualifiedName</code> has a prefix that is "xml" and the 
+     *   prefix and the <code>namespaceURI</code> is <code>null</code>, if
+     *   the <code>qualifiedName</code> has a prefix that is "xml" and the
      *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
-     *   http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or its prefix is "xmlns" and the 
+     *   http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or its prefix is "xmlns" and the
      *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is "xmlns".
      *   <br>NOT_SUPPORTED_ERR: Always thrown if the current document does not 
      *   support the <code>"XML"</code> feature, since namespaces were 
@@ -798,12 +798,12 @@ public interface Document extends Node {
      *   from a different document than this document.
      *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a 
      *   malformed qualified name, if the <code>qualifiedName</code> has a 
-     *   prefix and the <code>namespaceURI</code> is <code>null</code>, or 
-     *   if the <code>qualifiedName</code> has a prefix that is "xml" and 
+     *   prefix and the <code>namespaceURI</code> is <code>null</code>, or
+     *   if the <code>qualifiedName</code> has a prefix that is "xml" and
      *   the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
      *   http://www.w3.org/XML/1998/namespace</a>" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
      *   . Also raised, when the node being renamed is an attribute, if the 
-     *   <code>qualifiedName</code>, or its prefix, is "xmlns" and the 
+     *   <code>qualifiedName</code>, or its prefix, is "xmlns" and the
      *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>".
      * @since DOM Level 3
      */

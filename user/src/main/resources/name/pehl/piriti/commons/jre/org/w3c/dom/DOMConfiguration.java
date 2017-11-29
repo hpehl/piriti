@@ -190,7 +190,7 @@ package org.w3c.dom;
  * .</dd>
  * <dt><code>false</code></dt>
  * <dd>[<em>required</em>]Discard all namespace declaration attributes. The namespace prefixes (
- * <code>Node.prefix</code>) are retained even if this parameter is set to 
+ * <code>Node.prefix</code>) are retained even if this parameter is set to
  * <code>false</code>.</dd>
  * </dl></dd>
  * <dt><code>"normalize-characters"</code></dt>

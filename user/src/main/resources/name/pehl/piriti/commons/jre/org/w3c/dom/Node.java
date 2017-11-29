@@ -499,7 +499,7 @@ public interface Node {
     public String getNamespaceURI();
 
     /**
-     * The namespace prefix of this node, or <code>null</code> if it is 
+     * The namespace prefix of this node, or <code>null</code> if it is
      * unspecified. When it is defined to be <code>null</code>, setting it 
      * has no effect, including if the node is read-only.
      * <br>Note that setting this attribute, when permitted, changes the 
@@ -507,11 +507,11 @@ public interface Node {
      * well as the <code>tagName</code> and <code>name</code> attributes of 
      * the <code>Element</code> and <code>Attr</code> interfaces, when 
      * applicable.
-     * <br>Setting the prefix to <code>null</code> makes it unspecified, 
+     * <br>Setting the prefix to <code>null</code> makes it unspecified,
      * setting it to an empty string is implementation dependent.
-     * <br>Note also that changing the prefix of an attribute that is known to 
+     * <br>Note also that changing the prefix of an attribute that is known to
      * have a default value, does not make a new attribute with the default 
-     * value and the original prefix appear, since the 
+     * value and the original prefix appear, since the
      * <code>namespaceURI</code> and <code>localName</code> do not change.
      * <br>For nodes of any type other than <code>ELEMENT_NODE</code> and 
      * <code>ATTRIBUTE_NODE</code> and nodes created with a DOM Level 1 
@@ -522,7 +522,7 @@ public interface Node {
      */
     public String getPrefix();
     /**
-     * The namespace prefix of this node, or <code>null</code> if it is 
+     * The namespace prefix of this node, or <code>null</code> if it is
      * unspecified. When it is defined to be <code>null</code>, setting it 
      * has no effect, including if the node is read-only.
      * <br>Note that setting this attribute, when permitted, changes the 
@@ -530,27 +530,27 @@ public interface Node {
      * well as the <code>tagName</code> and <code>name</code> attributes of 
      * the <code>Element</code> and <code>Attr</code> interfaces, when 
      * applicable.
-     * <br>Setting the prefix to <code>null</code> makes it unspecified, 
+     * <br>Setting the prefix to <code>null</code> makes it unspecified,
      * setting it to an empty string is implementation dependent.
-     * <br>Note also that changing the prefix of an attribute that is known to 
+     * <br>Note also that changing the prefix of an attribute that is known to
      * have a default value, does not make a new attribute with the default 
-     * value and the original prefix appear, since the 
+     * value and the original prefix appear, since the
      * <code>namespaceURI</code> and <code>localName</code> do not change.
      * <br>For nodes of any type other than <code>ELEMENT_NODE</code> and 
      * <code>ATTRIBUTE_NODE</code> and nodes created with a DOM Level 1 
      * method, such as <code>createElement</code> from the 
      * <code>Document</code> interface, this is always <code>null</code>.
      * @exception DOMException
-     *   INVALID_CHARACTER_ERR: Raised if the specified prefix contains an 
+     *   INVALID_CHARACTER_ERR: Raised if the specified prefix contains an
      *   illegal character according to the XML version in use specified in 
      *   the <code>Document.xmlVersion</code> attribute.
      *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
-     *   <br>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is 
+     *   <br>NAMESPACE_ERR: Raised if the specified <code>prefix</code> is
      *   malformed per the Namespaces in XML specification, if the 
      *   <code>namespaceURI</code> of this node is <code>null</code>, if the 
-     *   specified prefix is "xml" and the <code>namespaceURI</code> of this 
+     *   specified prefix is "xml" and the <code>namespaceURI</code> of this
      *   node is different from "<a href='http://www.w3.org/XML/1998/namespace'>
-     *   http://www.w3.org/XML/1998/namespace</a>", if this node is an attribute and the specified prefix is "xmlns" and 
+     *   http://www.w3.org/XML/1998/namespace</a>", if this node is an attribute and the specified prefix is "xmlns" and
      *   the <code>namespaceURI</code> of this node is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if this node is an attribute and the <code>qualifiedName</code> of 
      *   this node is "xmlns" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
      *   .
@@ -759,14 +759,14 @@ public interface Node {
     public boolean isSameNode(Node other);
 
     /**
-     * Look up the prefix associated to the given namespace URI, starting from 
+     * Look up the prefix associated to the given namespace URI, starting from
      * this node. The default namespace declarations are ignored by this 
      * method.
      * <br>See  for details on the algorithm used by this method.
      * @param namespaceURI The namespace URI to look for.
-     * @return Returns an associated namespace prefix if found or 
-     *   <code>null</code> if none is found. If more than one prefix are 
-     *   associated to the namespace prefix, the returned namespace prefix 
+     * @return Returns an associated namespace prefix if found or
+     *   <code>null</code> if none is found. If more than one prefix are
+     *   associated to the namespace prefix, the returned namespace prefix
      *   is implementation dependent.
      *
      * @since DOM Level 3
@@ -786,10 +786,10 @@ public interface Node {
     public boolean isDefaultNamespace(String namespaceURI);
 
     /**
-     * Look up the namespace URI associated to the given prefix, starting from 
+     * Look up the namespace URI associated to the given prefix, starting from
      * this node.
      * <br>See  for details on the algorithm used by this method.
-     * @param prefix The prefix to look for. If this parameter is 
+     * @param prefix The prefix to look for. If this parameter is
      *   <code>null</code>, the method will return the default namespace URI 
      *   if any.
      * @return Returns the associated namespace URI or <code>null</code> if 

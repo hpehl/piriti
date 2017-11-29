@@ -141,6 +141,8 @@ public class PropertyTemplatesLookup
                     template = "any.vm";
                 }
                 break;
+            default:
+                break;
         }
         return template;
     }
