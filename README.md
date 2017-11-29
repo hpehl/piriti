@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/hpehl/piriti.png?branch=develop)](https://travis-ci.org/hpehl/piriti)
-
 # What the heck is piriti
 Piriti ([Maori for "bridge"](http://www.maoridictionary.co.nz/index.cfm?dictionaryKeywords=bridge)) is a JSON and XML mapper for GWT based on reasonable defaults, a handful of annotations and deferred binding. The following code snippets show the basic ideas behind Piriti. 
 
